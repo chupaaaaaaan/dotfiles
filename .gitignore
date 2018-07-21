@@ -6,6 +6,4 @@
 .emacs.d/elpa/
 .emacs.d/places
 .emacs.d/recentf
-
-.gitconfig
-
+.emacs.d/network-security.data

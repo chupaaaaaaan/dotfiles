@@ -2,9 +2,8 @@
 .emacs.d/ac-comphist.dat
 .emacs.d/auto-save-list/
 .emacs.d/elpa/
+.emacs.d/local_conf/
 .emacs.d/history
-.emacs.d/elpa/
 .emacs.d/places
 .emacs.d/recentf
 .emacs.d/network-security.data
-.emacs.d/local_conf

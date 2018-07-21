@@ -1,0 +1,21 @@
+[core]
+        autoCRLF = false
+        quotepath = false
+        pager = "LESSCHARSET=utf-8 less"
+
+[user]
+        name = "CHPN"
+        email = jacobitebeerlove@yahoo.co.jp
+
+[color]
+        ui = true
+
+[push]
+        default = simple
+
+[alias]
+        lg = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative
+        lga = log --graph --all --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative
+
+[credential]
+        helper = store

@@ -4,15 +4,15 @@
 ;;; highlight settings
 (defface my-hl-line-face
   '((((class color) (background dark))
-     (:background "dark slate gray"))
-    (((class color) (background light))
      (:background "blue"))
+    (((class color) (background light))
+     (:background "dark slate gray"))
     (t (:bold t)))
   "*Face used by hl-line.")
 
 ;; highlight on the current line
 (global-hl-line-mode t)
-;; (setq hl-line-face 'my-hl-line-face)
+(setq hl-line-face 'my-hl-line-face)
 
 ;; highlight on the region
 (setq transient-mark-mode t)

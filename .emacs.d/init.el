@@ -9,7 +9,12 @@
             (normal-top-level-add-subdirs-to-load-path))))))
 
 ;; add directories under "~/.emacs.d/" to load-path
-(add-to-load-path "elisp" "conf" "public_repos" "local_conf")
+(add-to-load-path "elisp" "conf" "public_repos")
+
+;; load local configures
+(dolist (lcnf (directory-files (concat user-emacs-directory "local_conf") t "\\.el$"))
+  (load-file lcnf))
+
 
 ;;; package.el
 (require 'package nil t)

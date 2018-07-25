@@ -1,3 +1,3 @@
 #/bin/sh
 
-apt-get -y install emacs24-nox
+apt-get -y install emacs25-nox

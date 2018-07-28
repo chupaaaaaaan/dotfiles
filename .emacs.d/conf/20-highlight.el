@@ -1,8 +1,4 @@
-;;; theme
-;; (load-theme 'wheatgrass t)
-(load-theme 'manoj-dark t)
-
-;;; highlight settings
+;; user-defined hlface
 (defface my-hl-line-face
   '((((class color) (background dark))
      (:background "blue"))

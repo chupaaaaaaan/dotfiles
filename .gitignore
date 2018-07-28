@@ -1,10 +1,14 @@
+# backup files
 *~
+
+# emacs 
+.emacs.d/.org-id-locations
 .emacs.d/ac-comphist.dat
+.emacs.d/network-security.data
 .emacs.d/auto-save-list/
 .emacs.d/elpa/
-.emacs.d/local_conf/*
+.emacs.d/local_conf/
 !.emacs.d/local_conf/.gitkeep
 .emacs.d/history
 .emacs.d/places
 .emacs.d/recentf
-.emacs.d/network-security.data

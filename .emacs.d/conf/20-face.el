@@ -1,5 +1,6 @@
 ;;; theme
-(load-theme 'wheatgrass t)
+;; (load-theme 'wheatgrass t)
+(load-theme 'manoj-dark t)
 
 ;;; highlight settings
 (defface my-hl-line-face

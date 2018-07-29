@@ -9,7 +9,7 @@
 
 ;; highlight on the current line
 (global-hl-line-mode t)
-(setq hl-line-face 'my-hl-line-face)
+;; (setq hl-line-face 'my-hl-line-face)
 
 ;; highlight on the region
 (setq transient-mark-mode t)

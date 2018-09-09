@@ -10,7 +10,7 @@ if [ -x /usr/bin/dircolors ]; then
     alias egrep='egrep --color=auto'
 fi
 
-# VERY VERY DENGAROUS COMMANDS!!!!!!!!!!!!!!
+# VERY VERY DENGEROUS COMMANDS!!!!!!!!!!!!!!
 alias cp='cp -i'
 alias mv='mv -i'
 alias rm='rm -i'

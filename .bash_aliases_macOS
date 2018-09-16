@@ -28,9 +28,9 @@ alias mv='gmv -i'
 alias rm='grm -i'
 
 # some more ls
-alias l='ls -CF'
-alias la='ls -A'
-alias ll='ls -alF'
+alias l='gls -CF'
+alias la='gls -A'
+alias ll='gls -alF'
 
 # emacs
 alias em='emacsclient -t -a ""'

@@ -1,24 +1,9 @@
-# colorful alias
-if [ -x /usr/bin/dircolors ]; then
-    test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
-    alias ls='ls --color=auto'
-    #alias dir='dir --color=auto'
-    #alias vdir='vdir --color=auto'
-
-    alias grep='grep --color=auto'
-    alias fgrep='fgrep --color=auto'
-    alias egrep='egrep --color=auto'
+# GNU coreutils' commands
+if [ "$(uname)" = "Darwin" ]; then
+    . ~/.bash_aliases_macOS
+else
+    . ~/.bash_aliases_Linux
 fi
-
-# VERY VERY DENGEROUS COMMANDS!!!!!!!!!!!!!!
-alias cp='cp -i'
-alias mv='mv -i'
-alias rm='rm -i'
-
-# some more ls
-alias l='ls -CF'
-alias la='ls -A'
-alias ll='ls -alF'
 
 # emacs
 alias em='emacsclient -t -a ""'

@@ -13,9 +13,6 @@ alias killem='emacsclient -e "(kill-emacs)"'
 alias ghc='stack ghc'
 alias ghci='stack ghci'
 alias runghc='stack runghc'
-alias acstack='stack --resolver=lts-6.35'
-# alias rghc='eval $(stack path --compiler-exe)'
-# alias rghci='eval $(stack path --compiler-exe) --interactive'
 
 # Add an "alert" alias for long running commands.  Use like so:
 #   sleep 10; alert

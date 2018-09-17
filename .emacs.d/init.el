@@ -34,6 +34,8 @@
         (vbasense             . "melpa-stable")
         (volatile-highlights  . "melpa-stable")
         (yaml-mode            . "melpa-stable")
+        (flycheck             . "melpa-stable")
+        (flycheck-haskell     . "melpa-stable")
         (undo-tree            . "gnu")))
 
 (unless package-archive-contents (package-refresh-contents))
@@ -62,10 +64,10 @@
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-    (undo-tree yaml-mode volatile-highlights vbasense helm haskell-mode init-loader egg auto-complete))))
+    (ac-haskell-process flycheck-haskell flycheck undo-tree yaml-mode volatile-highlights vbasense helm haskell-mode init-loader egg auto-complete))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
-)
+ )

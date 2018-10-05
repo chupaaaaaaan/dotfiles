@@ -4,7 +4,7 @@
         pager = "LESSCHARSET=utf-8 less"
 
 [user]
-        name = "CHPN"
+        name = "chupaaaaaaan"
         email = jacobitebeerlove@yahoo.co.jp
 
 [color]
@@ -14,8 +14,9 @@
         default = simple
 
 [alias]
-        lg = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative
-        lga = log --graph --all --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative
+        lg    = log --graph --date=relative --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cd) %C(bold blue)<%an>%Creset'
+        lga   = log --graph --date=relative --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cd) %C(bold blue)<%an>%Creset' --all --first-parent
+        lgall = log --graph --date=relative --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cd) %C(bold blue)<%an>%Creset' --all
 
 [credential]
         helper = store

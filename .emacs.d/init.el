@@ -36,6 +36,7 @@
         (yaml-mode            . "melpa-stable")
         (flycheck             . "melpa-stable")
         (flycheck-haskell     . "melpa-stable")
+        (markdown-mode        . "melpa-stable")
         (undo-tree            . "gnu")))
 
 (unless package-archive-contents (package-refresh-contents))

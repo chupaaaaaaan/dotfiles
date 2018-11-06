@@ -10,3 +10,10 @@ fi
 
 # set PATH so it includes user's private bin directories
 PATH="$HOME/bin:$HOME/.local/bin:$PATH"
+
+# set local profiles if they exist
+if [ -d "$HOME/.bash_profile.d" ]; then
+    for f in "$HOME/.bash_profile.d/*"; do
+	[ -f "$f" ] && . "$f"
+    done
+fi

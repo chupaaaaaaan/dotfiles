@@ -120,8 +120,6 @@ fi
 PS2='| '
 
 # include local settings if they exist
-if [ -d "$HOME/.bashrc.d" ]; then
-    for f in "$HOME/.bashrc.d/*"; do
-	[ -f "$f" ] && . "$f"
-    done
-fi
+for f in $HOME/.bashrc.d/*; do
+    [ -f "$f" ] && . "$f"
+done

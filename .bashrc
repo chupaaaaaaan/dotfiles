@@ -100,13 +100,28 @@ eval "$(stack --bash-completion-script stack)"
 
 
 # Prompt
+## ANSI escape sequence (character theme)
+RESET="\[\e[m\]"
+BOLD="\[\e[1m\]"
+RED="\[\e[31m\]"
+GREEN="\[\e[32m\]"
+YELLOW="\[\e[33m\]"
+BLUE="\[\e[34m\]"
+MAGENTA="\[\e[35m\]"
+CYAN="\[\e[36m\]"
+WHITE="\[\e[37m\]"
+
 [ -n "${SSH_CONNECTION}" ] && SSH_TXT=" (ssh)"
 if [ `id -u` -eq 0 ]; then
-    PS1='\[\e[1m\]\[\e[32m\]\D{%F} \[\e[33m\]\t\[\e[m\] | \[\e[1m\]\[\e[31m\]\u\[\e[37m\]@\[\e[35m\]\h${SSH_TXT}\[\e[m\] | \[\e[36m\]\w\[\e[m\]\n$ '
+    PS1="${BOLD}${GREEN}\D{%F} ${YELLOW}\t${RESET} | ${BOLD}${RED}\u${WHITE}@${MAGENTA}\h${SSH_TXT}${RESET} | ${CYAN}\w${RESET}\n\$ "
 else
-    PS1='\[\e[1m\]\[\e[32m\]\D{%F} \[\e[33m\]\t\[\e[m\] | \[\e[1m\]\[\e[34m\]\u\[\e[37m\]@\[\e[35m\]\h${SSH_TXT}\[\e[m\] | \[\e[36m\]\w\[\e[m\]\n$ '
+    PS1="${BOLD}${GREEN}\D{%F} ${YELLOW}\t${RESET} | ${BOLD}${BLUE}\u${WHITE}@${MAGENTA}\h${SSH_TXT}${RESET} | ${CYAN}\w${RESET}\n$ "
 fi    
 PS2='| '
 
-
-
+# include local settings if they exist
+if [ -d "$HOME/.bashrc.d" ]; then
+    for f in "$HOME/.bashrc.d/*"; do
+	[ -f "$f" ] && . "$f"
+    done
+fi

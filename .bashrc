@@ -8,17 +8,6 @@ case $- in
       *) return;;
 esac
 
-# don't put duplicate lines or lines starting with space in the history.
-# See bash(1) for more options
-HISTCONTROL=ignoreboth
-
-# append to the history file, don't overwrite it
-shopt -s histappend
-
-# for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
-HISTSIZE=1000
-HISTFILESIZE=2000
-
 # check the window size after each command and, if necessary,
 # update the values of LINES and COLUMNS.
 shopt -s checkwinsize
@@ -95,9 +84,23 @@ if ! shopt -oq posix; then
     . /etc/bash_completion
   fi
 fi
+
 # Haskell.
 eval "$(stack --bash-completion-script stack)"
 
+
+# history control
+HISTCONTROL=ignoreboth:erasedups
+HISTSIZE=1000
+HISTFILESIZE=10000
+shopt -s histappend
+
+## functions.
+histupdate() {
+    history -a
+    history -c
+    history -r
+}
 
 # Prompt
 [ -n "${SSH_CONNECTION}" ] && SSH_TXT=" (ssh)"

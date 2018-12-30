@@ -1,3 +1,3 @@
-#/bin/sh
+#!/bin/bash
 
-for script in init/*; do sudo ${script}; done
+for script in init/*; do ${script}; done

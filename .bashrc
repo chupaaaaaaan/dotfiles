@@ -123,3 +123,16 @@ PS2='| '
 for f in $HOME/.bashrc.d/*; do
     [ -f "$f" ] && . "$f"
 done
+
+
+# functions for using docker
+docker_rm_containers() {
+    docker ps -a | peco | tr -s ' ' | cut -d' ' -f1 | xargs --no-run-if-empty -I@ docker rm @
+}
+
+docker_rm_images() {
+    docker images | peco | tr -s ' ' | cut -d' ' -f3 | xargs --no-run-if-empty -I@ docker rmi @
+}
+
+
+

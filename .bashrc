@@ -134,5 +134,8 @@ docker_rm_images() {
     docker images | peco | tr -s ' ' | cut -d' ' -f3 | xargs --no-run-if-empty -I@ docker rmi @
 }
 
+docker_stop_containers() {
+    docker ps -a | peco | tr -s ' ' | cut -d' ' -f1 | xargs --no-run-if-empty -I@ docker stop @
+}
 
 

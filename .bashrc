@@ -126,15 +126,15 @@ done
 
 
 # functions for using docker
-docker_rm_containers() {
+drm_containers() {
     docker ps -a | peco | tr -s ' ' | cut -d' ' -f1 | xargs --no-run-if-empty -I@ docker rm @
 }
 
-docker_rm_images() {
+drm_images() {
     docker images | peco | tr -s ' ' | cut -d' ' -f3 | xargs --no-run-if-empty -I@ docker rmi @
 }
 
-docker_stop_containers() {
+dstop_containers() {
     docker ps -a | peco | tr -s ' ' | cut -d' ' -f1 | xargs --no-run-if-empty -I@ docker stop @
 }
 

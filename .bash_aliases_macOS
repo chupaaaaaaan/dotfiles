@@ -15,6 +15,13 @@ alias rmdir='grmdir'
 alias touch='gtouch'
 
 
+# findutils for macOS
+alias xargs='gxargs'
+alias find='gfind'
+alias locale='glocale'
+alias updatedb='gupdatedb'
+
+
 # colorful alias
 test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
 alias ls='gls --color=auto'

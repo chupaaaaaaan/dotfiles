@@ -12,21 +12,18 @@ done
 
 
 ##################### peco settings #####################
-ARCHIVE=""
-EXTENDER=""
 if [ "`uname -s`" = "Linux" -a "`uname -m`" = "x86_64" ]; then
     ARCHIVE="peco_linux_amd64.tar.gz"
     EXTENDER="tar xzvf"
-fi
 
-if [ "`uname -s`" = "Darwin" -a "`uname -m`" = "x86_64" ]; then
+elif [ "`uname -s`" = "Darwin" -a "`uname -m`" = "x86_64" ]; then
     ARCHIVE="peco_darwin_amd64.zip"
     EXTENDER="unzip"
-fi
 
-if [ -z ${ARCHIVE} ]; then
+else
     echo "peco is not installed."
     exit 0
+
 fi
 
 

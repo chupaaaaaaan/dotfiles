@@ -1,1 +1,7 @@
+# visual basic mode
 https://raw.githubusercontent.com/emacsmirror/emacswiki.org/master/visual-basic-mode.el
+
+# haskell ide engine
+https://github.com/emacs-lsp/lsp-mode
+https://github.com/emacs-lsp/lsp-ui
+https://github.com/emacs-lsp/lsp-haskell

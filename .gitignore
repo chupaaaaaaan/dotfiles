@@ -13,6 +13,9 @@
 .emacs.d/places
 .emacs.d/recentf
 .emacs.d/public_repos
+!.emacs.d/public_repos/package_list.txt
+!.emacs.d/public_repos/install-repos.sh
+
 
 # peco
 peco*

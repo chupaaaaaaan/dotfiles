@@ -28,6 +28,7 @@
 (setq package-pinned-packages
       '((auto-complete        . "melpa-stable")
         (egg                  . "melpa-stable")
+        (elm-mode             . "melpa-stable")
         (init-loader          . "melpa-stable")
         (haskell-mode         . "melpa-stable")
         (helm                 . "melpa-stable")

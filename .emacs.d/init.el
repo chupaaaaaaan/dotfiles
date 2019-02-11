@@ -27,18 +27,19 @@
 ;; package list with repository
 (setq package-pinned-packages
       '((auto-complete        . "melpa-stable")
+        (company              . "melpa-stable")
         (egg                  . "melpa-stable")
         (elm-mode             . "melpa-stable")
-        (init-loader          . "melpa-stable")
+        (flycheck             . "melpa-stable")
+        (flycheck-haskell     . "melpa-stable")
         (haskell-mode         . "melpa-stable")
         (helm                 . "melpa-stable")
+        (init-loader          . "melpa-stable")
+        (markdown-mode        . "melpa-stable")
+        (undo-tree            . "gnu")))
         (vbasense             . "melpa-stable")
         (volatile-highlights  . "melpa-stable")
         (yaml-mode            . "melpa-stable")
-        (flycheck             . "melpa-stable")
-        (flycheck-haskell     . "melpa-stable")
-        (markdown-mode        . "melpa-stable")
-        (undo-tree            . "gnu")))
 
 (unless package-archive-contents (package-refresh-contents))
 

@@ -36,10 +36,11 @@
         (helm                 . "melpa-stable")
         (init-loader          . "melpa-stable")
         (markdown-mode        . "melpa-stable")
-        (undo-tree            . "gnu")))
+        (undo-tree            . "gnu")
         (vbasense             . "melpa-stable")
         (volatile-highlights  . "melpa-stable")
         (yaml-mode            . "melpa-stable")
+        ))
 
 (unless package-archive-contents (package-refresh-contents))
 

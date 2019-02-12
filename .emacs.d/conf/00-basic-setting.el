@@ -25,12 +25,6 @@
 ;;; C-u C-SPC C-SPC ... でどんどん過去のマークを遡る
 ;; (setq set-mark-command-repeat-pop t)
 
-;;; 複数のディレクトリで同じファイル名のファイルを開いたときのバッファ名を調整する
-(when (require 'uniquify nil t)
-  (setq uniquify-buffer-name-style 'post-forward-angle-brackets)
-  ;; (setq uniquify-ignore-buffers-re "[^*]+")
-  (setq uniquify-min-dir-content 4))
-
 ;;; ファイルを開いた位置を保存する
 (when (require 'saveplace nil t)
   (setq-default save-place t)

@@ -1,3 +1,5 @@
 ;;; egg
 (when (executable-find "git")
-  (require 'egg nil t))
+  (when (require 'egg nil t)
+    )
+  )

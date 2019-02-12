@@ -29,7 +29,8 @@
       '(
         (auto-complete        . "melpa-stable")
         (company              . "melpa-stable")
-        (egg                  . "melpa-stable")
+        (diminish             . "melpa-stable")
+        ;; (egg                  . "melpa-stable")
         (elm-mode             . "melpa-stable")
         (flycheck             . "melpa-stable")
         (flycheck-haskell     . "melpa-stable")
@@ -37,6 +38,9 @@
         (helm                 . "melpa-stable")
         (init-loader          . "melpa-stable")
         (markdown-mode        . "melpa-stable")
+        ;; (powerline            . "melpa-stable")
+        (smart-mode-line      . "melpa-stable")
+        (total-lines          . "melpa-stable")
         (undo-tree            . "gnu")
         (vbasense             . "melpa-stable")
         (volatile-highlights  . "melpa-stable")
@@ -69,7 +73,7 @@
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-    (ac-haskell-process flycheck-haskell flycheck undo-tree yaml-mode volatile-highlights vbasense helm haskell-mode init-loader egg auto-complete))))
+    (powerline total-lines diminish smart-mode-line ac-haskell-process flycheck-haskell flycheck undo-tree yaml-mode volatile-highlights vbasense helm haskell-mode init-loader egg auto-complete))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

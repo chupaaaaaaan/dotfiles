@@ -4,18 +4,18 @@
 # emacs 
 .emacs.d/.org-id-locations
 .emacs.d/ac-comphist.dat
-.emacs.d/network-security.data
 .emacs.d/auto-save-list/
 .emacs.d/elpa/
+.emacs.d/history
 .emacs.d/local_conf/
 !.emacs.d/local_conf/.gitkeep
-.emacs.d/history
+.emacs.d/network-security.data
 .emacs.d/places
 .emacs.d/recentf
-.emacs.d/public_repos
-!.emacs.d/public_repos/package_list.txt
+.emacs.d/public_repos/
 !.emacs.d/public_repos/install-repos.sh
-
+!.emacs.d/public_repos/package_list.txt
+.emacs.d/url/
 
 # peco
 peco*

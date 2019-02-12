@@ -26,7 +26,8 @@
 
 ;; package list with repository
 (setq package-pinned-packages
-      '((auto-complete        . "melpa-stable")
+      '(
+        (auto-complete        . "melpa-stable")
         (company              . "melpa-stable")
         (egg                  . "melpa-stable")
         (elm-mode             . "melpa-stable")

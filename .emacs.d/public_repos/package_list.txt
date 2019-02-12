@@ -1,7 +1,10 @@
-# visual basic mode
-https://raw.githubusercontent.com/emacsmirror/emacswiki.org/master/visual-basic-mode.el
+# visual basic mode (maybe deplicated or deleted)
+# https://raw.githubusercontent.com/emacsmirror/emacswiki.org/master/visual-basic-mode.el
 
 # haskell ide engine
-https://github.com/emacs-lsp/lsp-mode
-https://github.com/emacs-lsp/lsp-ui
-https://github.com/emacs-lsp/lsp-haskell
+https://github.com/emacs-lsp/lsp-mode.git
+https://github.com/emacs-lsp/lsp-ui.git
+https://github.com/emacs-lsp/lsp-haskell.git
+
+# stopwatch
+https://github.com/blue0513/stopwatch.git

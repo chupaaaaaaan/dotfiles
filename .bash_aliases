@@ -14,6 +14,25 @@ alias ghc='stack ghc'
 alias ghci='stack ghci'
 alias runghc='stack runghc'
 
+# docker
+alias d='docker'
+alias dc='docker-compose'
+
+alias dpsa='d ps -a --format "table {{.ID}}\t{{.Names}}\t{{.Image}}\t{{.Ports}}\t{{.Status}}"|peco|tr -s " "|cut -d" " -f1'
+alias dimg='d images --format "table {{.ID}}\t{{.Repository}}:{{.Tag}}\t{{.Size}}"|peco|tr -s " "|cut -d" " -f1'
+
+alias dstop='dpsa|xargs -r -I@ docker stop @'
+alias drm='dpsa|xargs -r -I@ docker rm @'
+alias drmi='dimg|xargs -r -I@ docker rmi @'
+alias drmi_none='d images -q -f "dangling=true"|xargs -r -I@ docker rmi @'
+
+alias dcsh='dc exec $(docker-compose ps --services|peco) /bin/bash'
+
+
+
+
+
+
 # Add an "alert" alias for long running commands.  Use like so:
 #   sleep 10; alert
 # alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'

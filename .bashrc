@@ -124,18 +124,3 @@ for f in $HOME/.bashrc.d/*; do
     [ -f "$f" ] && . "$f"
 done
 
-
-# functions for using docker
-drm_containers() {
-    docker ps -a | peco | tr -s ' ' | cut -d' ' -f1 | xargs --no-run-if-empty -I@ docker rm @
-}
-
-drm_images() {
-    docker images | peco | tr -s ' ' | cut -d' ' -f3 | xargs --no-run-if-empty -I@ docker rmi @
-}
-
-dstop_containers() {
-    docker ps -a | peco | tr -s ' ' | cut -d' ' -f1 | xargs --no-run-if-empty -I@ docker stop @
-}
-
-

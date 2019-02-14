@@ -113,7 +113,7 @@ WHITE="\[\e[37m\]"
 
 [ -n "${SSH_CONNECTION}" ] && SSH_TXT=" (ssh)"
 if [ `id -u` -eq 0 ]; then
-    PS1="${BOLD}${GREEN}\D{%F} ${YELLOW}\t${RESET} | ${BOLD}${RED}\u${WHITE}@${MAGENTA}\h${SSH_TXT}${RESET} | ${CYAN}\w${RESET}\n\# "
+    PS1="${BOLD}${GREEN}\D{%F} ${YELLOW}\t${RESET} | ${BOLD}${RED}\u${WHITE}@${MAGENTA}\h${SSH_TXT}${RESET}  | ${CYAN}\w${RESET}\n# "
 else
     PS1="${BOLD}${GREEN}\D{%F} ${YELLOW}\t${RESET} | ${BOLD}${BLUE}\u${WHITE}@${MAGENTA}\h${SSH_TXT}${RESET} | ${CYAN}\w${RESET}\n$ "
 fi    

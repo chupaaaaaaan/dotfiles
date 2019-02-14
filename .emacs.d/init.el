@@ -1,7 +1,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Package loading
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
+n
 ;;; load-path setting
 (defun add-to-load-path (&rest paths)
   (let (path)
@@ -21,11 +21,11 @@
 
 ;;; package.el
 (require 'package nil t)
+(package-initialize)
 
 ;; add repositories
 (add-to-list 'package-archives '("org"           . "https://orgmode.org/elpa/"))
 (add-to-list 'package-archives '("melpa-stable"  . "https://stable.melpa.org/packages/"))
-(package-initialize)
 
 ;; package list with repository
 (setq package-pinned-packages
@@ -34,6 +34,8 @@
         (company              . "melpa-stable")
         (company-ghc          . "melpa-stable")
         (diminish             . "melpa-stable")
+        (docker-compose-mode  . "melpa-stable")
+        (dockerfile-mode      . "melpa-stable")
         ;; (egg                  . "melpa-stable")
         (elm-mode             . "melpa-stable")
         (flycheck             . "melpa-stable")
@@ -92,12 +94,6 @@
 
 ;;; C-u C-SPC C-SPC ... でどんどん過去のマークを遡る
 ;; (setq set-mark-command-repeat-pop t)
-
-;;; ファイルを開いた位置を保存する
-(when (require 'saveplace nil t)
-  (setq-default save-place t)
-  (setq save-place-file (concat user-emacs-directory "places")))
-
 
 ;;; インデントにTABを使わないようにする
 (setq-default indent-tabs-mode nil)
@@ -159,8 +155,8 @@
 (set-face-underline 'show-paren-match "yellow")
 
 ;; volatile-highlights
-(when (require 'volatile-highlights nil t)
-  (volatile-highlights-mode t))
+(require 'volatile-highlights nil t)
+(volatile-highlights-mode t)
 
 
 
@@ -249,7 +245,14 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Utility
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; saveplace
+(require 'saveplace nil t)
+(setq-default save-place t)
+(setq save-place-file (concat user-emacs-directory "places"))
+
+
 ;; company
+(require 'company nil t)
 (global-company-mode t)
 (setq company-idle-delay 0)
 (setq company-minimum-prefix-length 2)
@@ -259,8 +262,11 @@
 (add-to-list 'company-backends 'company-ghc)
 
 
+
 ;; flycheck
 (add-hook 'after-init-hook #'global-flycheck-mode)
+
+
 
 
 
@@ -268,12 +274,21 @@
 (when (executable-find "diff")
   (setq ediff-window-setup-function 'ediff-setup-windows-plain)
   (setq ediff-split-window-function 'split-window-horizontally)
-  (define-key global-map (kbd "C-c d") 'ediff-files)
+  (global-set-key (kbd "C-c d") 'ediff-files)
   )
 
 
 ;; helm
+(require 'helm-config nil t)
+(require 'helm nil t)
 (helm-mode t)
+(global-set-key (kbd "C-c h") 'helm-command-prefix)
+(global-unset-key (kbd "C-x c"))
+(global-set-key (kbd "M-x") 'helm-M-x)
+(global-set-key (kbd "M-y") 'helm-show-kill-ring)
+(global-set-key (kbd "C-x b") 'helm-mini)
+(global-set-key (kbd "C-x C-f") 'helm-find-files)
+(global-set-key (kbd "C-c g") 'helm-google-suggest)
 (define-key helm-map (kbd "C-h") 'delete-backward-char)
 (define-key helm-map (kbd "<tab>") 'helm-execute-persistent-action)
 (define-key helm-map (kbd "C-i") 'helm-execute-persistent-action)
@@ -284,10 +299,8 @@
 
 
 ;; undo-tree
+(require 'undo-tree nil t)
 (global-undo-tree-mode t)
-
-
-
 
 
 
@@ -307,38 +320,33 @@
 
 ;; elm
 (require 'elm-mode nil t)
-
-
+;; (add-to-list 'auto-mode-alist '("\\.elm$" . elm-mode))
 
 
 ;; haskell
 (require 'haskell-mode nil t)
 (require 'ghc nil t)
-
-(add-to-list 'auto-mode-alist '("\\.hs$" . haskell-mode))
-(add-to-list 'auto-mode-alist '("\\.lhs$" . literate-haskell-mode))
-
-(add-hook 'haskell-mode-hook 'turn-on-haskell-indentation)
-(add-hook 'haskell-mode-hook 'turn-on-haskell-doc-mode)
-(add-hook 'haskell-mode-hook 'font-lock-mode)
-(add-hook 'haskell-mode-hook 'imenu-add-menubar-index)
 (add-hook 'haskell-mode-hook (lambda () (ghc-init)))
-(add-hook 'haskell-mode-hook 'flycheck-mode)
-(setq haskell-program-name "stack ghci")
-(add-hook 'haskell-mode-hook 'inf-haskell-mode)
 
 
+;; (add-to-list 'auto-mode-alist '("\\.hs$" . haskell-mode))
+;; (add-to-list 'auto-mode-alist '("\\.lhs$" . literate-haskell-mode))
+
+;; (add-hook 'haskell-mode-hook 'turn-on-haskell-indentation)
+;; (add-hook 'haskell-mode-hook 'turn-on-haskell-doc-mode)
+;; (add-hook 'haskell-mode-hook 'font-lock-mode)
+;; (add-hook 'haskell-mode-hook 'imenu-add-menubar-index)
+;; (add-hook 'haskell-mode-hook 'flycheck-mode)
+;; (setq haskell-program-name "stack ghci")
+;; (add-hook 'haskell-mode-hook 'inf-haskell-mode)
 
 
 
 ;; markdown
-(autoload 'markdown-mode "markdown-mode.el" "Major mode for editing Markdown files" t)
-(setq auto-mode-alist (cons '("\\.markdown" . markdown-mode) auto-mode-alist))
-(setq auto-mode-alist (cons '("\\.md" . markdown-mode) auto-mode-alist))
-
-
-
-
+(require 'markdown-mode nil t)
+;; (add-to-list 'auto-mode-alist '("\\.markdown" . markdown-mode) )
+;; (add-to-list 'auto-mode-alist '("\\.md"       . markdown-mode) )
+;; (add-to-list 'auto-mode-alist '("\\.md"       . gfm-mode) )
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -352,17 +360,11 @@
   (message "Scroll lock %s"
            (if scroll-lock-mode "enabled" "disabled")))
 
-(define-key global-map (kbd "C-c m") 'toggle-scroll-lock)
-(define-key global-map (kbd "C-h")   'delete-backward-char)
-(define-key global-map (kbd "C-c l") 'toggle-truncate-lines)
-;; (define-key global-map (kbd "C-t")   'other-window)
+(global-set-key (kbd "C-c m") 'toggle-scroll-lock)
+(global-set-key (kbd "C-h")   'delete-backward-char)
+(global-set-key (kbd "C-c l") 'toggle-truncate-lines)
+;; (global-set-key (kbd "C-t")   'other-window)
 
-;; helm
-(define-key global-map (kbd "M-x") 'helm-M-x)
-(define-key global-map (kbd "M-y") 'helm-show-kill-ring)
-(define-key global-map (kbd "C-x b") 'helm-mini)
-(define-key global-map (kbd "C-x C-f") 'helm-find-files)
-(define-key global-map (kbd "C-c g") 'helm-google-suggest)
 
 
 

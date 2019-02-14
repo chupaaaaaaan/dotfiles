@@ -1,4 +1,8 @@
-;;; load-path
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Package loading
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;;; load-path setting
 (defun add-to-load-path (&rest paths)
   (let (path)
     (dolist (path paths paths)
@@ -15,7 +19,6 @@
 (dolist (lcnf (directory-files (concat user-emacs-directory "local_conf") t "\\.el$"))
   (load-file lcnf))
 
-
 ;;; package.el
 (require 'package nil t)
 
@@ -29,11 +32,13 @@
       '(
         (auto-complete        . "melpa-stable")
         (company              . "melpa-stable")
+        (company-ghc          . "melpa-stable")
         (diminish             . "melpa-stable")
         ;; (egg                  . "melpa-stable")
         (elm-mode             . "melpa-stable")
         (flycheck             . "melpa-stable")
         (flycheck-haskell     . "melpa-stable")
+        (ghc                  . "melpa-stable")
         (haskell-mode         . "melpa-stable")
         (helm                 . "melpa-stable")
         (init-loader          . "melpa-stable")
@@ -56,9 +61,314 @@
 
 
 
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; General setting
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 ;;; locale and environment
 (set-language-environment "Japanese")
 (prefer-coding-system 'utf-8)
+
+;;; face
+;; キャラクタ端末では、バックグラウンドを"dark"に設定する
+(when (eq window-system nil)
+  (setq frame-background-mode 'dark))
+
+;;; others
+;; ツールバー・スクロールバー非表示設定
+(when window-system
+  (tool-bar-mode nil)
+  (scroll-bar-mode nil))
+
+;;; 右から左に読む言語に対応させないことで描画高速化
+(setq-default bidi-display-reordering nil)
+
+;;; splash screenを無効にする
+(setq inhibit-splash-screen t)
+
+;;; 同じ内容を履歴に記録しないようにする
+(setq history-delete-duplicates t)
+
+;;; C-u C-SPC C-SPC ... でどんどん過去のマークを遡る
+;; (setq set-mark-command-repeat-pop t)
+
+;;; ファイルを開いた位置を保存する
+(when (require 'saveplace nil t)
+  (setq-default save-place t)
+  (setq save-place-file (concat user-emacs-directory "places")))
+
+
+;;; インデントにTABを使わないようにする
+(setq-default indent-tabs-mode nil)
+
+;;; ミニバッファ履歴を次回Emacs起動時にも保存する
+(savehist-mode t)
+
+;;; GCを減らして軽くする
+(setq gc-cons-threshold (* 10 gc-cons-threshold))
+
+;;; ログの記録行数を増やす
+(setq message-log-max 10000)
+
+;;; 履歴をたくさん保存する
+(setq history-length 1000)
+
+;;; マウスによるyankを許可
+(setq mouse-yank-at-point t)
+
+
+
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Theme
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; theme
+;; (load-theme 'wheatgrass t)
+(load-theme 'manoj-dark t)
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Highlights
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; user-defined hlface
+(defface my-hl-line-face
+  '((((class color) (background dark))
+     (:background "blue"))
+    (((class color) (background light))
+     (:background "dark slate gray"))
+    (t (:bold t)))
+  "*Face used by hl-line.")
+
+;; highlight on the current line
+(global-hl-line-mode t)
+;; (setq hl-line-face 'my-hl-line-face)
+
+;; highlight on the region
+(setq transient-mark-mode t)
+
+
+
+;; PARENTHESES
+;; highlight between two corresponding parentheses
+(show-paren-mode t)
+(setq show-paren-delay 0)
+(setq show-paren-style 'expression)
+(set-face-background 'show-paren-match nil)
+(set-face-underline 'show-paren-match "yellow")
+
+;; volatile-highlights
+(when (require 'volatile-highlights nil t)
+  (volatile-highlights-mode t))
+
+
+
+
+
+
+
+
+
+
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Modeline
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(display-time-mode t)
+(setq display-time-interval 60)
+(setq display-time-format "%m/%d %H:%M")
+
+(line-number-mode t)
+(column-number-mode t)
+
+(defvar sml/no-confirm-load-theme t)
+(defvar sml/theme 'light)
+(defvar sml/shorten-directory -1)
+(sml/setup)
+
+;; (require 'powerline nil t)
+
+
+
+;; diminish: Minor-mode name definition
+(eval-after-load "company"             '(diminish 'company-mode "Comp"))
+; Hidden
+(eval-after-load "undo-tree"           '(diminish 'undo-tree-mode))
+(eval-after-load "volatile-highlights" '(diminish 'volatile-highlights-mode))
+(eval-after-load "helm-mode"           '(diminish 'helm-mode))
+(eval-after-load "helm-mode"           '(diminish 'helm--minor-mode))
+
+
+;;; 複数のディレクトリで同じファイル名のファイルを開いたときのバッファ名を調整する
+;; (when (require 'uniquify nil t)
+;;   (setq uniquify-buffer-name-style 'post-forward-angle-brackets)
+;;   ;; (setq uniquify-ignore-buffers-re "[^*]+")
+;;   (setq uniquify-min-dir-content 4)
+;;   )
+
+;; total-line: show number of lines
+(global-total-lines-mode t)
+(defun my-set-line-numbers ()
+  (setq-default mode-line-front-space
+                (append mode-line-front-space
+                        '((:eval (format " (%d)" (- total-lines 1)))))))
+(add-hook 'after-init-hook 'my-set-line-numbers)
+
+;; stopwatch-mode
+(require 'stopwatch nil t)
+
+
+
+
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Backup setting
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(setq backup-directory-alist
+      `((".*" . ,temporary-file-directory)))
+;; (setq auto-save-file-name-transforms
+;;       `((".*" ,temporary-file-directory t)))
+
+(setq auto-save-timeout 15)
+(setq auto-save-interval 60)
+
+;; (setq make-backup-files nil)
+;; (setq auto-save-default nil)
+;; (setq auto-save-list-file-name nil)
+;; (setq auto-save-list-file-prefix nil)
+
+
+
+
+
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Utility
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; company
+(global-company-mode t)
+(setq company-idle-delay 0)
+(setq company-minimum-prefix-length 2)
+(setq company-selection-wrap-around t)
+
+(add-to-list 'company-backends 'company-elm)
+(add-to-list 'company-backends 'company-ghc)
+
+
+;; flycheck
+(add-hook 'after-init-hook #'global-flycheck-mode)
+
+
+
+;; ediff
+(when (executable-find "diff")
+  (setq ediff-window-setup-function 'ediff-setup-windows-plain)
+  (setq ediff-split-window-function 'split-window-horizontally)
+  (define-key global-map (kbd "C-c d") 'ediff-files)
+  )
+
+
+;; helm
+(helm-mode t)
+(define-key helm-map (kbd "C-h") 'delete-backward-char)
+(define-key helm-map (kbd "<tab>") 'helm-execute-persistent-action)
+(define-key helm-map (kbd "C-i") 'helm-execute-persistent-action)
+(define-key helm-map (kbd "C-z") 'helm-select-action)
+
+(setq helm-buffers-fuzzy-matching t
+      helm-recentf-fuzzy-match t)
+
+
+;; undo-tree
+(global-undo-tree-mode t)
+
+
+
+
+
+
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Language
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; vbasence
+(require 'vbasense nil t)
+(setq vbasense-popup-help-key "C-:")
+(setq vbasense-jump-to-definition-key "C->")
+;; (customize-group "vbasense")
+(vbasense-config-default)
+
+
+
+;; elm
+(require 'elm-mode nil t)
+
+
+
+
+;; haskell
+(require 'haskell-mode nil t)
+(require 'ghc nil t)
+
+(add-to-list 'auto-mode-alist '("\\.hs$" . haskell-mode))
+(add-to-list 'auto-mode-alist '("\\.lhs$" . literate-haskell-mode))
+
+(add-hook 'haskell-mode-hook 'turn-on-haskell-indentation)
+(add-hook 'haskell-mode-hook 'turn-on-haskell-doc-mode)
+(add-hook 'haskell-mode-hook 'font-lock-mode)
+(add-hook 'haskell-mode-hook 'imenu-add-menubar-index)
+(add-hook 'haskell-mode-hook (lambda () (ghc-init)))
+(add-hook 'haskell-mode-hook 'flycheck-mode)
+(setq haskell-program-name "stack ghci")
+(add-hook 'haskell-mode-hook 'inf-haskell-mode)
+
+
+
+
+
+;; markdown
+(autoload 'markdown-mode "markdown-mode.el" "Major mode for editing Markdown files" t)
+(setq auto-mode-alist (cons '("\\.markdown" . markdown-mode) auto-mode-alist))
+(setq auto-mode-alist (cons '("\\.md" . markdown-mode) auto-mode-alist))
+
+
+
+
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Global keymap
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; Settings that do not depend on some major modes or minor modes
+(defun toggle-scroll-lock ()
+  (interactive)
+  (scroll-lock-mode
+   (if scroll-lock-mode -1 1))
+  (message "Scroll lock %s"
+           (if scroll-lock-mode "enabled" "disabled")))
+
+(define-key global-map (kbd "C-c m") 'toggle-scroll-lock)
+(define-key global-map (kbd "C-h")   'delete-backward-char)
+(define-key global-map (kbd "C-c l") 'toggle-truncate-lines)
+;; (define-key global-map (kbd "C-t")   'other-window)
+
+;; helm
+(define-key global-map (kbd "M-x") 'helm-M-x)
+(define-key global-map (kbd "M-y") 'helm-show-kill-ring)
+(define-key global-map (kbd "C-x b") 'helm-mini)
+(define-key global-map (kbd "C-x C-f") 'helm-find-files)
+(define-key global-map (kbd "C-c g") 'helm-google-suggest)
+
+
+
+
+
+
 
 
 ;;; init-loader

@@ -1,7 +1,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Package loading
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-n
+
 ;;; load-path setting
 (defun add-to-load-path (&rest paths)
   (let (path)
@@ -30,7 +30,7 @@ n
 ;; package list with repository
 (setq package-pinned-packages
       '(
-        (auto-complete        . "melpa-stable")
+        ;; (auto-complete        . "melpa-stable")
         (company              . "melpa-stable")
         (company-ghc          . "melpa-stable")
         (diminish             . "melpa-stable")
@@ -138,6 +138,7 @@ n
   "*Face used by hl-line.")
 
 ;; highlight on the current line
+(require 'hl-line nil t)
 (global-hl-line-mode t)
 ;; (setq hl-line-face 'my-hl-line-face)
 
@@ -145,9 +146,9 @@ n
 (setq transient-mark-mode t)
 
 
-
 ;; PARENTHESES
 ;; highlight between two corresponding parentheses
+(require 'paren nil t)
 (show-paren-mode t)
 (setq show-paren-delay 0)
 (setq show-paren-style 'expression)
@@ -162,23 +163,20 @@ n
 
 
 
-
-
-
-
-
-
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Modeline
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(require 'time nil t)
 (display-time-mode t)
 (setq display-time-interval 60)
 (setq display-time-format "%m/%d %H:%M")
 
+(require 'simple nil t)
 (line-number-mode t)
 (column-number-mode t)
 
+
+;; (require 'smart-mode-line nil t)
 (defvar sml/no-confirm-load-theme t)
 (defvar sml/theme 'light)
 (defvar sml/shorten-directory -1)
@@ -189,6 +187,7 @@ n
 
 
 ;; diminish: Minor-mode name definition
+(require 'company nil t)
 (eval-after-load "company"             '(diminish 'company-mode "Comp"))
 ; Hidden
 (eval-after-load "undo-tree"           '(diminish 'undo-tree-mode))
@@ -205,6 +204,7 @@ n
 ;;   )
 
 ;; total-line: show number of lines
+(require 'total-lines nil t)
 (global-total-lines-mode t)
 (defun my-set-line-numbers ()
   (setq-default mode-line-front-space
@@ -223,10 +223,8 @@ n
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Backup setting
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(setq backup-directory-alist
-      `((".*" . ,temporary-file-directory)))
-;; (setq auto-save-file-name-transforms
-;;       `((".*" ,temporary-file-directory t)))
+(setq backup-directory-alist         `((".*" . ,temporary-file-directory)))
+;; (setq auto-save-file-name-transforms `((".*" ,temporary-file-directory t)))
 
 (setq auto-save-timeout 15)
 (setq auto-save-interval 60)
@@ -264,23 +262,22 @@ n
 
 
 ;; flycheck
+(require 'flycheck nil t)
 (add-hook 'after-init-hook #'global-flycheck-mode)
-
-
-
 
 
 ;; ediff
 (when (executable-find "diff")
-  (setq ediff-window-setup-function 'ediff-setup-windows-plain)
-  (setq ediff-split-window-function 'split-window-horizontally)
+  (require 'ediff nil t)
+  (setq-default ediff-window-setup-function 'ediff-setup-windows-plain)
+  (setq-default ediff-split-window-function 'split-window-horizontally)
   (global-set-key (kbd "C-c d") 'ediff-files)
   )
 
 
 ;; helm
-(require 'helm-config nil t)
 (require 'helm nil t)
+(require 'helm-config nil t)
 (helm-mode t)
 (global-set-key (kbd "C-c h") 'helm-command-prefix)
 (global-unset-key (kbd "C-x c"))
@@ -294,8 +291,10 @@ n
 (define-key helm-map (kbd "C-i") 'helm-execute-persistent-action)
 (define-key helm-map (kbd "C-z") 'helm-select-action)
 
-(setq helm-buffers-fuzzy-matching t
-      helm-recentf-fuzzy-match t)
+(require 'helm-buffers nil t)
+(setq helm-buffers-fuzzy-matching t)
+(require 'helm-for-files nil t)
+(setq helm-recentf-fuzzy-match t)
 
 
 ;; undo-tree
@@ -353,7 +352,9 @@ n
 ;; Global keymap
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; Settings that do not depend on some major modes or minor modes
+(require 'scroll-lock nil t)
 (defun toggle-scroll-lock ()
+  "Toggle scroll lock."
   (interactive)
   (scroll-lock-mode
    (if scroll-lock-mode -1 1))

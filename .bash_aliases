@@ -26,7 +26,7 @@ alias drm='dpsa|xargs -r -I@ docker rm @'
 alias drmi='dimg|xargs -r -I@ docker rmi @'
 alias drmi_none='d images -q -f "dangling=true"|xargs -r -I@ docker rmi @'
 
-alias dcsh='dc exec $(docker-compose ps --services|peco) /bin/bash'
+alias dcsh='dc exec $(docker-compose ps --services|peco) /bin/bash --login'
 
 
 

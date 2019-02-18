@@ -346,6 +346,8 @@
 (require 'ghc nil t)
 (add-hook 'haskell-mode-hook (lambda () (ghc-init)))
 
+(setq haskell-program-name "stack ghci")
+(add-hook 'haskell-mode-hook 'inf-haskell-mode)
 
 ;; (add-to-list 'auto-mode-alist '("\\.hs$" . haskell-mode))
 ;; (add-to-list 'auto-mode-alist '("\\.lhs$" . literate-haskell-mode))
@@ -355,8 +357,6 @@
 ;; (add-hook 'haskell-mode-hook 'font-lock-mode)
 ;; (add-hook 'haskell-mode-hook 'imenu-add-menubar-index)
 ;; (add-hook 'haskell-mode-hook 'flycheck-mode)
-;; (setq haskell-program-name "stack ghci")
-;; (add-hook 'haskell-mode-hook 'inf-haskell-mode)
 
 
 

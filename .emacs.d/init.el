@@ -238,12 +238,10 @@
 
 
 
-
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Utility
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;; saveplace
+;; saveplace
 (require 'saveplace nil t)
 (setq-default save-place t)
 (setq save-place-file (concat user-emacs-directory "places"))
@@ -255,6 +253,27 @@
 (setq company-idle-delay 0)
 (setq company-minimum-prefix-length 2)
 (setq company-selection-wrap-around t)
+
+(set-face-attribute 'company-tooltip                  nil :background "lightgrey" :foreground "black")
+(set-face-attribute 'company-tooltip-common           nil :background "lightgrey" :foreground "black")
+(set-face-attribute 'company-tooltip-common-selection nil :background "steelblue" :foreground "white")
+(set-face-attribute 'company-tooltip-selection        nil :background "steelblue" :foreground "black")
+(set-face-attribute 'company-preview-common           nil :background nil         :foreground "lightgrey" :underline t)
+(set-face-attribute 'company-scrollbar-fg             nil :background "orange")
+(set-face-attribute 'company-scrollbar-bg             nil :background "gray40")
+
+(define-key company-active-map (kbd "C-n") 'company-select-next)
+(define-key company-search-map (kbd "C-n") 'company-select-next)
+(define-key company-active-map (kbd "C-p") 'company-select-previous)
+(define-key company-search-map (kbd "C-p") 'company-select-previous)
+(define-key company-active-map (kbd "C-s") 'company-filter-candidates)
+(define-key company-active-map (kbd "C-i") 'company-complete-selection)
+
+(define-key company-active-map (kbd "M-n") nil)
+(define-key company-active-map (kbd "M-p") nil)
+(define-key company-active-map (kbd "C-h") nil)
+
+
 
 (add-to-list 'company-backends 'company-elm)
 (add-to-list 'company-backends 'company-ghc)

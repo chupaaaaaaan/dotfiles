@@ -18,13 +18,19 @@ alias runghc='stack runghc'
 alias d='docker'
 alias dc='docker-compose'
 
-alias dpsa='d ps -a --format "table {{.ID}}\t{{.Names}}\t{{.Image}}\t{{.Ports}}\t{{.Status}}"|peco|tr -s " "|cut -d" " -f1'
-alias dimg='d images --format "table {{.ID}}\t{{.Repository}}:{{.Tag}}\t{{.Size}}"|peco|tr -s " "|cut -d" " -f1'
+dpsa() {
+    docker ps -a --format "table {{.ID}}\t{{.Names}}\t{{.Image}}\t{{.Ports}}\t{{.Status}}"|peco|tr -s ' '|cut -d' ' -f1
+}
+
+dimg() {
+    docker images --format "table {{.ID}}\t{{.Repository}}:{{.Tag}}\t{{.Size}}"|peco|tr -s ' '|cut -d' ' -f1
+}
 
 alias dstop='dpsa|xargs -r -I@ docker stop @'
-alias drm='dpsa|xargs -r -I@ docker rm @'
+alias drmc='dpsa|xargs -r -I@ docker rm @'
 alias drmi='dimg|xargs -r -I@ docker rmi @'
 alias drmi_none='d images -q -f "dangling=true"|xargs -r -I@ docker rmi @'
+alias drun='docker run -it $(dimg) /bin/bash --login'
 
 alias dcsh='dc exec $(docker-compose ps --services|peco) /bin/bash --login'
 

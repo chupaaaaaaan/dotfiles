@@ -10,9 +10,9 @@ alias em='emacsclient -t -a ""'
 alias killem='emacsclient -e "(kill-emacs)"'
 
 # haskell
-alias ghc='stack ghc'
-alias ghci='stack ghci'
-alias runghc='stack runghc'
+# alias ghc='stack ghc'
+# alias ghci='stack ghci'
+# alias runghc='stack runghc'
 
 # docker
 alias d='docker'

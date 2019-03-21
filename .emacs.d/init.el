@@ -347,13 +347,16 @@
 
 
 ;; haskell
-(require 'haskell-mode nil t)
-;; (require 'haskell nil t)
-(require 'ghc nil t)
-(add-hook 'haskell-mode-hook (lambda () (ghc-init)))
-
+;; for ghc-8.0.2 and later
 (require 'lsp-haskell)
 (add-hook 'haskell-mode-hook #'lsp)
+
+;; for ghc-7.10.3
+;; (require 'haskell-mode nil t)
+;; (require 'haskell nil t)
+;; (require 'ghc nil t)
+;; (add-hook 'haskell-mode-hook (lambda () (ghc-init)))
+
 
 
 ;; (setq haskell-program-name "stack ghci")

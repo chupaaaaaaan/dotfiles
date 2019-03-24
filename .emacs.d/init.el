@@ -44,6 +44,7 @@
         (ghc                  . "melpa-stable")
         (haskell-mode         . "melpa-stable")
         (helm                 . "melpa-stable")
+        (htmlize              . "melpa-stable")
         (init-loader          . "melpa-stable")
         (lsp-haskell          . "melpa")
         (lsp-mode             . "melpa-stable")
@@ -250,6 +251,15 @@
 (setq-default save-place t)
 (setq save-place-file (concat user-emacs-directory "places"))
 
+;; scroll-lock
+(require 'scroll-lock nil t)
+(defun toggle-scroll-lock ()
+  "Toggle scroll lock."
+  (interactive)
+  (scroll-lock-mode
+   (if scroll-lock-mode -1 1))
+  (message "Scroll lock %s"
+           (if scroll-lock-mode "enabled" "disabled")))
 
 ;; company
 (require 'company nil t)
@@ -325,6 +335,36 @@
 (global-undo-tree-mode t)
 
 
+
+;; org-mode
+(require 'org nil t)
+(require 'org-capture nil t)
+(setq org-directory "~/org/")
+(setq org-agenda-files '("~/org/"))
+(setq org-default-notes-file (concat org-directory "notes.org"))
+(setq org-refile-targets '((org-agenda-files :maxlevel . 3)))
+;; (setq org-default-notes-file (expand-file-name (concat user-emacs-directory "../memo/memo.org")))
+(setq org-todo-keywords '(
+                          (sequence "TODO(t)" "WIP(w)" "PENDING(p)" "|" "DONE(d)" "CANCELED(c@)")
+                          (sequence "MEMO(m)" "|" "REFLECTION(r)" "KNOWLEDGE(k)" "FORGETTABLE(f)")
+                          ))
+(setq org-capture-templates
+      '(
+        ("t" "Todo"     entry (file+headline org-default-notes-file "Inbox")    "* TODO %?\n  %U\n  %a\n  %i\n")
+        ("c" "Calender" entry (file+headline org-default-notes-file "Schedule") "* TODO %?\n  %T\n")
+        ("m" "Memo"     entry (file+headline org-default-notes-file "Journals") "* MEMO %?\n  %U\n  %a\n  %i\n")
+        ))
+(defun show-org-buffer (file)
+  "Show an org-file FILE on the current buffer."
+  (interactive)
+  (if (get-buffer file)
+      (let ((buffer (get-buffer file)))
+        (switch-to-buffer buffer)
+        (message "%s" file))
+    (find-file (concat org-directory file))))
+
+;; (global-set-key (kbd "C-M-^") '(lambda () (interactive) (show-org-buffer "notes.org")))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Language
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -362,7 +402,7 @@
 ;; (setq haskell-program-name "stack ghci")
 ;; (add-hook 'haskell-mode-hook 'inf-haskell-mode)
 
-;; (add-to-list 'auto-mode-alist '("\\.hs$" . haskell-mode))
+;; (Add-to-list 'auto-mode-alist '("\\.hs$" . haskell-mode))
 ;; (add-to-list 'auto-mode-alist '("\\.lhs$" . literate-haskell-mode))
 
 ;; (add-hook 'haskell-mode-hook 'turn-on-haskell-indentation)
@@ -370,14 +410,6 @@
 ;; (add-hook 'haskell-mode-hook 'font-lock-mode)
 ;; (add-hook 'haskell-mode-hook 'imenu-add-menubar-index)
 ;; (add-hook 'haskell-mode-hook 'flycheck-mode)
-
-
-
-
-
-
-
-
 
 
 ;; markdown
@@ -391,20 +423,14 @@
 ;; Global keymap
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Settings that do not depend on some major modes or minor modes
-(require 'scroll-lock nil t)
-(defun toggle-scroll-lock ()
-  "Toggle scroll lock."
-  (interactive)
-  (scroll-lock-mode
-   (if scroll-lock-mode -1 1))
-  (message "Scroll lock %s"
-           (if scroll-lock-mode "enabled" "disabled")))
-
 (global-set-key (kbd "C-c m") 'toggle-scroll-lock)
 (global-set-key (kbd "C-h")   'delete-backward-char)
 (global-set-key (kbd "C-c l") 'toggle-truncate-lines)
 ;; (global-set-key (kbd "C-t")   'other-window)
 
+;; orgmode keybindings
+(global-set-key (kbd "C-c a") 'org-agenda)
+(global-set-key (kbd "C-c c") 'org-capture)
 
 
 
@@ -425,8 +451,8 @@
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-    (lsp-haskell company-lsp lsp-mode lsp-ui flymake-shell powerline total-lines diminish smart-mode-line ac-haskell-process flycheck-haskell flycheck undo-tree yaml-mode volatile-highlights vbasense helm haskell-mode init-loader egg auto-complete))))
-(custom-set-faces
+    (htmlize lsp-haskell company-lsp lsp-mode lsp-ui flymake-shell powerline total-lines diminish smart-mode-line ac-haskell-process flycheck-haskell flycheck undo-tree yaml-mode volatile-highlights vbasense helm haskell-mode init-loader egg auto-complete))))
+(Custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.

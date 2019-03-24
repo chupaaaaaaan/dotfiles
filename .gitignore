@@ -6,6 +6,7 @@
 .emacs.d/ac-comphist.dat
 .emacs.d/auto-save-list/
 .emacs.d/elpa/
+.emacs.d/bookmarks
 .emacs.d/history
 .emacs.d/local_conf/
 !.emacs.d/local_conf/.gitkeep

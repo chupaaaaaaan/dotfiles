@@ -433,28 +433,7 @@
 (global-set-key (kbd "C-c c") 'org-capture)
 
 
-
-
-
-
-
-
 ;; init-loader
 (require 'init-loader)
 (init-loader-load "~/.emacs.d/conf")
 
-
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(package-selected-packages
-   (quote
-    (htmlize lsp-haskell company-lsp lsp-mode lsp-ui flymake-shell powerline total-lines diminish smart-mode-line ac-haskell-process flycheck-haskell flycheck undo-tree yaml-mode volatile-highlights vbasense helm haskell-mode init-loader egg auto-complete))))
-(Custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )

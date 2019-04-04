@@ -13,6 +13,7 @@ alias mkdir='gmkdir'
 alias mkfifo='gmkfifo'
 alias rmdir='grmdir'
 alias touch='gtouch'
+alias wc='gwc'
 
 
 # findutils for macOS

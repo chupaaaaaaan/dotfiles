@@ -31,6 +31,7 @@ alias drmc='dpsa|xargs -r -I@ docker rm @'
 alias drmi='dimg|xargs -r -I@ docker rmi @'
 alias drmi_none='d images -q -f "dangling=true"|xargs -r -I@ docker rmi @'
 alias drun='docker run -it $(dimg) /bin/bash --login'
+alias dexe='docker exec -it $(dpsa) /bin/bash'
 
 alias dcsh='dc exec $(docker-compose ps --services|peco) /bin/bash --login'
 

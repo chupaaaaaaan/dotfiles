@@ -129,6 +129,10 @@
 ;; (load-theme 'wheatgrass t)
 (load-theme 'manoj-dark t)
 
+;; font
+;; (set-frame-font "-*-Ricty Diminished-normal-normal-normal-*-*-*-*-*-m-0-iso10646-1")
+(set-face-attribute 'default nil :family "Ricty Diminished" :height 180)
+
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Highlights
@@ -350,9 +354,9 @@
                           ))
 (setq org-capture-templates
       '(
-        ("t" "Todo"     entry (file+headline org-default-notes-file "Inbox")    "* TODO %?\n  %U\n  %a\n  %i\n")
-        ("c" "Calender" entry (file+headline org-default-notes-file "Schedule") "* TODO %?\n  %T\n")
-        ("m" "Memo"     entry (file+headline org-default-notes-file "Journals") "* MEMO %?\n  %U\n  %a\n  %i\n")
+        ("t" "Todo"     entry (file+headline org-default-notes-file "Inbox")    "* TODO %?\n  (Reference)\n  %i\n  %U\n")
+        ("c" "Calender" entry (file+headline org-default-notes-file "Schedule") "* TODO %?\n  %U\n")
+        ("m" "Memo"     entry (file+headline org-default-notes-file "Journals") "* MEMO %?\n  (Reference)\n  %i\n  %U\n")
         ))
 (defun show-org-buffer (file)
   "Show an org-file FILE on the current buffer."
@@ -422,6 +426,9 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Global keymap
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(global-unset-key (kbd "C-x C-c"))
+(defalias 'exit 'save-buffers-kill-emacs)
+
 ;; Settings that do not depend on some major modes or minor modes
 (global-set-key (kbd "C-c m") 'toggle-scroll-lock)
 (global-set-key (kbd "C-h")   'delete-backward-char)

@@ -4,8 +4,8 @@
         pager = "LESSCHARSET=utf-8 less"
 
 [user]
-        name = "chupaaaaaaan"
-        email = jacobitebeerlove@yahoo.co.jp
+        name = "Takayuki Uchida"
+        email = jacobitebeerlove@gmail.com
 
 [color]
         ui = true

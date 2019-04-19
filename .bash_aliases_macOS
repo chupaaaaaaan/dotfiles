@@ -9,6 +9,7 @@ alias chmod='gchmod'
 alias dd='gdd'
 alias df='gdf'
 alias ln='gln'
+alias ls='gls --color=auto'
 alias mkdir='gmkdir'
 alias mkfifo='gmkfifo'
 alias rmdir='grmdir'
@@ -22,13 +23,13 @@ alias find='gfind'
 alias locale='glocale'
 alias updatedb='gupdatedb'
 
+# grep alias
+alias grep='ggrep --color=auto'
+alias fgrep='gfgrep --color=auto'
+alias egrep='gegrep --color=auto'
 
 # colorful alias
 test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
-alias ls='gls --color=auto'
-alias grep='grep --color=auto'
-alias fgrep='fgrep --color=auto'
-alias egrep='egrep --color=auto'
 
 # VERY VERY DENGEROUS COMMANDS!!!!!!!!!!!!!!
 alias cp='gcp -i'

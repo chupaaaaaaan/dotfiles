@@ -338,7 +338,6 @@
 (global-undo-tree-mode t)
 
 
-
 ;; org-mode
 (require 'org nil t)
 (require 'org-capture nil t)
@@ -377,43 +376,27 @@
 (add-hook 'lsp-mode-hook 'lsp-ui-mode)
 
 ;; vbasence
-(require 'vbasense nil t)
-(setq vbasense-popup-help-key "C-:")
-(setq vbasense-jump-to-definition-key "C->")
+;; (require 'vbasense nil t)
+;; (setq vbasense-popup-help-key "C-:")
+;; (setq vbasense-jump-to-definition-key "C->")
 ;; (customize-group "vbasense")
-(vbasense-config-default)
-
+;; (vbasense-config-default)
 
 ;; elm
 (require 'elm-mode nil t)
 ;; (add-to-list 'auto-mode-alist '("\\.elm$" . elm-mode))
 
-
 ;; haskell
 ;; for ghc-8.0.2 and later
 (require 'lsp-haskell)
 (add-hook 'haskell-mode-hook #'lsp)
+(setq lsp-haskell-process-path-hie "hie-wrapper")
+
 
 ;; for ghc-7.10.3
 ;; (require 'haskell-mode nil t)
-;; (require 'haskell nil t)
 ;; (require 'ghc nil t)
 ;; (add-hook 'haskell-mode-hook (lambda () (ghc-init)))
-
-
-
-;; (setq haskell-program-name "stack ghci")
-;; (add-hook 'haskell-mode-hook 'inf-haskell-mode)
-
-;; (Add-to-list 'auto-mode-alist '("\\.hs$" . haskell-mode))
-;; (add-to-list 'auto-mode-alist '("\\.lhs$" . literate-haskell-mode))
-
-;; (add-hook 'haskell-mode-hook 'turn-on-haskell-indentation)
-;; (add-hook 'haskell-mode-hook 'turn-on-haskell-doc-mode)
-;; (add-hook 'haskell-mode-hook 'font-lock-mode)
-;; (add-hook 'haskell-mode-hook 'imenu-add-menubar-index)
-;; (add-hook 'haskell-mode-hook 'flycheck-mode)
-
 
 ;; markdown
 (require 'markdown-mode nil t)

@@ -34,6 +34,7 @@
         ;; (auto-complete        . "melpa-stable")
         (company              . "melpa-stable")
         (company-ghc          . "melpa-stable")
+        (company-lsp          . "melpa-stable")
         (diminish             . "melpa-stable")
         (docker-compose-mode  . "melpa-stable")
         (dockerfile-mode      . "melpa-stable")
@@ -195,7 +196,7 @@
 
 
 ;; diminish: Minor-mode name definition
-(require 'company nil t)
+(require 'diminish nil t)
 (eval-after-load "company"             '(diminish 'company-mode "Comp"))
 ;; Hidden
 (eval-after-load "undo-tree"           '(diminish 'undo-tree-mode))
@@ -280,20 +281,22 @@
 (set-face-attribute 'company-scrollbar-bg             nil :background "gray40")
 
 (define-key company-active-map (kbd "C-n") 'company-select-next)
-(define-key company-search-map (kbd "C-n") 'company-select-next)
 (define-key company-active-map (kbd "C-p") 'company-select-previous)
-(define-key company-search-map (kbd "C-p") 'company-select-previous)
-;; (define-key company-search-map (kbd "<tab>") 'company--insert-candidate)
 (define-key company-active-map (kbd "C-s") 'company-filter-candidates)
-(define-key company-active-map (kbd "C-i") 'company-complete-selection)
+;;(define-key company-active-map (kbd "<tab>") 'company-complete-selection)
+(define-key company-active-map (kbd "<tab>") 'company-complete)
 
 (define-key company-active-map (kbd "M-n") nil)
 (define-key company-active-map (kbd "M-p") nil)
 (define-key company-active-map (kbd "C-h") nil)
 
+(define-key company-search-map (kbd "C-n") 'company-select-next)
+(define-key company-search-map (kbd "C-p") 'company-select-previous)
+;; (define-key company-search-map (kbd "<tab>") 'company--insert-candidate)
+
+(add-to-list 'company-backends 'company-lsp)
 (add-to-list 'company-backends 'company-elm)
 (add-to-list 'company-backends 'company-ghc)
-(add-to-list 'company-backends 'company-lsp)
 
 
 
@@ -341,20 +344,21 @@
 ;; org-mode
 (require 'org nil t)
 (require 'org-capture nil t)
-(setq org-directory "~/org/")
-(setq org-agenda-files '("~/org/"))
+(setq org-directory "~/Dropbox/org/")
+(setq org-agenda-files '("~/Dropbox/org/"))
 (setq org-default-notes-file (concat org-directory "notes.org"))
 (setq org-refile-targets '((org-agenda-files :maxlevel . 3)))
 ;; (setq org-default-notes-file (expand-file-name (concat user-emacs-directory "../memo/memo.org")))
 (setq org-todo-keywords '(
-                          (sequence "TODO(t)" "WIP(w)" "PENDING(p)" "|" "DONE(d)" "CANCELED(c@)")
+;                          (sequence "TODO(t)" "WIP(w)" "PENDING(p)" "|" "DONE(d)" "CANCELED(c@)")
+                          (sequence "TODO(t)" "WIP(w)" "PENDING(p)" "|" "DONE(d)" "CANCELED(c)")
                           (sequence "MEMO(m)" "|" "REFLECTION(r)" "KNOWLEDGE(k)" "FORGETTABLE(f)")
                           ))
 (setq org-capture-templates
       '(
-        ("t" "Todo"     entry (file+headline org-default-notes-file "Inbox")    "* TODO %?\n  (Reference)\n  %i\n  %U\n")
-        ("c" "Calender" entry (file+headline org-default-notes-file "Schedule") "* TODO %?\n  %U\n")
-        ("m" "Memo"     entry (file+headline org-default-notes-file "Journals") "* MEMO %?\n  (Reference)\n  %i\n  %U\n")
+        ("t" "Todo"     entry (file+headline org-default-notes-file "Inbox")    "* TODO %?\n  %U\n** Reference\n  %i\n\n")
+        ("c" "Calender" entry (file+headline org-default-notes-file "Schedule") "* TODO %?\n  %U\n\n")
+        ("m" "Memo"     entry (file+headline org-default-notes-file "Journals") "* MEMO %?\n  %U\n** Reference\n  %i\n\n")
         ))
 (defun show-org-buffer (file)
   "Show an org-file FILE on the current buffer."
@@ -390,6 +394,8 @@
 ;; for ghc-8.0.2 and later
 (require 'lsp-haskell)
 (add-hook 'haskell-mode-hook #'lsp)
+(add-hook 'haskell-mode-hook 'flycheck-mode)
+
 (setq lsp-haskell-process-path-hie "hie-wrapper")
 
 
@@ -426,3 +432,17 @@
 (require 'init-loader)
 (init-loader-load "~/.emacs.d/conf")
 
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(package-selected-packages
+   (quote
+    (doom-themes volatile-highlights vbasense undo-tree total-lines smart-mode-line lsp-ui lsp-haskell init-loader htmlize helm flymake-shell flycheck-haskell elm-mode dockerfile-mode docker-compose-mode diminish company-lsp company-ghc))))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )

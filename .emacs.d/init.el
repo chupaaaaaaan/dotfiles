@@ -29,46 +29,18 @@
 (add-to-list 'package-archives '("melpa"         . "https://melpa.org/packages/"))
 
 ;; package list with repository
-(setq package-pinned-packages
-      '(
-        ;; (auto-complete        . "melpa-stable")
-        (company              . "melpa-stable")
-        (company-ghc          . "melpa-stable")
-        (company-lsp          . "melpa-stable")
-        (diminish             . "melpa-stable")
-        (docker-compose-mode  . "melpa-stable")
-        (dockerfile-mode      . "melpa-stable")
-        ;; (egg                  . "melpa-stable")
-        (elm-mode             . "melpa-stable")
-        (flycheck             . "melpa-stable")
-        (flycheck-haskell     . "melpa-stable")
-        (ghc                  . "melpa-stable")
-        (haskell-mode         . "melpa-stable")
-        (helm                 . "melpa-stable")
-        (htmlize              . "melpa-stable")
-        (init-loader          . "melpa-stable")
-        (lsp-haskell          . "melpa")
-        (lsp-mode             . "melpa-stable")
-        (lsp-ui               . "melpa-stable")
-        (markdown-mode        . "melpa-stable")
-        ;; (powerline            . "melpa-stable")
-        (smart-mode-line      . "melpa-stable")
-        (total-lines          . "melpa-stable")
-        (undo-tree            . "gnu")
-        (vbasense             . "melpa-stable")
-        (volatile-highlights  . "melpa-stable")
-        (yaml-mode            . "melpa-stable")
-        ))
+;; `package-pinned-packages' is customized below
+;; (auto-complete        . "melpa-stable")
+;; (company-ghc          . "melpa-stable")
+;; (diminish             . "melpa-stable")
+;; (ghc                  . "melpa-stable")
+;; (haskell-mode         . "melpa-stable")
+;; (htmlize              . "melpa-stable")
+;; (smart-mode-line      . "melpa-stable")
 
-(unless package-archive-contents (package-refresh-contents))
-
-(dolist (pkg (mapcar 'car package-pinned-packages))
-  (unless (package-installed-p pkg)
-        (package-install pkg)))
-
-
-
-
+(unless (package-installed-p 'use-package)
+        (package-refresh-contents)
+        (package-install 'use-package))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; General setting
@@ -120,112 +92,87 @@
 (setq mouse-yank-at-point t)
 
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Theme
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; theme
-;; (load-theme 'wheatgrass t)
-(load-theme 'manoj-dark t)
+;; Doom-themes
+;; https://github.com/hlissner/emacs-doom-themes
+(use-package doom-themes
+  :ensure t
+  :config
+  (setq doom-themes-enable-bold t)
+  (setq doom-themes-enable-italic t)
+  (load-theme 'doom-dracula t)
+  (doom-themes-neotree-config)
+  (doom-themes-org-config))
+  
 
-;; font
-;; (set-frame-font "-*-Ricty Diminished-normal-normal-normal-*-*-*-*-*-m-0-iso10646-1")
+;; Font
 (set-face-attribute 'default nil :family "Ricty Diminished" :height 180)
 
-;; abcdefghijklmnopqrstuvwxyz
-;; アイウエオかきくけこ差氏酢パピプペポバビブ
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Highlights
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; user-defined hlface
-(defface my-hl-line-face
-  '((((class color) (background dark))
-     (:background "blue"))
-    (((class color) (background light))
-     (:background "dark slate gray"))
-    (t (:bold t)))
-  "*Face used by hl-line.")
-
 ;; highlight on the current line
-(require 'hl-line nil t)
-(global-hl-line-mode t)
-;; (setq hl-line-face 'my-hl-line-face)
+(use-package hl-line
+  :ensure t
+  :config
+  (global-hl-line-mode t))
+
+;; highlight between two corresponding parentheses
+(use-package paren
+  :ensure t
+  :custom
+  (show-paren-delay 0)
+  (show-paren-style 'expression)
+  :config
+  (show-paren-mode t)
+  (set-face-background 'show-paren-match nil)
+  (set-face-underline 'show-paren-match "yellow"))
 
 ;; highlight on the region
 (setq transient-mark-mode t)
 
-
-;; PARENTHESES
-;; highlight between two corresponding parentheses
-(require 'paren nil t)
-(show-paren-mode t)
-(setq show-paren-delay 0)
-(setq show-paren-style 'expression)
-(set-face-background 'show-paren-match nil)
-(set-face-underline 'show-paren-match "yellow")
-
 ;; volatile-highlights
-(require 'volatile-highlights nil t)
-(volatile-highlights-mode t)
+(use-package volatile-highlights
+  :ensure t
+  :config
+  (volatile-highlights-mode t))
 
+;; Modeline (Doom)
+;; https://github.com/seagle0128/doom-modeline
+(use-package nyan-mode
+  :ensure t
+  :config
+  (nyan-mode 1))
 
+(use-package doom-modeline
+  :ensure t
+  :config
+  (line-number-mode t)
+  (column-number-mode t)
+  (doom-modeline-mode 1)
+  (setq doom-modeline-height 20)
+  (setq doom-modeline-bar-width 3)
+  (setq doom-modeline-buffer-file-name-style 'truncate-with-project)
+  (setq doom-modeline-icon t)
+  (setq doom-modeline-major-mode-icon t)
+  (setq doom-modeline-major-mode-color-icon t)
+  (setq doom-modeline-minor-modes nil))
 
+;; datetime format
+(use-package time
+  :ensure t
+  :custom
+  (display-time-interval 60)
+  (display-time-format "%m/%d %H:%M")
+  :config
+  (display-time-mode t)
+)
 
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Modeline
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(require 'time nil t)
-(display-time-mode t)
-(setq display-time-interval 60)
-(setq display-time-format "%m/%d %H:%M")
-
-(require 'simple nil t)
-(line-number-mode t)
-(column-number-mode t)
-
-
-;; (require 'smart-mode-line nil t)
-(defvar sml/no-confirm-load-theme t)
-(defvar sml/theme 'light)
-(defvar sml/shorten-directory -1)
-(sml/setup)
-
-;; (require 'powerline nil t)
-
-
-
-;; diminish: Minor-mode name definition
-(require 'diminish nil t)
-(eval-after-load "company"             '(diminish 'company-mode "Comp"))
-;; Hidden
-(eval-after-load "undo-tree"           '(diminish 'undo-tree-mode))
-(eval-after-load "volatile-highlights" '(diminish 'volatile-highlights-mode))
-(eval-after-load "helm-mode"           '(diminish 'helm-mode))
-(eval-after-load "helm-mode"           '(diminish 'helm--minor-mode))
-
-
-;; 複数のディレクトリで同じファイル名のファイルを開いたときのバッファ名を調整する
-;; (when (require 'uniquify nil t)
-;;   (setq uniquify-buffer-name-style 'post-forward-angle-brackets)
-;;   ;; (setq uniquify-ignore-buffers-re "[^*]+")
-;;   (setq uniquify-min-dir-content 4)
-;;   )
-
-;; total-line: show number of lines
-(require 'total-lines nil t)
-(global-total-lines-mode t)
-(defun my-set-line-numbers ()
-  (setq-default mode-line-front-space
-                (append mode-line-front-space
-                        '((:eval (format " (%d)" (- total-lines 1)))))))
-(add-hook 'after-init-hook 'my-set-line-numbers)
-
-;; stopwatch-mode
-(require 'stopwatch nil t)
-
-
-
+;; ;; diminish: Minor-mode name definition
+;; (require 'diminish nil t)
+;; (eval-after-load "company"             '(diminish 'company-mode "Comp"))
+;; ;; Hidden
+;; (eval-after-load "undo-tree"           '(diminish 'undo-tree-mode))
+;; (eval-after-load "volatile-highlights" '(diminish 'volatile-highlights-mode))
+;; (eval-after-load "helm-mode"           '(diminish 'helm-mode))
+;; (eval-after-load "helm-mode"           '(diminish 'helm--minor-mode))
 
 
 
@@ -251,152 +198,200 @@
 ;; Utility
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; saveplace
-(require 'saveplace nil t)
-(setq-default save-place t)
-(setq save-place-file (concat user-emacs-directory "places"))
+(use-package saveplace
+  :ensure t
+  :custom
+  (save-place-file (concat user-emacs-directory "places"))
+  :config
+  (save-place-mode))
 
 ;; scroll-lock
-(require 'scroll-lock nil t)
-(defun toggle-scroll-lock ()
-  "Toggle scroll lock."
-  (interactive)
-  (scroll-lock-mode
-   (if scroll-lock-mode -1 1))
-  (message "Scroll lock %s"
-           (if scroll-lock-mode "enabled" "disabled")))
+(use-package scroll-lock
+  :ensure t
+  :init
+  (defun toggle-scroll-lock ()
+    "Toggle scroll lock."
+    (interactive)
+    (scroll-lock-mode (if scroll-lock-mode -1 1))
+    (message "Scroll lock %s" (if scroll-lock-mode "enabled" "disabled")))
 
-;; company
-(require 'company nil t)
-(global-company-mode t)
-(setq company-idle-delay 0)
-(setq company-minimum-prefix-length 2)
-(setq company-selection-wrap-around t)
-
-(set-face-attribute 'company-tooltip                  nil :background "lightgrey" :foreground "black")
-(set-face-attribute 'company-tooltip-common           nil :background "lightgrey" :foreground "black")
-(set-face-attribute 'company-tooltip-common-selection nil :background "steelblue" :foreground "white")
-(set-face-attribute 'company-tooltip-selection        nil :background "steelblue" :foreground "black")
-(set-face-attribute 'company-preview-common           nil :background nil         :foreground "lightgrey" :underline t)
-(set-face-attribute 'company-scrollbar-fg             nil :background "orange")
-(set-face-attribute 'company-scrollbar-bg             nil :background "gray40")
-
-(define-key company-active-map (kbd "C-n") 'company-select-next)
-(define-key company-active-map (kbd "C-p") 'company-select-previous)
-(define-key company-active-map (kbd "C-s") 'company-filter-candidates)
-;;(define-key company-active-map (kbd "<tab>") 'company-complete-selection)
-(define-key company-active-map (kbd "<tab>") 'company-complete)
-
-(define-key company-active-map (kbd "M-n") nil)
-(define-key company-active-map (kbd "M-p") nil)
-(define-key company-active-map (kbd "C-h") nil)
-
-(define-key company-search-map (kbd "C-n") 'company-select-next)
-(define-key company-search-map (kbd "C-p") 'company-select-previous)
-;; (define-key company-search-map (kbd "<tab>") 'company--insert-candidate)
-
-(add-to-list 'company-backends 'company-lsp)
-(add-to-list 'company-backends 'company-elm)
-(add-to-list 'company-backends 'company-ghc)
-
-
-
-;; flycheck
-(require 'flycheck nil t)
-(add-hook 'after-init-hook #'global-flycheck-mode)
-
+  :bind(("C-c m" . toggle-scroll-lock)))
 
 ;; ediff
-(when (executable-find "diff")
-  (require 'ediff nil t)
-  (setq-default ediff-window-setup-function 'ediff-setup-windows-plain)
-  (setq-default ediff-split-window-function 'split-window-horizontally)
-  (global-set-key (kbd "C-c d") 'ediff-files)
-  )
-
+;; (when (executable-find "diff")
+;;   (require 'ediff nil t)
+;;   (setq-default ediff-window-setup-function 'ediff-setup-windows-plain)
+;;   (setq-default ediff-split-window-function 'split-window-horizontally)
+;;   (global-set-key (kbd "C-c d") 'ediff-files)
+;;   )
 
 ;; helm
-(require 'helm nil t)
-(require 'helm-config nil t)
-(helm-mode t)
-(global-set-key (kbd "C-c h") 'helm-command-prefix)
-(global-unset-key (kbd "C-x c"))
-(global-set-key (kbd "M-x") 'helm-M-x)
-(global-set-key (kbd "M-y") 'helm-show-kill-ring)
-(global-set-key (kbd "C-x b") 'helm-mini)
-(global-set-key (kbd "C-x C-f") 'helm-find-files)
-(global-set-key (kbd "C-c g") 'helm-google-suggest)
-(define-key helm-map (kbd "C-h") 'delete-backward-char)
-(define-key helm-map (kbd "<tab>") 'helm-execute-persistent-action)
-(define-key helm-map (kbd "C-i") 'helm-execute-persistent-action)
-(define-key helm-map (kbd "C-z") 'helm-select-action)
+(use-package helm
+  :ensure t
+  :bind(("C-c h" . helm-command-prefix)
+        ("M-x" . helm-M-x)
+        ("M-y" . helm-show-kill-ring)
+        ("C-x b" . helm-mini)
+        ("C-x C-f" . helm-find-files)
+        ("C-c g" . helm-google-suggest)
+        :map helm-map
+        ("C-h" . delete-backward-char)
+        ("<tab>" . helm-execute-persistent-action)
+        ("C-i" . helm-execute-persistent-action)
+        ("C-z" . helm-select-action))
+  :config
+  (require 'helm-config)
+  (require 'helm-buffers)
+  (require 'helm-for-files)
+  (helm-mode t)
+  (global-unset-key (kbd "C-x c"))
 
-(require 'helm-buffers nil t)
-(setq helm-buffers-fuzzy-matching t)
-(require 'helm-for-files nil t)
-(setq helm-recentf-fuzzy-match t)
+  :custom
+  (helm-buffers-fuzzy-matching t)
+  (helm-recentf-fuzzy-match t)
+)
 
 
 ;; undo-tree
-(require 'undo-tree nil t)
-(global-undo-tree-mode t)
+(use-package undo-tree
+  :ensure t
+  :config
+  (global-undo-tree-mode t))
 
 
-;; org-mode
-(require 'org nil t)
-(require 'org-capture nil t)
-(setq org-directory "~/Dropbox/org/")
-(setq org-agenda-files '("~/Dropbox/org/"))
-(setq org-default-notes-file (concat org-directory "notes.org"))
-(setq org-refile-targets '((org-agenda-files :maxlevel . 3)))
-;; (setq org-default-notes-file (expand-file-name (concat user-emacs-directory "../memo/memo.org")))
-(setq org-todo-keywords '(
-;                          (sequence "TODO(t)" "WIP(w)" "PENDING(p)" "|" "DONE(d)" "CANCELED(c@)")
-                          (sequence "TODO(t)" "WIP(w)" "PENDING(p)" "|" "DONE(d)" "CANCELED(c)")
-                          (sequence "MEMO(m)" "|" "REFLECTION(r)" "KNOWLEDGE(k)" "FORGETTABLE(f)")
-                          ))
-(setq org-capture-templates
-      '(
-        ("t" "Todo"     entry (file+headline org-default-notes-file "Inbox")    "* TODO %?\n  %U\n** Reference\n  %i\n\n")
-        ("c" "Calender" entry (file+headline org-default-notes-file "Schedule") "* TODO %?\n  %U\n\n")
-        ("m" "Memo"     entry (file+headline org-default-notes-file "Journals") "* MEMO %?\n  %U\n** Reference\n  %i\n\n")
-        ))
-(defun show-org-buffer (file)
-  "Show an org-file FILE on the current buffer."
-  (interactive)
-  (if (get-buffer file)
-      (let ((buffer (get-buffer file)))
-        (switch-to-buffer buffer)
-        (message "%s" file))
-    (find-file (concat org-directory file))))
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Org mode
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(use-package org
+  :ensure t
+  :custom
+  (org-directory "~/Dropbox/org/")
+  (org-agenda-files '("~/Dropbox/org/"))
+  (org-default-notes-file (concat org-directory "notes.org"))
+  (org-refile-targets '((org-agenda-files :maxlevel . 3)))
+  (org-todo-keywords '(
+                       ; (sequence "TODO(t)" "WIP(w)" "PENDING(p)" "|" "DONE(d)" "CANCELED(c@)")
+                       (sequence "TODO(t)" "WIP(w)" "PENDING(p)" "|" "DONE(d)" "CANCELED(c)")
+                       (sequence "MEMO(m)" "|" "REFLECTION(r)" "KNOWLEDGE(k)" "FORGETTABLE(f)")
+                       ))
+  (org-capture-templates
+   '(
+     ("t" " Todo"     entry (file+headline org-default-notes-file "Inbox")    "* TODO %?\n  %U\n** Reference\n  %i\n\n")
+     ("c" " Calender" entry (file+headline org-default-notes-file "Schedule") "* TODO %?\n  %U\n\n")
+     ("m" " Memo"     entry (file+headline org-default-notes-file "Journals") "* MEMO %?\n  %U\n** Reference\n  %i\n\n")
+     ))
+  
+  ;(org-default-notes-file (expand-file-name (concat user-emacs-directory "../memo/memo.org")))
+
+  :bind(("C-c c" . org-capture)
+        ("C-c a" . org-agenda))
+
+  :init
+  (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
+
+  :config
+  (require 'org-capture)
+  (require 'org-agenda)
+
+  (use-package org-bullets
+    :ensure t
+    :custom
+    (org-bullets-bullet-list '("" "" "" "" "" "" "" "" "" "")))
+
+  (defun show-org-buffer (file)
+    "Show an org-file FILE on the current buffer."
+    (interactive)
+    (if (get-buffer file) (let ((buffer (get-buffer file)))
+                            (switch-to-buffer buffer)
+                            (message "%s" file))
+      (find-file (concat org-directory file)))))
+
+
 
 ;; (global-set-key (kbd "C-M-^") '(lambda () (interactive) (show-org-buffer "notes.org")))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Language
+;; Develop Environment
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; company
+(use-package company
+  :ensure t
+  :custom
+  (company-idle-delay 0)
+  (company-minimum-prefix-length 2)
+  (company-selection-wrap-around t)
+
+  :custom-face
+  (company-tooltip                  ((nil (:background "lightgrey" :foreground "black"))))
+  (company-tooltip-common           ((nil (:background "lightgrey" :foreground "black"))))
+  (company-tooltip-common-selection ((nil (:background "steelblue" :foreground "white"))))
+  (company-tooltip-selection        ((nil (:background "steelblue" :foreground "black"))))
+  (company-preview-common           ((nil (:background nil         :foreground "lightgrey" :underline t))))
+  (company-scrollbar-fg             ((nil (:background "orange"))))
+  (company-scrollbar-bg             ((nil (:background "gray40"))))
+
+  :bind(:map company-active-map
+        ("C-n" . company-select-next)
+        ("C-p" . company-select-previous)
+        ("C-s" . company-filter-candidates)
+        ;;((kbd "<tab>") 'company-complete-selection)
+        ("<tab>" . company-complete)
+        ("M-n" . nil)
+        ("M-p" . nil)
+        ("C-h" . nil)
+        :map company-search-map
+        ;; ("<tab>" . company--insert-candidate)
+        ("C-n" . company-select-next)
+        ("C-p" . company-select-previous))
+  
+  :config
+  (global-company-mode t))
+
+;; flycheck
+(use-package flycheck
+  :ensure t
+  :config
+  (global-flycheck-mode)
+  )
+
 ;; lsp
-(require 'lsp-mode)
-(require 'lsp-ui)
-(add-hook 'lsp-mode-hook 'lsp-ui-mode)
+(use-package lsp-mode
+  :ensure t
+  :commands lsp
+  :custom
+  (lsp-prefer-flymake nil)
+  (lsp-enable-snippet nil))
 
-;; vbasence
-;; (require 'vbasense nil t)
-;; (setq vbasense-popup-help-key "C-:")
-;; (setq vbasense-jump-to-definition-key "C->")
-;; (customize-group "vbasense")
-;; (vbasense-config-default)
+(use-package lsp-ui
+  :ensure t
+  :init
+  (add-hook 'lsp-mode-hook 'lsp-ui-mode)
+  :config
+  (define-key lsp-ui-mode-map [remap xref-find-definitions] #'lsp-ui-peek-find-definitions)
+  (define-key lsp-ui-mode-map [remap xref-find-references] #'lsp-ui-peek-find-references)
+  )
 
-;; elm
-(require 'elm-mode nil t)
-;; (add-to-list 'auto-mode-alist '("\\.elm$" . elm-mode))
+
+(use-package company-lsp
+  :ensure t
+  :config
+  (add-to-list 'company-backends 'company-lsp)
+  :custom
+  (company-lsp-cache-candidates t)
+  (company-lsp-async t)
+  (company-lsp-enable-recompletion nil)
+  )
 
 ;; haskell
 ;; for ghc-8.0.2 and later
-(require 'lsp-haskell)
-(add-hook 'haskell-mode-hook #'lsp)
-(add-hook 'haskell-mode-hook 'flycheck-mode)
-
-(setq lsp-haskell-process-path-hie "hie-wrapper")
+(use-package lsp-haskell
+  :ensure t
+  :init
+  (add-hook 'haskell-mode-hook #'lsp)
+  (setq lsp-haskell-process-path-hie "hie-wrapper")
+  ;:config
+  ;(add-to-list 'company-backends 'company-ghc t)
+  )
 
 
 ;; for ghc-7.10.3
@@ -404,12 +399,17 @@
 ;; (require 'ghc nil t)
 ;; (add-hook 'haskell-mode-hook (lambda () (ghc-init)))
 
-;; markdown
-(require 'markdown-mode nil t)
-;; (add-to-list 'auto-mode-alist '("\\.markdown" . markdown-mode) )
-;; (add-to-list 'auto-mode-alist '("\\.md"       . markdown-mode) )
-;; (add-to-list 'auto-mode-alist '("\\.md"       . gfm-mode) )
 
+;; elm
+(use-package elm-mode
+  :ensure t
+  :config
+  (add-to-list 'company-backends 'company-elm))
+;; (add-to-list 'auto-mode-alist '("\\.elm$" . elm-mode))
+
+;; markdown
+(use-package markdown-mode
+  :ensure t)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Global keymap
@@ -418,20 +418,16 @@
 (defalias 'exit 'save-buffers-kill-emacs)
 
 ;; Settings that do not depend on some major modes or minor modes
-(global-set-key (kbd "C-c m") 'toggle-scroll-lock)
 (global-set-key (kbd "C-h")   'delete-backward-char)
 (global-set-key (kbd "C-c l") 'toggle-truncate-lines)
-;; (global-set-key (kbd "C-t")   'other-window)
-
-;; orgmode keybindings
-(global-set-key (kbd "C-c a") 'org-agenda)
-(global-set-key (kbd "C-c c") 'org-capture)
+(global-set-key (kbd "C-t")   'other-window)
 
 
 ;; init-loader
-(require 'init-loader)
-(init-loader-load "~/.emacs.d/conf")
-
+(use-package init-loader
+  :ensure t
+  :config
+  (init-loader-load "~/.emacs.d/conf"))
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -439,10 +435,16 @@
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-    (doom-themes volatile-highlights vbasense undo-tree total-lines smart-mode-line lsp-ui lsp-haskell init-loader htmlize helm flymake-shell flycheck-haskell elm-mode dockerfile-mode docker-compose-mode diminish company-lsp company-ghc))))
+    (helm-for-files helm-buffers lsp-haskell company-lsp lsp-ui lsp-mode flycheck org-agenda org-capture volatile-highlights use-package undo-tree org-bullets nyan-mode markdown-mode init-loader helm elm-mode doom-themes doom-modeline company))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- )
+ '(company-preview-common ((nil (:background nil :foreground "lightgrey" :underline t))))
+ '(company-scrollbar-bg ((nil (:background "gray40"))))
+ '(company-scrollbar-fg ((nil (:background "orange"))))
+ '(company-tooltip ((nil (:background "lightgrey" :foreground "black"))))
+ '(company-tooltip-common ((nil (:background "lightgrey" :foreground "black"))))
+ '(company-tooltip-common-selection ((nil (:background "steelblue" :foreground "white"))))
+ '(company-tooltip-selection ((nil (:background "steelblue" :foreground "black")))))

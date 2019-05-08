@@ -1,10 +1,8 @@
 # visual basic mode (maybe deplicated or deleted)
 # https://raw.githubusercontent.com/emacsmirror/emacswiki.org/master/visual-basic-mode.el
 
-# haskell ide engine
-https://github.com/emacs-lsp/lsp-mode.git
-https://github.com/emacs-lsp/lsp-ui.git
-https://github.com/emacs-lsp/lsp-haskell.git
-
 # stopwatch
 https://github.com/blue0513/stopwatch.git
+
+# org-bullets
+https://github.com/sabof/org-bullets.git

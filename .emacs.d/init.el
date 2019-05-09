@@ -34,7 +34,6 @@
 ;; (company-ghc          . "melpa-stable")
 ;; (diminish             . "melpa-stable")
 ;; (ghc                  . "melpa-stable")
-;; (haskell-mode         . "melpa-stable")
 ;; (htmlize              . "melpa-stable")
 ;; (smart-mode-line      . "melpa-stable")
 
@@ -96,9 +95,10 @@
 ;; https://github.com/hlissner/emacs-doom-themes
 (use-package doom-themes
   :ensure t
+  :custom
+  (doom-themes-enable-bold t)
+  (doom-themes-enable-italic t)
   :config
-  (setq doom-themes-enable-bold t)
-  (setq doom-themes-enable-italic t)
   (load-theme 'doom-dracula t)
   (doom-themes-neotree-config)
   (doom-themes-org-config))
@@ -165,17 +165,6 @@
   (display-time-mode t)
 )
 
-;; ;; diminish: Minor-mode name definition
-;; (require 'diminish nil t)
-;; (eval-after-load "company"             '(diminish 'company-mode "Comp"))
-;; ;; Hidden
-;; (eval-after-load "undo-tree"           '(diminish 'undo-tree-mode))
-;; (eval-after-load "volatile-highlights" '(diminish 'volatile-highlights-mode))
-;; (eval-after-load "helm-mode"           '(diminish 'helm-mode))
-;; (eval-after-load "helm-mode"           '(diminish 'helm--minor-mode))
-
-
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Backup setting
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -189,9 +178,6 @@
 ;; (setq auto-save-default nil)
 ;; (setq auto-save-list-file-name nil)
 ;; (setq auto-save-list-file-prefix nil)
-
-
-
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -228,6 +214,9 @@
 ;; helm
 (use-package helm
   :ensure t
+  :custom
+  (helm-buffers-fuzzy-matching t)
+  (helm-recentf-fuzzy-match t)
   :bind(("C-c h" . helm-command-prefix)
         ("M-x" . helm-M-x)
         ("M-y" . helm-show-kill-ring)
@@ -245,10 +234,6 @@
   (require 'helm-for-files)
   (helm-mode t)
   (global-unset-key (kbd "C-x c"))
-
-  :custom
-  (helm-buffers-fuzzy-matching t)
-  (helm-recentf-fuzzy-match t)
 )
 
 
@@ -280,14 +265,11 @@
      ("c" " Calender" entry (file+headline org-default-notes-file "Schedule") "* TODO %?\n  %U\n\n")
      ("m" " Memo"     entry (file+headline org-default-notes-file "Journals") "* MEMO %?\n  %U\n** Reference\n  %i\n\n")
      ))
-  
-  ;(org-default-notes-file (expand-file-name (concat user-emacs-directory "../memo/memo.org")))
 
   :bind(("C-c c" . org-capture)
         ("C-c a" . org-agenda))
 
-  :init
-  (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
+  :hook (org-mode . org-bullets-mode)
 
   :config
   (require 'org-capture)
@@ -305,8 +287,6 @@
                             (switch-to-buffer buffer)
                             (message "%s" file))
       (find-file (concat org-directory file)))))
-
-
 
 ;; (global-set-key (kbd "C-M-^") '(lambda () (interactive) (show-org-buffer "notes.org")))
 
@@ -350,9 +330,20 @@
 ;; flycheck
 (use-package flycheck
   :ensure t
+  :hook (after-init . global-flycheck-mode))
+
+;; yasnippet
+(use-package yasnippet
+  :ensure t
+  :hook (after-init . yas-global-mode)
   :config
-  (global-flycheck-mode)
-  )
+  (use-package yasnippet-snippets
+    :ensure t)
+  (use-package helm-c-yasnippet
+    :ensure t
+    :custom
+    (helm-yas-space-match-any-greedy t)
+    :bind(("C-c y" . helm-yas-complete))))
 
 ;; lsp
 (use-package lsp-mode
@@ -360,44 +351,58 @@
   :commands lsp
   :custom
   (lsp-prefer-flymake nil)
-  (lsp-enable-snippet nil))
+  (lsp-enable-snippet t)
 
-(use-package lsp-ui
-  :ensure t
-  :init
-  (add-hook 'lsp-mode-hook 'lsp-ui-mode)
   :config
-  (define-key lsp-ui-mode-map [remap xref-find-definitions] #'lsp-ui-peek-find-definitions)
-  (define-key lsp-ui-mode-map [remap xref-find-references] #'lsp-ui-peek-find-references)
-  )
+  (use-package lsp-ui
+    :ensure t
+    :hook (lsp-mode . lsp-ui-mode)
+    :custom
+    (lsp-ui-doc-enable t)
+    (lsp-ui-doc-header t)
+    (lsp-ui-doc-include-signature t)
+    (lsp-ui-doc-position 'top)
+    (lsp-ui-doc-max-width 150)
+    (lsp-ui-doc-max-height 30)
+    (lsp-ui-doc-use-childframe t)
+    (lsp-ui-doc-use-webkit t)
+    (lsp-ui-peek-enable t)
+    (lsp-ui-peek-peek-height 20)
+    (lsp-ui-peek-list-width 50)
+    (lsp-ui-peek-fontify 'on-demand)
+    (lsp-ui-flycheck-enable nil)
+    (lsp-ui-sideline-enable nil)
+    :bind(:map lsp-ui-mode-map
+          ("C-c C-r" . lsp-ui-peek-find-references)
+          ("C-c C-j" . lsp-ui-peek-find-definitions)
+          ("C-c i"   . lsp-ui-peek-find-implementation)))
+
+  (use-package company-lsp
+    :ensure t
+    :config
+    (add-to-list 'company-backends 'company-lsp)
+    :custom
+    (company-lsp-cache-candidates t)
+    (company-lsp-async t)
+    (company-lsp-enable-snippet t)
+    (company-lsp-enable-recompletion nil)))
 
 
-(use-package company-lsp
-  :ensure t
-  :config
-  (add-to-list 'company-backends 'company-lsp)
-  :custom
-  (company-lsp-cache-candidates t)
-  (company-lsp-async t)
-  (company-lsp-enable-recompletion nil)
-  )
 
 ;; haskell
 ;; for ghc-8.0.2 and later
 (use-package lsp-haskell
   :ensure t
-  :init
-  (add-hook 'haskell-mode-hook #'lsp)
-  (setq lsp-haskell-process-path-hie "hie-wrapper")
-  ;:config
-  ;(add-to-list 'company-backends 'company-ghc t)
-  )
+  :hook (haskell-mode . lsp)
+  :custom
+  (lsp-haskell-process-path-hie "hie-wrapper"))
 
 
 ;; for ghc-7.10.3
 ;; (require 'haskell-mode nil t)
 ;; (require 'ghc nil t)
 ;; (add-hook 'haskell-mode-hook (lambda () (ghc-init)))
+  ;(add-to-list 'company-backends 'company-ghc t)
 
 
 ;; elm
@@ -433,9 +438,17 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(doom-themes-enable-bold t)
+ '(doom-themes-enable-italic t)
+ '(lsp-ui-doc-header t nil nil "Customized with use-package lsp-ui")
+ '(lsp-ui-doc-include-signature t nil nil "Customized with use-package lsp-ui")
+ '(lsp-ui-doc-max-height 30 nil nil "Customized with use-package lsp-ui")
+ '(lsp-ui-doc-max-width 150 nil nil "Customized with use-package lsp-ui")
+ '(lsp-ui-doc-position (quote top) nil nil "Customized with use-package lsp-ui")
+ '(lsp-ui-doc-use-childframe t nil nil "Customized with use-package lsp-ui")
  '(package-selected-packages
    (quote
-    (helm-for-files helm-buffers lsp-haskell company-lsp lsp-ui lsp-mode flycheck org-agenda org-capture volatile-highlights use-package undo-tree org-bullets nyan-mode markdown-mode init-loader helm elm-mode doom-themes doom-modeline company))))
+    (yasnippet-snippets helm-c-yasnippet helm-for-files helm-buffers lsp-haskell company-lsp lsp-ui lsp-mode flycheck org-agenda org-capture volatile-highlights use-package undo-tree org-bullets nyan-mode markdown-mode init-loader helm elm-mode doom-themes doom-modeline company))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

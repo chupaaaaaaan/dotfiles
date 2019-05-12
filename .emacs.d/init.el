@@ -223,6 +223,7 @@
         ("C-x b" . helm-mini)
         ("C-x C-f" . helm-find-files)
         ("C-c g" . helm-google-suggest)
+        ("C-x c" . nil)
         :map helm-map
         ("C-h" . delete-backward-char)
         ("<tab>" . helm-execute-persistent-action)
@@ -232,9 +233,7 @@
   (require 'helm-config)
   (require 'helm-buffers)
   (require 'helm-for-files)
-  (helm-mode t)
-  (global-unset-key (kbd "C-x c"))
-)
+  (helm-mode t))
 
 
 ;; undo-tree
@@ -293,6 +292,25 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Develop Environment
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; yasnippet
+(use-package yasnippet
+  :ensure t
+  :hook (after-init . yas-global-mode)
+)
+
+(use-package yasnippet-snippets
+  :ensure t
+  :after yasnippet)
+
+(use-package helm-c-yasnippet
+  ;:disabled
+  :ensure t
+  :after yasnippet
+  :custom
+  (helm-yas-space-match-any-greedy t)
+  :bind(("C-c y" . helm-yas-complete)))
+
+
 ;; company
 (use-package company
   :ensure t
@@ -301,49 +319,69 @@
   (company-minimum-prefix-length 2)
   (company-selection-wrap-around t)
 
-  :custom-face
-  (company-tooltip                  ((nil (:background "lightgrey" :foreground "black"))))
-  (company-tooltip-common           ((nil (:background "lightgrey" :foreground "black"))))
-  (company-tooltip-common-selection ((nil (:background "steelblue" :foreground "white"))))
-  (company-tooltip-selection        ((nil (:background "steelblue" :foreground "black"))))
-  (company-preview-common           ((nil (:background nil         :foreground "lightgrey" :underline t))))
-  (company-scrollbar-fg             ((nil (:background "orange"))))
-  (company-scrollbar-bg             ((nil (:background "gray40"))))
+  :hook (after-init . global-company-mode)
 
   :bind(:map company-active-map
         ("C-n" . company-select-next)
         ("C-p" . company-select-previous)
         ("C-s" . company-filter-candidates)
-        ;;((kbd "<tab>") 'company-complete-selection)
+        ;;("<tab>" . company-complete-common-or-cycle)
         ("<tab>" . company-complete)
         ("M-n" . nil)
         ("M-p" . nil)
         ("C-h" . nil)
         :map company-search-map
-        ;; ("<tab>" . company--insert-candidate)
-        ("C-n" . company-select-next)
-        ("C-p" . company-select-previous))
+        ("<tab>" . company-complete)
+        ;("<tab>" . company--insert-candidate)
+        ("C-s" . company-select-next)
+        ("C-r" . company-select-previous))
   
   :config
-  (global-company-mode t))
+  (require 'company-yasnippet)
+  ;; (defvar company-mode/enable-yas t
+  ;;   "Enable yasnippet for all backends.")
+  ;; (defun company-mode/backend-with-yas (backend)
+  ;;   (if (or (not company-mode/enable-yas) (and (listp backend) (member 'company-yasnippet backend)))
+  ;;       backend
+  ;;     (append (if (consp backend)
+  ;;                 backend
+  ;;               (list backend))
+  ;;             '(:with company-yasnippet))))
+  ;; (defun set-yas-as-company-backend ()
+  ;;   (setq company-backends (mapcar #'company-mode/backend-with-yas company-backends)))
+  ;; (add-hook 'company-mode-hook 'set-yas-as-company-backend)
+)
+
+
+
+
+  
+(use-package company-posframe
+  :disabled
+  :ensure t
+  :after company
+  :custom
+  (company-posframe-mode t))
+
+(use-package company-box
+  :ensure t
+  :hook (company-mode . company-box-mode)
+  :custom
+  (company-box-icons-alist 'company-box-icons-all-the-icons))
+
+(use-package company-quickhelp
+  :ensure t
+  :hook (company-mode . company-quickhelp-mode))
+
 
 ;; flycheck
 (use-package flycheck
   :ensure t
   :hook (after-init . global-flycheck-mode))
 
-;; yasnippet
-(use-package yasnippet
+(use-package flycheck-posframe
   :ensure t
-  :hook (after-init . yas-global-mode)
-  :config
-  (use-package yasnippet-snippets
-    :ensure t)
-  (use-package helm-c-yasnippet
-    :ensure t
-    :custom
-    (helm-yas-space-match-any-greedy t)
-    :bind(("C-c y" . helm-yas-complete))))
+  :hook (flycheck-mode . flycheck-posframe-mode))
 
 ;; lsp
 (use-package lsp-mode
@@ -351,41 +389,68 @@
   :commands lsp
   :custom
   (lsp-prefer-flymake nil)
+  (lsp-document-sync-method 'incremental)
   (lsp-enable-snippet t)
+  ;; (lsp-lens-hide)
 
   :config
-  (use-package lsp-ui
-    :ensure t
-    :hook (lsp-mode . lsp-ui-mode)
-    :custom
-    (lsp-ui-doc-enable t)
-    (lsp-ui-doc-header t)
-    (lsp-ui-doc-include-signature t)
-    (lsp-ui-doc-position 'top)
-    (lsp-ui-doc-max-width 150)
-    (lsp-ui-doc-max-height 30)
-    (lsp-ui-doc-use-childframe t)
-    (lsp-ui-doc-use-webkit t)
-    (lsp-ui-peek-enable t)
-    (lsp-ui-peek-peek-height 20)
-    (lsp-ui-peek-list-width 50)
-    (lsp-ui-peek-fontify 'on-demand)
-    (lsp-ui-flycheck-enable nil)
-    (lsp-ui-sideline-enable nil)
-    :bind(:map lsp-ui-mode-map
-          ("C-c C-r" . lsp-ui-peek-find-references)
-          ("C-c C-j" . lsp-ui-peek-find-definitions)
-          ("C-c i"   . lsp-ui-peek-find-implementation)))
+  (require 'lsp-clients))
 
-  (use-package company-lsp
+(use-package lsp-ui
+  :ensure t
+  :hook (lsp-mode . lsp-ui-mode)
+  
+  :custom-face
+  (lsp-ui-doc-background ((nil (:background "black"))))
+  
+  :custom
+  (lsp-ui-doc-enable nil)
+  (lsp-ui-doc-header t)
+  (lsp-ui-doc-include-signature t)
+  ;; (lsp-ui-doc-position 'at-point)
+  (lsp-ui-doc-position 'bottom)
+  ;; (lsp-ui-doc-border "white")
+  (lsp-ui-doc-max-width 150)
+  (lsp-ui-doc-max-height 30)
+  (lsp-ui-doc-use-childframe t)
+  (lsp-ui-doc-use-webkit t)
+  (lsp-ui-peek-enable t)
+  (lsp-ui-peek-peek-height 20)
+  (lsp-ui-peek-list-width 50)
+  (lsp-ui-peek-fontify 'on-demand)
+  (lsp-ui-flycheck-enable t)
+  (lsp-ui-flycheck-list-position 'bottom)
+  (lsp-ui-flycheck-live-reporting t)
+  (lsp-ui-sideline-enable nil)
+  ;;    (lsp-ui
+  :preface
+  (defun ladicle/toggle-lsp-ui-doc ()
+    (interactive)
+    (if lsp-ui-doc-mode
+        (progn
+          (lsp-ui-doc-mode -1)
+          (lsp-ui-doc--hide-frame))
+      (lsp-ui-doc-mode 1)))
+  
+  :bind(:map lsp-ui-mode-map
+             ("C-c C-r" . lsp-ui-peek-find-references)
+             ("C-c C-j" . lsp-ui-peek-find-definitions)
+             ("C-c i"   . lsp-ui-peek-find-implementation)
+             ("C-c d"   . ladicle/toggle-lsp-ui-doc)))
+
+(use-package company-lsp
+    ;:disabled
     :ensure t
+    :after (company lsp-mode)
     :config
     (add-to-list 'company-backends 'company-lsp)
+    ;;(add-to-list 'company-backends 'company-yasnippet)
     :custom
     (company-lsp-cache-candidates t)
     (company-lsp-async t)
     (company-lsp-enable-snippet t)
-    (company-lsp-enable-recompletion nil)))
+    (company-lsp-enable-recompletion t)
+    (company-lsp-match-candidate-predicate 'company-lsp-match-candidate-flex))
 
 
 
@@ -393,7 +458,9 @@
 ;; for ghc-8.0.2 and later
 (use-package lsp-haskell
   :ensure t
-  :hook (haskell-mode . lsp)
+  :hook ((haskell-mode . lsp)
+  ;       (haskell-mode . company-yasnippet)
+         )
   :custom
   (lsp-haskell-process-path-hie "hie-wrapper"))
 
@@ -408,6 +475,7 @@
 ;; elm
 (use-package elm-mode
   :ensure t
+  :after company
   :config
   (add-to-list 'company-backends 'company-elm))
 ;; (add-to-list 'auto-mode-alist '("\\.elm$" . elm-mode))
@@ -440,24 +508,12 @@
  ;; If there is more than one, they won't work right.
  '(doom-themes-enable-bold t)
  '(doom-themes-enable-italic t)
- '(lsp-ui-doc-header t nil nil "Customized with use-package lsp-ui")
- '(lsp-ui-doc-include-signature t nil nil "Customized with use-package lsp-ui")
- '(lsp-ui-doc-max-height 30 nil nil "Customized with use-package lsp-ui")
- '(lsp-ui-doc-max-width 150 nil nil "Customized with use-package lsp-ui")
- '(lsp-ui-doc-position (quote top) nil nil "Customized with use-package lsp-ui")
- '(lsp-ui-doc-use-childframe t nil nil "Customized with use-package lsp-ui")
  '(package-selected-packages
    (quote
-    (yasnippet-snippets helm-c-yasnippet helm-for-files helm-buffers lsp-haskell company-lsp lsp-ui lsp-mode flycheck org-agenda org-capture volatile-highlights use-package undo-tree org-bullets nyan-mode markdown-mode init-loader helm elm-mode doom-themes doom-modeline company))))
+    (flycheck-posframe company-posframe yasnippet-snippets volatile-highlights use-package undo-tree org-bullets nyan-mode lsp-ui lsp-haskell init-loader helm-c-yasnippet flycheck elm-mode doom-themes doom-modeline company-quickhelp company-lsp company-box))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(company-preview-common ((nil (:background nil :foreground "lightgrey" :underline t))))
- '(company-scrollbar-bg ((nil (:background "gray40"))))
- '(company-scrollbar-fg ((nil (:background "orange"))))
- '(company-tooltip ((nil (:background "lightgrey" :foreground "black"))))
- '(company-tooltip-common ((nil (:background "lightgrey" :foreground "black"))))
- '(company-tooltip-common-selection ((nil (:background "steelblue" :foreground "white"))))
- '(company-tooltip-selection ((nil (:background "steelblue" :foreground "black")))))
+ '(lsp-ui-doc-background ((nil (:background "black")))))

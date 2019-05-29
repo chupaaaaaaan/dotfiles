@@ -13,7 +13,7 @@
             (normal-top-level-add-subdirs-to-load-path))))))
 
 ;; add directories under "~/.emacs.d/" to load-path
-(add-to-load-path "elisp" "conf" "public_repos")
+(add-to-load-path "conf" "public_repos")
 
 ;; load local configures
 (dolist (lcnf (directory-files (concat user-emacs-directory "local_conf") t "\\.el$"))
@@ -49,54 +49,33 @@
   :custom
   (use-package-compute-statistics t)
   ;; (use-package-always-defer nil)
- )
+  )
+
+;; customize generals
+(custom-set-variables
+ '(doom-themes-enable-bold t)
+ '(doom-themes-enable-italic t)
+ '(gc-cons-threshold (* 10 gc-cons-threshold))
+ '(history-delete-duplicates t)
+ '(history-length 1000)
+ '(indent-tabs-mode nil)
+ '(inhibit-startup-screen t)
+ '(menu-bar-mode nil)
+ '(message-log-max 10000)
+ '(mouse-yank-at-point t)
+ '(transient-mark-mode t)
+ '(savehist-mode t)
+ '(scroll-bar-mode nil)
+ '(tool-bar-mode nil)
+ '(use-package-compute-statistics t))
 
 ;;TODO: 雑多な設定を整理する
 ;; locale and environment
 (set-language-environment "Japanese")
 (prefer-coding-system 'utf-8)
 
-;; face
-;; キャラクタ端末では、バックグラウンドを"dark"に設定する
-;; (when (eq window-system nil)
-;;   (setq frame-background-mode 'dark))
-
-;; others
-;; ツールバー・スクロールバー非表示設定
-;; (when window-system
-;;   (tool-bar-mode nil)
-;;   (scroll-bar-mode nil))
-
 ;; 右から左に読む言語に対応させないことで描画高速化
 (setq-default bidi-display-reordering nil)
-
-;; splash screenを無効にする
-(setq inhibit-splash-screen t)
-
-;; 同じ内容を履歴に記録しないようにする
-(setq history-delete-duplicates t)
-
-;; インデントにTABを使わないようにする
-(setq-default indent-tabs-mode nil)
-
-;; ミニバッファ履歴を次回Emacs起動時にも保存する
-(savehist-mode t)
-
-;; GCを減らして軽くする
-(setq gc-cons-threshold (* 10 gc-cons-threshold))
-
-;; ログの記録行数を増やす
-(setq message-log-max 10000)
-
-;; 履歴をたくさん保存する
-(setq history-length 1000)
-
-;; マウスによるyankを許可
-(setq mouse-yank-at-point t)
-
-
-
-
 
 
 
@@ -130,16 +109,15 @@
   :ensure t
   :demand t
   :custom
-  (show-paren-delay 0)
-  (show-paren-style 'expression)
-  :config
   (show-paren-mode t)
-  (set-face-background 'show-paren-match nil)
-  ;; (set-face-underline 'show-paren-match "yellow")
+  (show-paren-delay 0)
+  ;; (show-paren-style 'expression)
+  (show-paren-style 'mixed)
+  (show-paren-when-point-inside-paren t)
+  (show-paren-when-point-in-periphery t)
+  ;; :custom-face
+  ;; (show-paren-match ((nil (:underline "#ff5555"))))
   )
-
-;; highlight on the region
-(setq transient-mark-mode t)
 
 ;; volatile-highlights
 (use-package volatile-highlights
@@ -266,6 +244,9 @@
   :config
   (global-undo-tree-mode t))
 
+(use-package google-this
+  :ensure t)
+
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Org mode
@@ -279,7 +260,7 @@
   (org-default-notes-file (concat org-directory "notes.org"))
   (org-refile-targets '((org-agenda-files :maxlevel . 3)))
   (org-todo-keywords '(
-                                        ; (sequence "TODO(t)" "WIP(w)" "PENDING(p)" "|" "DONE(d)" "CANCELED(c@)")
+                       ;; (sequence "TODO(t)" "WIP(w)" "PENDING(p)" "|" "DONE(d)" "CANCELED(c@)")
                        (sequence "TODO(t)" "WIP(w)" "PENDING(p)" "|" "DONE(d)" "CANCELED(c)")
                        (sequence "MEMO(m)" "|" "REFLECTION(r)" "KNOWLEDGE(k)" "FORGETTABLE(f)")
                        ))
@@ -333,8 +314,8 @@
     :ensure t
     :after yasnippet
     :bind(("C-c y" . helm-yas-complete)))
-    :custom
-    (helm-yas-space-match-any-greedy t)
+  :custom
+  (helm-yas-space-match-any-greedy t)
   )
 
 ;; company
@@ -350,7 +331,7 @@
 
   :hook
   (after-init . global-company-mode)
-  ;; (elm-mode     . (lambda () (set (make-local-variable 'company-backends) '((company-yasnippet company-elm company-files)))))
+  (elm-mode     . (lambda () (set (make-local-variable 'company-backends) '((company-yasnippet company-elm company-files)))))
   (haskell-mode . (lambda () (set (make-local-variable 'company-backends)
                                   '((
                                      company-yasnippet
@@ -362,16 +343,18 @@
               ("C-n" . company-select-next)
               ("C-p" . company-select-previous)
               ("C-s" . company-filter-candidates)
-              ;; ("<tab>" . company-complete-common-or-cycle)
-              ("<tab>" . company-complete)
+              ("<tab>" . company-complete-common-or-cycle)
+              ;; ("<tab>" . company-complete)
               ("M-n" . nil)
               ("M-p" . nil)
               ("C-h" . nil)
               :map company-search-map
               ("<tab>" . company-complete)
               ;; ("<tab>" . company--insert-candidate)
-              ("C-s" . company-select-next)
-              ("C-r" . company-select-previous))
+              ("C-n" . company-select-next)
+              ("C-p" . company-select-previous))
+  ;; ("C-s" . company-select-next)
+  ;; ("C-r" . company-select-previous))
   
   :config
   (use-package company-box
@@ -379,7 +362,8 @@
     :diminish
     :hook (company-mode . company-box-mode)
     :custom
-    (company-box-icons-alist 'company-box-icons-all-the-icons))
+    (company-box-icons-alist 'company-box-icons-all-the-icons)
+    (company-box-show-single-candidate nil))
 
   (use-package company-quickhelp
     :ensure t
@@ -398,6 +382,7 @@
 
   :config
   (use-package flycheck-posframe
+    :disabled
     :ensure t
     :hook (flycheck-mode . flycheck-posframe-mode))
   )
@@ -407,9 +392,6 @@
   ;; :disabled
   :ensure t
   :commands lsp
-
-  :hook
-  (haskell-mode . lsp)
 
   :custom
   (lsp-prefer-flymake nil)
@@ -469,7 +451,7 @@
   (use-package company-lsp
     :ensure t
     :custom
-    (company-lsp-cache-candidates t)
+    (company-lsp-cache-candidates nil)
     (company-lsp-async t)
     (company-lsp-enable-snippet t)
     (company-lsp-enable-recompletion t)
@@ -481,6 +463,11 @@
 ;; for ghc-8.0.2 and later
 (use-package lsp-haskell
   :ensure t
+  :init
+  (add-to-list 'company-backends 'company-lsp)
+
+  :hook
+  (haskell-mode . lsp)
   :custom
   (lsp-haskell-process-path-hie "hie-wrapper"))
 
@@ -526,21 +513,3 @@
   :ensure t
   :config
   (init-loader-load "~/.emacs.d/conf"))
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(doom-themes-enable-bold t)
- '(doom-themes-enable-italic t)
- '(package-selected-packages
-   (quote
-    (yasnippet-snippets volatile-highlights use-package undo-tree request projectile org-bullets nyan-mode lsp-ui lsp-haskell init-loader helm-c-yasnippet flycheck-posframe elm-mode doom-themes doom-modeline dockerfile-mode docker-compose-mode company-quickhelp company-lsp company-box)))
- '(use-package-always-defer nil)
- '(use-package-compute-statistics t))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(lsp-ui-doc-background ((nil (:background "black")))))

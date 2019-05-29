@@ -2,7 +2,7 @@
 # https://raw.githubusercontent.com/emacsmirror/emacswiki.org/master/visual-basic-mode.el
 
 # stopwatch
-https://github.com/blue0513/stopwatch.git
+#https://github.com/blue0513/stopwatch.git
 
 # org-bullets
-https://github.com/sabof/org-bullets.git
+#https://github.com/sabof/org-bullets.git

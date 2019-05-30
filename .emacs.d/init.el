@@ -49,35 +49,32 @@
   :custom
   (use-package-compute-statistics t)
   ;; (use-package-always-defer nil)
-  )
 
-;; customize generals
-(custom-set-variables
- '(doom-themes-enable-bold t)
- '(doom-themes-enable-italic t)
- '(gc-cons-threshold (* 10 gc-cons-threshold))
- '(history-delete-duplicates t)
- '(history-length 1000)
- '(indent-tabs-mode nil)
- '(inhibit-startup-screen t)
- '(menu-bar-mode nil)
- '(message-log-max 10000)
- '(mouse-yank-at-point t)
- '(savehist-mode t)
- '(scroll-bar-mode nil)
- '(tool-bar-mode nil)
- '(transient-mark-mode t)
- '(use-package-compute-statistics t))
+  ;; customize general settings
+  (inhibit-startup-screen t)
+  (menu-bar-mode nil)
+  (tool-bar-mode nil)
+  (scroll-bar-mode nil)
+  (indent-tabs-mode nil)
+  (transient-mark-mode t)
+  (savehist-mode t)
+  (history-delete-duplicates t)
+  (history-length 1000)
+  (message-log-max 10000)
+  (gc-cons-threshold (* 10 gc-cons-threshold))
+  (mouse-yank-at-point t)
+  )
 
 ;;TODO: 雑多な設定を整理する
 ;; locale and environment
 (set-language-environment "Japanese")
 (prefer-coding-system 'utf-8)
 
+;; maximize frame
+(toggle-frame-maximized)
+
 ;; 右から左に読む言語に対応させないことで描画高速化
 (setq-default bidi-display-reordering nil)
-
-
 
 ;; Doom-themes
 ;; https://github.com/hlissner/emacs-doom-themes
@@ -91,7 +88,6 @@
   (load-theme 'doom-dracula t)
   (doom-themes-neotree-config)
   (doom-themes-org-config))
-
 
 ;; Font
 (set-face-attribute 'default nil :family "Ricty Diminished" :height 180)
@@ -282,9 +278,9 @@
     :ensure t
     :hook
     (org-mode . org-bullets-mode)
-    )
-    ;; :custom
-    ;; (org-bullets-bullet-list '("" "" "" "" "" "" "" "" "" "")))
+
+    :custom
+    (org-bullets-bullet-list '("" "" "" "" "" "" "" "" "" "")))
 
   (defun show-org-buffer (file)
     "Show an org-file FILE on the current buffer."

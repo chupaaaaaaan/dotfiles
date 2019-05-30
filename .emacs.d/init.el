@@ -63,10 +63,10 @@
  '(menu-bar-mode nil)
  '(message-log-max 10000)
  '(mouse-yank-at-point t)
- '(transient-mark-mode t)
  '(savehist-mode t)
  '(scroll-bar-mode nil)
  '(tool-bar-mode nil)
+ '(transient-mark-mode t)
  '(use-package-compute-statistics t))
 
 ;;TODO: 雑多な設定を整理する
@@ -282,9 +282,9 @@
     :ensure t
     :hook
     (org-mode . org-bullets-mode)
-
-    :custom
-    (org-bullets-bullet-list '("" "" "" "" "" "" "" "" "" "")))
+    )
+    ;; :custom
+    ;; (org-bullets-bullet-list '("" "" "" "" "" "" "" "" "" "")))
 
   (defun show-org-buffer (file)
     "Show an org-file FILE on the current buffer."
@@ -463,9 +463,8 @@
 ;; for ghc-8.0.2 and later
 (use-package lsp-haskell
   :ensure t
-  :init
-  (add-to-list 'company-backends 'company-lsp)
-
+  ;; :init
+  ;; (add-to-list 'company-backends 'company-lsp)
   :hook
   (haskell-mode . lsp)
   :custom

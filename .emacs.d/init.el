@@ -51,7 +51,7 @@
   ;; (use-package-always-defer nil)
 
   ;; customize general settings
-  (inhibit-startup-screen t)
+  (inhibit-startup-screen -1)
   (menu-bar-mode nil)
   (tool-bar-mode nil)
   (scroll-bar-mode nil)
@@ -76,6 +76,8 @@
 ;; 右から左に読む言語に対応させないことで描画高速化
 (setq-default bidi-display-reordering nil)
 
+
+
 ;; Doom-themes
 ;; https://github.com/hlissner/emacs-doom-themes
 (use-package doom-themes
@@ -87,7 +89,36 @@
   :config
   (load-theme 'doom-dracula t)
   (doom-themes-neotree-config)
-  (doom-themes-org-config))
+  (doom-themes-org-config)
+
+  (use-package doom-modeline
+    :ensure t
+    :demand t
+    :hook
+    (after-init . doom-modeline-mode)
+
+    :config
+    (set-cursor-color "cyan")
+    (line-number-mode 0)
+    (column-number-mode 0)
+    (doom-modeline-mode 1)
+    (setq doom-modeline-buffer-file-name-style 'truncate-with-project)
+    (setq doom-modeline-icon t)
+    (setq doom-modeline-major-mode-icon t)
+    (setq doom-modeline-minor-modes nil)
+    ;; (setq doom-modeline-height 20)
+    ;; (setq doom-modeline-bar-width 3)
+    ;; (setq doom-modeline-major-mode-color-icon t)
+
+    ;; (doom-modeline-def-modeline 'main
+    ;;   '(bar workspace-number window-number evil-state god-state ryo-modal xah-fly-keys matches buffer-info remote-host buffer-position parrot selection-info)
+    ;;   '(misc-info persp-name lsp github debug minor-modes input-method major-mode process vcs checker))
+    )
+  )
+
+
+
+
 
 ;; Font
 (set-face-attribute 'default nil :family "Ricty Diminished" :height 180)
@@ -133,21 +164,6 @@
   :demand t
   :config
   (nyan-mode 1))
-
-(use-package doom-modeline
-  :ensure t
-  :demand t
-  :config
-  (line-number-mode t)
-  (column-number-mode t)
-  (doom-modeline-mode 1)
-  (setq doom-modeline-height 20)
-  (setq doom-modeline-bar-width 3)
-  (setq doom-modeline-buffer-file-name-style 'truncate-with-project)
-  (setq doom-modeline-icon t)
-  (setq doom-modeline-major-mode-icon t)
-  (setq doom-modeline-major-mode-color-icon t)
-  (setq doom-modeline-minor-modes nil))
 
 ;; datetime format
 (use-package time
@@ -207,21 +223,33 @@
 ;;   (global-set-key (kbd "C-c d") 'ediff-files)
 ;;   )
 
+;; undo-tree
+(use-package undo-tree
+  :ensure t
+  :demand t
+  :diminish t
+  :config
+  (global-undo-tree-mode t)
+  )
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Search / Replace
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; helm
 (use-package helm
   :ensure t
-  :bind(("C-c h" . helm-command-prefix)
-        ("M-x" . helm-M-x)
-        ("M-y" . helm-show-kill-ring)
-        ("C-x b" . helm-mini)
+  :bind(("C-c h"   . helm-command-prefix)
+        ("M-x"     . helm-M-x)
+        ("M-y"     . helm-show-kill-ring)
+        ("C-x b"   . helm-mini)
         ("C-x C-f" . helm-find-files)
-        ("C-c g" . helm-google-suggest)
-        ("C-x c" . nil)
+        ("C-c g"   . helm-google-suggest)
+        ("C-x c"   . nil)
         :map helm-map
-        ("C-h" . delete-backward-char)
-        ("<tab>" . helm-execute-persistent-action)
-        ("C-i" . helm-execute-persistent-action)
-        ("C-z" . helm-select-action))
+        ("C-h"     . delete-backward-char)
+        ("<tab>"   . helm-execute-persistent-action)
+        ("C-i"     . helm-execute-persistent-action)
+        ("C-z"     . helm-select-action))
   :custom
   (helm-buffers-fuzzy-matching t)
   (helm-recentf-fuzzy-match t)
@@ -232,14 +260,32 @@
   (require 'helm-for-files)
   )
 
-;; undo-tree
-(use-package undo-tree
+(use-package helm-tramp
   :ensure t
-  :demand t
-  :diminish t
-  :config
-  (global-undo-tree-mode t))
+  )
 
+;; swiper (isearch)
+(use-package swiper
+  :diminish
+  :ensure t
+  :bind
+  ("C-s" . swiper)
+  )
+
+;; anzu
+(use-package anzu
+  :diminish
+  :ensure t
+  :bind
+  ("C-r"   . anzu-query-replace-regexp)
+  ("C-M-r" . anzu-query-replace-at-cursor-thing)
+  :hook
+  (after-init . global-anzu-mode)
+  :custom
+  (anzu-deactivate-region t)
+  (anzu-search-threshold 1000)
+  )
+  
 (use-package google-this
   :ensure t)
 
@@ -293,9 +339,16 @@
 
 ;; (global-set-key (kbd "C-M-^") '(lambda () (interactive) (show-org-buffer "notes.org")))
 
+
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Develop Environment
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; hydra
+(use-package hydra
+  :ensure t
+  )
+
 ;; yasnippet
 (use-package yasnippet
   ;; :disabled
@@ -328,27 +381,25 @@
   :hook
   (after-init . global-company-mode)
   (elm-mode     . (lambda () (set (make-local-variable 'company-backends) '((company-yasnippet company-elm company-files)))))
-  (haskell-mode . (lambda () (set (make-local-variable 'company-backends)
-                                  '((
-                                     company-yasnippet
-                                     company-lsp
-                                     company-files
-                                     )))))
+  ;; using company by lsp-completion
+  ((haskell-mode
+    ;; java-mode
+    ) . (lambda () (set (make-local-variable 'company-backends) '((company-yasnippet company-lsp company-files)))))
   
   :bind (:map company-active-map
-              ("C-n" . company-select-next)
-              ("C-p" . company-select-previous)
-              ("C-s" . company-filter-candidates)
-              ("<tab>" . company-complete-common-or-cycle)
-              ;; ("<tab>" . company-complete)
-              ("M-n" . nil)
-              ("M-p" . nil)
-              ("C-h" . nil)
-              :map company-search-map
-              ("<tab>" . company-complete)
-              ;; ("<tab>" . company--insert-candidate)
-              ("C-n" . company-select-next)
-              ("C-p" . company-select-previous))
+         ("C-n" . company-select-next)
+         ("C-p" . company-select-previous)
+         ("C-s" . company-filter-candidates)
+         ("<tab>" . company-complete-common-or-cycle)
+         ;; ("<tab>" . company-complete)
+         ("M-n" . nil)
+         ("M-p" . nil)
+         ("C-h" . nil)
+         :map company-search-map
+         ("<tab>" . company-complete)
+         ;; ("<tab>" . company--insert-candidate)
+         ("C-n" . company-select-next)
+         ("C-p" . company-select-previous))
   ;; ("C-s" . company-select-next)
   ;; ("C-r" . company-select-previous))
   
@@ -367,9 +418,40 @@
   )
 
 ;; projectile
-(use-package projectile
+;; (use-package projectile
+;;   :ensure t
+;;   :custom
+;;   (projectile-completion-system 'helm)
+;;   :config
+;;   (projectile-mode)
+;;   )
+
+;; treemacs
+(use-package treemacs
   :ensure t
+  :bind
+  ("M-0"       . treemacs-select-window)
+  ("C-x t 1"   . treemacs-delete-other-windows)
+  ("C-x t t"   . treemacs)
+  ("C-x t B"   . treemacs-bookmark)
+  ;; ("C-x t C-t" . treemacs-find-file)
+  ("C-x t M-t" . treemacs-find-tag)
+
+  :config
+  (treemacs-follow-mode t)
+  (treemacs-filewatch-mode t)
+  (treemacs-fringe-indicator-mode t)
+  (treemacs-git-mode 'simple)
+
+
+  (use-package treemacs-icons-dired
+    :after treemacs dired
+    :ensure t
+    :config (treemacs-icons-dired-mode))
+  
   )
+
+
 
 ;; flycheck
 (use-package flycheck
@@ -385,7 +467,6 @@
 
 ;; lsp
 (use-package lsp-mode
-  ;; :disabled
   :ensure t
   :commands lsp
 
@@ -393,13 +474,16 @@
   (lsp-prefer-flymake nil)
   (lsp-document-sync-method 'incremental)
   (lsp-enable-snippet t)
-  ;; (lsp-enable-snippet nil)
   (lsp-print-io t)
+
+  :bind(:map lsp-mode-map
+        ("C-c t l" . lsp-lens-mode))
 
   :config
   (use-package lsp-ui
     :ensure t
     :hook (lsp-mode . lsp-ui-mode)
+    :commands lsp-ui-mode
     
     :custom-face
     (lsp-ui-doc-background ((nil (:background "black"))))
@@ -438,21 +522,54 @@
             (lsp-ui-doc--hide-frame))
         (lsp-ui-doc-mode 1)))
     
-    :bind(:map lsp-ui-mode-map
+    :bind(:map lsp-mode-map
                ("C-c C-r" . lsp-ui-peek-find-references)
                ("C-c C-j" . lsp-ui-peek-find-definitions)
                ("C-c i"   . lsp-ui-peek-find-implementation)
-               ("C-c d"   . ladicle/toggle-lsp-ui-doc)))
+               ("C-c t m" . lsp-ui-imenu)
+               ("C-c t s" . lsp-ui-sideline-mode)
+               ("C-c t d" . ladicle/toggle-lsp-ui-doc)))
 
   (use-package company-lsp
     :ensure t
+    :after company
+    :commands company-lsp
     :custom
     (company-lsp-cache-candidates nil)
     (company-lsp-async t)
     (company-lsp-enable-snippet t)
     (company-lsp-enable-recompletion t)
     (company-lsp-match-candidate-predicate 'company-lsp-match-candidate-flex)
+    :config
+    (add-to-list 'company-backends 'company-lsp)
     )
+
+  (use-package lsp-treemacs
+    :ensure t
+    :commands lsp-treemacs-errors-list
+    )
+
+  (use-package helm-lsp
+    :ensure t
+    :commands helm-lsp-workspace-symbol
+    )
+
+  (use-package dap-mode
+    :ensure t
+    :config
+    (dap-mode t)
+    (dap-ui-mode t)
+    )
+  )
+
+
+;; Java (STS4)
+(use-package lsp-java-boot
+  :ensure lsp-java
+  :demand t
+  :hook
+  (java-mode . lsp)
+  (java-mode . lsp-java-boot-lens-mode)
   )
 
 ;; Haskell
@@ -464,7 +581,8 @@
   :hook
   (haskell-mode . lsp)
   :custom
-  (lsp-haskell-process-path-hie "hie-wrapper"))
+  (lsp-haskell-process-path-hie "hie-wrapper")
+  )
 
 
 ;; for ghc-7.10.3
@@ -504,7 +622,36 @@
 
 
 ;; init-loader
-(use-package init-loader
-  :ensure t
-  :config
-  (init-loader-load "~/.emacs.d/conf"))
+;; (use-package init-loader
+;;   :ensure t
+;;   :config
+;;   (init-loader-load "~/.emacs.d/conf"))
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(doom-themes-enable-bold t)
+ '(doom-themes-enable-italic t)
+ '(gc-cons-threshold 8000000)
+ '(history-delete-duplicates t)
+ '(history-length 1000)
+ '(indent-tabs-mode nil)
+ '(inhibit-startup-screen t)
+ '(menu-bar-mode nil)
+ '(message-log-max 10000)
+ '(mouse-yank-at-point t)
+ '(package-selected-packages
+   (quote
+    (treemacs-icons-dired helm-c-yasnippet yasnippet-snippets elm-mode docker-compose-mode dockerfile-mode lsp-haskell lsp-java dap-mode company-lsp lsp-ui lsp-mode flycheck projectile company-quickhelp company-box company yasnippet hydra org-bullets google-this undo-tree helm-tramp helm doom-modeline nyan-mode volatile-highlights doom-themes use-package)))
+ '(savehist-mode t)
+ '(scroll-bar-mode nil)
+ '(tool-bar-mode nil)
+ '(transient-mark-mode t)
+ '(use-package-compute-statistics t))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(lsp-ui-doc-background ((nil (:background "black")))))

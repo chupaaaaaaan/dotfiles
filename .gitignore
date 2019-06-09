@@ -2,22 +2,26 @@
 *~
 
 # emacs 
+.emacs.d/.cache/
 .emacs.d/.org-id-locations
 .emacs.d/ac-comphist.dat
 .emacs.d/auto-save-list/
-.emacs.d/elpa/
 .emacs.d/bookmarks
+.emacs.d/elpa/
+.emacs.d/eclipse.jdt.ls/
 .emacs.d/history
-.emacs.d/.lsp-session*
 .emacs.d/local_conf/
 !.emacs.d/local_conf/.gitkeep
+.emacs.d/.lsp-session*
 .emacs.d/network-security.data
 .emacs.d/places
-.emacs.d/recentf
 .emacs.d/public_repos/
 !.emacs.d/public_repos/install-repos.sh
 !.emacs.d/public_repos/package_list.txt
+.emacs.d/recentf
 .emacs.d/url/
+.emacs.d/tramp
+.emacs.d/workspace/
 
 # peco
 peco*

@@ -477,7 +477,7 @@
   (lsp-print-io t)
 
   :bind(:map lsp-mode-map
-        ("C-c t l" . lsp-lens-mode))
+        ("C-c C-l l" . lsp-lens-mode))
 
   :config
   (use-package lsp-ui
@@ -526,9 +526,9 @@
                ("C-c C-r" . lsp-ui-peek-find-references)
                ("C-c C-j" . lsp-ui-peek-find-definitions)
                ("C-c i"   . lsp-ui-peek-find-implementation)
-               ("C-c t m" . lsp-ui-imenu)
-               ("C-c t s" . lsp-ui-sideline-mode)
-               ("C-c t d" . ladicle/toggle-lsp-ui-doc)))
+               ("C-c C-l m" . lsp-ui-imenu)
+               ("C-c C-l s" . lsp-ui-sideline-mode)
+               ("C-c C-l d" . ladicle/toggle-lsp-ui-doc)))
 
   (use-package company-lsp
     :ensure t
@@ -626,32 +626,3 @@
 ;;   :ensure t
 ;;   :config
 ;;   (init-loader-load "~/.emacs.d/conf"))
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(doom-themes-enable-bold t)
- '(doom-themes-enable-italic t)
- '(gc-cons-threshold 8000000)
- '(history-delete-duplicates t)
- '(history-length 1000)
- '(indent-tabs-mode nil)
- '(inhibit-startup-screen t)
- '(menu-bar-mode nil)
- '(message-log-max 10000)
- '(mouse-yank-at-point t)
- '(package-selected-packages
-   (quote
-    (treemacs-icons-dired helm-c-yasnippet yasnippet-snippets elm-mode docker-compose-mode dockerfile-mode lsp-haskell lsp-java dap-mode company-lsp lsp-ui lsp-mode flycheck projectile company-quickhelp company-box company yasnippet hydra org-bullets google-this undo-tree helm-tramp helm doom-modeline nyan-mode volatile-highlights doom-themes use-package)))
- '(savehist-mode t)
- '(scroll-bar-mode nil)
- '(tool-bar-mode nil)
- '(transient-mark-mode t)
- '(use-package-compute-statistics t))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(lsp-ui-doc-background ((nil (:background "black")))))

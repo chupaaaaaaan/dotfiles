@@ -99,8 +99,8 @@
 
     :config
     (set-cursor-color "cyan")
-    (line-number-mode 0)
-    (column-number-mode 0)
+    (line-number-mode 1)
+    (column-number-mode 1)
     (doom-modeline-mode 1)
     (setq doom-modeline-buffer-file-name-style 'truncate-with-project)
     (setq doom-modeline-icon t)
@@ -621,8 +621,8 @@
 (global-set-key (kbd "C-t")   'other-window)
 
 
-;; init-loader
-;; (use-package init-loader
-;;   :ensure t
-;;   :config
-;;   (init-loader-load "~/.emacs.d/conf"))
+init-loader
+(use-package init-loader
+  :ensure t
+  :config
+  (init-loader-load "~/.emacs.d/conf"))

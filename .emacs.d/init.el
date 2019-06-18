@@ -621,7 +621,7 @@
 (global-set-key (kbd "C-t")   'other-window)
 
 
-init-loader
+;; init-loader
 (use-package init-loader
   :ensure t
   :config

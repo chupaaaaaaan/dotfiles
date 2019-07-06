@@ -8,8 +8,19 @@ if [ -n "$BASH_VERSION" ]; then
     fi
 fi
 
+# create ~/.local/bin if not exist
+if [ ! -d "$HOME/.local/bin" ]; then
+    mkdir -p "$HOME/.local/bin"
+fi
+
+# create ~/bin if not exist
+if [ ! -d "$HOME/bin" ]; then
+    mkdir -p "$HOME/bin"
+fi
+
 # set PATH so it includes user's private bin directories
-PATH="$HOME/bin:$PATH"
+PATH="$HOME/bin:$HOME/.local/bin:$PATH"
+
 
 # set local profiles if they exist
 for f in $HOME/.bash_profile.d/*; do

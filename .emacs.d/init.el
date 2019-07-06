@@ -78,6 +78,18 @@
 
 
 
+
+;; Global keymap
+(global-unset-key (kbd "C-x C-c"))
+(defalias 'exit 'save-buffers-kill-emacs)
+
+;; Settings that do not depend on some major modes or minor modes
+(global-set-key (kbd "C-h")   'delete-backward-char)
+(global-set-key (kbd "C-c l") 'toggle-truncate-lines)
+(global-set-key (kbd "C-t")   'other-window)
+
+
+
 ;; Doom-themes
 ;; https://github.com/hlissner/emacs-doom-themes
 (use-package doom-themes
@@ -585,12 +597,6 @@
   )
 
 
-;; for ghc-7.10.3
-;; (require 'haskell-mode nil t)
-;; (require 'ghc nil t)
-;; (add-hook 'haskell-mode-hook (lambda () (ghc-init)))
-                                        ;(add-to-list 'company-backends 'company-ghc t)
-
 (use-package dockerfile-mode
   :ensure t
   )
@@ -599,26 +605,13 @@
   :ensure t
   )
 
-;; elm
 (use-package elm-mode
   :ensure t
   )
 
-;; markdown
 (use-package markdown-mode
   :ensure t
   )
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Global keymap
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(global-unset-key (kbd "C-x C-c"))
-(defalias 'exit 'save-buffers-kill-emacs)
-
-;; Settings that do not depend on some major modes or minor modes
-(global-set-key (kbd "C-h")   'delete-backward-char)
-(global-set-key (kbd "C-c l") 'toggle-truncate-lines)
-(global-set-key (kbd "C-t")   'other-window)
 
 
 ;; init-loader

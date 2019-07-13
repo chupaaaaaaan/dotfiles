@@ -708,10 +708,3 @@
 (use-package markdown-mode
   :ensure t
   )
-
-
-;; init-loader
-(use-package init-loader
-  :ensure t
-  :config
-  (init-loader-load "~/.emacs.d/conf"))

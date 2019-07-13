@@ -79,7 +79,15 @@
 
 
 
-;; Global keymap
+;; Keymap
+(use-package keyfreq
+  :ensure t
+  :custom
+  (keyfreq-mode 1)
+  (keyfreq-autosave-mode 1)
+  (keyfreq-buffer "*KeyFrequency*")
+)
+
 (global-unset-key (kbd "C-x C-c"))
 (defalias 'exit 'save-buffers-kill-emacs)
 
@@ -87,6 +95,8 @@
 (global-set-key (kbd "C-h")   'delete-backward-char)
 (global-set-key (kbd "C-c l") 'toggle-truncate-lines)
 (global-set-key (kbd "C-t")   'other-window)
+
+
 
 
 
@@ -251,13 +261,14 @@
 ;; helm
 (use-package helm
   :ensure t
-  :bind(("C-c h"   . helm-command-prefix)
+  :bind(
+        ("C-c h"   . helm-command-prefix)
+        ("C-x c"   . nil)
         ("M-x"     . helm-M-x)
         ("M-y"     . helm-show-kill-ring)
         ("C-x b"   . helm-mini)
         ("C-x C-f" . helm-find-files)
         ("C-c g"   . helm-google-suggest)
-        ("C-x c"   . nil)
         :map helm-map
         ("C-h"     . delete-backward-char)
         ("<tab>"   . helm-execute-persistent-action)
@@ -315,8 +326,8 @@
   (org-default-notes-file (concat org-directory "notes.org"))
 
   (org-agenda-files (quote (
-                            (identity task-file)
-                            (identity schedule-file)
+                            "~/Dropbox/org/task.org"
+                            "~/Dropbox/org/schedule.org"
                             )))
 
   (org-refile-targets '((org-agenda-files :maxlevel . 3)))
@@ -339,7 +350,7 @@
   :bind(("C-c c" . org-capture)
         ("C-c a" . org-agenda)
         ("C-c j" . org-clock-goto)
-        ("C-c m" . (lambda () (interactive) (ladicle/open-org-file task-file)))
+        ("C-c t" . (lambda () (interactive) (ladicle/open-org-file task-file)))
         ("C-c s" . (lambda () (interactive) (ladicle/open-org-file schedule-file)))
         :map org-mode-map
         ("C-c i" . org-clock-in)

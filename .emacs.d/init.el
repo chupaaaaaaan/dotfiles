@@ -6,14 +6,14 @@
 (defun add-to-load-path (&rest paths)
   (let (path)
     (dolist (path paths paths)
-      (let ((default-directory
+      (let ((elisp-dir
               (expand-file-name (concat user-emacs-directory path))))
-        (add-to-list 'load-path default-directory)
+        (add-to-list 'load-path elisp-dir)
         (if (fboundp 'normal-top-level-add-subdirs-to-load-path)
             (normal-top-level-add-subdirs-to-load-path))))))
 
 ;; add directories under "~/.emacs.d/" to load-path
-(add-to-load-path "conf" "public_repos")
+(add-to-load-path "public_repos")
 
 ;; load local configures
 (dolist (lcnf (directory-files (concat user-emacs-directory "local_conf") t "\\.el$"))
@@ -66,10 +66,6 @@
   )
 
 ;;TODO: 雑多な設定を整理する
-;; locale and environment
-(set-language-environment "Japanese")
-(prefer-coding-system 'utf-8)
-
 ;; maximize frame
 (toggle-frame-maximized)
 
@@ -77,6 +73,70 @@
 (setq-default bidi-display-reordering nil)
 
 
+
+;; Font
+;; Japanese font settings
+(defun set-japanese-font (family)
+  "Set japanese font by FAMILY."
+  (set-fontset-font (frame-parameter nil 'font) 'japanese-jisx0208 (font-spec :family family))
+  (set-fontset-font (frame-parameter nil 'font) 'japanese-jisx0212 (font-spec :family family))
+  (set-fontset-font (frame-parameter nil 'font) 'katakana-jisx0201 (font-spec :family family)))
+
+;; Overwrite latin and greek char's font
+(defun set-latin-and-greek-font (family)
+  "Set default font by FAMILY."
+  (set-fontset-font (frame-parameter nil 'font) '(#x0250 . #x02AF) (font-spec :family family)) ; IPA extensions
+  (set-fontset-font (frame-parameter nil 'font) '(#x00A0 . #x00FF) (font-spec :family family)) ; latin-1
+  (set-fontset-font (frame-parameter nil 'font) '(#x0100 . #x017F) (font-spec :family family)) ; latin extended-A
+  (set-fontset-font (frame-parameter nil 'font) '(#x0180 . #x024F) (font-spec :family family)) ; latin extended-B
+  (set-fontset-font (frame-parameter nil 'font) '(#x2018 . #x2019) (font-spec :family family)) ; end quote
+  (set-fontset-font (frame-parameter nil 'font) '(#x2588 . #x2588) (font-spec :family family)) ; █
+  (set-fontset-font (frame-parameter nil 'font) '(#x2500 . #x2500) (font-spec :family family)) ; ─
+  (set-fontset-font (frame-parameter nil 'font) '(#x2504 . #x257F) (font-spec :family family)) ; box character
+  (set-fontset-font (frame-parameter nil 'font) '(#x0370 . #x03FF) (font-spec :family family)))
+
+(setq use-default-font-for-symbols nil)
+(setq inhibit-compacting-font-caches t)
+(setq jp-font-family "Ricty Diminished")
+(setq default-font-family "all-the-icons")
+
+(when (eq system-type 'darwin)
+  (set-face-attribute 'default nil :family jp-font-family :height 180))
+(when (eq system-type 'gnu/linux)
+  (set-face-attribute 'default nil :family jp-font-family :height 150))
+(when (eq system-type 'windows-nt)
+  (set-face-attribute 'default nil :family jp-font-family :height 150))
+(set-japanese-font jp-font-family)
+(set-latin-and-greek-font default-font-family)
+(add-to-list 'face-font-rescale-alist (cons default-font-family 0.86))
+(add-to-list 'face-font-rescale-alist (cons jp-font-family 1.0))
+
+
+;; locale and environment
+(set-language-environment "Japanese")
+(prefer-coding-system 'utf-8)
+
+;; OS
+;; Mac
+(when (eq system-type 'darwin)
+  (require 'ucs-normalize nil t)
+  (setq file-name-coding-system 'utf-8-hfs)
+  (setq locale-coding-system 'utf-8-hfs)
+  )
+
+;; GNU/Linux
+(when (eq system-type 'gnu/linux)
+  )
+
+;; Windows
+(when (eq system-type 'windows-nt)
+  (setq file-name-coding-system 'cp932)
+  (setq locale-coding-system 'cp932)
+
+  ;; default path
+  (setq default-directory (concat (getenv "HOMEPATH") "/"))
+  (setq command-line-default-directory (concat (getenv "HOMEPATH") "/"))
+  )
 
 
 ;; Keymap
@@ -139,45 +199,6 @@
   )
 
 
-
-
-
-;; Font
-;; Japanese font settings
-(defun set-japanese-font (family)
-  "Set japanese font by FAMILY."
-  (set-fontset-font (frame-parameter nil 'font) 'japanese-jisx0208 (font-spec :family family))
-  (set-fontset-font (frame-parameter nil 'font) 'japanese-jisx0212 (font-spec :family family))
-  (set-fontset-font (frame-parameter nil 'font) 'katakana-jisx0201 (font-spec :family family)))
-
-;; Overwrite latin and greek char's font
-(defun set-latin-and-greek-font (family)
-  "Set default font by FAMILY."
-  (set-fontset-font (frame-parameter nil 'font) '(#x0250 . #x02AF) (font-spec :family family)) ; IPA extensions
-  (set-fontset-font (frame-parameter nil 'font) '(#x00A0 . #x00FF) (font-spec :family family)) ; latin-1
-  (set-fontset-font (frame-parameter nil 'font) '(#x0100 . #x017F) (font-spec :family family)) ; latin extended-A
-  (set-fontset-font (frame-parameter nil 'font) '(#x0180 . #x024F) (font-spec :family family)) ; latin extended-B
-  (set-fontset-font (frame-parameter nil 'font) '(#x2018 . #x2019) (font-spec :family family)) ; end quote
-  (set-fontset-font (frame-parameter nil 'font) '(#x2588 . #x2588) (font-spec :family family)) ; █
-  (set-fontset-font (frame-parameter nil 'font) '(#x2500 . #x2500) (font-spec :family family)) ; ─
-  (set-fontset-font (frame-parameter nil 'font) '(#x2504 . #x257F) (font-spec :family family)) ; box character
-  (set-fontset-font (frame-parameter nil 'font) '(#x0370 . #x03FF) (font-spec :family family)))
-
-(setq use-default-font-for-symbols nil)
-(setq inhibit-compacting-font-caches t)
-(setq jp-font-family "Ricty Diminished")
-(setq default-font-family "FuraCode Nerd Font")
-
-(when (eq system-type 'darwin)
-  (set-face-attribute 'default nil :family jp-font-family :height 140))
-(when (eq system-type 'gnu/linux)
-  (set-face-attribute 'default nil :family jp-font-family :height 150))
-(when (eq system-type 'windows-nt)
-  (set-face-attribute 'default nil :family jp-font-family :height 160))
-(set-japanese-font jp-font-family)
-(set-latin-and-greek-font default-font-family)
-;; (add-to-list 'face-font-rescale-alist (cons default-font-family 0.86))
-;; (add-to-list 'face-font-rescale-alist (cons jp-font-family 1.0))
 
 
 

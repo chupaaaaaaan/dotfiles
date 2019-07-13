@@ -218,6 +218,7 @@
 ;; scroll-lock
 (use-package scroll-lock
   :ensure t
+  :disabled
   :init
   (defun toggle-scroll-lock ()
     "Toggle scroll lock."
@@ -305,7 +306,6 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Org mode
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; TODO: 便利に使う設定を考える
 (use-package org
   :ensure t
   :custom
@@ -315,8 +315,8 @@
   (org-default-notes-file (concat org-directory "notes.org"))
 
   (org-agenda-files (quote (
-                            "~/Dropbox/org/task.org"
-                            "~/Dropbox/org/schedule.org"
+                            (identity task-file)
+                            (identity schedule-file)
                             )))
 
   (org-refile-targets '((org-agenda-files :maxlevel . 3)))
@@ -338,6 +338,9 @@
 
   :bind(("C-c c" . org-capture)
         ("C-c a" . org-agenda)
+        ("C-c j" . org-clock-goto)
+        ("C-c m" . (lambda () (interactive) (ladicle/open-org-file task-file)))
+        ("C-c s" . (lambda () (interactive) (ladicle/open-org-file schedule-file)))
         :map org-mode-map
         ("C-c i" . org-clock-in)
         ("C-c o" . org-clock-out)
@@ -347,8 +350,6 @@
         ("C-c w" . widen)
         ("C-c e" . org-set-effort)
         ;; TODO: キーバインド検討する
-        ;; ("M-o l i" . (lambda () (interactive) (ladicle/open-org-file task-file)))
-        ;; ("M-o l s" . (lambda () (interactive) (ladicle/open-org-file schedule-file)))
         ;; ("M-o l y" . (lambda () (interactive) (ladicle/open-org-file (ladicle/get-yesterday-diary))))
         ;; ("M-o l p" . (lambda () (interactive) (ladicle/open-org-file (ladicle/get-diary-from-cal))))
         ;; ("M-o l t" . (lambda () (interactive) (ladicle/open-org-file (ladicle/get-today-diary))))

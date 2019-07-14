@@ -40,7 +40,7 @@ if [ ! -x ${BINDIR}/peco ]; then
     ${EXTENDER} ${ARCHIVE}
 fi
 
-if [ ! -h /usr/local/bin/peco ]; then
-    rm -f /usr/local/bin/peco
-    ln -s ${BINDIR}/peco /usr/local/bin/peco
+if [ ! -h $HOME/bin/peco ]; then
+    rm -f $HOME/bin/peco
+    ln -s ${BINDIR}/peco $HOME/bin/peco
 fi

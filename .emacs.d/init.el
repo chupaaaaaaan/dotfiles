@@ -498,7 +498,7 @@
          ("C-n" . company-select-next)
          ("C-p" . company-select-previous)
          ("C-s" . company-filter-candidates)
-         ("<tab>" . company-complete-common-or-cycle)
+         ("<tab>" . company-complete)
          ;; ("<tab>" . company-complete)
          ("M-n" . nil)
          ("M-p" . nil)
@@ -507,9 +507,10 @@
          ("<tab>" . company-complete)
          ;; ("<tab>" . company--insert-candidate)
          ("C-n" . company-select-next)
-         ("C-p" . company-select-previous))
-  ;; ("C-s" . company-select-next)
-  ;; ("C-r" . company-select-previous))
+         ("C-p" . company-select-previous)
+         ;; ("C-s" . company-select-next)
+         ;; ("C-r" . company-select-previous)
+         )
   
   :config
   (use-package company-box

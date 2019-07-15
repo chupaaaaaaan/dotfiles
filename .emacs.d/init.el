@@ -15,6 +15,9 @@
 ;; add directories under "~/.emacs.d/" to load-path
 (add-to-load-path "public_repos")
 
+;; separate customize file
+ (setq custom-file "~/.emacs.d/customize.el")
+ 
 ;; load local configures
 (dolist (lcnf (directory-files (concat user-emacs-directory "local_conf") t "\\.el$"))
   (load-file lcnf))
@@ -146,16 +149,32 @@
   (keyfreq-mode 1)
   (keyfreq-autosave-mode 1)
   (keyfreq-buffer "*KeyFrequency*")
-)
+  )
+
+(use-package which-key
+  :ensure t
+  :diminish which-key-mode
+  :hook (after-init . which-key-mode)
+  )
+
+;; define prefix-key
+(define-prefix-command 'ladicle-window-map)
+(define-key global-map (kbd "M-o") 'ladicle-window-map)
+
+(define-prefix-command 'ladicle-toggle-map)
+(define-key global-map (kbd "M-t") 'ladicle-toggle-map)
+
+(define-prefix-command 'ladicle-link-map)
+(define-key global-map (kbd "M-o l") 'ladicle-link-map)
+
 
 (global-unset-key (kbd "C-x C-c"))
 (defalias 'exit 'save-buffers-kill-emacs)
 
 ;; Settings that do not depend on some major modes or minor modes
 (global-set-key (kbd "C-h")   'delete-backward-char)
-(global-set-key (kbd "C-c l") 'toggle-truncate-lines)
+(global-set-key (kbd "M-t l") 'toggle-truncate-lines)
 (global-set-key (kbd "C-t")   'other-window)
-
 
 
 
@@ -197,6 +216,14 @@
     ;;   '(misc-info persp-name lsp github debug minor-modes input-method major-mode process vcs checker))
     )
   )
+
+
+(use-package dashboard
+  :ensure t
+  :diminish
+  (dashboard-mode page-break-lines-mode)
+  )
+
 
 
 
@@ -294,7 +321,7 @@
     (scroll-lock-mode (if scroll-lock-mode -1 1))
     (message "Scroll lock %s" (if scroll-lock-mode "enabled" "disabled")))
 
-  :bind(("C-c m" . toggle-scroll-lock)))
+  :bind(("M-t m" . toggle-scroll-lock)))
 
 ;; ediff
 ;; (when (executable-find "diff")
@@ -326,7 +353,7 @@
         ("M-y"     . helm-show-kill-ring)
         ("C-x b"   . helm-mini)
         ("C-x C-f" . helm-find-files)
-        ("C-c g"   . helm-google-suggest)
+        ("M-o g"   . helm-google-suggest)
         :map helm-map
         ("C-h"     . delete-backward-char)
         ("<tab>"   . helm-execute-persistent-action)
@@ -358,9 +385,9 @@
 (use-package anzu
   :diminish
   :ensure t
-  :bind
-  ("C-r"   . anzu-query-replace-regexp)
-  ("C-M-r" . anzu-query-replace-at-cursor-thing)
+  :bind(("C-r"   . anzu-query-replace-regexp)
+        ("C-M-r" . anzu-query-replace-at-cursor-thing)
+        )
   :hook
   (after-init . global-anzu-mode)
   :custom
@@ -369,8 +396,20 @@
   )
   
 (use-package google-this
-  :ensure t)
+  :ensure t
+  :bind(("M-o G" . google-this)
+        )
+  )
 
+(use-package google-translate
+  :ensure t
+  :bind(("M-o t" . google-translate-at-point)
+        ("M-o T" . google-translate-at-point-reverse)
+        )
+  :custom
+  (google-translate-default-source-language "en")
+  (google-translate-default-target-language "ja")
+  )
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Org mode
@@ -408,8 +447,11 @@
   :bind(("C-c c" . org-capture)
         ("C-c a" . org-agenda)
         ("C-c j" . org-clock-goto)
-        ("C-c t" . (lambda () (interactive) (ladicle/open-org-file task-file)))
-        ("C-c s" . (lambda () (interactive) (ladicle/open-org-file schedule-file)))
+        ("M-o l i" . (lambda () (interactive) (ladicle/open-org-file task-file)))
+        ("M-o l s" . (lambda () (interactive) (ladicle/open-org-file schedule-file)))
+        ("M-o l y" . (lambda () (interactive) (ladicle/open-org-file (ladicle/get-yesterday-diary))))
+        ("M-o l p" . (lambda () (interactive) (ladicle/open-org-file (ladicle/get-diary-from-cal))))
+        ("M-o l t" . (lambda () (interactive) (ladicle/open-org-file (ladicle/get-today-diary))))
         :map org-mode-map
         ("C-c i" . org-clock-in)
         ("C-c o" . org-clock-out)
@@ -418,10 +460,6 @@
         ("C-c b" . org-narrow-to-block)
         ("C-c w" . widen)
         ("C-c e" . org-set-effort)
-        ;; TODO: キーバインド検討する
-        ;; ("M-o l y" . (lambda () (interactive) (ladicle/open-org-file (ladicle/get-yesterday-diary))))
-        ;; ("M-o l p" . (lambda () (interactive) (ladicle/open-org-file (ladicle/get-diary-from-cal))))
-        ;; ("M-o l t" . (lambda () (interactive) (ladicle/open-org-file (ladicle/get-today-diary))))
         )
 
   :preface
@@ -565,11 +603,12 @@
 ;; flycheck
 (use-package flycheck
   :ensure t
+  ;; :disabled
   :hook (after-init . global-flycheck-mode)
 
   :config
   (use-package flycheck-posframe
-    :disabled
+    ;; :disabled
     :ensure t
     :hook (flycheck-mode . flycheck-posframe-mode))
   )
@@ -581,31 +620,33 @@
 
   :custom
   (lsp-prefer-flymake nil)
+  ;; (lsp-prefer-flymake :none)
   (lsp-document-sync-method 'incremental)
   (lsp-enable-snippet t)
   (lsp-print-io t)
 
   :bind(:map lsp-mode-map
-        ("C-c C-l l" . lsp-lens-mode))
+        ("C-c l" . lsp-lens-mode))
 
   :config
   (use-package lsp-ui
     :ensure t
+    ;; :disabled
     :hook (lsp-mode . lsp-ui-mode)
     :commands lsp-ui-mode
     
-    :custom-face
-    (lsp-ui-doc-background ((nil (:background "black"))))
+    ;; :custom-face
+    ;; (lsp-ui-doc-background ((nil (:background "black"))))
     
     :custom
     (lsp-ui-doc-enable nil)
     (lsp-ui-doc-header t)
     (lsp-ui-doc-include-signature t)
-    (lsp-ui-doc-position 'bottom)
+    (lsp-ui-doc-position 'at-point)
     (lsp-ui-doc-max-width 150)
     (lsp-ui-doc-max-height 30)
     (lsp-ui-doc-use-childframe t)
-    (lsp-ui-doc-use-webkit t)
+    (lsp-ui-doc-use-webkit nil)
 
     (lsp-ui-peek-enable t)
     (lsp-ui-peek-peek-height 20)
@@ -616,10 +657,15 @@
     (lsp-ui-imenu-kind-position 'top)
 
     (lsp-ui-flycheck-enable t)
+    ;; (lsp-ui-flycheck-list-position 'right)
     (lsp-ui-flycheck-list-position 'bottom)
     (lsp-ui-flycheck-live-reporting t)
 
     (lsp-ui-sideline-enable nil)
+    (lsp-ui-sideline-show-symbol t)
+    (lsp-ui-sideline-show-hover t)
+    (lsp-ui-sideline-show-diagnostics nil)
+    (lsp-ui-sideline-show-code-actions nil)
     
     :preface
     ;; https://ladicle.com/post/config/#lsp
@@ -635,9 +681,9 @@
                ("C-c C-r" . lsp-ui-peek-find-references)
                ("C-c C-j" . lsp-ui-peek-find-definitions)
                ("C-c i"   . lsp-ui-peek-find-implementation)
-               ("C-c C-l m" . lsp-ui-imenu)
-               ("C-c C-l s" . lsp-ui-sideline-mode)
-               ("C-c C-l d" . ladicle/toggle-lsp-ui-doc)))
+               ("C-c m"   . lsp-ui-imenu)
+               ("C-c s"   . lsp-ui-sideline-mode)
+               ("C-c d"   . ladicle/toggle-lsp-ui-doc)))
 
   (use-package company-lsp
     :ensure t
@@ -671,7 +717,6 @@
     )
   )
 
-
 ;; Java (STS4)
 (use-package lsp-java-boot
   :ensure lsp-java
@@ -685,6 +730,7 @@
 ;; for ghc-8.0.2 and later
 (use-package lsp-haskell
   :ensure t
+  :defer t
   ;; :init
   ;; (add-to-list 'company-backends 'company-lsp)
   :hook
@@ -709,3 +755,6 @@
 (use-package markdown-mode
   :ensure t
   )
+
+;; load customize file
+(load custom-file t)

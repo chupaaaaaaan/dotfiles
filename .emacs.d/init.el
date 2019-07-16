@@ -438,7 +438,7 @@
      ("t" " Write down the thoughts of this moment with a timestamp." item (file+headline ladicle/get-today-diary "Log") "%(ladicle/org-get-time) %? \n")
      ("m" " Memorize something in the memo section of today's diary." entry (file+headline ladicle/get-today-diary "Memo") "** %? \n" :unnarrowed 1)
      ("i" " Create a general task to the inbox and jump to the task file." entry (file+headline task-file "Inbox") "* TODO %?\n  %U\n\n** Reference\n  %i\n\n" :jump-to-captured 1)
-     ("p" " Create an interrupt task to the inbox and start clocking."     entry (file+headline task-file "Inbox") "* TODO %?\n  %U\n\n** Reference\n  %i\n\n" :jump-to-captured 1 :clock-in 1 :clock-resume 1)
+     ("p" " Create an interrupt task to the inbox and start clocking."     entry (file+headline task-file "Inbox") "* TODO %?\n  %U\n\n** Reference\n  %i\n\n" :clock-in 1 :clock-resume 1)
      ("s" " Add an event to the calendar." entry (file+headline schedule-file "Schedule") "* %?\n  SCHEDULED: <%(org-read-date)>\n\n")
      ("h" " Collect hacking Emacs ideas!" item (file+headline task-file "Hacking Emacs") "- [ ] %?" :prepend t)
      ("l" " Store the link of the current position in the clocking task." item  (clock) "- %A\n" :immediate t :prepend t)

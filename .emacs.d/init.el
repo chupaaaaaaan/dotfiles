@@ -657,8 +657,8 @@
     (lsp-ui-imenu-kind-position 'top)
 
     (lsp-ui-flycheck-enable t)
-    ;; (lsp-ui-flycheck-list-position 'right)
-    (lsp-ui-flycheck-list-position 'bottom)
+    (lsp-ui-flycheck-list-position 'right)
+    ;; (lsp-ui-flycheck-list-position 'bottom)
     (lsp-ui-flycheck-live-reporting t)
 
     (lsp-ui-sideline-enable nil)

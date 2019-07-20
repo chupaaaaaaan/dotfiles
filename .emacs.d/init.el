@@ -565,13 +565,14 @@
   )
 
 ;; projectile
-;; (use-package projectile
-;;   :ensure t
-;;   :custom
-;;   (projectile-completion-system 'helm)
-;;   :config
-;;   (projectile-mode)
-;;   )
+(use-package projectile
+  :ensure t
+  :disabled
+  :custom
+  (projectile-completion-system 'helm)
+  :config
+  (projectile-mode)
+  )
 
 ;; treemacs
 (use-package treemacs
@@ -594,8 +595,8 @@
   (use-package treemacs-icons-dired
     :after treemacs dired
     :ensure t
-    :config (treemacs-icons-dired-mode))
-  
+    :config
+    (treemacs-icons-dired-mode))
   )
 
 
@@ -604,7 +605,10 @@
 (use-package flycheck
   :ensure t
   ;; :disabled
-  :hook (after-init . global-flycheck-mode)
+  :hook ((
+          lsp-mode
+          emacs-lisp-mode
+          ) . flycheck-mode)
 
   :config
   (use-package flycheck-posframe
@@ -620,13 +624,12 @@
 
   :custom
   (lsp-prefer-flymake nil)
-  ;; (lsp-prefer-flymake :none)
   (lsp-document-sync-method 'incremental)
   (lsp-enable-snippet t)
   (lsp-print-io t)
 
   :bind(:map lsp-mode-map
-        ("C-c l" . lsp-lens-mode))
+             ("C-c l" . lsp-lens-mode))
 
   :config
   (use-package lsp-ui
@@ -642,7 +645,7 @@
     (lsp-ui-doc-enable nil)
     (lsp-ui-doc-header t)
     (lsp-ui-doc-include-signature t)
-    (lsp-ui-doc-position 'at-point)
+    (lsp-ui-doc-position 'bottom)
     (lsp-ui-doc-max-width 150)
     (lsp-ui-doc-max-height 30)
     (lsp-ui-doc-use-childframe t)
@@ -657,8 +660,8 @@
     (lsp-ui-imenu-kind-position 'top)
 
     (lsp-ui-flycheck-enable t)
-    (lsp-ui-flycheck-list-position 'right)
-    ;; (lsp-ui-flycheck-list-position 'bottom)
+    ;; (lsp-ui-flycheck-list-position 'right)
+    (lsp-ui-flycheck-list-position 'bottom)
     (lsp-ui-flycheck-live-reporting t)
 
     (lsp-ui-sideline-enable nil)
@@ -670,12 +673,15 @@
     :preface
     ;; https://ladicle.com/post/config/#lsp
     (defun ladicle/toggle-lsp-ui-doc ()
+      "Toggle Lsp-Ui-Doc mode."
       (interactive)
       (if lsp-ui-doc-mode
           (progn
             (lsp-ui-doc-mode -1)
             (lsp-ui-doc--hide-frame))
-        (lsp-ui-doc-mode 1)))
+        (lsp-ui-doc-mode 1))
+      (message "Lsp-Ui-Doc mode %s in current buffer" (if lsp-ui-doc-mode "enabled" "disabled"))
+      )
     
     :bind(:map lsp-mode-map
                ("C-c C-r" . lsp-ui-peek-find-references)

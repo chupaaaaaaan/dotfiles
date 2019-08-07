@@ -526,9 +526,10 @@
 
   :hook
   (after-init . global-company-mode)
-  (elm-mode     . (lambda () (set (make-local-variable 'company-backends) '((company-yasnippet company-elm company-files)))))
+  ;; (elm-mode   . (lambda () (set (make-local-variable 'company-backends) '((company-yasnippet company-elm company-files)))))
   ;; using company by lsp-completion
   ((haskell-mode
+    ;; elm-mode
     ;; java-mode
     ) . (lambda () (set (make-local-variable 'company-backends) '((company-yasnippet company-lsp company-files)))))
   
@@ -608,6 +609,7 @@
   :hook ((
           lsp-mode
           emacs-lisp-mode
+          elm-mode
           ) . flycheck-mode)
 
   :config
@@ -701,8 +703,8 @@
     (company-lsp-enable-snippet t)
     (company-lsp-enable-recompletion t)
     (company-lsp-match-candidate-predicate 'company-lsp-match-candidate-flex)
-    :config
-    (add-to-list 'company-backends 'company-lsp)
+    ;; :config
+    ;; (add-to-list 'company-backends 'company-lsp)
     )
 
   (use-package lsp-treemacs
@@ -756,6 +758,9 @@
 
 (use-package elm-mode
   :ensure t
+  :defer t
+  :config
+  (add-to-list 'company-backends 'company-elm)
   )
 
 (use-package markdown-mode

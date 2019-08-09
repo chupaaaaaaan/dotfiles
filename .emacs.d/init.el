@@ -484,6 +484,22 @@
     :custom
     (org-bullets-bullet-list '("" "" "" "" "" "" "" "" "" "")))
 
+  (use-package org-tree-slide
+    :ensure t
+    :custom
+    (org-tree-slide-header nil)
+    (org-tree-slide-slide-in-effect nil)
+    (org-tree-slide-heading-emphasis nil)
+    (org-tree-slide-cursor-init nil)
+    (org-tree-slide-modeline-display 'outside)
+    (org-tree-slide-skip-done nil)
+    (org-tree-slide-skip-comments t)
+
+    :bind (("<f8>" . org-tree-slide-mode)
+           :map org-tree-slide-mode-map
+           ("<f9>" . org-tree-slide-move-previous-tree)
+           ("<f10>" . org-tree-slide-move-next-tree))
+    )
   )
 
 

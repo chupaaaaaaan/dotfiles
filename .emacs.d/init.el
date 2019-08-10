@@ -446,16 +446,16 @@
 
   :bind(("C-c c" . org-capture)
         ("C-c a" . org-agenda)
-        ("C-c j" . org-clock-goto)
+        ;; ("C-c j" . org-clock-goto)
         ("M-o l i" . (lambda () (interactive) (ladicle/open-org-file task-file)))
         ("M-o l s" . (lambda () (interactive) (ladicle/open-org-file schedule-file)))
         ("M-o l y" . (lambda () (interactive) (ladicle/open-org-file (ladicle/get-yesterday-diary))))
         ("M-o l p" . (lambda () (interactive) (ladicle/open-org-file (ladicle/get-diary-from-cal))))
         ("M-o l t" . (lambda () (interactive) (ladicle/open-org-file (ladicle/get-today-diary))))
         :map org-mode-map
-        ("C-c i" . org-clock-in)
-        ("C-c o" . org-clock-out)
-        ("C-c u" . org-dblock-update)
+        ;; ("C-c i" . org-clock-in)
+        ;; ("C-c o" . org-clock-out)
+        ;; ("C-c u" . org-dblock-update)
         ("C-c n" . org-narrow-to-subtree)
         ("C-c b" . org-narrow-to-block)
         ("C-c w" . widen)
@@ -474,34 +474,70 @@
   (defun ladicle/org-get-time ()
     (format-time-string "<%H:%M>" (current-time)))
 
-
-  :config
-  (use-package org-bullets
-    :ensure t
-    :hook
-    (org-mode . org-bullets-mode)
-
-    :custom
-    (org-bullets-bullet-list '("" "" "" "" "" "" "" "" "" "")))
-
-  (use-package org-tree-slide
-    :ensure t
-    :custom
-    (org-tree-slide-header nil)
-    (org-tree-slide-slide-in-effect nil)
-    (org-tree-slide-heading-emphasis nil)
-    (org-tree-slide-cursor-init nil)
-    (org-tree-slide-modeline-display 'outside)
-    (org-tree-slide-skip-done nil)
-    (org-tree-slide-skip-comments t)
-
-    :bind (("<f8>" . org-tree-slide-mode)
-           :map org-tree-slide-mode-map
-           ("<f9>" . org-tree-slide-move-previous-tree)
-           ("<f10>" . org-tree-slide-move-next-tree))
-    )
   )
 
+
+(use-package org-bullets
+  :ensure t
+  :hook
+  (org-mode . org-bullets-mode)
+
+  ;; :custom
+  ;; (org-bullets-bullet-list '("" "" "" "" "" "" "" "" "" ""))
+  )
+
+
+;; https://qiita.com/takaxp/items/6b2d1e05e7ce4517274d
+(use-package org-tree-slide
+  :ensure t
+  :after org
+  :custom
+  (org-tree-slide-header nil)
+  (org-tree-slide-slide-in-effect nil)
+  (org-tree-slide-heading-emphasis nil)
+  (org-tree-slide-cursor-init nil)
+  (org-tree-slide-modeline-display 'outside)
+  (org-tree-slide-skip-done nil)
+  (org-tree-slide-skip-comments t)
+  ;; org-clock
+  (org-clock-out-remove-zero-time-clocks t)
+  (org-clock-clocked-in-display 'frame-title)
+
+  :bind (("<f8>" . org-tree-slide-mode)
+         :map org-tree-slide-mode-map
+         ("<f9>" . org-tree-slide-move-previous-tree)
+         ("<f10>" . org-tree-slide-move-next-tree))
+
+  :preface
+  ;; org-clock-in を拡張
+  ;; 発動条件(1) タスクが DONE になっていないこと (変更可)
+  ;; 発動条件(2) アウトラインレベルが4まで．それ以上に深いレベルでは計測しない (変更可)
+  (defun takaxp/org-clock-in ()
+    (when (and (looking-at (concat "^\\*+ " org-not-done-regexp))
+               (memq (org-outline-level) '(1 2 3 4)))
+      (org-clock-in)))
+  ;; org-clock-out を拡張
+  (defun takaxp/org-clock-out ()
+    (when (org-clocking-p)
+      (org-clock-out)))
+  (defun takaxp/org-clock-out-and-save-when-exit ()
+    "Save buffers and stop clocking when kill emacs."
+    (when (org-clocking-p)
+      (org-clock-out)))
+
+  :hook
+  ;; org-clock-in をナローイング時に呼び出す．
+  (org-tree-slide-before-narrow-hook        . takaxp/org-clock-in)
+  ;; org-clock-out を適切なタイミングで呼び出す．
+  (org-tree-slide-before-move-next-hook     . takaxp/org-clock-out)
+  (org-tree-slide-before-move-previous-hook . takaxp/org-clock-out)
+  (org-tree-slide-stop-hook                 . takaxp/org-clock-out)
+  ;; 一時的にナローイングを解く時にも計測を止めたい人向け
+  (org-tree-slide-before-content-view-hook  . takaxp/org-clock-out)
+  ;; emacs終了時に時間計測を止める
+  (kill-emacs-hook . takaxp/org-clock-out-and-save-when-exit)
+
+  )
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Develop Environment

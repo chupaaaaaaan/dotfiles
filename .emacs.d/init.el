@@ -125,6 +125,7 @@
   (require 'ucs-normalize nil t)
   (setq file-name-coding-system 'utf-8-hfs)
   (setq locale-coding-system 'utf-8-hfs)
+;;  (setq alert-default-style 'osx-notifier)
   )
 
 ;; GNU/Linux
@@ -421,6 +422,10 @@
   (task-file (concat org-directory "task.org"))
   (schedule-file (concat org-directory "schedule.org"))
   (org-default-notes-file (concat org-directory "notes.org"))
+  ;; org-clock
+  (org-clock-out-remove-zero-time-clocks t)
+  (org-clock-clocked-in-display 'frame-title)
+
 
   (org-agenda-files (quote (
                             "~/Dropbox/org/task.org"
@@ -435,13 +440,13 @@
                        ))
   (org-capture-templates
    '(
-     ("t" " Write down the thoughts of this moment with a timestamp." item (file+headline ladicle/get-today-diary "Log") "%(ladicle/org-get-time) %? \n")
-     ("m" " Memorize something in the memo section of today's diary." entry (file+headline ladicle/get-today-diary "Memo") "** %? \n" :unnarrowed 1)
-     ("i" " Create a general task to the inbox and jump to the task file." entry (file+headline task-file "Inbox") "* TODO %?\n  %U\n\n** Reference\n  %i\n\n" :jump-to-captured 1)
-     ("p" " Create an interrupt task to the inbox and start clocking."     entry (file+headline task-file "Inbox") "* TODO %?\n  %U\n\n** Reference\n  %i\n\n" :jump-to-captured 1 :clock-in 1 :clock-resume 1)
-     ("s" " Add an event to the calendar." entry (file+headline schedule-file "Schedule") "* %?\n  SCHEDULED: <%(org-read-date)>\n\n")
-     ("h" " Collect hacking Emacs ideas!" item (file+headline task-file "Hacking Emacs") "- [ ] %?" :prepend t)
-     ("l" " Store the link of the current position in the clocking task." item  (clock) "- %A\n" :immediate t :prepend t)
+     ("t" "Write down the thoughts of this moment with a timestamp."      item  (file+headline ladicle/get-today-diary "Log")  "%(ladicle/org-get-time) %?\n"            :prepend t)
+     ("m" "Memorize something in the memo section of today's diary."      entry (file+headline ladicle/get-today-diary "Memo") "* %?\n"                                  :empty-lines t :jump-to-captured t :unnarrowed t)
+     ("i" "Create a general task to the inbox and jump to the task file." entry (file+headline task-file "Inbox")              "* TODO %?\n  %U\n\n** Reference\n%i\n"   :empty-lines t :jump-to-captured t)
+     ("p" "Create an interrupt task to the inbox and start clocking."     entry (file+headline task-file "Inbox")              "* TODO %?\n  %U\n\n** Reference\n%i\n"   :empty-lines t :clock-in t :clock-resume t)
+     ("s" "Add an event to the calendar."                                 entry (file+headline schedule-file "Schedule")       "* %?\n  SCHEDULED: <%(org-read-date)>\n" :empty-lines t)
+     ("h" "Collect hacking Emacs ideas!"                                  item  (file+headline task-file "Hacking Emacs")      "[ ] %?"                                  :prepend t)
+     ("l" "Store the link of the current position in the clocking task."  item  (clock)                                        "%A\n"                                    :immediate-finish t :prepend t)
      ))
 
   :bind(("C-c c" . org-capture)
@@ -459,8 +464,7 @@
         ("C-c n" . org-narrow-to-subtree)
         ("C-c b" . org-narrow-to-block)
         ("C-c w" . widen)
-        ("C-c e" . org-set-effort)
-        )
+        ("C-c e" . org-set-effort))
 
   :preface
   (defun ladicle/get-today-diary ()
@@ -474,70 +478,101 @@
   (defun ladicle/org-get-time ()
     (format-time-string "<%H:%M>" (current-time)))
 
+
+  :config
+  (use-package org-bullets
+    :ensure t
+    :hook
+    (org-mode . org-bullets-mode)
+
+    ;; :custom
+    ;; (org-bullets-bullet-list '("" "" "" "" "" "" "" "" "" ""))
+    )
+
+  ;; from @takaxp
+  ;; https://qiita.com/takaxp/items/6b2d1e05e7ce4517274d
+  (use-package org-tree-slide
+    :ensure t
+    :disabled
+    :after org
+    :custom
+    (org-tree-slide-header nil)
+    (org-tree-slide-slide-in-effect nil)
+    (org-tree-slide-heading-emphasis nil)
+    (org-tree-slide-cursor-init nil)
+    (org-tree-slide-modeline-display 'outside)
+    (org-tree-slide-skip-done nil)
+    (org-tree-slide-skip-comments t)
+
+    :bind (("<f8>" . org-tree-slide-mode)
+           :map org-tree-slide-mode-map
+           ("<f9>" . org-tree-slide-move-previous-tree)
+           ("<f10>" . org-tree-slide-move-next-tree))
+
+    :preface
+    ;; org-clock-in を拡張
+    ;; 発動条件(1) タスクが DONE になっていないこと (変更可)
+    ;; 発動条件(2) アウトラインレベルが4まで．それ以上に深いレベルでは計測しない (変更可)
+    (defun takaxp/org-clock-in ()
+      (when (and (looking-at (concat "^\\*+ " org-not-done-regexp))
+                 (memq (org-outline-level) '(1 2 3 4)))
+        (org-clock-in)))
+    ;; org-clock-out を拡張
+    (defun takaxp/org-clock-out ()
+      (when (org-clocking-p)
+        (org-clock-out)))
+    (defun takaxp/org-clock-out-and-save-when-exit ()
+      "Save buffers and stop clocking when kill emacs."
+      (when (org-clocking-p)
+        (org-clock-out)))
+
+    :hook
+    ;; org-clock-in をナローイング時に呼び出す．
+    (org-tree-slide-before-narrow-hook        . takaxp/org-clock-in)
+    ;; org-clock-out を適切なタイミングで呼び出す．
+    (org-tree-slide-before-move-next-hook     . takaxp/org-clock-out)
+    (org-tree-slide-before-move-previous-hook . takaxp/org-clock-out)
+    (org-tree-slide-stop-hook                 . takaxp/org-clock-out)
+    ;; 一時的にナローイングを解く時にも計測を止めたい人向け
+    (org-tree-slide-before-content-view-hook  . takaxp/org-clock-out)
+    ;; emacs終了時に時間計測を止める
+    (kill-emacs-hook . takaxp/org-clock-out-and-save-when-exit)
+
+    )
+
   )
 
-
-(use-package org-bullets
+;; Pomodoro (from @ladicle)
+(use-package org-pomodoro
   :ensure t
-  :hook
-  (org-mode . org-bullets-mode)
-
-  ;; :custom
-  ;; (org-bullets-bullet-list '("" "" "" "" "" "" "" "" "" ""))
-  )
-
-
-;; https://qiita.com/takaxp/items/6b2d1e05e7ce4517274d
-(use-package org-tree-slide
-  :ensure t
-  :after org
   :custom
-  (org-tree-slide-header nil)
-  (org-tree-slide-slide-in-effect nil)
-  (org-tree-slide-heading-emphasis nil)
-  (org-tree-slide-cursor-init nil)
-  (org-tree-slide-modeline-display 'outside)
-  (org-tree-slide-skip-done nil)
-  (org-tree-slide-skip-comments t)
-  ;; org-clock
-  (org-clock-out-remove-zero-time-clocks t)
-  (org-clock-clocked-in-display 'frame-title)
+  (org-pomodoro-ask-upon-killing t)
+  (org-pomodoro-keep-killed-pomodoro-time t)
+  (org-pomodoro-format "%s") ;;     
+  (org-pomodoro-short-break-format "%s")
+  (org-pomodoro-long-break-format  "%s")
 
-  :bind (("<f8>" . org-tree-slide-mode)
-         :map org-tree-slide-mode-map
-         ("<f9>" . org-tree-slide-move-previous-tree)
-         ("<f10>" . org-tree-slide-move-next-tree))
+  :custom-face
+  (org-pomodoro-mode-line ((t (:foreground "#ff5555"))))
+  (org-pomodoro-mode-line-break   ((t (:foreground "#50fa7b"))))
 
-  :preface
-  ;; org-clock-in を拡張
-  ;; 発動条件(1) タスクが DONE になっていないこと (変更可)
-  ;; 発動条件(2) アウトラインレベルが4まで．それ以上に深いレベルでは計測しない (変更可)
-  (defun takaxp/org-clock-in ()
-    (when (and (looking-at (concat "^\\*+ " org-not-done-regexp))
-               (memq (org-outline-level) '(1 2 3 4)))
-      (org-clock-in)))
-  ;; org-clock-out を拡張
-  (defun takaxp/org-clock-out ()
-    (when (org-clocking-p)
-      (org-clock-out)))
-  (defun takaxp/org-clock-out-and-save-when-exit ()
-    "Save buffers and stop clocking when kill emacs."
-    (when (org-clocking-p)
-      (org-clock-out)))
+  ;; :bind (:map org-mode-map
+  ;;             ("C-c p" . org-pomodoro))
+  :bind ("C-c p" . org-pomodoro)
 
   :hook
-  ;; org-clock-in をナローイング時に呼び出す．
-  (org-tree-slide-before-narrow-hook        . takaxp/org-clock-in)
-  ;; org-clock-out を適切なタイミングで呼び出す．
-  (org-tree-slide-before-move-next-hook     . takaxp/org-clock-out)
-  (org-tree-slide-before-move-previous-hook . takaxp/org-clock-out)
-  (org-tree-slide-stop-hook                 . takaxp/org-clock-out)
-  ;; 一時的にナローイングを解く時にも計測を止めたい人向け
-  (org-tree-slide-before-content-view-hook  . takaxp/org-clock-out)
-  ;; emacs終了時に時間計測を止める
-  (kill-emacs-hook . takaxp/org-clock-out-and-save-when-exit)
-
+  (org-pomodoro-started  . (lambda () (notifications-notify
+                                       :title "org-pomodoro"
+                                       :body "Let's focus for 25 minutes!")))
+  (org-pomodoro-finished . (lambda () (notifications-notify
+                                       :title "org-pomodoro"
+                                       :body "Well done! Take a break.")))
+  :config
+  (when (eq system-type 'darwin)
+    (setq alert-default-style 'osx-notifier))
+  (require 'alert)
   )
+
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Develop Environment
@@ -661,7 +696,6 @@
   :hook ((
           lsp-mode
           emacs-lisp-mode
-          elm-mode
           ) . flycheck-mode)
 
   :config
@@ -813,6 +847,14 @@
   :defer t
   :config
   (add-to-list 'company-backends 'company-elm)
+
+  (use-package flycheck-elm
+    :ensure t
+    :after flycheck
+    :bind(:map elm-mode-map
+          ("C-c C-f" . elm-format-buffer))
+    :config
+    (add-hook 'flycheck-mode-hook #'flycheck-elm-setup))
   )
 
 (use-package markdown-mode

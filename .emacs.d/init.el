@@ -613,11 +613,11 @@
 
   :hook
   (after-init . global-company-mode)
-  ;; (elm-mode   . (lambda () (set (make-local-variable 'company-backends) '((company-yasnippet company-elm company-files)))))
+  ;; (elm-mode . (lambda () (set (make-local-variable 'company-backends) '((company-yasnippet company-elm company-files)))))
   ;; using company by lsp-completion
   ((haskell-mode
+    java-mode
     ;; elm-mode
-    ;; java-mode
     ) . (lambda () (set (make-local-variable 'company-backends) '((company-yasnippet company-lsp company-files)))))
   
   :bind (:map company-active-map
@@ -696,6 +696,7 @@
   :hook ((
           lsp-mode
           emacs-lisp-mode
+          elm-mode
           ) . flycheck-mode)
 
   :config
@@ -845,14 +846,17 @@
 (use-package elm-mode
   :ensure t
   :defer t
+  :custom
+  (elm-package-json "elm.json")
+
   :config
   (add-to-list 'company-backends 'company-elm)
 
   (use-package flycheck-elm
     :ensure t
     :after flycheck
-    :bind(:map elm-mode-map
-          ("C-c C-f" . elm-format-buffer))
+    ;; :bind(:map elm-mode-map
+    ;;       ("C-c C-f" . elm-format-buffer))
     :config
     (add-hook 'flycheck-mode-hook #'flycheck-elm-setup))
   )

@@ -421,6 +421,7 @@
   (org-directory "~/Dropbox/org/")
   (task-file (concat org-directory "task.org"))
   (schedule-file (concat org-directory "schedule.org"))
+  (mylist-file (concat org-directory "mylist.org"))
   (org-default-notes-file (concat org-directory "notes.org"))
   ;; org-clock
   (org-clock-out-remove-zero-time-clocks t)
@@ -430,6 +431,7 @@
   (org-agenda-files (quote (
                             "~/Dropbox/org/task.org"
                             "~/Dropbox/org/schedule.org"
+                            "~/Dropbox/org/mylist.org"
                             )))
 
   (org-refile-targets '((org-agenda-files :maxlevel . 3)))
@@ -446,6 +448,7 @@
      ("p" "Create an interrupt task to the inbox and start clocking."     entry (file+headline task-file "Inbox")              "* TODO %?\n  %U\n\n** Reference\n%i\n"   :empty-lines 1 :clock-in 1 :clock-resume 1)
      ("s" "Add an event to the calendar."                                 entry (file+headline schedule-file "Schedule")       "* %?\n  SCHEDULED: <%(org-read-date)>\n" :empty-lines 1)
      ("h" "Collect hacking Emacs ideas!"                                  item  (file+headline task-file "Hacking Emacs")      "[ ] %?"                                  :prepend 1)
+     ("w" "Wish list for my life!"                                        item  (file+headline mylist-file "My Wishes")        "[ ] %?"                                  :prepend 1)
      ("l" "Store the link of the current position in the clocking task."  item  (clock)                                        "%A\n"                                    :immediate-finish 1 :prepend 1)
      ))
 
@@ -540,6 +543,14 @@
 
     )
 
+  (use-package org-mobile-sync
+    :ensure t
+    :custom
+    (org-mobile-directory "~/Dropbox/Apps/MobileOrg/")
+    (org-mobile-inbox-for-pull "~/Dropbox/org/from-mobile.org")
+    :config
+    (org-mobile-sync-mode t)
+    )
   )
 
 ;; Pomodoro (from @ladicle)

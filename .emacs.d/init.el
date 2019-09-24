@@ -368,7 +368,7 @@
 (when (require 'ivy nil t)
 
   ;; M-o を ivy-dispatching-done-hydra に割り当てる．
-  (require 'ivy-hydra)
+  (require 'ivy-hydra nil t)
 
   ;; `ivy-switch-buffer' (C-x b) のリストに recent files と bookmark を含める．
   (setq ivy-use-virtual-buffers t)

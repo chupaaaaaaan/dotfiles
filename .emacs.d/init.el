@@ -204,7 +204,7 @@
     (line-number-mode 1)
     (column-number-mode 1)
     (doom-modeline-mode 1)
-    (setq doom-modeline-buffer-file-name-style 'truncate-with-project)
+    (setq doom-modeline-buffer-file-name-style 'truncate-all)
     (setq doom-modeline-icon t)
     (setq doom-modeline-major-mode-icon t)
     (setq doom-modeline-minor-modes nil)
@@ -344,9 +344,83 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Search / Replace
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; ivy
+;; (use-package counsel
+;;   :ensure t
+  
+;;   ;; :bind(
+;;   ;;       ("C-c h"   . helm-command-prefix)
+;;   ;;       ("C-x c"   . nil)
+;;   ;;       ("M-x"     . helm-M-x)
+;;   ;;       ("M-y"     . helm-show-kill-ring)
+;;   ;;       ("C-x b"   . helm-mini)
+;;   ;;       ("C-x C-f" . helm-find-files)
+;;   ;;       ("M-o g"   . helm-google-suggest)
+;;   ;;       :map helm-map
+;;   ;;       ("C-h"     . delete-backward-char)
+;;   ;;       ("<tab>"   . helm-execute-persistent-action)
+;;   ;;       ("C-i"     . helm-execute-persistent-action)
+;;   ;;       ("C-z"     . helm-select-action))
+;;   )
+
+
+
+(when (require 'ivy nil t)
+
+  ;; M-o を ivy-dispatching-done-hydra に割り当てる．
+  (require 'ivy-hydra)
+
+  ;; `ivy-switch-buffer' (C-x b) のリストに recent files と bookmark を含める．
+  (setq ivy-use-virtual-buffers t)
+
+  ;; ミニバッファでコマンド発行を認める
+  (when (setq enable-recursive-minibuffers t)
+    (minibuffer-depth-indicate-mode 1)) ;; 何回層入ったかプロンプトに表示．
+
+  ;; ESC連打でミニバッファを閉じる
+  (define-key ivy-minibuffer-map (kbd "<escape>") 'minibuffer-keyboard-quit)
+
+  ;; アクティベート
+  (ivy-mode 1))
+
+
+(when (require 'counsel nil t)
+
+  ;; キーバインドは一例です．好みに変えましょう．
+  (global-set-key (kbd "M-x") 'counsel-M-x)
+  (global-set-key (kbd "M-y") 'counsel-yank-pop)
+  (global-set-key (kbd "C-M-z") 'counsel-fzf)
+  (global-set-key (kbd "C-M-r") 'counsel-recentf)
+  (global-set-key (kbd "C-x C-b") 'counsel-ibuffer)
+  (global-set-key (kbd "C-M-f") 'counsel-ag)
+
+  ;; アクティベート
+  (counsel-mode 1))
+
+(when (require 'swiper nil t)
+
+  ;; キーバインドは一例です．好みに変えましょう．
+  (global-set-key (kbd "M-s M-s") 'swiper-thing-at-point))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 ;; helm
 (use-package helm
   :ensure t
+  :disabled
   :bind(
         ("C-c h"   . helm-command-prefix)
         ("C-x c"   . nil)
@@ -370,8 +444,15 @@
   (require 'helm-for-files)
   )
 
+;; hydra
+(use-package hydra
+  :ensure t
+  )
+
+
 (use-package helm-tramp
   :ensure t
+  :disabled
   )
 
 ;; swiper (isearch)
@@ -425,7 +506,7 @@
   (org-default-notes-file (concat org-directory "notes.org"))
   ;; org-clock
   (org-clock-out-remove-zero-time-clocks t)
-  (org-clock-clocked-in-display 'frame-title)
+  ;; (org-clock-clocked-in-display 'frame-title)
 
 
   (org-agenda-files (quote (
@@ -448,7 +529,7 @@
      ("p" "Create an interrupt task to the inbox and start clocking."     entry (file+headline task-file "Inbox")              "* TODO %?\n  %U\n\n** Reference\n%i\n"   :empty-lines 1 :clock-in 1 :clock-resume 1)
      ("s" "Add an event to the calendar."                                 entry (file+headline schedule-file "Schedule")       "* %?\n  SCHEDULED: <%(org-read-date)>\n" :empty-lines 1)
      ("h" "Collect hacking Emacs ideas!"                                  item  (file+headline task-file "Hacking Emacs")      "[ ] %?"                                  :prepend 1)
-     ("w" "Wish list for my life!"                                        item  (file+headline mylist-file "My Wishes")        "[ ] %?"                                  :prepend 1)
+     ("w" "Wish list for my life!"                                        item  (file+headline mylist-file "My Wishes")        "* TODO %?"                               :prepend 1)
      ("l" "Store the link of the current position in the clocking task."  item  (clock)                                        "%A\n"                                    :immediate-finish 1 :prepend 1)
      ))
 
@@ -457,6 +538,7 @@
         ;; ("C-c j" . org-clock-goto)
         ("M-o l i" . (lambda () (interactive) (ladicle/open-org-file task-file)))
         ("M-o l s" . (lambda () (interactive) (ladicle/open-org-file schedule-file)))
+        ("M-o l l" . (lambda () (interactive) (ladicle/open-org-file mylist-file)))
         ("M-o l y" . (lambda () (interactive) (ladicle/open-org-file (ladicle/get-yesterday-diary))))
         ("M-o l p" . (lambda () (interactive) (ladicle/open-org-file (ladicle/get-diary-from-cal))))
         ("M-o l t" . (lambda () (interactive) (ladicle/open-org-file (ladicle/get-today-diary))))
@@ -469,6 +551,18 @@
         ("C-c w" . widen)
         ("C-c e" . org-set-effort))
 
+  :hook
+  (kill-emacs . ladicle/org-clock-out-and-save-when-exit)
+  (org-clock-in . (lambda ()
+                    (setq org-mode-line-string (ladicle/task-clocked-time))
+                    (run-at-time 0 60 '(lambda ()
+                                         (setq org-mode-line-string (ladicle/task-clocked-time))
+                                         (force-mode-line-update)))
+                  (force-mode-line-update)))
+  (org-mode . (lambda ()
+                (dolist (key '("C-'" "C-," "C-."))
+                  (unbind-key key org-mode-map))))
+
   :preface
   (defun ladicle/get-today-diary ()
     (concat org-directory (format-time-string "diary/%Y-%m-%d.org" (current-time))))
@@ -480,6 +574,26 @@
     (switch-to-buffer (find-file-noselect fname)))
   (defun ladicle/org-get-time ()
     (format-time-string "<%H:%M>" (current-time)))
+  (defun ladicle/task-clocked-time ()
+    "Return a string with the clocked time and effort, if any"
+    (interactive)
+    (let* ((clocked-time (org-clock-get-clocked-time))
+           (h (truncate clocked-time 60))
+           (m (mod clocked-time 60))
+           (work-done-str (format "%d:%02d" h m)))
+      (if org-clock-effort
+          (let* ((effort-in-minutes
+                  (org-duration-to-minutes org-clock-effort))
+                 (effort-h (truncate effort-in-minutes 60))
+                 (effort-m (truncate (mod effort-in-minutes 60)))
+                 (effort-str (format "%d:%02d" effort-h effort-m)))
+            (format "%s/%s" work-done-str effort-str))
+        (format "%s" work-done-str))))
+
+  (defun ladicle/org-clock-out-and-save-when-exit ()
+    "Save buffers and stop clocking when kill emacs."
+    (ignore-errors (org-clock-out) t)
+    (save-some-buffers t))
 
 
   :config
@@ -543,6 +657,38 @@
 
     )
 
+  ;; Pomodoro (from @ladicle)
+  (use-package org-pomodoro
+    :ensure t
+    :custom
+    (org-pomodoro-ask-upon-killing t)
+    (org-pomodoro-keep-killed-pomodoro-time t)
+    (org-pomodoro-format "%s") ;;     
+    (org-pomodoro-short-break-format "%s")
+    (org-pomodoro-long-break-format  "%s")
+
+    :custom-face
+    (org-pomodoro-mode-line ((t (:foreground "#ff5555"))))
+    (org-pomodoro-mode-line-break   ((t (:foreground "#50fa7b"))))
+
+    ;; :bind (:map org-mode-map
+    ;;             ("C-c p" . org-pomodoro))
+    :bind ("C-c p" . org-pomodoro)
+
+    :hook
+    (org-pomodoro-started  . (lambda () (notifications-notify
+                                         :title "org-pomodoro"
+                                         :body "Let's focus for 25 minutes!")))
+    (org-pomodoro-finished . (lambda () (notifications-notify
+                                         :title "org-pomodoro"
+                                         :body "Well done! Take a break.")))
+    :config
+    (when (eq system-type 'darwin)
+      (setq alert-default-style 'osx-notifier))
+    (require 'alert)
+    )
+
+
   (use-package org-mobile-sync
     :ensure t
     :custom
@@ -551,37 +697,6 @@
     :config
     (org-mobile-sync-mode t)
     )
-  )
-
-;; Pomodoro (from @ladicle)
-(use-package org-pomodoro
-  :ensure t
-  :custom
-  (org-pomodoro-ask-upon-killing t)
-  (org-pomodoro-keep-killed-pomodoro-time t)
-  (org-pomodoro-format "%s") ;;     
-  (org-pomodoro-short-break-format "%s")
-  (org-pomodoro-long-break-format  "%s")
-
-  :custom-face
-  (org-pomodoro-mode-line ((t (:foreground "#ff5555"))))
-  (org-pomodoro-mode-line-break   ((t (:foreground "#50fa7b"))))
-
-  ;; :bind (:map org-mode-map
-  ;;             ("C-c p" . org-pomodoro))
-  :bind ("C-c p" . org-pomodoro)
-
-  :hook
-  (org-pomodoro-started  . (lambda () (notifications-notify
-                                       :title "org-pomodoro"
-                                       :body "Let's focus for 25 minutes!")))
-  (org-pomodoro-finished . (lambda () (notifications-notify
-                                       :title "org-pomodoro"
-                                       :body "Well done! Take a break.")))
-  :config
-  (when (eq system-type 'darwin)
-    (setq alert-default-style 'osx-notifier))
-  (require 'alert)
   )
 
 
@@ -645,11 +760,6 @@
   )
 
 
-;; hydra
-(use-package hydra
-  :ensure t
-  )
-
 ;; yasnippet
 (use-package yasnippet
   ;; :disabled
@@ -660,7 +770,7 @@
   (use-package yasnippet-snippets :ensure t)
 
   (use-package helm-c-yasnippet
-    ;; :disabled
+    :disabled
     :ensure t
     :after yasnippet
     :bind(("C-c y" . helm-yas-complete)))
@@ -843,7 +953,7 @@
     :bind(:map lsp-mode-map
                ("C-c C-r" . lsp-ui-peek-find-references)
                ("C-c C-j" . lsp-ui-peek-find-definitions)
-               ("C-c i"   . lsp-ui-peek-find-implementation)
+               ("C-c C-i" . lsp-ui-peek-find-implementation)
                ("C-c m"   . lsp-ui-imenu)
                ("C-c s"   . lsp-ui-sideline-mode)
                ("C-c d"   . ladicle/toggle-lsp-ui-doc)))
@@ -869,6 +979,7 @@
 
   (use-package helm-lsp
     :ensure t
+    :disabled
     :commands helm-lsp-workspace-symbol
     )
 

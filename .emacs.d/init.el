@@ -160,13 +160,13 @@
 
 ;; define prefix-key
 (define-prefix-command 'ladicle-window-map)
-(define-key global-map (kbd "M-o") 'ladicle-window-map)
+(define-key global-map (kbd "M-i") 'ladicle-window-map)
 
 (define-prefix-command 'ladicle-toggle-map)
 (define-key global-map (kbd "M-t") 'ladicle-toggle-map)
 
 (define-prefix-command 'ladicle-link-map)
-(define-key global-map (kbd "M-o l") 'ladicle-link-map)
+(define-key global-map (kbd "M-i l") 'ladicle-link-map)
 
 
 (global-unset-key (kbd "C-x C-c"))
@@ -344,123 +344,55 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Search / Replace
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; ivy
-;; (use-package counsel
-;;   :ensure t
-  
-;;   ;; :bind(
-;;   ;;       ("C-c h"   . helm-command-prefix)
-;;   ;;       ("C-x c"   . nil)
-;;   ;;       ("M-x"     . helm-M-x)
-;;   ;;       ("M-y"     . helm-show-kill-ring)
-;;   ;;       ("C-x b"   . helm-mini)
-;;   ;;       ("C-x C-f" . helm-find-files)
-;;   ;;       ("M-o g"   . helm-google-suggest)
-;;   ;;       :map helm-map
-;;   ;;       ("C-h"     . delete-backward-char)
-;;   ;;       ("<tab>"   . helm-execute-persistent-action)
-;;   ;;       ("C-i"     . helm-execute-persistent-action)
-;;   ;;       ("C-z"     . helm-select-action))
-;;   )
-
-
-
-(when (require 'ivy nil t)
-
-  ;; M-o を ivy-dispatching-done-hydra に割り当てる．
-  (require 'ivy-hydra nil t)
-
-  ;; `ivy-switch-buffer' (C-x b) のリストに recent files と bookmark を含める．
-  (setq ivy-use-virtual-buffers t)
-
-  ;; ミニバッファでコマンド発行を認める
-  (when (setq enable-recursive-minibuffers t)
-    (minibuffer-depth-indicate-mode 1)) ;; 何回層入ったかプロンプトに表示．
-
-  ;; ESC連打でミニバッファを閉じる
-  (define-key ivy-minibuffer-map (kbd "<escape>") 'minibuffer-keyboard-quit)
-
-  ;; アクティベート
-  (ivy-mode 1))
-
-
-(when (require 'counsel nil t)
-
-  ;; キーバインドは一例です．好みに変えましょう．
-  (global-set-key (kbd "M-x") 'counsel-M-x)
-  (global-set-key (kbd "M-y") 'counsel-yank-pop)
-  (global-set-key (kbd "C-M-z") 'counsel-fzf)
-  (global-set-key (kbd "C-M-r") 'counsel-recentf)
-  (global-set-key (kbd "C-x C-b") 'counsel-ibuffer)
-  (global-set-key (kbd "C-M-f") 'counsel-ag)
-
-  ;; アクティベート
-  (counsel-mode 1))
-
-(when (require 'swiper nil t)
-
-  ;; キーバインドは一例です．好みに変えましょう．
-  (global-set-key (kbd "M-s M-s") 'swiper-thing-at-point))
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-;; helm
-(use-package helm
-  :ensure t
-  :disabled
-  :bind(
-        ("C-c h"   . helm-command-prefix)
-        ("C-x c"   . nil)
-        ("M-x"     . helm-M-x)
-        ("M-y"     . helm-show-kill-ring)
-        ("C-x b"   . helm-mini)
-        ("C-x C-f" . helm-find-files)
-        ("M-o g"   . helm-google-suggest)
-        :map helm-map
-        ("C-h"     . delete-backward-char)
-        ("<tab>"   . helm-execute-persistent-action)
-        ("C-i"     . helm-execute-persistent-action)
-        ("C-z"     . helm-select-action))
-  :custom
-  (helm-buffers-fuzzy-matching t)
-  (helm-recentf-fuzzy-match t)
-  :config
-  (helm-mode t)
-  (require 'helm-config)
-  (require 'helm-buffers)
-  (require 'helm-for-files)
-  )
-
 ;; hydra
 (use-package hydra
   :ensure t
   )
 
-
-(use-package helm-tramp
+(use-package ivy
   :ensure t
-  :disabled
+  :init
+  (ivy-mode 1)
+  :custom
+  (ivy-use-virtual-buffers t)
+  (enable-recursive-minibuffers t)
+  (minibuffer-depth-indicate-mode 1)
+
+  :bind(:map ivy-minibuffer-map
+             ("<escape>" . minibuffer-keyboard-quit )
+             )
+
+  )
+
+(use-package ivy-hydra
+  :ensure t
+  :after (ivy hydra)
+  :custom
+  (ivy-read-action-function (function ivy-hydra-read-action))
   )
 
 ;; swiper (isearch)
 (use-package swiper
   :diminish
   :ensure t
+  :after ivy
   :bind
   ("C-s" . swiper)
+  ("M-s M-s" . swiper-thing-at-point)
+  )
+
+(use-package counsel
+  :ensure t
+  :after swiper
+  :bind(("M-x" . counsel-M-x)
+        ("M-y" . counsel-yank-pop)
+        ("C-M-z" . counsel-fzf)
+        ("C-M-r" . counsel-recentf)
+        ("C-x C-b" . counsel-ibuffer)
+        ("C-M-f" . counsel-ag)
+        )
+  :config
+  (counsel-mode 1)
   )
 
 ;; anzu
@@ -479,14 +411,14 @@
   
 (use-package google-this
   :ensure t
-  :bind(("M-o G" . google-this)
+  :bind(("M-i G" . google-this)
         )
   )
 
 (use-package google-translate
   :ensure t
-  :bind(("M-o t" . google-translate-at-point)
-        ("M-o T" . google-translate-at-point-reverse)
+  :bind(("M-i t" . google-translate-at-point)
+        ("M-i T" . google-translate-at-point-reverse)
         )
   :custom
   (google-translate-default-source-language "en")
@@ -529,19 +461,18 @@
      ("p" "Create an interrupt task to the inbox and start clocking."     entry (file+headline task-file "Inbox")              "* TODO %?\n  %U\n%i\n"                   :empty-lines 1 :clock-in 1 :clock-resume 1)
      ("s" "Add an event to the calendar."                                 entry (file+headline schedule-file "Schedule")       "* %?\n  SCHEDULED: <%(org-read-date)>\n" :empty-lines 1)
      ("h" "Collect hacking Emacs ideas!"                                  item  (file+headline task-file "Hacking Emacs")      "[ ] %?"                                  :prepend 1)
-     ("w" "Wish list for my life!"                                        item  (file+headline mylist-file "My Wishes")        "* TODO %?"                               :prepend 1)
+     ("w" "Wish list for my life!"                                        entry (file+headline mylist-file "My Wishes")        "* TODO %?"                               :prepend 1)
      ("l" "Store the link of the current position in the clocking task."  item  (clock)                                        "%A\n"                                    :immediate-finish 1 :prepend 1)
      ))
 
   :bind(("C-c c" . org-capture)
         ("C-c a" . org-agenda)
-        ;; ("C-c j" . org-clock-goto)
-        ("M-o l i" . (lambda () (interactive) (ladicle/open-org-file task-file)))
-        ("M-o l s" . (lambda () (interactive) (ladicle/open-org-file schedule-file)))
-        ("M-o l l" . (lambda () (interactive) (ladicle/open-org-file mylist-file)))
-        ("M-o l y" . (lambda () (interactive) (ladicle/open-org-file (ladicle/get-yesterday-diary))))
-        ("M-o l p" . (lambda () (interactive) (ladicle/open-org-file (ladicle/get-diary-from-cal))))
-        ("M-o l t" . (lambda () (interactive) (ladicle/open-org-file (ladicle/get-today-diary))))
+        ("M-i l i" . (lambda () (interactive) (ladicle/open-org-file task-file)))
+        ("M-i l s" . (lambda () (interactive) (ladicle/open-org-file schedule-file)))
+        ("M-i l l" . (lambda () (interactive) (ladicle/open-org-file mylist-file)))
+        ("M-i l y" . (lambda () (interactive) (ladicle/open-org-file (ladicle/get-yesterday-diary))))
+        ("M-i l p" . (lambda () (interactive) (ladicle/open-org-file (ladicle/get-diary-from-cal))))
+        ("M-i l t" . (lambda () (interactive) (ladicle/open-org-file (ladicle/get-today-diary))))
         :map org-mode-map
         ;; ("C-c i" . org-clock-in)
         ;; ("C-c o" . org-clock-out)
@@ -595,108 +526,59 @@
     (ignore-errors (org-clock-out) t)
     (save-some-buffers t))
 
+  )
 
+(use-package org-bullets
+  :ensure t
+  :after org
+  :hook
+  (org-mode . org-bullets-mode)
+
+  ;; :custom
+  ;; (org-bullets-bullet-list '("" "" "" "" "" "" "" "" "" ""))
+  )
+
+
+;; Pomodoro (from @ladicle)
+(use-package org-pomodoro
+  :ensure t
+  :after org
+  :custom
+  (org-pomodoro-ask-upon-killing t)
+  (org-pomodoro-keep-killed-pomodoro-time t)
+  (org-pomodoro-format "%s") ;;     
+  (org-pomodoro-short-break-format "%s")
+  (org-pomodoro-long-break-format  "%s")
+
+  :custom-face
+  (org-pomodoro-mode-line ((t (:foreground "#ff5555"))))
+  (org-pomodoro-mode-line-break   ((t (:foreground "#50fa7b"))))
+
+  ;; :bind (:map org-mode-map
+  ;;             ("C-c p" . org-pomodoro))
+  :bind ("C-c p" . org-pomodoro)
+
+  :hook
+  (org-pomodoro-started  . (lambda () (notifications-notify
+                                       :title "org-pomodoro"
+                                       :body "Let's focus for 25 minutes!")))
+  (org-pomodoro-finished . (lambda () (notifications-notify
+                                       :title "org-pomodoro"
+                                       :body "Well done! Take a break.")))
   :config
-  (use-package org-bullets
-    :ensure t
-    :hook
-    (org-mode . org-bullets-mode)
+  (when (eq system-type 'darwin)
+    (setq alert-default-style 'osx-notifier))
+  (require 'alert)
+  )
 
-    ;; :custom
-    ;; (org-bullets-bullet-list '("" "" "" "" "" "" "" "" "" ""))
-    )
-
-  ;; from @takaxp
-  ;; https://qiita.com/takaxp/items/6b2d1e05e7ce4517274d
-  (use-package org-tree-slide
-    :ensure t
-    :disabled
-    :after org
-    :custom
-    (org-tree-slide-header nil)
-    (org-tree-slide-slide-in-effect nil)
-    (org-tree-slide-heading-emphasis nil)
-    (org-tree-slide-cursor-init nil)
-    (org-tree-slide-modeline-display 'outside)
-    (org-tree-slide-skip-done nil)
-    (org-tree-slide-skip-comments t)
-
-    :bind (("<f8>" . org-tree-slide-mode)
-           :map org-tree-slide-mode-map
-           ("<f9>" . org-tree-slide-move-previous-tree)
-           ("<f10>" . org-tree-slide-move-next-tree))
-
-    :preface
-    ;; org-clock-in を拡張
-    ;; 発動条件(1) タスクが DONE になっていないこと (変更可)
-    ;; 発動条件(2) アウトラインレベルが4まで．それ以上に深いレベルでは計測しない (変更可)
-    (defun takaxp/org-clock-in ()
-      (when (and (looking-at (concat "^\\*+ " org-not-done-regexp))
-                 (memq (org-outline-level) '(1 2 3 4)))
-        (org-clock-in)))
-    ;; org-clock-out を拡張
-    (defun takaxp/org-clock-out ()
-      (when (org-clocking-p)
-        (org-clock-out)))
-    (defun takaxp/org-clock-out-and-save-when-exit ()
-      "Save buffers and stop clocking when kill emacs."
-      (when (org-clocking-p)
-        (org-clock-out)))
-
-    :hook
-    ;; org-clock-in をナローイング時に呼び出す．
-    (org-tree-slide-before-narrow-hook        . takaxp/org-clock-in)
-    ;; org-clock-out を適切なタイミングで呼び出す．
-    (org-tree-slide-before-move-next-hook     . takaxp/org-clock-out)
-    (org-tree-slide-before-move-previous-hook . takaxp/org-clock-out)
-    (org-tree-slide-stop-hook                 . takaxp/org-clock-out)
-    ;; 一時的にナローイングを解く時にも計測を止めたい人向け
-    (org-tree-slide-before-content-view-hook  . takaxp/org-clock-out)
-    ;; emacs終了時に時間計測を止める
-    (kill-emacs-hook . takaxp/org-clock-out-and-save-when-exit)
-
-    )
-
-  ;; Pomodoro (from @ladicle)
-  (use-package org-pomodoro
-    :ensure t
-    :custom
-    (org-pomodoro-ask-upon-killing t)
-    (org-pomodoro-keep-killed-pomodoro-time t)
-    (org-pomodoro-format "%s") ;;     
-    (org-pomodoro-short-break-format "%s")
-    (org-pomodoro-long-break-format  "%s")
-
-    :custom-face
-    (org-pomodoro-mode-line ((t (:foreground "#ff5555"))))
-    (org-pomodoro-mode-line-break   ((t (:foreground "#50fa7b"))))
-
-    ;; :bind (:map org-mode-map
-    ;;             ("C-c p" . org-pomodoro))
-    :bind ("C-c p" . org-pomodoro)
-
-    :hook
-    (org-pomodoro-started  . (lambda () (notifications-notify
-                                         :title "org-pomodoro"
-                                         :body "Let's focus for 25 minutes!")))
-    (org-pomodoro-finished . (lambda () (notifications-notify
-                                         :title "org-pomodoro"
-                                         :body "Well done! Take a break.")))
-    :config
-    (when (eq system-type 'darwin)
-      (setq alert-default-style 'osx-notifier))
-    (require 'alert)
-    )
-
-
-  (use-package org-mobile-sync
-    :ensure t
-    :custom
-    (org-mobile-directory "~/Dropbox/Apps/MobileOrg/")
-    (org-mobile-inbox-for-pull "~/Dropbox/org/from-mobile.org")
-    :config
-    (org-mobile-sync-mode t)
-    )
+(use-package org-mobile-sync
+  :ensure t
+  :after org
+  :custom
+  (org-mobile-directory "~/Dropbox/Apps/MobileOrg/")
+  (org-mobile-inbox-for-pull "~/Dropbox/org/from-mobile.org")
+  :config
+  (org-mobile-sync-mode t)
   )
 
 
@@ -741,15 +623,18 @@
 (use-package git-gutter
   :ensure t
   :custom
-  (git-gutter:modified-sign "~")
+  (git-gutter:modified-sign "=")
   (git-gutter:added-sign    "+")
   (git-gutter:deleted-sign  "-")
   :custom-face
   (git-gutter:modified ((t (:foreground "#f1fa8c" :background "#f1fa8c"))))
   (git-gutter:added    ((t (:foreground "#50fa7b" :background "#50fa7b"))))
   (git-gutter:deleted  ((t (:foreground "#ff79c6" :background "#ff79c6"))))
+  ;; (git-gutter:modified ((t (:foreground "#f1fa8c"))))
+  ;; (git-gutter:added    ((t (:foreground "#50fa7b"))))
+  ;; (git-gutter:deleted  ((t (:foreground "#ff79c6"))))
   :config
-  (global-git-gutter-mode +1))
+  (global-git-gutter-mode 1))
 
 (use-package browse-at-remote
   :ensure t
@@ -769,11 +654,11 @@
   :config
   (use-package yasnippet-snippets :ensure t)
 
-  (use-package helm-c-yasnippet
-    :disabled
-    :ensure t
-    :after yasnippet
-    :bind(("C-c y" . helm-yas-complete)))
+  ;; (use-package helm-c-yasnippet
+  ;;   :disabled
+  ;;   :ensure t
+  ;;   :after yasnippet
+  ;;   :bind(("C-c y" . helm-yas-complete)))
   :custom
   (helm-yas-space-match-any-greedy t)
   )
@@ -833,11 +718,12 @@
 ;; projectile
 (use-package projectile
   :ensure t
-  :disabled
-  :custom
-  (projectile-completion-system 'helm)
+  :bind(:map projectile-mode-map
+             ("s-p" . projectile-command-map)
+             ("C-c f" . projectile-command-map)
+        )
   :config
-  (projectile-mode)
+  (projectile-mode 1)
   )
 
 ;; treemacs
@@ -857,14 +743,12 @@
   (treemacs-fringe-indicator-mode t)
   (treemacs-git-mode 'simple)
 
-
   (use-package treemacs-icons-dired
     :after treemacs dired
     :ensure t
     :config
     (treemacs-icons-dired-mode))
   )
-
 
 
 ;; flycheck
@@ -1013,6 +897,14 @@
   (lsp-haskell-process-path-hie "hie-wrapper")
   )
 
+(use-package terraform-mode
+  :ensure t
+  :defer t
+  :custom
+  (terraform-indent-level 4)
+  :config
+  (add-to-list 'company-backends 'company-terraform)
+  )
 
 (use-package dockerfile-mode
   :ensure t

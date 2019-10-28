@@ -17,6 +17,7 @@
 .emacs.d/.lsp-session*
 .emacs.d/network-security.data
 .emacs.d/places
+.emacs.d/projectile-bookmarks.eld
 .emacs.d/public_repos/
 !.emacs.d/public_repos/install-repos.sh
 !.emacs.d/public_repos/package_list.txt

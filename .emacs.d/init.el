@@ -654,13 +654,6 @@
   :config
   (use-package yasnippet-snippets :ensure t)
 
-  ;; (use-package helm-c-yasnippet
-  ;;   :disabled
-  ;;   :ensure t
-  ;;   :after yasnippet
-  ;;   :bind(("C-c y" . helm-yas-complete)))
-  :custom
-  (helm-yas-space-match-any-greedy t)
   )
 
 ;; company
@@ -756,17 +749,15 @@
   :ensure t
   ;; :disabled
   :hook ((
-          lsp-mode
           emacs-lisp-mode
-          elm-mode
-          ) . flycheck-mode)
+          ) . flycheck-mode))
 
-  :config
-  (use-package flycheck-posframe
-    ;; :disabled
-    :ensure t
-    :hook (flycheck-mode . flycheck-posframe-mode))
-  )
+
+(use-package flycheck-posframe
+  :ensure t
+  :after flycheck
+  :hook (flycheck-mode . flycheck-posframe-mode))
+
 
 ;; lsp
 (use-package lsp-mode
@@ -780,12 +771,12 @@
   (lsp-print-io t)
 
   :bind(:map lsp-mode-map
-             ("C-c l" . lsp-lens-mode))
+             ("C-c l" . lsp-lens-mode)))
 
-  :config
+
   (use-package lsp-ui
     :ensure t
-    ;; :disabled
+    :after lsp-mode
     :hook (lsp-mode . lsp-ui-mode)
     :commands lsp-ui-mode
     
@@ -831,8 +822,7 @@
             (lsp-ui-doc-mode -1)
             (lsp-ui-doc--hide-frame))
         (lsp-ui-doc-mode 1))
-      (message "Lsp-Ui-Doc mode %s in current buffer" (if lsp-ui-doc-mode "enabled" "disabled"))
-      )
+      (message "Lsp-Ui-Doc mode %s in current buffer" (if lsp-ui-doc-mode "enabled" "disabled")))
     
     :bind(:map lsp-mode-map
                ("C-c C-r" . lsp-ui-peek-find-references)
@@ -842,47 +832,44 @@
                ("C-c s"   . lsp-ui-sideline-mode)
                ("C-c d"   . ladicle/toggle-lsp-ui-doc)))
 
-  (use-package company-lsp
-    :ensure t
-    :after company
-    :commands company-lsp
-    :custom
-    (company-lsp-cache-candidates nil)
-    (company-lsp-async t)
-    (company-lsp-enable-snippet t)
-    (company-lsp-enable-recompletion t)
-    (company-lsp-match-candidate-predicate 'company-lsp-match-candidate-flex)
-    ;; :config
-    ;; (add-to-list 'company-backends 'company-lsp)
-    )
 
-  (use-package lsp-treemacs
-    :ensure t
-    :commands lsp-treemacs-errors-list
-    )
-
-  (use-package helm-lsp
-    :ensure t
-    :disabled
-    :commands helm-lsp-workspace-symbol
-    )
-
-  (use-package dap-mode
-    :ensure t
-    :config
-    (dap-mode t)
-    (dap-ui-mode t)
-    )
+(use-package company-lsp
+  :ensure t
+  :after company lsp-mode
+  :commands company-lsp
+  :custom
+  (company-lsp-cache-candidates nil)
+  (company-lsp-async t)
+  (company-lsp-enable-snippet t)
+  (company-lsp-enable-recompletion t)
+  (company-lsp-match-candidate-predicate 'company-lsp-match-candidate-flex)
+  ;; :config
+  ;; (add-to-list 'company-backends 'company-lsp)
   )
+
+(use-package lsp-treemacs
+  :ensure t
+  :after lsp-mode treemacs
+  :commands lsp-treemacs-errors-list
+  )
+
+(use-package dap-mode
+  :ensure t
+  :config
+  (dap-mode t)
+  (dap-ui-mode t))
 
 ;; Java (STS4)
 (use-package lsp-java-boot
   :ensure lsp-java
-  :demand t
+  :defer t
   :hook
   (java-mode . lsp)
   (java-mode . lsp-java-boot-lens-mode)
-  )
+  (java-mode . flycheck-mode))
+
+(use-package dap-java
+  :after lsp-java)
 
 ;; Haskell
 ;; for ghc-8.0.2 and later
@@ -893,9 +880,10 @@
   ;; (add-to-list 'company-backends 'company-lsp)
   :hook
   (haskell-mode . lsp)
+  (haskell-mode . flycheck-mode)
+
   :custom
-  (lsp-haskell-process-path-hie "hie-wrapper")
-  )
+  (lsp-haskell-process-path-hie "hie-wrapper"))
 
 (use-package terraform-mode
   :ensure t
@@ -903,16 +891,8 @@
   :custom
   (terraform-indent-level 4)
   :config
-  (add-to-list 'company-backends 'company-terraform)
-  )
+  (add-to-list 'company-backends 'company-terraform))
 
-(use-package dockerfile-mode
-  :ensure t
-  )
-
-(use-package docker-compose-mode
-  :ensure t
-  )
 
 (use-package elm-mode
   :ensure t
@@ -920,21 +900,27 @@
   :custom
   (elm-package-json "elm.json")
 
+  :hook
+  (elm-mode . flycheck-mode)
+
   :config
-  (add-to-list 'company-backends 'company-elm)
+  (add-to-list 'company-backends 'company-elm))
 
-  (use-package flycheck-elm
-    :ensure t
-    :after flycheck
-    ;; :bind(:map elm-mode-map
-    ;;       ("C-c C-f" . elm-format-buffer))
-    :config
-    (add-hook 'flycheck-mode-hook #'flycheck-elm-setup))
-  )
-
-(use-package markdown-mode
+(use-package flycheck-elm
   :ensure t
-  )
+  :after flycheck elm
+  ;; :bind(:map elm-mode-map
+  ;;       ("C-c C-f" . elm-format-buffer))
+  :config
+  (add-hook 'flycheck-mode-hook #'flycheck-elm-setup))
+
+(use-package dockerfile-mode :ensure t)
+
+(use-package docker-compose-mode :ensure t)
+
+(use-package markdown-mode :ensure t)
+
+
 
 ;; load customize file
 (load custom-file t)

@@ -438,8 +438,8 @@
   (org-default-notes-file (concat org-directory "notes.org"))
   ;; org-clock
   (org-clock-out-remove-zero-time-clocks t)
-  ;; (org-clock-clocked-in-display 'frame-title)
-
+  (org-clock-clocktable-default-properties '(:maxlevel 2 :scope agenda-with-archives :fileskip0 t :link t :block today :match ""))
+  (org-clock-clocked-in-display 'frame-title)
 
   (org-agenda-files (quote (
                             "~/Dropbox/org/task.org"
@@ -524,9 +524,7 @@
   (defun ladicle/org-clock-out-and-save-when-exit ()
     "Save buffers and stop clocking when kill emacs."
     (ignore-errors (org-clock-out) t)
-    (save-some-buffers t))
-
-  )
+    (save-some-buffers t)))
 
 (use-package org-bullets
   :ensure t

@@ -16,7 +16,7 @@
 (add-to-load-path "public_repos")
 
 ;; separate customize file
- (setq custom-file "~/.emacs.d/customize.el")
+(setq custom-file "~/.emacs.d/customize.el")
  
 ;; load local configures
 (dolist (lcnf (directory-files (concat user-emacs-directory "local_conf") t "\\.el$"))
@@ -38,10 +38,7 @@
 
 (unless (package-installed-p 'use-package)
   (package-refresh-contents)
-  (package-install 'use-package)
-  ;; (package-install 'diminish)
-  ;; (package-install 'bind-key)
-  )
+  (package-install 'use-package))
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -74,8 +71,6 @@
 
 ;; 右から左に読む言語に対応させないことで描画高速化
 (setq-default bidi-display-reordering nil)
-
-
 
 ;; Font
 ;; Japanese font settings
@@ -149,14 +144,12 @@
   :custom
   (keyfreq-mode 1)
   (keyfreq-autosave-mode 1)
-  (keyfreq-buffer "*KeyFrequency*")
-  )
+  (keyfreq-buffer "*KeyFrequency*"))
 
 (use-package which-key
   :ensure t
   :diminish which-key-mode
-  :hook (after-init . which-key-mode)
-  )
+  :hook (after-init . which-key-mode))
 
 ;; define prefix-key
 (define-prefix-command 'ladicle-window-map)
@@ -191,45 +184,36 @@
   :config
   (load-theme 'doom-dracula t)
   (doom-themes-neotree-config)
-  (doom-themes-org-config)
+  (doom-themes-org-config))
 
-  (use-package doom-modeline
-    :ensure t
-    :demand t
-    :hook
-    (after-init . doom-modeline-mode)
+(use-package doom-modeline
+  :ensure t
+  :demand t
+  :hook
+  (after-init . doom-modeline-mode)
 
-    :config
-    (set-cursor-color "cyan")
-    (line-number-mode 1)
-    (column-number-mode 1)
-    (doom-modeline-mode 1)
-    (setq doom-modeline-buffer-file-name-style 'truncate-all)
-    (setq doom-modeline-icon t)
-    (setq doom-modeline-major-mode-icon t)
-    (setq doom-modeline-minor-modes nil)
-    ;; (setq doom-modeline-height 20)
-    ;; (setq doom-modeline-bar-width 3)
-    ;; (setq doom-modeline-major-mode-color-icon t)
+  :config
+  (set-cursor-color "cyan")
+  (line-number-mode 1)
+  (column-number-mode 1)
+  (doom-modeline-mode 1)
+  (setq doom-modeline-buffer-file-name-style 'truncate-all)
+  (setq doom-modeline-icon t)
+  (setq doom-modeline-major-mode-icon t)
+  (setq doom-modeline-minor-modes nil)
+  ;; (setq doom-modeline-height 20)
+  ;; (setq doom-modeline-bar-width 3)
+  ;; (setq doom-modeline-major-mode-color-icon t)
 
-    ;; (doom-modeline-def-modeline 'main
-    ;;   '(bar workspace-number window-number evil-state god-state ryo-modal xah-fly-keys matches buffer-info remote-host buffer-position parrot selection-info)
-    ;;   '(misc-info persp-name lsp github debug minor-modes input-method major-mode process vcs checker))
-    )
+  ;; (doom-modeline-def-modeline 'main
+  ;;   '(bar workspace-number window-number evil-state god-state ryo-modal xah-fly-keys matches buffer-info remote-host buffer-position parrot selection-info)
+  ;;   '(misc-info persp-name lsp github debug minor-modes input-method major-mode process vcs checker))
   )
-
 
 (use-package dashboard
   :ensure t
   :diminish
-  (dashboard-mode page-break-lines-mode)
-  )
-
-
-
-
-
-
+  (dashboard-mode page-break-lines-mode))
 
 ;; Highlights
 ;; highlight on the current line
@@ -279,10 +263,9 @@
   :demand t
   :custom
   (display-time-interval 60)
-  (display-time-format "%m/%d %H:%M")
+  (display-time-format " %m/%d %H:%M ")
   :config
-  (display-time-mode t)
-  )
+  (display-time-mode t))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Backup setting
@@ -322,7 +305,8 @@
     (scroll-lock-mode (if scroll-lock-mode -1 1))
     (message "Scroll lock %s" (if scroll-lock-mode "enabled" "disabled")))
 
-  :bind(("M-t m" . toggle-scroll-lock)))
+  :bind
+  ("M-t m" . toggle-scroll-lock))
 
 ;; ediff
 ;; (when (executable-find "diff")
@@ -338,16 +322,14 @@
   :demand t
   :diminish t
   :config
-  (global-undo-tree-mode t)
-  )
+  (global-undo-tree-mode t))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Search / Replace
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; hydra
 (use-package hydra
-  :ensure t
-  )
+  :ensure t)
 
 (use-package ivy
   :ensure t
@@ -358,18 +340,15 @@
   (enable-recursive-minibuffers t)
   (minibuffer-depth-indicate-mode 1)
 
-  :bind(:map ivy-minibuffer-map
-             ("<escape>" . minibuffer-keyboard-quit )
-             )
-
-  )
+  :bind
+  (:map ivy-minibuffer-map
+        ("<escape>" . minibuffer-keyboard-quit )))
 
 (use-package ivy-hydra
   :ensure t
   :after (ivy hydra)
   :custom
-  (ivy-read-action-function (function ivy-hydra-read-action))
-  )
+  (ivy-read-action-function (function ivy-hydra-read-action)))
 
 ;; swiper (isearch)
 (use-package swiper
@@ -378,30 +357,28 @@
   :after ivy
   :bind
   ("C-s" . swiper)
-  ("M-s M-s" . swiper-thing-at-point)
-  )
+  ("M-s M-s" . swiper-thing-at-point))
 
 (use-package counsel
   :ensure t
   :after swiper
-  :bind(("M-x" . counsel-M-x)
-        ("M-y" . counsel-yank-pop)
-        ("C-M-z" . counsel-fzf)
-        ("C-M-r" . counsel-recentf)
-        ("C-x C-b" . counsel-ibuffer)
-        ("C-M-f" . counsel-ag)
-        )
+  :bind
+  ("M-x" . counsel-M-x)
+  ("M-y" . counsel-yank-pop)
+  ("C-M-z" . counsel-fzf)
+  ("C-M-r" . counsel-recentf)
+  ("C-x C-b" . counsel-ibuffer)
+  ("C-M-f" . counsel-ag)
   :config
-  (counsel-mode 1)
-  )
+  (counsel-mode 1))
 
 ;; anzu
 (use-package anzu
   :diminish
   :ensure t
-  :bind(("C-r"   . anzu-query-replace-regexp)
-        ("C-M-r" . anzu-query-replace-at-cursor-thing)
-        )
+  :bind
+  ("C-r"   . anzu-query-replace-regexp)
+  ("C-M-r" . anzu-query-replace-at-cursor-thing)
   :hook
   (after-init . global-anzu-mode)
   :custom
@@ -411,15 +388,15 @@
   
 (use-package google-this
   :ensure t
-  :bind(("M-i G" . google-this)
-        )
-  )
+  :bind
+  ("M-i G" . google-this))
 
 (use-package google-translate
   :ensure t
-  :bind(("M-i t" . google-translate-at-point)
-        ("M-i T" . google-translate-at-point-reverse)
-        )
+  :bind
+  ("M-i t" . google-translate-at-point)
+  ("M-i T" . google-translate-at-point-reverse)
+
   :custom
   (google-translate-default-source-language "en")
   (google-translate-default-target-language "ja")
@@ -431,49 +408,55 @@
 (use-package org
   :ensure t
   :custom
+  ;; agenda-files
   (org-directory "~/Dropbox/org/")
-  (task-file (concat org-directory "task.org"))
+  (inbox-file (concat org-directory "inbox.org"))
+  (work-file (concat org-directory "work.org"))
+  (review-file (concat org-directory "review.org"))
+  (mtg-file (concat org-directory "mtg.org"))
   (schedule-file (concat org-directory "schedule.org"))
   (mylist-file (concat org-directory "mylist.org"))
+
   (org-default-notes-file (concat org-directory "notes.org"))
-  ;; org-clock
   (org-clock-out-remove-zero-time-clocks t)
   (org-clock-clocktable-default-properties '(:maxlevel 2 :scope agenda-with-archives :fileskip0 t :link t :block today :match ""))
   (org-clock-clocked-in-display 'frame-title)
 
-  (org-agenda-files (quote (
-                            "~/Dropbox/org/task.org"
-                            "~/Dropbox/org/schedule.org"
-                            "~/Dropbox/org/mylist.org"
-                            )))
+  ;; (org-agenda-files '("~/Dropbox/org/inbox.org"
+  ;;                     "~/Dropbox/org/work.org"
+  ;;                     "~/Dropbox/org/review.org"
+  ;;                     "~/Dropbox/org/mtg.org"
+  ;;                     "~/Dropbox/org/schedule.org"
+  ;;                     "~/Dropbox/org/mylist.org"))
+  (org-agenda-files (list inbox-file
+                          work-file
+                          review-file
+                          mtg-file
+                          schedule-file
+                          mylist-file))
 
   (org-refile-targets '((org-agenda-files :maxlevel . 3)))
-  (org-todo-keywords '(
-                       ;; (sequence "TODO(t)" "WIP(w)" "PENDING(p)" "|" "DONE(d)" "CANCELED(c@)")
-                       ;; (sequence "MEMO(m)" "|" "REFLECTION(r)" "KNOWLEDGE(k)" "FORGETTABLE(f)")
-                       (sequence "TODO(t)" "WIP(w)" "PENDING(p)" "|" "DONE(d)" "CANCELED(c)")
-                       ))
+  (org-todo-keywords '((sequence "TODO(t)" "WIP(w)" "PENDING(p)" "|" "DONE(d)" "CANCELED(c)")))
   (org-capture-templates
-   '(
-     ("t" "Write down the thoughts of this moment with a timestamp."      item  (file+headline ladicle/get-today-diary "Log")  "%(ladicle/org-get-time) %?\n"            :prepend 1)
+   '(("t" "Write down the thoughts of this moment with a timestamp."      item  (file+headline ladicle/get-today-diary "Log")  "%(ladicle/org-get-time) %?\n"            :prepend 1)
      ("m" "Memorize something in the memo section of today's diary."      entry (file+headline ladicle/get-today-diary "Memo") "* %?\n"                                  :empty-lines 1 :jump-to-captured 1 :unnarrowed 1)
-     ("i" "Create a general task to the inbox and jump to the task file." entry (file+headline task-file "Inbox")              "* TODO %?\n  %U\n%i\n"                   :empty-lines 1 :jump-to-captured 1)
-     ("p" "Create an interrupt task to the inbox and start clocking."     entry (file+headline task-file "Inbox")              "* TODO %?\n  %U\n%i\n"                   :empty-lines 1 :clock-in 1 :clock-resume 1)
+     ("i" "Create a general task to the inbox and jump to the task file." entry (file+headline inbox-file "Inbox")             "* TODO %?\n  %U\n%i\n"                   :empty-lines 1 :jump-to-captured 1)
+     ("p" "Create an interrupt task to the inbox and start clocking."     entry (file+headline inbox-file "Inbox")             "* TODO %?\n  %U\n%i\n"                   :empty-lines 1 :clock-in 1 :clock-resume 1)
      ("s" "Add an event to the calendar."                                 entry (file+headline schedule-file "Schedule")       "* %?\n  SCHEDULED: <%(org-read-date)>\n" :empty-lines 1)
-     ("h" "Collect hacking Emacs ideas!"                                  item  (file+headline task-file "Hacking Emacs")      "[ ] %?"                                  :prepend 1)
+     ("h" "Collect hacking Emacs ideas!"                                  item  (file+headline inbox-file "Hacking Emacs")     "[ ] %?"                                  :prepend 1)
      ("w" "Wish list for my life!"                                        entry (file+headline mylist-file "My Wishes")        "* TODO %?"                               :prepend 1)
-     ("l" "Store the link of the current position in the clocking task."  item  (clock)                                        "%A\n"                                    :immediate-finish 1 :prepend 1)
-     ))
+     ("l" "Store the link of the current position in the clocking task."  item  (clock)                                        "%A\n"                                    :immediate-finish 1 :prepend 1)))
 
-  :bind(("C-c c" . org-capture)
-        ("C-c a" . org-agenda)
-        ("M-i l i" . (lambda () (interactive) (ladicle/open-org-file task-file)))
-        ("M-i l s" . (lambda () (interactive) (ladicle/open-org-file schedule-file)))
-        ("M-i l l" . (lambda () (interactive) (ladicle/open-org-file mylist-file)))
-        ("M-i l y" . (lambda () (interactive) (ladicle/open-org-file (ladicle/get-yesterday-diary))))
-        ("M-i l p" . (lambda () (interactive) (ladicle/open-org-file (ladicle/get-diary-from-cal))))
-        ("M-i l t" . (lambda () (interactive) (ladicle/open-org-file (ladicle/get-today-diary))))
-        :map org-mode-map
+  :bind
+  ("C-c c" . org-capture)
+  ("C-c a" . org-agenda)
+  ("M-i l i" . (lambda () (interactive) (ladicle/open-org-file inbox-file)))
+  ("M-i l s" . (lambda () (interactive) (ladicle/open-org-file schedule-file)))
+  ("M-i l l" . (lambda () (interactive) (ladicle/open-org-file mylist-file)))
+  ("M-i l y" . (lambda () (interactive) (ladicle/open-org-file (ladicle/get-yesterday-diary))))
+  ("M-i l p" . (lambda () (interactive) (ladicle/open-org-file (ladicle/get-diary-from-cal))))
+  ("M-i l t" . (lambda () (interactive) (ladicle/open-org-file (ladicle/get-today-diary))))
+  (:map org-mode-map
         ;; ("C-c i" . org-clock-in)
         ;; ("C-c o" . org-clock-out)
         ;; ("C-c u" . org-dblock-update)
@@ -552,9 +535,11 @@
   (org-pomodoro-mode-line ((t (:foreground "#ff5555"))))
   (org-pomodoro-mode-line-break   ((t (:foreground "#50fa7b"))))
 
-  ;; :bind (:map org-mode-map
-  ;;             ("C-c p" . org-pomodoro))
-  :bind ("C-c p" . org-pomodoro)
+  ;; :bind
+  ;; (:map org-mode-map
+  ;;       ("C-c p" . org-pomodoro))
+  :bind
+  ("C-c p" . org-pomodoro)
 
   :hook
   (org-pomodoro-started  . (lambda () (notifications-notify
@@ -586,7 +571,8 @@
 ;; git
 (use-package git-timemachine
   :ensure t
-  :bind ("M-g t" . git-timemachine-toggle))
+  :bind
+  ("M-g t" . git-timemachine-toggle))
 
 (use-package diffview
   :ensure t
@@ -597,7 +583,8 @@
     (if (region-active-p)
         (diffview-region)
       (diffview-current)))
-  :bind ("M-g v" . ladicle/diffview-dwim))
+  :bind
+  ("M-g v" . ladicle/diffview-dwim))
 
 (use-package magit
   :ensure t
@@ -636,11 +623,11 @@
 
 (use-package browse-at-remote
   :ensure t
-  :bind ("M-g r" . browse-at-remote))
+  :bind
+  ("M-g r" . browse-at-remote))
 
 (use-package github-pullrequest
-  :ensure t
-  )
+  :ensure t)
 
 
 ;; yasnippet
@@ -674,23 +661,24 @@
     ;; elm-mode
     ) . (lambda () (set (make-local-variable 'company-backends) '((company-yasnippet company-lsp company-files)))))
   
-  :bind (:map company-active-map
-         ("C-n" . company-select-next)
-         ("C-p" . company-select-previous)
-         ("C-s" . company-filter-candidates)
-         ("<tab>" . company-complete)
-         ;; ("<tab>" . company-complete)
-         ("M-n" . nil)
-         ("M-p" . nil)
-         ("C-h" . nil)
-         :map company-search-map
-         ("<tab>" . company-complete)
-         ;; ("<tab>" . company--insert-candidate)
-         ("C-n" . company-select-next)
-         ("C-p" . company-select-previous)
-         ;; ("C-s" . company-select-next)
-         ;; ("C-r" . company-select-previous)
-         )
+  :bind
+  (:map company-active-map
+        ("C-n" . company-select-next)
+        ("C-p" . company-select-previous)
+        ("C-s" . company-filter-candidates)
+        ("<tab>" . company-complete)
+        ;; ("<tab>" . company-complete)
+        ("M-n" . nil)
+        ("M-p" . nil)
+        ("C-h" . nil)
+        :map company-search-map
+        ("<tab>" . company-complete)
+        ;; ("<tab>" . company--insert-candidate)
+        ("C-n" . company-select-next)
+        ("C-p" . company-select-previous)
+        ;; ("C-s" . company-select-next)
+        ;; ("C-r" . company-select-previous)
+        )
   
   :config
   (use-package company-box
@@ -709,10 +697,10 @@
 ;; projectile
 (use-package projectile
   :ensure t
-  :bind(:map projectile-mode-map
-             ("s-p" . projectile-command-map)
-             ("C-c f" . projectile-command-map)
-        )
+  :bind
+  (:map projectile-mode-map
+        ("s-p" . projectile-command-map)
+        ("C-c f" . projectile-command-map))
   :config
   (projectile-mode 1)
   )
@@ -768,67 +756,69 @@
   (lsp-enable-snippet t)
   (lsp-print-io t)
 
-  :bind(:map lsp-mode-map
-             ("C-c l" . lsp-lens-mode)))
+  :bind
+  (:map lsp-mode-map
+        ("C-c l" . lsp-lens-mode)))
 
 
-  (use-package lsp-ui
-    :ensure t
-    :after lsp-mode
-    :hook (lsp-mode . lsp-ui-mode)
-    :commands lsp-ui-mode
-    
-    ;; :custom-face
-    ;; (lsp-ui-doc-background ((nil (:background "black"))))
-    
-    :custom
-    (lsp-ui-doc-enable nil)
-    (lsp-ui-doc-header t)
-    (lsp-ui-doc-include-signature t)
-    (lsp-ui-doc-position 'bottom)
-    (lsp-ui-doc-max-width 150)
-    (lsp-ui-doc-max-height 30)
-    (lsp-ui-doc-use-childframe t)
-    (lsp-ui-doc-use-webkit nil)
+(use-package lsp-ui
+  :ensure t
+  :after lsp-mode
+  :hook (lsp-mode . lsp-ui-mode)
+  :commands lsp-ui-mode
+  
+  ;; :custom-face
+  ;; (lsp-ui-doc-background ((nil (:background "black"))))
+  
+  :custom
+  (lsp-ui-doc-enable nil)
+  (lsp-ui-doc-header t)
+  (lsp-ui-doc-include-signature t)
+  (lsp-ui-doc-position 'bottom)
+  (lsp-ui-doc-max-width 150)
+  (lsp-ui-doc-max-height 30)
+  (lsp-ui-doc-use-childframe t)
+  (lsp-ui-doc-use-webkit nil)
 
-    (lsp-ui-peek-enable t)
-    (lsp-ui-peek-peek-height 20)
-    (lsp-ui-peek-list-width 50)
-    (lsp-ui-peek-fontify 'on-demand)
+  (lsp-ui-peek-enable t)
+  (lsp-ui-peek-peek-height 20)
+  (lsp-ui-peek-list-width 50)
+  (lsp-ui-peek-fontify 'on-demand)
 
-    (lsp-ui-imenu-enable t)
-    (lsp-ui-imenu-kind-position 'top)
+  (lsp-ui-imenu-enable t)
+  (lsp-ui-imenu-kind-position 'top)
 
-    (lsp-ui-flycheck-enable t)
-    ;; (lsp-ui-flycheck-list-position 'right)
-    (lsp-ui-flycheck-list-position 'bottom)
-    (lsp-ui-flycheck-live-reporting t)
+  (lsp-ui-flycheck-enable t)
+  ;; (lsp-ui-flycheck-list-position 'right)
+  (lsp-ui-flycheck-list-position 'bottom)
+  (lsp-ui-flycheck-live-reporting t)
 
-    (lsp-ui-sideline-enable nil)
-    (lsp-ui-sideline-show-symbol t)
-    (lsp-ui-sideline-show-hover t)
-    (lsp-ui-sideline-show-diagnostics nil)
-    (lsp-ui-sideline-show-code-actions nil)
-    
-    :preface
-    ;; https://ladicle.com/post/config/#lsp
-    (defun ladicle/toggle-lsp-ui-doc ()
-      "Toggle Lsp-Ui-Doc mode."
-      (interactive)
-      (if lsp-ui-doc-mode
-          (progn
-            (lsp-ui-doc-mode -1)
-            (lsp-ui-doc--hide-frame))
-        (lsp-ui-doc-mode 1))
-      (message "Lsp-Ui-Doc mode %s in current buffer" (if lsp-ui-doc-mode "enabled" "disabled")))
-    
-    :bind(:map lsp-mode-map
-               ("C-c C-r" . lsp-ui-peek-find-references)
-               ("C-c C-j" . lsp-ui-peek-find-definitions)
-               ("C-c C-i" . lsp-ui-peek-find-implementation)
-               ("C-c m"   . lsp-ui-imenu)
-               ("C-c s"   . lsp-ui-sideline-mode)
-               ("C-c d"   . ladicle/toggle-lsp-ui-doc)))
+  (lsp-ui-sideline-enable nil)
+  (lsp-ui-sideline-show-symbol t)
+  (lsp-ui-sideline-show-hover t)
+  (lsp-ui-sideline-show-diagnostics nil)
+  (lsp-ui-sideline-show-code-actions nil)
+  
+  :preface
+  ;; https://ladicle.com/post/config/#lsp
+  (defun ladicle/toggle-lsp-ui-doc ()
+    "Toggle Lsp-Ui-Doc mode."
+    (interactive)
+    (if lsp-ui-doc-mode
+        (progn
+          (lsp-ui-doc-mode -1)
+          (lsp-ui-doc--hide-frame))
+      (lsp-ui-doc-mode 1))
+    (message "Lsp-Ui-Doc mode %s in current buffer" (if lsp-ui-doc-mode "enabled" "disabled")))
+  
+  :bind
+  (:map lsp-mode-map
+        ("C-c C-r" . lsp-ui-peek-find-references)
+        ("C-c C-j" . lsp-ui-peek-find-definitions)
+        ("C-c C-i" . lsp-ui-peek-find-implementation)
+        ("C-c m"   . lsp-ui-imenu)
+        ("C-c s"   . lsp-ui-sideline-mode)
+        ("C-c d"   . ladicle/toggle-lsp-ui-doc)))
 
 
 (use-package company-lsp
@@ -897,17 +887,16 @@
   :defer t
   :custom
   (elm-package-json "elm.json")
-
   :hook
   (elm-mode . flycheck-mode)
-
   :config
   (add-to-list 'company-backends 'company-elm))
 
 (use-package flycheck-elm
   :ensure t
   :after flycheck elm
-  ;; :bind(:map elm-mode-map
+  ;; :bind
+  ;; (:map elm-mode-map
   ;;       ("C-c C-f" . elm-format-buffer))
   :config
   (add-hook 'flycheck-mode-hook #'flycheck-elm-setup))

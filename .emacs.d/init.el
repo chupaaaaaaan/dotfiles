@@ -666,19 +666,16 @@
         ("C-n" . company-select-next)
         ("C-p" . company-select-previous)
         ("C-s" . company-filter-candidates)
-        ("<tab>" . company-complete)
-        ;; ("<tab>" . company-complete)
+        ("<tab>" . company-complete-common)
         ("M-n" . nil)
         ("M-p" . nil)
-        ("C-h" . nil)
-        :map company-search-map
-        ("<tab>" . company-complete)
-        ;; ("<tab>" . company--insert-candidate)
-        ("C-n" . company-select-next)
-        ("C-p" . company-select-previous)
+        ("C-h" . nil))
+  (:map company-search-map
+        ;; ("<tab>" . company-complete-common-or-cycle)
         ;; ("C-s" . company-select-next)
         ;; ("C-r" . company-select-previous)
-        )
+        ("C-n" . company-select-next)
+        ("C-p" . company-select-previous))
   
   :config
   (use-package company-box

@@ -254,6 +254,9 @@
 (use-package nyan-mode
   :ensure t
   :demand t
+  :custom
+  (nyan-cat-face-number 4)
+  (nyan-animate-nyancat t)  
   :config
   (nyan-mode 1))
 
@@ -838,8 +841,7 @@
 (use-package lsp-treemacs
   :ensure t
   :after lsp-mode treemacs
-  :commands lsp-treemacs-errors-list
-  )
+  :commands lsp-treemacs-errors-list)
 
 (use-package dap-mode
   :ensure t
@@ -848,9 +850,18 @@
   (dap-ui-mode t))
 
 ;; Java (STS4)
+;; (setq chupaaaaaaan:lombok-path (expand-file-name (concat user-emacs-directory "eclipse.jdt.ls/server/boot-server/lombok.jar")))
 (use-package lsp-java-boot
   :ensure lsp-java
   :defer t
+  ;; :custom
+  ;; (lsp-java-vmargs (list "-noverify"
+  ;;                        "-Xmx1G"
+  ;;                        "-XX:+UseG1GC"
+  ;;                        "-XX:+UseStringDeduplication"
+  ;;                        (concat "-javaagent:" chupaaaaaaan:lombok-path)
+  ;;                        (concat "-Xbootclasspath/a:" chupaaaaaaan:lombok-path)))
+
   :hook
   (java-mode . lsp)
   (java-mode . lsp-java-boot-lens-mode)

@@ -7,7 +7,7 @@
   (let (path)
     (dolist (path paths paths)
       (let ((elisp-dir
-              (expand-file-name (concat user-emacs-directory path))))
+             (expand-file-name (concat user-emacs-directory path))))
         (add-to-list 'load-path elisp-dir)
         (if (fboundp 'normal-top-level-add-subdirs-to-load-path)
             (normal-top-level-add-subdirs-to-load-path))))))
@@ -17,7 +17,7 @@
 
 ;; separate customize file
 (setq custom-file "~/.emacs.d/customize.el")
- 
+
 ;; load local configures
 (dolist (lcnf (directory-files (concat user-emacs-directory "local_conf") t "\\.el$"))
   (load-file lcnf))
@@ -120,7 +120,7 @@
   (require 'ucs-normalize nil t)
   (setq file-name-coding-system 'utf-8-hfs)
   (setq locale-coding-system 'utf-8-hfs)
-;;  (setq alert-default-style 'osx-notifier)
+  ;;  (setq alert-default-style 'osx-notifier)
   )
 
 ;; GNU/Linux
@@ -388,7 +388,7 @@
   (anzu-deactivate-region t)
   (anzu-search-threshold 1000)
   )
-  
+
 (use-package google-this
   :ensure t
   :bind
@@ -411,32 +411,20 @@
 (use-package org
   :ensure t
   :custom
-  ;; agenda-files
   (org-directory "~/Dropbox/org/")
+  ;; agenda-files
   (inbox-file (concat org-directory "inbox.org"))
   (work-file (concat org-directory "work.org"))
   (review-file (concat org-directory "review.org"))
   (mtg-file (concat org-directory "mtg.org"))
   (schedule-file (concat org-directory "schedule.org"))
   (mylist-file (concat org-directory "mylist.org"))
+  (org-agenda-files (list inbox-file work-file review-file mtg-file schedule-file mylist-file))
 
   (org-default-notes-file (concat org-directory "notes.org"))
   (org-clock-out-remove-zero-time-clocks t)
   (org-clock-clocktable-default-properties '(:maxlevel 2 :scope agenda-with-archives :fileskip0 t :link t :block today :match ""))
   (org-clock-clocked-in-display 'frame-title)
-
-  ;; (org-agenda-files '("~/Dropbox/org/inbox.org"
-  ;;                     "~/Dropbox/org/work.org"
-  ;;                     "~/Dropbox/org/review.org"
-  ;;                     "~/Dropbox/org/mtg.org"
-  ;;                     "~/Dropbox/org/schedule.org"
-  ;;                     "~/Dropbox/org/mylist.org"))
-  (org-agenda-files (list inbox-file
-                          work-file
-                          review-file
-                          mtg-file
-                          schedule-file
-                          mylist-file))
 
   (org-refile-targets '((org-agenda-files :maxlevel . 3)))
   (org-todo-keywords '((sequence "TODO(t)" "WIP(w)" "PENDING(p)" "|" "DONE(d)" "CANCELED(c)")))
@@ -475,10 +463,14 @@
                     (run-at-time 0 60 '(lambda ()
                                          (setq org-mode-line-string (ladicle/task-clocked-time))
                                          (force-mode-line-update)))
-                  (force-mode-line-update)))
+                    (force-mode-line-update)))
   (org-mode . (lambda ()
                 (dolist (key '("C-'" "C-," "C-."))
                   (unbind-key key org-mode-map))))
+  (org-agenda-mode . (lambda ()
+                       (setq org-agenda-weekday-num (string-to-number (format-time-string "%u" (current-time))))
+                       (custom-set-variables '(org-agenda-start-on-weekday org-agenda-weekday-num))))
+
 
   :preface
   (defun ladicle/get-today-diary ()

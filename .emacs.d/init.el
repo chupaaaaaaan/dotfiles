@@ -339,6 +339,7 @@
   :init
   (ivy-mode 1)
   :custom
+  (ivy-truncate-lines nil)
   (ivy-use-virtual-buffers t)
   (enable-recursive-minibuffers t)
   (minibuffer-depth-indicate-mode 1)

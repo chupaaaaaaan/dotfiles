@@ -31,11 +31,6 @@
 (add-to-list 'package-archives '("melpa-stable"  . "https://stable.melpa.org/packages/"))
 (add-to-list 'package-archives '("melpa"         . "https://melpa.org/packages/"))
 
-;; package list with repository
-;; (company-ghc          . "melpa-stable")
-;; (diminish             . "melpa-stable")
-;; (ghc                  . "melpa-stable")
-
 (unless (package-installed-p 'use-package)
   (package-refresh-contents)
   (package-install 'use-package))
@@ -62,8 +57,7 @@
   (history-length 1000)
   (message-log-max 10000)
   (gc-cons-threshold (* 10 gc-cons-threshold))
-  (mouse-yank-at-point t)
-  )
+  (mouse-yank-at-point t))
 
 ;;TODO: 雑多な設定を整理する
 ;; maximize frame
@@ -119,13 +113,10 @@
 (when (eq system-type 'darwin)
   (require 'ucs-normalize nil t)
   (setq file-name-coding-system 'utf-8-hfs)
-  (setq locale-coding-system 'utf-8-hfs)
-  ;;  (setq alert-default-style 'osx-notifier)
-  )
+  (setq locale-coding-system 'utf-8-hfs))
 
 ;; GNU/Linux
-(when (eq system-type 'gnu/linux)
-  )
+(when (eq system-type 'gnu/linux))
 
 ;; Windows
 (when (eq system-type 'windows-nt)
@@ -134,8 +125,7 @@
 
   ;; default path
   (setq default-directory (concat (getenv "HOMEPATH") "/"))
-  (setq command-line-default-directory (concat (getenv "HOMEPATH") "/"))
-  )
+  (setq command-line-default-directory (concat (getenv "HOMEPATH") "/")))
 
 
 ;; Keymap
@@ -227,16 +217,15 @@
 (use-package paren
   :ensure t
   :demand t
+  ;; :custom-face
+  ;; (show-paren-match ((nil (:underline "#ff5555"))))
   :custom
   (show-paren-mode t)
   (show-paren-delay 0)
   ;; (show-paren-style 'expression)
   (show-paren-style 'mixed)
   (show-paren-when-point-inside-paren t)
-  (show-paren-when-point-in-periphery t)
-  ;; :custom-face
-  ;; (show-paren-match ((nil (:underline "#ff5555"))))
-  )
+  (show-paren-when-point-in-periphery t))
 
 ;; volatile-highlights
 (use-package volatile-highlights
@@ -256,7 +245,7 @@
   :demand t
   :custom
   (nyan-cat-face-number 4)
-  (nyan-animate-nyancat t)  
+  (nyan-animate-nyancat t)
   :config
   (nyan-mode 1))
 
@@ -381,14 +370,13 @@
   :diminish
   :ensure t
   :bind
-  ("C-r"   . anzu-query-replace-regexp)
+  ("C-r" . anzu-query-replace-regexp)
   ("C-M-r" . anzu-query-replace-at-cursor-thing)
   :hook
   (after-init . global-anzu-mode)
   :custom
   (anzu-deactivate-region t)
-  (anzu-search-threshold 1000)
-  )
+  (anzu-search-threshold 1000))
 
 (use-package google-this
   :ensure t
@@ -403,8 +391,7 @@
 
   :custom
   (google-translate-default-source-language "en")
-  (google-translate-default-target-language "ja")
-  )
+  (google-translate-default-target-language "ja"))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Org mode
@@ -547,8 +534,7 @@
   :config
   (when (eq system-type 'darwin)
     (setq alert-default-style 'osx-notifier))
-  (require 'alert)
-  )
+  (require 'alert))
 
 (use-package org-mobile-sync
   :ensure t
@@ -557,8 +543,7 @@
   (org-mobile-directory "~/Dropbox/Apps/MobileOrg/")
   (org-mobile-inbox-for-pull "~/Dropbox/org/from-mobile.org")
   :config
-  (org-mobile-sync-mode t)
-  )
+  (org-mobile-sync-mode t))
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -631,11 +616,8 @@
   ;; :disabled
   :ensure t
   :hook (after-init . yas-global-mode)
-
   :config
-  (use-package yasnippet-snippets :ensure t)
-
-  )
+  (use-package yasnippet-snippets :ensure t))
 
 ;; company
 ;; TODO: company-backendsをバッファローカルに定義する方法を考える
@@ -671,21 +653,21 @@
         ;; ("C-s" . company-select-next)
         ;; ("C-r" . company-select-previous)
         ("C-n" . company-select-next)
-        ("C-p" . company-select-previous))
-  
-  :config
-  (use-package company-box
-    :ensure t
-    :diminish
-    :hook (company-mode . company-box-mode)
-    :custom
-    (company-box-icons-alist 'company-box-icons-all-the-icons)
-    (company-box-show-single-candidate nil))
+        ("C-p" . company-select-previous)))
 
-  (use-package company-quickhelp
-    :ensure t
-    :hook (company-mode . company-quickhelp-mode))
-  )
+(use-package company-box
+  :ensure t
+  :after company
+  :diminish
+  :hook (company-mode . company-box-mode)
+  :custom
+  (company-box-icons-alist 'company-box-icons-all-the-icons)
+  (company-box-show-single-candidate nil))
+
+(use-package company-quickhelp
+  :ensure t
+  :after company
+  :hook (company-mode . company-quickhelp-mode))
 
 ;; projectile
 (use-package projectile
@@ -695,8 +677,7 @@
         ("s-p" . projectile-command-map)
         ("C-c f" . projectile-command-map))
   :config
-  (projectile-mode 1)
-  )
+  (projectile-mode 1))
 
 ;; treemacs
 (use-package treemacs
@@ -713,14 +694,13 @@
   (treemacs-follow-mode t)
   (treemacs-filewatch-mode t)
   (treemacs-fringe-indicator-mode t)
-  (treemacs-git-mode 'simple)
+  (treemacs-git-mode 'simple))
 
-  (use-package treemacs-icons-dired
-    :after treemacs dired
-    :ensure t
-    :config
-    (treemacs-icons-dired-mode))
-  )
+(use-package treemacs-icons-dired
+  :after treemacs dired
+  :ensure t
+  :config
+  (treemacs-icons-dired-mode))
 
 
 ;; flycheck
@@ -823,10 +803,7 @@
   (company-lsp-async t)
   (company-lsp-enable-snippet t)
   (company-lsp-enable-recompletion t)
-  (company-lsp-match-candidate-predicate 'company-lsp-match-candidate-flex)
-  ;; :config
-  ;; (add-to-list 'company-backends 'company-lsp)
-  )
+  (company-lsp-match-candidate-predicate 'company-lsp-match-candidate-flex))
 
 (use-package lsp-treemacs
   :ensure t

@@ -820,6 +820,7 @@
 ;; (setq chupaaaaaaan:lombok-path (expand-file-name (concat user-emacs-directory "eclipse.jdt.ls/server/boot-server/lombok.jar")))
 (use-package lsp-java-boot
   :ensure lsp-java
+  :disabled
   :defer t
   ;; :custom
   ;; (lsp-java-vmargs (list "-noverify"

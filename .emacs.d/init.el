@@ -836,6 +836,7 @@
   (java-mode . flycheck-mode))
 
 (use-package dap-java
+  :disabled
   :after lsp-java)
 
 ;; Haskell

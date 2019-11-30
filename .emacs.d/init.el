@@ -886,6 +886,7 @@
 
 (use-package markdown-mode :ensure t)
 
+(use-package rjsx-mode :ensure t)
 
 
 ;; load customize file

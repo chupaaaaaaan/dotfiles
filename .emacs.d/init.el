@@ -407,7 +407,8 @@
   (mtg-file (concat org-directory "mtg.org"))
   (schedule-file (concat org-directory "schedule.org"))
   (mylist-file (concat org-directory "mylist.org"))
-  (org-agenda-files (list inbox-file work-file review-file mtg-file schedule-file mylist-file))
+  (objective-file (concat org-directory "objective.org"))
+  (org-agenda-files (list inbox-file work-file review-file mtg-file schedule-file mylist-file objective-file))
 
   (org-default-notes-file (concat org-directory "notes.org"))
   (org-clock-out-remove-zero-time-clocks t)
@@ -429,6 +430,7 @@
   :bind
   ("C-c c" . org-capture)
   ("C-c a" . org-agenda)
+  ("C-c l" . org-store-link)
   ("M-i l i" . (lambda () (interactive) (ladicle/open-org-file inbox-file)))
   ("M-i l s" . (lambda () (interactive) (ladicle/open-org-file schedule-file)))
   ("M-i l l" . (lambda () (interactive) (ladicle/open-org-file mylist-file)))
@@ -731,7 +733,7 @@
 
   :bind
   (:map lsp-mode-map
-        ("C-c l" . lsp-lens-mode)))
+        ("C-c C-l" . lsp-lens-mode)))
 
 
 (use-package lsp-ui

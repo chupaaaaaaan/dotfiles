@@ -525,7 +525,7 @@
   ;; (:map org-mode-map
   ;;       ("C-c p" . org-pomodoro))
   :bind
-  ("C-c p" . org-pomodoro)
+  ("C-c C-p" . org-pomodoro)
 
   :hook
   (org-pomodoro-started  . (lambda () (notifications-notify
@@ -678,7 +678,7 @@
   :bind
   (:map projectile-mode-map
         ("s-p" . projectile-command-map)
-        ("C-c f" . projectile-command-map))
+        ("C-c p" . projectile-command-map))
   :config
   (projectile-mode 1))
 
@@ -698,6 +698,16 @@
   (treemacs-filewatch-mode t)
   (treemacs-fringe-indicator-mode t)
   (treemacs-git-mode 'simple))
+
+(use-package counsel-projectile
+  :ensure t
+  :after counsel projectile
+  :custom
+  (projectile-completion-system 'ivy)
+  (counsel-projectile-sort-files t)
+  (counsel-projectile-sort-projects t)
+  :config
+  (counsel-projectile-mode 1))
 
 (use-package treemacs-icons-dired
   :after treemacs dired

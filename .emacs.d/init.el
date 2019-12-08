@@ -900,7 +900,10 @@
 
 (use-package markdown-mode :ensure t)
 
-(use-package rjsx-mode :ensure t)
+(use-package rjsx-mode
+  :ensure t
+  :init
+  (add-to-list 'auto-mode-alist '(".*\\.js\\'" . rjsx-mode)))
 
 
 ;; load customize file

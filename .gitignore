@@ -22,6 +22,7 @@
 !.emacs.d/public_repos/install-repos.sh
 !.emacs.d/public_repos/package_list.txt
 .emacs.d/recentf
+.emacs.d/server/
 .emacs.d/tramp
 .emacs.d/transient
 .emacs.d/url/

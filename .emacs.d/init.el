@@ -421,7 +421,7 @@
    '(("t" "Write down the thoughts of this moment with a timestamp."
       item  (file+headline ladicle/get-today-diary "Log")
       "%(ladicle/org-get-time) %?\n"
-      :prepend 1)
+      :prepend nil)
      ("m" "Memorize something in the memo section of today's diary."
       entry (file+headline ladicle/get-today-diary "Memo")
       "* %?\n"

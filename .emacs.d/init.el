@@ -929,6 +929,8 @@
   :init
   (add-to-list 'auto-mode-alist '(".*\\.js\\'" . rjsx-mode)))
 
+(use-package org-re-reveal :ensure t)
+
 
 ;; load customize file
 (load custom-file t)

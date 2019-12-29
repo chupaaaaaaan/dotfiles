@@ -113,7 +113,11 @@
 (when (eq system-type 'darwin)
   (require 'ucs-normalize nil t)
   (setq file-name-coding-system 'utf-8-hfs)
-  (setq locale-coding-system 'utf-8-hfs))
+  (setq locale-coding-system 'utf-8-hfs)
+  (use-package exec-path-from-shell
+    :ensure t
+    :init
+    (exec-path-from-shell-initialize)))
 
 ;; GNU/Linux
 (when (eq system-type 'gnu/linux))

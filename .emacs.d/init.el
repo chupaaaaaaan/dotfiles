@@ -56,7 +56,7 @@
   (history-delete-duplicates t)
   (history-length 1000)
   (message-log-max 10000)
-  (gc-cons-threshold (* 10 gc-cons-threshold))
+  ;(gc-cons-threshold (* 10 gc-cons-threshold))
   (mouse-yank-at-point t))
 
 ;;TODO: 雑多な設定を整理する
@@ -67,41 +67,54 @@
 (setq-default bidi-display-reordering nil)
 
 ;; Font
-;; Japanese font settings
-(defun set-japanese-font (family)
-  "Set japanese font by FAMILY."
-  (set-fontset-font (frame-parameter nil 'font) 'japanese-jisx0208 (font-spec :family family))
-  (set-fontset-font (frame-parameter nil 'font) 'japanese-jisx0212 (font-spec :family family))
-  (set-fontset-font (frame-parameter nil 'font) 'katakana-jisx0201 (font-spec :family family)))
+;; all-the-icons
+(use-package all-the-icons-dired
+  :ensure t
+  :hook
+  (dired-mode . all-the-icons-dired-mode))
 
-;; Overwrite latin and greek char's font
-(defun set-latin-and-greek-font (family)
-  "Set default font by FAMILY."
-  (set-fontset-font (frame-parameter nil 'font) '(#x0250 . #x02AF) (font-spec :family family)) ; IPA extensions
-  (set-fontset-font (frame-parameter nil 'font) '(#x00A0 . #x00FF) (font-spec :family family)) ; latin-1
-  (set-fontset-font (frame-parameter nil 'font) '(#x0100 . #x017F) (font-spec :family family)) ; latin extended-A
-  (set-fontset-font (frame-parameter nil 'font) '(#x0180 . #x024F) (font-spec :family family)) ; latin extended-B
-  (set-fontset-font (frame-parameter nil 'font) '(#x2018 . #x2019) (font-spec :family family)) ; end quote
-  (set-fontset-font (frame-parameter nil 'font) '(#x2588 . #x2588) (font-spec :family family)) ; █
-  (set-fontset-font (frame-parameter nil 'font) '(#x2500 . #x2500) (font-spec :family family)) ; ─
-  (set-fontset-font (frame-parameter nil 'font) '(#x2504 . #x257F) (font-spec :family family)) ; box character
-  (set-fontset-font (frame-parameter nil 'font) '(#x0370 . #x03FF) (font-spec :family family)))
+(use-package all-the-icons-ivy
+  :ensure t
+  :after ivy
+  :config
+  (all-the-icons-ivy-setup))
+
+(defun chupaaaaaaan:font-setting ()
+  "Initialize fonts on window-system"
+  (interactive)
+
+  (cond
+   ((or (eq window-system 'x)
+        (eq window-system 'w32)
+        (eq window-system 'ns))
+    (let* ((size my:font-size)
+           (family my:font-family)
+           (h (round (* size 10))))
+      (set-face-attribute 'default nil :family family :height h)
+      (set-fontset-font nil 'unicode           (font-spec :family family) nil 'append)
+      (set-fontset-font nil 'japanese-jisx0208 (font-spec :family family) nil 'append)
+      (set-fontset-font nil 'japanese-jisx0212 (font-spec :family family) nil 'append)
+      (set-fontset-font nil 'katakana-jisx0201 (font-spec :family family) nil 'append)
+      (when (featurep 'all-the-icons)
+        (set-fontset-font nil 'unicode (font-spec :family (all-the-icons-alltheicon-family)) nil 'append)
+        (set-fontset-font nil 'unicode (font-spec :family (all-the-icons-material-family))   nil 'append)
+        (set-fontset-font nil 'unicode (font-spec :family (all-the-icons-fileicon-family))   nil 'append)
+        (set-fontset-font nil 'unicode (font-spec :family (all-the-icons-faicon-family))     nil 'append)
+        (set-fontset-font nil 'unicode (font-spec :family (all-the-icons-octicon-family))    nil 'append)
+        (set-fontset-font nil 'unicode (font-spec :family (all-the-icons-wicon-family))      nil 'append))
+      (message (format "Setup for %s with %f" family size))))
+   (t
+    (message "Not have window-system"))))
 
 (setq use-default-font-for-symbols nil)
 (setq inhibit-compacting-font-caches t)
 (setq jp-font-family "Ricty Diminished")
 (setq default-font-family "all-the-icons")
 
-(when (eq system-type 'darwin)
-  (set-face-attribute 'default nil :family jp-font-family :height 180))
-(when (eq system-type 'gnu/linux)
-  (set-face-attribute 'default nil :family jp-font-family :height 150))
-(when (eq system-type 'windows-nt)
-  (set-face-attribute 'default nil :family jp-font-family :height 150))
-(set-japanese-font jp-font-family)
-(set-latin-and-greek-font default-font-family)
 (add-to-list 'face-font-rescale-alist (cons default-font-family 0.86))
 (add-to-list 'face-font-rescale-alist (cons jp-font-family 1.0))
+
+(add-hook 'after-init-hook #'chupaaaaaaan:font-setting)
 
 
 ;; locale and environment
@@ -140,6 +153,7 @@
   (keyfreq-autosave-mode 1)
   (keyfreq-buffer "*KeyFrequency*"))
 
+;; which-key
 (use-package which-key
   :ensure t
   :diminish which-key-mode
@@ -185,7 +199,6 @@
   :demand t
   :hook
   (after-init . doom-modeline-mode)
-
   :config
   (set-cursor-color "cyan")
   (line-number-mode 1)
@@ -343,7 +356,7 @@
 
 (use-package ivy-hydra
   :ensure t
-  :after (ivy hydra)
+  :after ivy hydra
   :custom
   (ivy-read-action-function (function ivy-hydra-read-action)))
 
@@ -529,10 +542,8 @@
   :hook
   (org-mode . org-bullets-mode)
 
-  ;; :custom
-  ;; (org-bullets-bullet-list '("" "" "" "" "" "" "" "" "" ""))
-  )
-
+  :custom
+  (org-bullets-bullet-list '("" "" "" "" "" "" "" "" "" ""))
 
 ;; Pomodoro (from @ladicle)
 (use-package org-pomodoro
@@ -543,7 +554,7 @@
   (org-pomodoro-keep-killed-pomodoro-time t)
   (org-pomodoro-format "%s") ;;     
   (org-pomodoro-short-break-format "%s")
-  (org-pomodoro-long-break-format  "%s")
+  (org-pomodoro-long-break-format  "%s")
 
   :custom-face
   (org-pomodoro-mode-line ((t (:foreground "#ff5555"))))
@@ -646,7 +657,8 @@
 (use-package yasnippet
   ;; :disabled
   :ensure t
-  :hook (after-init . yas-global-mode)
+  :hook
+  (after-init . yas-global-mode)
   :config
   (use-package yasnippet-snippets :ensure t))
 
@@ -690,7 +702,8 @@
   :ensure t
   :after company
   :diminish
-  :hook (company-mode . company-box-mode)
+  :hook
+  (company-mode . company-box-mode)
   :custom
   (company-box-icons-alist 'company-box-icons-all-the-icons)
   (company-box-show-single-candidate nil))
@@ -698,7 +711,8 @@
 (use-package company-quickhelp
   :ensure t
   :after company
-  :hook (company-mode . company-quickhelp-mode))
+  :hook
+  (global-company-mode . company-quickhelp-mode))
 
 ;; projectile
 (use-package projectile
@@ -748,15 +762,18 @@
 (use-package flycheck
   :ensure t
   ;; :disabled
-  :hook ((
-          emacs-lisp-mode
-          ) . flycheck-mode))
+  :hook
+  (emacs-lisp-mode . flycheck-mode)
+  (haskell-mode . flycheck-mode)
+  (java-mode . flycheck-mode)
+  (elm-mode . flycheck-mode))
 
 
 (use-package flycheck-posframe
   :ensure t
   :after flycheck
-  :hook (flycheck-mode . flycheck-posframe-mode))
+  :hook
+  (flycheck-mode . flycheck-posframe-mode))
 
 
 ;; lsp
@@ -770,6 +787,10 @@
   (lsp-enable-snippet t)
   (lsp-print-io t)
 
+  :hook
+  (haskell-mode . lsp)
+  (java-mode . lsp)
+
   :bind
   (:map lsp-mode-map
         ("C-c C-l" . lsp-lens-mode)))
@@ -778,8 +799,8 @@
 (use-package lsp-ui
   :ensure t
   :after lsp-mode
-  :hook (lsp-mode . lsp-ui-mode)
-  :commands lsp-ui-mode
+  :hook
+  (lsp-mode . lsp-ui-mode)
   
   ;; :custom-face
   ;; (lsp-ui-doc-background ((nil (:background "black"))))
@@ -837,14 +858,15 @@
 
 (use-package company-lsp
   :ensure t
-  :after company lsp-mode
-  :commands company-lsp
   :custom
   (company-lsp-cache-candidates nil)
   (company-lsp-async t)
   (company-lsp-enable-snippet t)
   (company-lsp-enable-recompletion t)
-  (company-lsp-match-candidate-predicate 'company-lsp-match-candidate-flex))
+  (company-lsp-match-candidate-predicate 'company-lsp-match-candidate-flex)
+  :config
+  (add-to-list 'company-backends 'company-lsp))
+
 
 (use-package lsp-treemacs
   :ensure t
@@ -858,11 +880,12 @@
   (dap-ui-mode t))
 
 ;; Java (STS4)
-;; (setq chupaaaaaaan:lombok-path (expand-file-name (concat user-emacs-directory "eclipse.jdt.ls/server/boot-server/lombok.jar")))
 (use-package lsp-java-boot
   :ensure lsp-java
   :disabled
   :defer t
+  ;; :init
+  ;; (setq chupaaaaaaan:lombok-path (expand-file-name (concat user-emacs-directory "eclipse.jdt.ls/server/boot-server/lombok.jar")))
   ;; :custom
   ;; (lsp-java-vmargs (list "-noverify"
   ;;                        "-Xmx1G"
@@ -872,27 +895,24 @@
   ;;                        (concat "-Xbootclasspath/a:" chupaaaaaaan:lombok-path)))
 
   :hook
-  (java-mode . lsp)
-  (java-mode . lsp-java-boot-lens-mode)
-  (java-mode . flycheck-mode))
+  (java-mode . lsp-java-boot-lens-mode))
 
 (use-package dap-java
-  :disabled
-  :after lsp-java)
+  :disabled)
 
 ;; Haskell
 ;; for ghc-8.0.2 and later
 (use-package lsp-haskell
   :ensure t
   :defer t
-  ;; :init
-  ;; (add-to-list 'company-backends 'company-lsp)
-  :hook
-  (haskell-mode . lsp)
-  (haskell-mode . flycheck-mode)
-
+  :after lsp-mode haskell-mode
   :custom
   (lsp-haskell-process-path-hie "hie-wrapper"))
+
+(use-package flycheck-haskell
+  :ensure t
+  :hook
+  (flycheck-mode . flycheck-haskell-setup))
 
 (use-package terraform-mode
   :ensure t
@@ -902,25 +922,21 @@
   :config
   (add-to-list 'company-backends 'company-terraform))
 
-
 (use-package elm-mode
   :ensure t
   :defer t
   :custom
   (elm-package-json "elm.json")
-  :hook
-  (elm-mode . flycheck-mode)
   :config
   (add-to-list 'company-backends 'company-elm))
 
 (use-package flycheck-elm
   :ensure t
-  :after flycheck elm
   ;; :bind
   ;; (:map elm-mode-map
   ;;       ("C-c C-f" . elm-format-buffer))
-  :config
-  (add-hook 'flycheck-mode-hook #'flycheck-elm-setup))
+  :hook
+  (flycheck-mode . flycheck-elm-setup))
 
 (use-package dockerfile-mode :ensure t)
 

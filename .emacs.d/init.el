@@ -543,7 +543,7 @@
   (org-mode . org-bullets-mode)
 
   :custom
-  (org-bullets-bullet-list '("" "" "" "" "" "" "" "" "" ""))
+  (org-bullets-bullet-list '("" "" "" "" "" "" "" "" "" "")))
 
 ;; Pomodoro (from @ladicle)
 (use-package org-pomodoro

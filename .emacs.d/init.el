@@ -795,7 +795,7 @@
 ;; Pomodoro (from @ladicle)
 (use-package org-pomodoro
   :ensure t
-  :after org
+  :after org-agenda
   :custom
   (org-pomodoro-ask-upon-killing t)
   (org-pomodoro-keep-killed-pomodoro-time t)
@@ -811,7 +811,6 @@
   ;; (:map org-mode-map
   ;;       ("C-c p" . org-pomodoro))
   :bind
-  ("C-c C-p" . org-pomodoro)
   (:map org-agenda-mode-map
         ("p" . org-pomodoro))
 
@@ -930,11 +929,9 @@
   (use-package yasnippet-snippets :ensure t))
 
 ;; company
-;; TODO: company-backendsをバッファローカルに定義する方法を考える
 (use-package company
   :ensure t
   :custom
-  (company-global-mode t)
   (company-idle-delay 0)
   (company-echo-delay 0)
   (company-minimum-prefix-length 2)
@@ -942,26 +939,20 @@
 
   :hook
   (after-init . global-company-mode)
-  ;; (elm-mode . (lambda () (set (make-local-variable 'company-backends) '((company-yasnippet company-elm company-files)))))
-  ;; using company by lsp-completion
-  ((haskell-mode
-    java-mode
-    ;; elm-mode
-    ) . (lambda () (set (make-local-variable 'company-backends) '((company-yasnippet company-lsp company-files)))))
   
   :bind
   (:map company-active-map
         ("C-n" . company-select-next)
         ("C-p" . company-select-previous)
         ("C-s" . company-filter-candidates)
-        ("<tab>" . company-complete-common)
+        ("<tab>" . company-complete-common-or-cycle)
         ("M-n" . nil)
         ("M-p" . nil)
         ("C-h" . nil))
   (:map company-search-map
-        ;; ("<tab>" . company-complete-common-or-cycle)
-        ;; ("C-s" . company-select-next)
-        ;; ("C-r" . company-select-previous)
+        ("<tab>" . company-complete-common-or-cycle)
+        ("C-s" . company-select-next)
+        ("C-r" . company-select-previous)
         ("C-n" . company-select-next)
         ("C-p" . company-select-previous)))
 
@@ -1170,6 +1161,25 @@
 
 (use-package dap-java
   :disabled)
+
+
+(use-package meghanada
+  :ensure t
+  :hook
+  (java-mode . (lambda ()
+                 (meghanada-mode t)
+                 (meghanada-telemetry-enable t)
+                 (setq c-basic-offset 2)
+                 ;; use code format
+                 (add-hook 'before-save-hook 'meghanada-code-beautify-before-save)))
+  :config
+  (cond
+   ((eq system-type 'windows-nt)
+    (setq meghanada-java-path (expand-file-name "bin/java.exe" (getenv "JAVA_HOME")))
+    (setq meghanada-maven-path "mvn.cmd"))
+   (t
+    (setq meghanada-java-path "java")
+    (setq meghanada-maven-path "mvn"))))
 
 ;; Haskell
 ;; for ghc-8.0.2 and later

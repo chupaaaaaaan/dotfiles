@@ -21,7 +21,7 @@
 ;; load local configures
 (dolist (lcnf (directory-files (concat user-emacs-directory "local_conf") t "\\.el$"))
   (load-file lcnf))
-
+1
 ;; package.el
 (require 'package nil t)
 (package-initialize)
@@ -67,17 +67,17 @@
 (setq-default bidi-display-reordering nil)
 
 ;; Font
-;; all-the-icons
-(use-package all-the-icons-dired
-  :ensure t
-  :hook
-  (dired-mode . all-the-icons-dired-mode))
+;; ;; all-the-icons
+;; (use-package all-the-icons-dired
+;;   :ensure t
+;;   :hook
+;;   (dired-mode . all-the-icons-dired-mode))
 
-(use-package all-the-icons-ivy
-  :ensure t
-  :after ivy
-  :config
-  (all-the-icons-ivy-setup))
+;; (use-package all-the-icons-ivy
+;;   :ensure t
+;;   :after ivy
+;;   :config
+;;   (all-the-icons-ivy-setup))
 
 (defun chupaaaaaaan:font-setting ()
   "Initialize fonts on window-system"
@@ -95,24 +95,23 @@
       (set-fontset-font nil 'japanese-jisx0208 (font-spec :family family) nil 'append)
       (set-fontset-font nil 'japanese-jisx0212 (font-spec :family family) nil 'append)
       (set-fontset-font nil 'katakana-jisx0201 (font-spec :family family) nil 'append)
+      (add-to-list 'face-font-rescale-alist (cons family 1.0))
       (when (featurep 'all-the-icons)
-        (set-fontset-font nil 'unicode (font-spec :family (all-the-icons-alltheicon-family)) nil 'append)
-        (set-fontset-font nil 'unicode (font-spec :family (all-the-icons-material-family))   nil 'append)
-        (set-fontset-font nil 'unicode (font-spec :family (all-the-icons-fileicon-family))   nil 'append)
-        (set-fontset-font nil 'unicode (font-spec :family (all-the-icons-faicon-family))     nil 'append)
-        (set-fontset-font nil 'unicode (font-spec :family (all-the-icons-octicon-family))    nil 'append)
-        (set-fontset-font nil 'unicode (font-spec :family (all-the-icons-wicon-family))      nil 'append))
+        (set-fontset-font nil 'unicode (font-spec :family "all-the-icons")   nil 'append)
+        (set-fontset-font nil 'unicode (font-spec :family "FontAwesome")     nil 'append)
+        (set-fontset-font nil 'unicode (font-spec :family "Material Icons")  nil 'append)
+        (set-fontset-font nil 'unicode (font-spec :family "file-icons")      nil 'append)
+        (set-fontset-font nil 'unicode (font-spec :family "github-octicons") nil 'append)
+        (set-fontset-font nil 'unicode (font-spec :family "Weather Icons")   nil 'append)
+        (add-to-list 'face-font-rescale-alist (cons "FontAwesome" 0.85))
+        (add-to-list 'face-font-rescale-alist (cons "file-icons" 0.85))
+        (add-to-list 'face-font-rescale-alist (cons "github-octicons" 0.85)))
       (message (format "Setup for %s with %f" family size))))
    (t
     (message "Not have window-system"))))
 
 (setq use-default-font-for-symbols nil)
 (setq inhibit-compacting-font-caches t)
-(setq jp-font-family "Ricty Diminished")
-(setq default-font-family "all-the-icons")
-
-(add-to-list 'face-font-rescale-alist (cons default-font-family 0.86))
-(add-to-list 'face-font-rescale-alist (cons jp-font-family 1.0))
 
 (add-hook 'after-init-hook #'chupaaaaaaan:font-setting)
 
@@ -199,28 +198,44 @@
   :demand t
   :hook
   (after-init . doom-modeline-mode)
+  :custom
+  (doom-modeline-buffer-file-name-style 'truncate-except-project)
+  ;; (doom-modeline-display-default-persp-name t)
+  ;; (doom-modeline-mode t)
+  ;; (doom-modeline-icon t)
+  ;; (doom-modeline-major-mode-icon t)
+  ;; (doom-modeline-major-mode-color-icon t)
+  ;; (doom-modeline-minor-modes nil)
   :config
   (set-cursor-color "cyan")
   (line-number-mode 1)
-  (column-number-mode 1)
-  (doom-modeline-mode 1)
-  (setq doom-modeline-buffer-file-name-style 'truncate-all)
-  (setq doom-modeline-icon t)
-  (setq doom-modeline-major-mode-icon t)
-  (setq doom-modeline-minor-modes nil)
-  ;; (setq doom-modeline-height 20)
-  ;; (setq doom-modeline-bar-width 3)
-  ;; (setq doom-modeline-major-mode-color-icon t)
+  (column-number-mode 1))
 
-  ;; (doom-modeline-def-modeline 'main
-  ;;   '(bar workspace-number window-number evil-state god-state ryo-modal xah-fly-keys matches buffer-info remote-host buffer-position parrot selection-info)
-  ;;   '(misc-info persp-name lsp github debug minor-modes input-method major-mode process vcs checker))
-  )
+(use-package hide-mode-line
+  :ensure t
+  :disabled
+  :hook
+  (treemacs-mode . hide-mode-line-mode))
 
 (use-package dashboard
   :ensure t
   :diminish
-  (dashboard-mode page-break-lines-mode))
+  (dashboard-mode page-break-lines-mode)
+  :custom
+  (dashboard-center-content nil)
+  (dashboard-set-file-icons t)
+  ;; (dashboard-org-agenda-categories t)
+  (dashboard-set-heading-icons t)
+  ;; (dashboard-set-navigator t)
+  ;; (dashboard-startup-banner 4)
+  (dashboard-items '((recents . 15)
+                     (agenda . 5)
+                     (projects . 5)
+                     (bookmarks . 5)))
+  :custom-face
+  (dashboard-heading ((t (:foreground "#f1fa8c" :weight bold))))
+  :hook
+  (after-init . dashboard-setup-startup-hook))
 
 ;; Highlights
 ;; highlight on the current line
@@ -234,15 +249,30 @@
 (use-package paren
   :ensure t
   :demand t
-  ;; :custom-face
+  :custom-face
   ;; (show-paren-match ((nil (:underline "#ff5555"))))
+  (show-paren-match ((nil (:background "#44475a" :foreground "#f1fa8c"))))
   :custom
   (show-paren-mode t)
   (show-paren-delay 0)
-  ;; (show-paren-style 'expression)
   (show-paren-style 'mixed)
   (show-paren-when-point-inside-paren t)
   (show-paren-when-point-in-periphery t))
+
+(use-package rainbow-delimiters
+  :ensure t
+  :hook
+  (prog-mode . rainbow-delimiters-mode))
+
+(use-package highlight-indent-guides
+  :ensure t
+  :diminish
+  :hook
+  ((prog-mode yaml-mode) . highlight-indent-guides-mode)
+  :custom
+  (highlight-indent-guides-auto-enabled t)
+  (highlight-indent-guides-responsive t)
+  (highlight-indent-guides-method 'character))
 
 ;; volatile-highlights
 (use-package volatile-highlights
@@ -303,6 +333,38 @@
   :config
   (save-place-mode))
 
+;; Recent files
+(use-package recentf
+  :ensure nil
+  :hook
+  (after-init . recentf-mode)
+  :custom
+  (recentf-max-saved-items 20000000)
+  (recentf-auto-cleanup 'never)
+  (recentf-exclude '((expand-file-name package-user-dir)
+                     ".cache"
+                     "cache"
+                     "recentf"
+                     "COMMIT_EDITMSG\\'"))
+  :preface
+  (defun ladicle/recentf-save-list-silence ()
+    (interactive)
+    (let ((message-log-max nil))
+      (if (fboundp 'shut-up)
+          (shut-up (recentf-save-list))
+        (recentf-save-list)))
+    (message ""))
+  (defun ladicle/recentf-cleanup-silence ()
+    (interactive)
+    (let ((message-log-max nil))
+      (if shutup-p
+          (shut-up (recentf-cleanup))
+        (recentf-cleanup)))
+    (message ""))
+  :hook
+  (focus-out-hook . (ladicle/recentf-save-list-silence ladicle/recentf-cleanup-silence)))
+
+
 ;; scroll-lock
 (use-package scroll-lock
   :ensure t
@@ -340,19 +402,176 @@
 (use-package hydra
   :ensure t)
 
-(use-package ivy
+(use-package ivy-rich
   :ensure t
-  :init
-  (ivy-mode 1)
-  :custom
-  (ivy-truncate-lines nil)
-  (ivy-use-virtual-buffers t)
-  (enable-recursive-minibuffers t)
-  (minibuffer-depth-indicate-mode 1)
+  :after ivy
+  :defines (all-the-icons-dir-icon-alist bookmark-alist)
+  :functions (all-the-icons-icon-family
+              all-the-icons-match-to-alist
+              all-the-icons-auto-mode-match?
+              all-the-icons-octicon
+              all-the-icons-dir-is-submodule)
+  :preface
+  (defun ivy-rich-bookmark-name (candidate)
+    (car (assoc candidate bookmark-alist)))
 
-  :bind
-  (:map ivy-minibuffer-map
-        ("<escape>" . minibuffer-keyboard-quit )))
+  (defun ivy-rich-repo-icon (candidate)
+    "Display repo icons in `ivy-rich`."
+    (all-the-icons-octicon "repo" :height .9))
+
+  (defun ivy-rich-org-capture-icon (candidate)
+    "Display repo icons in `ivy-rich`."
+    (pcase (car (last (split-string (car (split-string candidate)) "-")))
+      ("emacs" (all-the-icons-fileicon "emacs" :height .68 :v-adjust .001))
+      ("schedule" (all-the-icons-faicon "calendar" :height .68 :v-adjust .005))
+      ("tweet" (all-the-icons-faicon "commenting" :height .7 :v-adjust .01))
+      ("link" (all-the-icons-faicon "link" :height .68 :v-adjust .01))
+      ("memo" (all-the-icons-faicon "pencil" :height .7 :v-adjust .01))
+      (_       (all-the-icons-octicon "inbox" :height .68 :v-adjust .01))
+      ))
+
+  (defun ivy-rich-org-capture-title (candidate)
+    (let* ((octl (split-string candidate))
+           (title (pop octl))
+           (desc (mapconcat 'identity octl " ")))
+      (format "%-25s %s"
+              title
+              (propertize desc 'face `(:inherit font-lock-doc-face)))))
+
+  (defun ivy-rich-buffer-icon (candidate)
+    "Display buffer icons in `ivy-rich'."
+    (when (display-graphic-p)
+      (when-let* ((buffer (get-buffer candidate))
+                  (major-mode (buffer-local-value 'major-mode buffer))
+                  (icon (if (and (buffer-file-name buffer)
+                                 (all-the-icons-auto-mode-match? candidate))
+                            (all-the-icons-icon-for-file candidate)
+                          (all-the-icons-icon-for-mode major-mode))))
+        (if (symbolp icon)
+            (setq icon (all-the-icons-icon-for-mode 'fundamental-mode)))
+        (unless (symbolp icon)
+          (propertize icon 'face `(:height 1.1 :family ,(all-the-icons-icon-family icon)))))))
+
+  (defun ivy-rich-file-icon (candidate)
+    "Display file icons in `ivy-rich'."
+    (when (display-graphic-p)
+      (let ((icon (if (file-directory-p candidate)
+                      (cond
+                       ((and (fboundp 'tramp-tramp-file-p)
+                             (tramp-tramp-file-p default-directory))
+                        (all-the-icons-octicon "file-directory"))
+                       ((file-symlink-p candidate)
+                        (all-the-icons-octicon "file-symlink-directory"))
+                       ((all-the-icons-dir-is-submodule candidate)
+                        (all-the-icons-octicon "file-submodule"))
+                       ((file-exists-p (format "%s/.git" candidate))
+                        (all-the-icons-octicon "repo"))
+                       (t (let ((matcher (all-the-icons-match-to-alist candidate all-the-icons-dir-icon-alist)))
+                            (apply (car matcher) (list (cadr matcher))))))
+                    (all-the-icons-icon-for-file candidate))))
+        (unless (symbolp icon)
+          (propertize icon
+                      'face `(
+                              :height 1.1
+                              :family ,(all-the-icons-icon-family icon)
+                              ))))))
+  :hook (ivy-rich-mode . (lambda ()
+                           (setq ivy-virtual-abbreviate
+                                 (or (and ivy-rich-mode 'abbreviate) 'name))))
+  :init
+  (setq ivy-rich-display-transformers-list
+        '(ivy-switch-buffer
+          (:columns
+           ((ivy-rich-buffer-icon)
+            (ivy-rich-candidate (:width 30))
+            (ivy-rich-switch-buffer-size (:width 7))
+            (ivy-rich-switch-buffer-indicators (:width 4 :face error :align right))
+            (ivy-rich-switch-buffer-major-mode (:width 12 :face warning))
+            (ivy-rich-switch-buffer-project (:width 15 :face success))
+            (ivy-rich-switch-buffer-path (:width (lambda (x) (ivy-rich-switch-buffer-shorten-path x (ivy-rich-minibuffer-width 0.3))))))
+           :predicate
+           (lambda (cand) (get-buffer cand)))
+          ivy-switch-buffer-other-window
+          (:columns
+           ((ivy-rich-buffer-icon)
+            (ivy-rich-candidate (:width 30))
+            (ivy-rich-switch-buffer-size (:width 7))
+            (ivy-rich-switch-buffer-indicators (:width 4 :face error :align right))
+            (ivy-rich-switch-buffer-major-mode (:width 12 :face warning))
+            (ivy-rich-switch-buffer-project (:width 15 :face success))
+            (ivy-rich-switch-buffer-path (:width (lambda (x) (ivy-rich-switch-buffer-shorten-path x (ivy-rich-minibuffer-width 0.3))))))
+           :predicate
+           (lambda (cand) (get-buffer cand)))
+          counsel-M-x
+          (:columns
+           ((counsel-M-x-transformer (:width 40))
+            (ivy-rich-counsel-function-docstring (:face font-lock-doc-face))))
+          counsel-describe-function
+          (:columns
+           ((counsel-describe-function-transformer (:width 45))
+            (ivy-rich-counsel-function-docstring (:face font-lock-doc-face))))
+          counsel-describe-variable
+          (:columns
+           ((counsel-describe-variable-transformer (:width 45))
+            (ivy-rich-counsel-variable-docstring (:face font-lock-doc-face))))
+          counsel-find-file
+          (:columns
+           ((ivy-rich-file-icon)
+            (ivy-rich-candidate)))
+          counsel-file-jump
+          (:columns
+           ((ivy-rich-file-icon)
+            (ivy-rich-candidate)))
+          counsel-dired-jump
+          (:columns
+           ((ivy-rich-file-icon)
+            (ivy-rich-candidate)))
+          counsel-git
+          (:columns
+           ((ivy-rich-file-icon)
+            (ivy-rich-candidate)))
+          counsel-recentf
+          (:columns
+           ((ivy-rich-file-icon)
+            (ivy-rich-candidate (:width 110))))
+          counsel-bookmark
+          (:columns
+           ((ivy-rich-bookmark-type)
+            (ivy-rich-bookmark-name (:width 30))
+            (ivy-rich-bookmark-info (:width 80))))
+          counsel-projectile-switch-project
+          (:columns
+           ((ivy-rich-file-icon)
+            (ivy-rich-candidate)))
+          counsel-fzf
+          (:columns
+           ((ivy-rich-file-icon)
+            (ivy-rich-candidate)))
+          ivy-ghq-open
+          (:columns
+           ((ivy-rich-repo-icon)
+            (ivy-rich-candidate)))
+          ivy-ghq-open-and-fzf
+          (:columns
+           ((ivy-rich-repo-icon)
+            (ivy-rich-candidate)))
+          counsel-projectile-find-file
+          (:columns
+           ((ivy-rich-file-icon)
+            (ivy-rich-candidate)))
+          counsel-org-capture
+          (:columns
+           ((ivy-rich-org-capture-icon)
+            (ivy-rich-org-capture-title)
+            ))
+          counsel-projectile-find-dir
+          (:columns
+           ((ivy-rich-file-icon)
+            (counsel-projectile-find-dir-transformer)))))
+  :custom
+  (ivy-rich-parse-remote-buffer nil)
+  :config
+  (ivy-rich-mode 1))
 
 (use-package ivy-hydra
   :ensure t
@@ -360,27 +579,55 @@
   :custom
   (ivy-read-action-function (function ivy-hydra-read-action)))
 
-;; swiper (isearch)
-(use-package swiper
-  :diminish
+(use-package counsel
+  :diminish ivy-mode counsel-mode
   :ensure t
-  :after ivy
+  :preface
+  (defun ivy-format-function-pretty (cands)
+    "Transform CANDS into a string for minibuffer."
+    (ivy--format-function-generic
+     (lambda (str)
+       (concat
+        (all-the-icons-faicon "hand-o-right" :height .85 :v-adjust .05 :face 'font-lock-constant-face)
+        (ivy--add-face str 'ivy-current-match)))
+     (lambda (str)
+       (concat "  " str))
+     cands
+     "\n"))
+  :custom
+  (ivy-truncate-lines nil)
+  (ivy-use-virtual-buffers t)
+  (ivy-use-selectable-prompt t)
+  (ivy-on-del-error-function nil)
+  (enable-recursive-minibuffers t)
+  (minibuffer-depth-indicate-mode 1)
+  (swiper-action-recenter t)
+  (counsel-yank-pop-height 15)
+  :hook
+  (after-init . ivy-mode)
+  (ivy-mode . counsel-mode)
   :bind
   ("C-s" . swiper)
-  ("M-s M-s" . swiper-thing-at-point))
-
-(use-package counsel
-  :ensure t
-  :after swiper
-  :bind
+  ("M-s M-s" . swiper-thing-at-point)
   ("M-x" . counsel-M-x)
   ("M-y" . counsel-yank-pop)
   ("C-M-z" . counsel-fzf)
   ("C-M-r" . counsel-recentf)
-  ("C-x C-b" . counsel-ibuffer)
   ("C-M-f" . counsel-ag)
+  ("C-x C-b" . counsel-ibuffer)
+  (:map ivy-minibuffer-map
+        ("C-w" . ivy-backward-kill-word)
+        ("C-k" . ivy-kill-line)
+        ("C-j" . ivy-immediate-done)
+        ("RET" . ivy-alt-done)
+        ("C-h" . ivy-backward-delete-char)
+        ("<escape>" . minibuffer-keyboard-quit))
   :config
-  (counsel-mode 1))
+  (setq ivy-format-function 'ivy-format-function-pretty)
+  (setq counsel-yank-pop-separator
+        (propertize "\n────────────────────────────────────────────────────────\n"
+                    'face `(:foreground "#6272a4")))
+  )
 
 ;; anzu
 (use-package anzu
@@ -388,7 +635,7 @@
   :ensure t
   :bind
   ("C-r" . anzu-query-replace-regexp)
-  ("C-M-r" . anzu-query-replace-at-cursor-thing)
+  ;; ("C-M-r" . anzu-query-replace-at-cursor-thing)
   :hook
   (after-init . global-anzu-mode)
   :custom
@@ -430,46 +677,46 @@
   (org-default-notes-file (concat org-directory "notes.org"))
   (org-clock-out-remove-zero-time-clocks t)
   (org-clock-clocktable-default-properties '(:maxlevel 2 :scope agenda :fileskip0 t :link t :block today :match ""))
-  (org-clock-clocked-in-display 'frame-title)
+  (org-clock-clocked-in-display 'mode-line) ;; 'frame-title
 
   (org-refile-targets '((org-agenda-files :maxlevel . 3)))
   (org-todo-keywords '((sequence "TODO(t)" "WIP(w)" "PENDING(p)" "|" "DONE(d)" "CANCELED(c)")))
   (org-capture-templates
-   '(("t" "Write down the thoughts of this moment with a timestamp."
+   '(("tweet" "Write down the thoughts of this moment with a timestamp."
       item  (file+headline ladicle/get-today-diary "Log")
       "%(ladicle/org-get-time) %?\n"
       :prepend nil)
-     ("m" "Memorize something in the memo section of today's diary."
+     ("memo" "Memorize something in the memo section of today's diary."
       entry (file+headline ladicle/get-today-diary "Memo")
       "* %?\n"
       :empty-lines 1 :jump-to-captured 1 :unnarrowed nil)
-     ("i" "Create a general task to the inbox and jump to the task file."
+     ("inbox" "Create a general task to the inbox and jump to the task file."
       entry (file+headline inbox-file "Inbox")
       "* TODO %?\n  SCHEDULED: <%(org-read-date)>\n  %U\n%i\n"
       :empty-lines 1 :jump-to-captured nil)
-     ("p" "Create an interrupt task to the inbox and start clocking."
+     ("interrupt-task" "Create an interrupt task to the inbox and start clocking."
       entry (file+headline inbox-file "Inbox")
       "* TODO %?\n  SCHEDULED: <%(format-time-string \"%Y-%m-%d\" (current-time))>\n  %U\n%i\n"
       :empty-lines 1 :clock-in 1 :clock-resume 1)
-     ("s" "Add an event to the calendar."
+     ("schedule" "Add an event to the calendar."
       entry (file+headline schedule-file "Schedule")
       "* %?\n  SCHEDULED: <%(org-read-date)>\n"
       :empty-lines 1)
-     ("h" "Collect hacking Emacs ideas!"
+     ("hack-emacs" "Collect hacking Emacs ideas!"
       item  (file+headline inbox-file "Hacking Emacs")
       "[ ] %?"
       :prepend 1)
-     ("w" "Wish list for my life!"
+     ("wish-memo" "Wish list for my life!"
       entry (file+headline mylist-file "My Wishes")
       "* TODO %?"
       :prepend 1)
-     ("l" "Store the link of the current position in the clocking task."
+     ("link" "Store the link of the current position in the clocking task."
       item  (clock)
       "%A\n"
       :immediate-finish 1 :prepend nil)))
 
   :bind
-  ("C-c c" . org-capture)
+  ("C-c c" . counsel-org-capture)
   ("C-c a" . org-agenda)
   ("C-c l" . org-store-link)
   ("M-i l i" . (lambda () (interactive) (ladicle/open-org-file inbox-file)))
@@ -528,8 +775,8 @@
                  (effort-h (truncate effort-in-minutes 60))
                  (effort-m (truncate (mod effort-in-minutes 60)))
                  (effort-str (format "%d:%02d" effort-h effort-m)))
-            (format "%s/%s" work-done-str effort-str))
-        (format "%s" work-done-str))))
+            (format " %s/%s" work-done-str effort-str))
+        (format " %s" work-done-str))))
 
   (defun ladicle/org-clock-out-and-save-when-exit ()
     "Save buffers and stop clocking when kill emacs."
@@ -552,9 +799,9 @@
   :custom
   (org-pomodoro-ask-upon-killing t)
   (org-pomodoro-keep-killed-pomodoro-time t)
-  (org-pomodoro-format "%s") ;;     
-  (org-pomodoro-short-break-format "%s")
-  (org-pomodoro-long-break-format  "%s")
+  (org-pomodoro-format "%s") ;;  
+  (org-pomodoro-short-break-format "%s")
+  (org-pomodoro-long-break-format  "%s")
 
   :custom-face
   (org-pomodoro-mode-line ((t (:foreground "#ff5555"))))
@@ -565,28 +812,46 @@
   ;;       ("C-c p" . org-pomodoro))
   :bind
   ("C-c C-p" . org-pomodoro)
+  (:map org-agenda-mode-map
+        ("p" . org-pomodoro))
 
-  :hook
-  (org-pomodoro-started  . (lambda () (notifications-notify
-                                       :title "org-pomodoro"
-                                       :body "Let's focus for 25 minutes!")))
-  (org-pomodoro-finished . (lambda () (notifications-notify
-                                       :title "org-pomodoro"
-                                       :body "Well done! Take a break.")))
-  :config
-  (when (eq system-type 'darwin)
-    (setq alert-default-style 'osx-notifier))
-  (require 'alert))
+  ;; :preface
+  ;; (defun chupaaaaaaan:pomodoro-notify (title body)
+  ;;   "Save buffers and stop clocking when kill emacs."
+  ;;   (cond
+  ;;    ((eq system-type 'darwin)
+  ;;     (notifications-notify :title title :body body))
+  ;;    ((eq system-type 'gnu/linux)
+  ;;     (notifications-notify :title title :body body))
+  ;;    ((eq system-type 'windows-nt)
+  ;;     (w32-notification-notify :title title :body body))))
+
+  ;; :hook
+  ;; (org-pomodoro-started  . (lambda () (chupaaaaaaan:pomodoro-notify "org-pomodoro" "Let's focus for 25 minutes!")))
+  ;; (org-pomodoro-finished  . (lambda () (chupaaaaaaan:pomodoro-notify "org-pomodoro" "Well done! Take a break.")))
+  ;; (org-pomodoro-started  . (lambda () (notify :title "org-pomodoro" :body "Let's focus for 25 minutes!")))
+  ;; (org-pomodoro-finished . (lambda () (notify :title "org-pomodoro" :body "Well done! Take a break.")))
+
+  ;; :config
+  ;; (when (eq system-type 'darwin)
+  ;;   (setq alert-default-style 'osx-notifier))
+  ;; (require 'alert)
+  )
 
 (use-package org-mobile-sync
   :ensure t
   :after org
+  :defer
   :custom
   (org-mobile-directory "~/Dropbox/Apps/MobileOrg/")
   (org-mobile-inbox-for-pull "~/Dropbox/org/from-mobile.org")
   :config
   (org-mobile-sync-mode t))
 
+(use-package org-re-reveal
+  :ensure t
+  :after org
+  :defer)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Develop Environment
@@ -613,6 +878,7 @@
   :ensure t
   :custom
   (magit-auto-revert-mode nil)
+  (magit-completing-read-function 'ivy-completing-read)
   :bind
   ("M-g s" . magit-status))
 
@@ -650,7 +916,8 @@
   ("M-g r" . browse-at-remote))
 
 (use-package github-pullrequest
-  :ensure t)
+  :ensure t
+  :disabled)
 
 
 ;; yasnippet
@@ -721,6 +988,8 @@
   (:map projectile-mode-map
         ("s-p" . projectile-command-map)
         ("C-c p" . projectile-command-map))
+  :custom
+  (projectile-completion-system 'ivy)
   :config
   (projectile-mode 1))
 
@@ -849,7 +1118,7 @@
   :bind
   (:map lsp-mode-map
         ("C-c C-r" . lsp-ui-peek-find-references)
-        ("C-c C-j" . lsp-ui-peek-find-definitions)
+        ("C-c C-d" . lsp-ui-peek-find-definitions)
         ("C-c C-i" . lsp-ui-peek-find-implementation)
         ("C-c m"   . lsp-ui-imenu)
         ("C-c s"   . lsp-ui-sideline-mode)
@@ -858,6 +1127,7 @@
 
 (use-package company-lsp
   :ensure t
+  :commands company-lsp
   :custom
   (company-lsp-cache-candidates nil)
   (company-lsp-async t)
@@ -875,6 +1145,7 @@
 
 (use-package dap-mode
   :ensure t
+  :defer
   :config
   (dap-mode t)
   (dap-ui-mode t))
@@ -911,6 +1182,7 @@
 
 (use-package flycheck-haskell
   :ensure t
+  :disabled
   :hook
   (flycheck-mode . flycheck-haskell-setup))
 
@@ -948,9 +1220,6 @@
   :ensure t
   :init
   (add-to-list 'auto-mode-alist '(".*\\.js\\'" . rjsx-mode)))
-
-(use-package org-re-reveal :ensure t)
-
 
 ;; load customize file
 (load custom-file t)

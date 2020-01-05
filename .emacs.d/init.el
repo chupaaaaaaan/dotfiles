@@ -708,55 +708,55 @@
   (org-todo-keywords '((sequence "TODO(t)" "WIP(w)" "PENDING(p)" "|" "DONE(d)" "CANCELED(c)")))
   (org-capture-templates
    '(("tweet"
-      "Write down the thoughts of this moment with a timestamp."
+      "その瞬間、考えていることをつぶやこう。"
       item
       (file+headline ladicle/get-today-diary "Log")
       "%(ladicle/org-get-time) %?\n"
       :prepend nil)
      ("memo"
-      "Memorize something in the memo section of today's diary."
+      "今日の日記へ、メモを残そう。"
       entry
       (file+headline ladicle/get-today-diary "Memo")
       "* %?\n"
       :empty-lines 1 :jump-to-captured 1 :unnarrowed nil)
      ("books-memo"
-      "読んだ本の感想、情報の整理"
+      "読書メモ。読んだ本の感想や、自分なりのまとめなど。"
       entry
       (file+headline ladicle/get-today-diary "Memo")
       "* %?\n"
       :empty-lines 1 :jump-to-captured 1 :unnarrowed nil)
      ("inbox"
-      "Create a general task to the inbox and jump to the task file."
+      "タスクの作成。スケジュールを入れよう。"
       entry
       (file+headline inbox-file "Inbox")
       "* TODO %?\n  SCHEDULED: <%(org-read-date)>\n  %U\n%i\n"
       :empty-lines 1 :jump-to-captured nil)
      ("interrupt-task"
-      "Create an interrupt task to the inbox and start clocking."
+      "割り込みタスクの作成。すぐに時間計測が始まって、終わったら元に戻る。"
       entry
       (file+headline inbox-file "Inbox")
       "* TODO %?\n  SCHEDULED: <%(format-time-string \"%Y-%m-%d\" (current-time))>\n  %U\n%i\n"
       :empty-lines 1 :clock-in 1 :clock-resume 1)
      ("schedule"
-      "Add an event to the calendar."
+      "カレンダーにイベントを追加しよう。"
       entry
       (file+headline schedule-file "Schedule")
       "* %?\n  SCHEDULED: <%(org-read-date)>\n"
       :empty-lines 1)
      ("hack-emacs"
-      "Collect hacking Emacs ideas!"
+      "Emacsをハックするアイデアを集めよう！"
       item
       (file+headline inbox-file "Hacking Emacs")
       "[ ] %?"
       :prepend 1)
      ("wish-memo"
-      "Wish list for my life!"
+      "欲しいものリスト！"
       entry
       (file+headline mylist-file "My Wishes")
       "* TODO %?"
       :prepend 1)
      ("link"
-      "Store the link of the current position in the clocking task."
+      "現在位置のリンクを、時間計測中のタスクに追加。"
       item
       (clock)
       "%A\n"

@@ -21,7 +21,7 @@
 ;; load local configures
 (dolist (lcnf (directory-files (concat user-emacs-directory "local_conf") t "\\.el$"))
   (load-file lcnf))
-1
+
 ;; package.el
 (require 'package nil t)
 (package-initialize)

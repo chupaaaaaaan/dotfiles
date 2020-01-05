@@ -1210,6 +1210,9 @@
                  (setq c-basic-offset 2)
                  ;; use code format
                  (add-hook 'before-save-hook 'meghanada-code-beautify-before-save)))
+  :bind
+  (:map meghanada-mode-map
+        ("C-c C-c C-m" . meghanada-exec-main))
   :config
   (cond
    ((eq system-type 'windows-nt)

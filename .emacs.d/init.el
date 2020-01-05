@@ -705,36 +705,58 @@
   (org-refile-targets '((org-agenda-files :maxlevel . 3)))
   (org-todo-keywords '((sequence "TODO(t)" "WIP(w)" "PENDING(p)" "|" "DONE(d)" "CANCELED(c)")))
   (org-capture-templates
-   '(("tweet" "Write down the thoughts of this moment with a timestamp."
-      item  (file+headline ladicle/get-today-diary "Log")
+   '(("tweet"
+      "Write down the thoughts of this moment with a timestamp."
+      item
+      (file+headline ladicle/get-today-diary "Log")
       "%(ladicle/org-get-time) %?\n"
       :prepend nil)
-     ("memo" "Memorize something in the memo section of today's diary."
-      entry (file+headline ladicle/get-today-diary "Memo")
+     ("memo"
+      "Memorize something in the memo section of today's diary."
+      entry
+      (file+headline ladicle/get-today-diary "Memo")
       "* %?\n"
       :empty-lines 1 :jump-to-captured 1 :unnarrowed nil)
-     ("inbox" "Create a general task to the inbox and jump to the task file."
-      entry (file+headline inbox-file "Inbox")
+     ("books-memo"
+      "読んだ本の感想、情報の整理"
+      entry
+      (file+headline ladicle/get-today-diary "Memo")
+      "* %?\n"
+      :empty-lines 1 :jump-to-captured 1 :unnarrowed nil)
+     ("inbox"
+      "Create a general task to the inbox and jump to the task file."
+      entry
+      (file+headline inbox-file "Inbox")
       "* TODO %?\n  SCHEDULED: <%(org-read-date)>\n  %U\n%i\n"
       :empty-lines 1 :jump-to-captured nil)
-     ("interrupt-task" "Create an interrupt task to the inbox and start clocking."
-      entry (file+headline inbox-file "Inbox")
+     ("interrupt-task"
+      "Create an interrupt task to the inbox and start clocking."
+      entry
+      (file+headline inbox-file "Inbox")
       "* TODO %?\n  SCHEDULED: <%(format-time-string \"%Y-%m-%d\" (current-time))>\n  %U\n%i\n"
       :empty-lines 1 :clock-in 1 :clock-resume 1)
-     ("schedule" "Add an event to the calendar."
-      entry (file+headline schedule-file "Schedule")
+     ("schedule"
+      "Add an event to the calendar."
+      entry
+      (file+headline schedule-file "Schedule")
       "* %?\n  SCHEDULED: <%(org-read-date)>\n"
       :empty-lines 1)
-     ("hack-emacs" "Collect hacking Emacs ideas!"
-      item  (file+headline inbox-file "Hacking Emacs")
+     ("hack-emacs"
+      "Collect hacking Emacs ideas!"
+      item
+      (file+headline inbox-file "Hacking Emacs")
       "[ ] %?"
       :prepend 1)
-     ("wish-memo" "Wish list for my life!"
-      entry (file+headline mylist-file "My Wishes")
+     ("wish-memo"
+      "Wish list for my life!"
+      entry
+      (file+headline mylist-file "My Wishes")
       "* TODO %?"
       :prepend 1)
-     ("link" "Store the link of the current position in the clocking task."
-      item  (clock)
+     ("link"
+      "Store the link of the current position in the clocking task."
+      item
+      (clock)
       "%A\n"
       :immediate-finish 1 :prepend nil)))
 
@@ -924,19 +946,19 @@
 (use-package git-gutter
   :ensure t
   :defer t
+  :hook
+  (after-init . global-git-gutter-mode)
   :custom
   (git-gutter:modified-sign "=")
   (git-gutter:added-sign    "+")
   (git-gutter:deleted-sign  "-")
   :custom-face
-  (git-gutter:modified ((t (:foreground "#f1fa8c" :background "#f1fa8c"))))
-  (git-gutter:added    ((t (:foreground "#50fa7b" :background "#50fa7b"))))
-  (git-gutter:deleted  ((t (:foreground "#ff79c6" :background "#ff79c6"))))
   ;; (git-gutter:modified ((t (:foreground "#f1fa8c"))))
   ;; (git-gutter:added    ((t (:foreground "#50fa7b"))))
   ;; (git-gutter:deleted  ((t (:foreground "#ff79c6"))))
-  :config
-  (global-git-gutter-mode 1))
+  (git-gutter:modified ((t (:foreground "#f1fa8c" :background "#f1fa8c"))))
+  (git-gutter:added    ((t (:foreground "#50fa7b" :background "#50fa7b"))))
+  (git-gutter:deleted  ((t (:foreground "#ff79c6" :background "#ff79c6")))))
 
 (use-package browse-at-remote
   :ensure t
@@ -1029,8 +1051,12 @@
   ("C-x t 1"   . treemacs-delete-other-windows)
   ("C-x t t"   . treemacs)
   ("C-x t B"   . treemacs-bookmark)
-  ;; ("C-x t C-t" . treemacs-find-file)
+  ("C-x t C-t" . treemacs-find-file)
   ("C-x t M-t" . treemacs-find-tag)
+
+  :custom
+  (treemacs-is-never-other-window t)
+  (treemacs-no-delete-other-windows nil)
 
   :config
   (treemacs-follow-mode t)

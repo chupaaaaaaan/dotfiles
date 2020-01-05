@@ -271,6 +271,14 @@
   :ensure t
   :demand t
   :diminish
+  :preface
+  (defun toggle-highlight-indent-guides ()
+    "Toggle highlight indent guides."
+    (interactive)
+    (highlight-indent-guides-mode (if highlight-indent-guides-mode -1 1))
+    (message "Highlight indent guides %s" (if highlight-indent-guides-mode "enabled" "disabled")))
+  :bind
+  ("M-t i" . toggle-highlight-indent-guides)
   :hook
   ((prog-mode yaml-mode) . highlight-indent-guides-mode)
   :custom

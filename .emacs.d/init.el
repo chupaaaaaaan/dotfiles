@@ -147,6 +147,7 @@
 ;; Keymap
 (use-package keyfreq
   :ensure t
+  :demand t
   :custom
   (keyfreq-mode 1)
   (keyfreq-autosave-mode 1)
@@ -155,6 +156,7 @@
 ;; which-key
 (use-package which-key
   :ensure t
+  :demand t
   :diminish which-key-mode
   :hook (after-init . which-key-mode))
 
@@ -176,8 +178,7 @@
 (global-set-key (kbd "C-h")   'delete-backward-char)
 (global-set-key (kbd "M-t l") 'toggle-truncate-lines)
 (global-set-key (kbd "C-t")   'other-window)
-
-
+(global-set-key [f6] (lambda () (interactive) (counsel-M-x "^counsel ")))
 
 
 ;; Doom-themes
@@ -213,6 +214,7 @@
 
 (use-package hide-mode-line
   :ensure t
+  :demand t
   :disabled
   :hook
   (treemacs-mode . hide-mode-line-mode))
@@ -261,15 +263,18 @@
 
 (use-package rainbow-delimiters
   :ensure t
+  :demand t
   :hook
   (prog-mode . rainbow-delimiters-mode))
 
 (use-package highlight-indent-guides
   :ensure t
+  :demand t
   :diminish
   :hook
   ((prog-mode yaml-mode) . highlight-indent-guides-mode)
   :custom
+  (highlight-indent-guides-character 124)
   (highlight-indent-guides-auto-enabled t)
   (highlight-indent-guides-responsive t)
   (highlight-indent-guides-method 'character))
@@ -336,6 +341,7 @@
 ;; Recent files
 (use-package recentf
   :ensure nil
+  :defer t
   :hook
   (after-init . recentf-mode)
   :custom
@@ -368,6 +374,7 @@
 ;; scroll-lock
 (use-package scroll-lock
   :ensure t
+  :defer t
   :disabled
   :init
   (defun toggle-scroll-lock ()
@@ -400,10 +407,12 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; hydra
 (use-package hydra
-  :ensure t)
+  :ensure t
+  :defer t)
 
 (use-package ivy-rich
   :ensure t
+  :defer t
   :after ivy
   :defines (all-the-icons-dir-icon-alist bookmark-alist)
   :functions (all-the-icons-icon-family
@@ -575,13 +584,15 @@
 
 (use-package ivy-hydra
   :ensure t
+  :defer t
   :after ivy hydra
   :custom
   (ivy-read-action-function (function ivy-hydra-read-action)))
 
 (use-package counsel
-  :diminish ivy-mode counsel-mode
   :ensure t
+  :defer t
+  :diminish ivy-mode counsel-mode
   :preface
   (defun ivy-format-function-pretty (cands)
     "Transform CANDS into a string for minibuffer."
@@ -631,8 +642,9 @@
 
 ;; anzu
 (use-package anzu
-  :diminish
   :ensure t
+  :defer t
+  :diminish
   :bind
   ("C-r" . anzu-query-replace-regexp)
   ;; ("C-M-r" . anzu-query-replace-at-cursor-thing)
@@ -644,11 +656,13 @@
 
 (use-package google-this
   :ensure t
+  :defer t
   :bind
   ("M-i G" . google-this))
 
 (use-package google-translate
   :ensure t
+  :defer t
   :bind
   ("M-i t" . google-translate-at-point)
   ("M-i T" . google-translate-at-point-reverse)
@@ -662,6 +676,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (use-package org
   :ensure t
+  :defer t
   :custom
   (org-directory "~/Dropbox/org/")
   ;; agenda-files
@@ -785,6 +800,7 @@
 
 (use-package org-bullets
   :ensure t
+  :defer t
   :after org
   :hook
   (org-mode . org-bullets-mode)
@@ -795,6 +811,7 @@
 ;; Pomodoro (from @ladicle)
 (use-package org-pomodoro
   :ensure t
+  :defer t
   :after org-agenda
   :custom
   (org-pomodoro-ask-upon-killing t)
@@ -839,8 +856,8 @@
 
 (use-package org-mobile-sync
   :ensure t
+  :defer t
   :after org
-  :defer
   :custom
   (org-mobile-directory "~/Dropbox/Apps/MobileOrg/")
   (org-mobile-inbox-for-pull "~/Dropbox/org/from-mobile.org")
@@ -849,8 +866,8 @@
 
 (use-package org-re-reveal
   :ensure t
-  :after org
-  :defer)
+  :defer t
+  :after org)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Develop Environment
@@ -858,11 +875,13 @@
 ;; git
 (use-package git-timemachine
   :ensure t
+  :defer t
   :bind
   ("M-g t" . git-timemachine-toggle))
 
 (use-package diffview
   :ensure t
+  :defer t
   :commands (diffview-region diffview-current)
   :preface
   (defun ladicle/diffview-dwim ()
@@ -875,6 +894,7 @@
 
 (use-package magit
   :ensure t
+  :defer t
   :custom
   (magit-auto-revert-mode nil)
   (magit-completing-read-function 'ivy-completing-read)
@@ -895,6 +915,7 @@
 
 (use-package git-gutter
   :ensure t
+  :defer t
   :custom
   (git-gutter:modified-sign "=")
   (git-gutter:added-sign    "+")
@@ -911,11 +932,13 @@
 
 (use-package browse-at-remote
   :ensure t
+  :defer t
   :bind
   ("M-g r" . browse-at-remote))
 
 (use-package github-pullrequest
   :ensure t
+  :defer t
   :disabled)
 
 
@@ -923,6 +946,7 @@
 (use-package yasnippet
   ;; :disabled
   :ensure t
+  :defer t
   :hook
   (after-init . yas-global-mode)
   :config
@@ -931,6 +955,7 @@
 ;; company
 (use-package company
   :ensure t
+  :defer t
   :custom
   (company-idle-delay 0)
   (company-echo-delay 0)
@@ -958,6 +983,7 @@
 
 (use-package company-box
   :ensure t
+  :defer t
   :after company
   :diminish
   :hook
@@ -968,6 +994,7 @@
 
 (use-package company-quickhelp
   :ensure t
+  :defer t
   :after company
   :hook
   (global-company-mode . company-quickhelp-mode))
@@ -975,9 +1002,10 @@
 ;; projectile
 (use-package projectile
   :ensure t
+  :defer t
   :bind
+  ("C-c p" . projectile-command-map)
   (:map projectile-mode-map
-        ("s-p" . projectile-command-map)
         ("C-c p" . projectile-command-map))
   :custom
   (projectile-completion-system 'ivy)
@@ -987,6 +1015,7 @@
 ;; treemacs
 (use-package treemacs
   :ensure t
+  :defer t
   :bind
   ("M-0"       . treemacs-select-window)
   ("C-x t 1"   . treemacs-delete-other-windows)
@@ -1012,8 +1041,9 @@
   (counsel-projectile-mode 1))
 
 (use-package treemacs-icons-dired
-  :after treemacs dired
   :ensure t
+  :defer t
+  :after treemacs dired
   :config
   (treemacs-icons-dired-mode))
 
@@ -1021,6 +1051,7 @@
 ;; flycheck
 (use-package flycheck
   :ensure t
+  :defer t
   ;; :disabled
   :hook
   (emacs-lisp-mode . flycheck-mode)
@@ -1031,6 +1062,7 @@
 
 (use-package flycheck-posframe
   :ensure t
+  :defer t
   :after flycheck
   :hook
   (flycheck-mode . flycheck-posframe-mode))
@@ -1039,6 +1071,7 @@
 ;; lsp
 (use-package lsp-mode
   :ensure t
+  :defer t
   :commands lsp
 
   :custom
@@ -1049,7 +1082,7 @@
 
   :hook
   (haskell-mode . lsp)
-  (java-mode . lsp)
+  ;; (java-mode . lsp)
 
   :bind
   (:map lsp-mode-map
@@ -1058,6 +1091,7 @@
 
 (use-package lsp-ui
   :ensure t
+  :defer t
   :after lsp-mode
   :hook
   (lsp-mode . lsp-ui-mode)
@@ -1118,6 +1152,7 @@
 
 (use-package company-lsp
   :ensure t
+  :defer t
   :commands company-lsp
   :custom
   (company-lsp-cache-candidates nil)
@@ -1131,12 +1166,13 @@
 
 (use-package lsp-treemacs
   :ensure t
+  :defer t
   :after lsp-mode treemacs
   :commands lsp-treemacs-errors-list)
 
 (use-package dap-mode
   :ensure t
-  :defer
+  :defer t
   :config
   (dap-mode t)
   (dap-ui-mode t))
@@ -1160,15 +1196,17 @@
   (java-mode . lsp-java-boot-lens-mode))
 
 (use-package dap-java
-  :disabled)
+  :disabled
+  :defer t)
 
 
 (use-package meghanada
   :ensure t
+  :defer t
   :hook
   (java-mode . (lambda ()
                  (meghanada-mode t)
-                 (meghanada-telemetry-enable t)
+                 ;; (meghanada-telemetry-enable t)
                  (setq c-basic-offset 2)
                  ;; use code format
                  (add-hook 'before-save-hook 'meghanada-code-beautify-before-save)))
@@ -1192,6 +1230,7 @@
 
 (use-package flycheck-haskell
   :ensure t
+  :defer t
   :disabled
   :hook
   (flycheck-mode . flycheck-haskell-setup))
@@ -1214,20 +1253,28 @@
 
 (use-package flycheck-elm
   :ensure t
+  :defer t
   ;; :bind
   ;; (:map elm-mode-map
   ;;       ("C-c C-f" . elm-format-buffer))
   :hook
   (flycheck-mode . flycheck-elm-setup))
 
-(use-package dockerfile-mode :ensure t)
+(use-package dockerfile-mode
+  :ensure t
+  :defer t)
 
-(use-package docker-compose-mode :ensure t)
+(use-package docker-compose-mode
+  :ensure t
+  :defer t)
 
-(use-package markdown-mode :ensure t)
+(use-package markdown-mode
+  :ensure t
+  :defer t)
 
 (use-package rjsx-mode
   :ensure t
+  :defer t
   :init
   (add-to-list 'auto-mode-alist '(".*\\.js\\'" . rjsx-mode)))
 

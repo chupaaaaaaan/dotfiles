@@ -15,6 +15,7 @@
 .emacs.d/local_conf/
 !.emacs.d/local_conf/.gitkeep
 .emacs.d/.lsp-session*
+.emacs.d/meghanada/
 .emacs.d/network-security.data
 .emacs.d/places
 .emacs.d/projectile-bookmarks.eld

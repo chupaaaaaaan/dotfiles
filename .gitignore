@@ -12,6 +12,7 @@
 .emacs.d/elpa/
 .emacs.d/eclipse.jdt.ls/
 .emacs.d/history
+.emacs.d/kkcrc
 .emacs.d/local_conf/
 !.emacs.d/local_conf/.gitkeep
 .emacs.d/.lsp-session*

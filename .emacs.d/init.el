@@ -1317,5 +1317,14 @@
   :init
   (add-to-list 'auto-mode-alist '(".*\\.js\\'" . rjsx-mode)))
 
+(use-package lsp-python-ms
+  :ensure t
+  :defer t
+  :if (eq system-type 'windows-nt)
+  :hook
+  (python-mode . (lambda ()
+                   (require 'lsp-python-ms)
+                   (lsp))))
+
 ;; load customize file
 (load custom-file t)

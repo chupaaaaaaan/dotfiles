@@ -231,7 +231,7 @@
   ;; (dashboard-set-navigator t)
   ;; (dashboard-startup-banner 4)
   (dashboard-items '((recents . 15)
-                     (agenda . 5)
+                     (agenda . 10)
                      (projects . 5)
                      (bookmarks . 5)))
   :custom-face

@@ -279,8 +279,8 @@
     (message "Highlight indent guides %s" (if highlight-indent-guides-mode "enabled" "disabled")))
   :bind
   ("M-t i" . toggle-highlight-indent-guides)
-  :hook
-  ((prog-mode yaml-mode) . highlight-indent-guides-mode)
+  ;; :hook
+  ;; ((prog-mode yaml-mode) . highlight-indent-guides-mode)
   :custom
   (highlight-indent-guides-character 124)
   (highlight-indent-guides-auto-enabled t)

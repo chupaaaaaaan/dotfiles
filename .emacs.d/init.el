@@ -691,13 +691,10 @@
   (org-directory "~/Dropbox/org/")
   ;; agenda-files
   (inbox-file (concat org-directory "inbox.org"))
-  (work-file (concat org-directory "work.org"))
-  (review-file (concat org-directory "review.org"))
-  (mtg-file (concat org-directory "mtg.org"))
   (schedule-file (concat org-directory "schedule.org"))
   (mylist-file (concat org-directory "mylist.org"))
   (objective-file (concat org-directory "objective.org"))
-  (org-agenda-files (list inbox-file work-file review-file mtg-file schedule-file mylist-file objective-file))
+  (org-agenda-files (list inbox-file schedule-file mylist-file objective-file))
 
   (org-default-notes-file (concat org-directory "notes.org"))
   (org-clock-out-remove-zero-time-clocks t)

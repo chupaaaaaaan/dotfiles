@@ -692,9 +692,7 @@
   ;; agenda-files
   (inbox-file (concat org-directory "inbox.org"))
   (schedule-file (concat org-directory "schedule.org"))
-  (mylist-file (concat org-directory "mylist.org"))
-  (objective-file (concat org-directory "objective.org"))
-  (org-agenda-files (list inbox-file schedule-file mylist-file objective-file))
+  (org-agenda-files (list inbox-file schedule-file))
 
   (org-default-notes-file (concat org-directory "notes.org"))
   (org-clock-out-remove-zero-time-clocks t)
@@ -749,7 +747,7 @@
      ("wish-memo"
       "欲しいものリスト！"
       entry
-      (file+headline mylist-file "My Wishes")
+      (file+headline inbox-file "My Wishes")
       "* TODO %?"
       :prepend 1)
      ("link"

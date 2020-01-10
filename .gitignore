@@ -13,8 +13,8 @@
 .emacs.d/eclipse.jdt.ls/
 .emacs.d/history
 .emacs.d/kkcrc
-.emacs.d/local_conf/
-!.emacs.d/local_conf/.gitkeep
+.emacs.d/local_conf/*
+!.emacs.d/local_conf/_*
 .emacs.d/.lsp-session*
 .emacs.d/meghanada/
 .emacs.d/network-security.data

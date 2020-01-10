@@ -19,7 +19,7 @@
 (setq custom-file "~/.emacs.d/customize.el")
 
 ;; load local configures
-(dolist (lcnf (directory-files (concat user-emacs-directory "local_conf") t "\\.el$"))
+(dolist (lcnf (directory-files (concat user-emacs-directory "local_conf") t "^[^_].+\\.el$"))
   (load-file lcnf))
 
 ;; package.el
@@ -701,61 +701,7 @@
 
   (org-refile-targets '((org-agenda-files :maxlevel . 3)))
   (org-todo-keywords '((sequence "TODO(t)" "WIP(w)" "PENDING(p)" "|" "DONE(d)" "CANCELED(c)")))
-  (org-capture-templates
-   '(("tweet"
-      "その瞬間、考えていることをつぶやこう。"
-      item
-      (file+headline ladicle/get-today-diary "Log")
-      "%(ladicle/org-get-time) %?\n"
-      :prepend nil)
-     ("memo"
-      "今日の日記へ、メモを残そう。"
-      entry
-      (file+headline ladicle/get-today-diary "Memo")
-      "* %?\n"
-      :empty-lines 1 :jump-to-captured 1 :unnarrowed nil)
-     ("books-memo"
-      "読書メモ。読んだ本の感想や、自分なりのまとめなど。"
-      entry
-      (file+headline ladicle/get-today-diary "Memo")
-      "* %?\n"
-      :empty-lines 1 :jump-to-captured 1 :unnarrowed nil)
-     ("inbox"
-      "タスクの作成。スケジュールを入れよう。"
-      entry
-      (file+headline inbox-file "Inbox")
-      "* TODO %?\n  SCHEDULED: <%(org-read-date)>\n  %U\n%i\n"
-      :empty-lines 1 :jump-to-captured nil)
-     ("interrupt-task"
-      "割り込みタスクの作成。すぐに時間計測が始まって、終わったら元に戻る。"
-      entry
-      (file+headline inbox-file "Inbox")
-      "* TODO %?\n  SCHEDULED: <%(format-time-string \"%Y-%m-%d\" (current-time))>\n  %U\n%i\n"
-      :empty-lines 1 :clock-in 1 :clock-resume 1)
-     ("schedule"
-      "カレンダーにイベントを追加しよう。"
-      entry
-      (file+headline schedule-file "Schedule")
-      "* %?\n  SCHEDULED: <%(org-read-date)>\n"
-      :empty-lines 1)
-     ("hack-emacs"
-      "Emacsをハックするアイデアを集めよう！"
-      item
-      (file+headline inbox-file "Hacking Emacs")
-      "[ ] %?"
-      :prepend 1)
-     ("wish-memo"
-      "欲しいものリスト！"
-      entry
-      (file+headline inbox-file "My Wishes")
-      "* TODO %?"
-      :prepend 1)
-     ("link"
-      "現在位置のリンクを、時間計測中のタスクに追加。"
-      item
-      (clock)
-      "%A\n"
-      :immediate-finish 1 :prepend nil)))
+  (org-capture-templates my:org-capture-templates)
 
   :bind
   ("C-c c" . counsel-org-capture)

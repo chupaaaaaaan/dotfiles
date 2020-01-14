@@ -1031,10 +1031,11 @@
   :defer t
   ;; :disabled
   :hook
-  (emacs-lisp-mode . flycheck-mode)
-  (haskell-mode . flycheck-mode)
-  (java-mode . flycheck-mode)
-  (elm-mode . flycheck-mode))
+  ;; (emacs-lisp-mode . flycheck-mode)
+  ;; (haskell-mode . flycheck-mode)
+  ;; (java-mode . flycheck-mode)
+  ;; (elm-mode . flycheck-mode)
+  (after-init . global-flycheck-mode))
 
 
 (use-package flycheck-posframe

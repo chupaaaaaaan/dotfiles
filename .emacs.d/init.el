@@ -709,8 +709,6 @@
   ("C-c l" . org-store-link)
   ("M-i l i" . (lambda () (interactive) (ladicle/open-org-file inbox-file)))
   ("M-i l s" . (lambda () (interactive) (ladicle/open-org-file schedule-file)))
-  ("M-i l l" . (lambda () (interactive) (ladicle/open-org-file mylist-file)))
-  ("M-i l o" . (lambda () (interactive) (ladicle/open-org-file objective-file)))
   ("M-i l y" . (lambda () (interactive) (ladicle/open-org-file (ladicle/get-yesterday-diary))))
   ("M-i l p" . (lambda () (interactive) (ladicle/open-org-file (ladicle/get-diary-from-cal))))
   ("M-i l t" . (lambda () (interactive) (ladicle/open-org-file (ladicle/get-today-diary))))

@@ -958,7 +958,7 @@
   :after company
   :diminish
   :hook
-  (company-mode . company-box-mode)
+  (global-company-mode . company-box-mode)
   :custom
   (company-box-icons-alist 'company-box-icons-all-the-icons)
   (company-box-show-single-candidate nil))
@@ -1210,7 +1210,7 @@
 (use-package flycheck-haskell
   :ensure t
   :defer t
-  :disabled
+  ;; :disabled
   :hook
   (flycheck-mode . flycheck-haskell-setup))
 
@@ -1265,6 +1265,19 @@
   (python-mode . (lambda ()
                    (require 'lsp-python-ms)
                    (lsp))))
+
+(use-package nginx-mode
+  :ensure t
+  :defer t
+  :init
+  (add-to-list 'auto-mode-alist '("/nginx/sites-\\(?:available\\|enabled\\)/" . nginx-mode)))
+
+(use-package company-nginx
+  :ensure t
+  :defer t
+  :config
+  (eval-after-load 'nginx-mode
+    '(add-hook 'nginx-mode-hook #'company-nginx-keywords)))
 
 ;; load customize file
 (load custom-file t)

@@ -650,6 +650,13 @@
                     'face `(:foreground "#6272a4")))
   )
 
+(use-package counsel-tramp
+  :ensure t
+  :bind
+  ("C-c C-f" . counsel-tramp))
+
+(use-package docker-tramp :ensure t)
+
 ;; anzu
 (use-package anzu
   :ensure t
@@ -1235,7 +1242,6 @@
   :defer t
   ;; :bind
   ;; (:map elm-mode-map
-  ;;       ("C-c C-f" . elm-format-buffer))
   :hook
   (flycheck-mode . flycheck-elm-setup))
 

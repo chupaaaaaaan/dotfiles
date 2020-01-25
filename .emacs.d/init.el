@@ -646,16 +646,13 @@
   :config
   (setq ivy-format-function 'ivy-format-function-pretty)
   (setq counsel-yank-pop-separator
-        (propertize "\n────────────────────────────────────────────────────────\n"
-                    'face `(:foreground "#6272a4")))
-  )
+        (propertize "\n----------------------------------------------------------------------\n"
+                    'face `(:foreground "#6272a4"))))
 
 (use-package counsel-tramp
   :ensure t
   :bind
   ("C-c C-f" . counsel-tramp))
-
-(use-package docker-tramp :ensure t)
 
 ;; anzu
 (use-package anzu

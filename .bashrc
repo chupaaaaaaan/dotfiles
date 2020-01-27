@@ -96,24 +96,37 @@ if ! shopt -oq posix; then
   fi
 fi
 
+# kube
+. $HOME/dotfiles/kube-ps1.sh
+. <(kubectl completion bash)
+
+# git
+. $HOME/dotfiles/git-completion.bash
+. $HOME/dotfiles/git-prompt.sh
+
+GIT_PS1_SHOWDIRTYSTATE=1
+GIT_PS1_SHOWUPSTREAM=1
+GIT_PS1_SHOWUNTRACKEDFILES=1
+GIT_PS1_SHOWSTASHSTATE=1
 
 # Prompt
 ## ANSI escape sequence (character theme)
-RESET="\[\e[m\]"
-BOLD="\[\e[1m\]"
-RED="\[\e[31m\]"
-GREEN="\[\e[32m\]"
-YELLOW="\[\e[33m\]"
-BLUE="\[\e[34m\]"
-MAGENTA="\[\e[35m\]"
-CYAN="\[\e[36m\]"
-WHITE="\[\e[37m\]"
+RESET="\e[m"
+BOLD="\e[1m"
+RED="\e[31m"
+GREEN="\e[32m"
+YELLOW="\e[33m"
+BLUE="\e[34m"
+MAGENTA="\e[35m"
+CYAN="\e[36m"
+WHITE="\e[37m"
+SSH_COLOR="${BLUE}"
 
-[ -n "${SSH_CONNECTION}" ] && SSH_TXT=" (ssh)"
+[ -n "${SSH_CONNECTION}" ] && SSH_COLOR="${RED}"
 if [ `id -u` -eq 0 ]; then
-    PS1="${BOLD}${GREEN}\D{%F} ${YELLOW}\t${RESET} | ${BOLD}${RED}\u${WHITE}@${MAGENTA}\h${SSH_TXT}${RESET}  | ${CYAN}\w${RESET}\n# "
+    PS1="${GREEN}\D{%F} ${YELLOW}\t${RESET}|${RED}\u${WHITE}@${SSH_COLOR}\h${RESET} "'$(kube_ps1)$(__git_ps1 " (${MAGENTA}%s${RESET})")'"${RESET}| ${CYAN}\w${RESET}\n# "
 else
-    PS1="${BOLD}${GREEN}\D{%F} ${YELLOW}\t${RESET} | ${BOLD}${BLUE}\u${WHITE}@${MAGENTA}\h${SSH_TXT}${RESET} | ${CYAN}\w${RESET}\n$ "
+    PS1="${GREEN}\D{%F} ${YELLOW}\t${RESET}|${BLUE}\u${WHITE}@${SSH_COLOR}\h${RESET} "'$(kube_ps1)$(__git_ps1 " (${MAGENTA}%s${RESET})")'"${RESET}| ${CYAN}\w${RESET}\n$ "
 fi    
 PS2='| '
 

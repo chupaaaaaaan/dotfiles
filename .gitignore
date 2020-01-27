@@ -33,3 +33,10 @@
 
 # peco
 peco*
+
+# kube-ps1
+kube-ps1.sh
+
+# git
+git-completion.bash
+git-prompt.sh

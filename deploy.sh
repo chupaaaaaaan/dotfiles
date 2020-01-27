@@ -44,3 +44,12 @@ if [ ! -h $HOME/bin/peco ]; then
     rm -f $HOME/bin/peco
     ln -s ${BINDIR}/peco $HOME/bin/peco
 fi
+
+############################ps1 settings#####################################3
+
+# git clone https://github.com/jonmosco/kube-ps1.git
+curl -O https://raw.githubusercontent.com/jonmosco/kube-ps1/master/kube-ps1.sh
+
+# git clone https://github.com/git/git.git
+curl -O https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.bash
+curl -O https://raw.githubusercontent.com/git/git/master/contrib/completion/git-prompt.sh

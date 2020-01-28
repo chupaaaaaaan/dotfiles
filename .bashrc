@@ -125,7 +125,7 @@ WHITE="\e[37m"
 SSH_COLOR="${BLUE}"
 
 [ -n "${SSH_CONNECTION}" ] && SSH_COLOR="${RED}"
-__KUBE_PS1_CMD=$((which kubectl > /dev/null 2>&1) && echo "\$(kube_ps1)")
+__KUBE_PS1_CMD=$((which kubectl > /dev/null 2>&1) && echo " \$(kube_ps1)")
 __GIT_PS1_CMD="\$(__git_ps1 \" (${MAGENTA}%s${RESET})\")"
 
 if [ `id -u` -eq 0 ]; then

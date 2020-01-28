@@ -123,13 +123,13 @@ WHITE="\e[37m"
 SSH_COLOR="${BLUE}"
 
 [ -n "${SSH_CONNECTION}" ] && SSH_COLOR="${RED}"
-__KUBE_PS1_CMD=$((which kubectl > /dev/null 2>&1) && echo " \$(kube_ps1)")
+__KUBE_PS1_CMD=$((which kubectl > /dev/null 2>&1) && echo "\$(kube_ps1)")
 __GIT_PS1_CMD="\$(__git_ps1 \" (${MAGENTA}%s${RESET})\")"
 
 if [ `id -u` -eq 0 ]; then
-    PS1="${GREEN}\D{%F} ${YELLOW}\t${RESET}|${RED}\u${WHITE}@${SSH_COLOR}\h${RESET}${__KUBE_PS1_CMD}${__GIT_PS1_CMD}${RESET}| ${CYAN}\w${RESET}\n# "
+    PS1="${BOLD}${GREEN}\D{%F} ${YELLOW}\t${RESET}|${BOLD}${RED}\u${WHITE}@${SSH_COLOR}\h${RESET}${__KUBE_PS1_CMD}${__GIT_PS1_CMD}${RESET}| ${CYAN}\w${RESET}"$'\n# '
 else
-    PS1="${GREEN}\D{%F} ${YELLOW}\t${RESET}|${BLUE}\u${WHITE}@${SSH_COLOR}\h${RESET}${__KUBE_PS1_CMD}${__GIT_PS1_CMD}${RESET}| ${CYAN}\w${RESET}\n$ "
+    PS1="${BOLD}${GREEN}\D{%F} ${YELLOW}\t${RESET}|${BOLD}${BLUE}\u${WHITE}@${SSH_COLOR}\h${RESET}${__KUBE_PS1_CMD}${__GIT_PS1_CMD}${RESET}| ${CYAN}\w${RESET}"$'\n$ '
 fi    
 PS2='| '
 

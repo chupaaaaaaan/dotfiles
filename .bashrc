@@ -98,7 +98,10 @@ fi
 
 # kube
 . $HOME/dotfiles/kube-ps1.sh
-. <(kubectl completion bash)
+. <((which kubectl > /dev/null 2>&1) && kubectl completion bash || :)
+
+KUBE_PS1_SYMBOL_ENABLE=false
+KUBE_PS1_PREFIX=' ('
 
 # git
 . $HOME/dotfiles/git-completion.bash

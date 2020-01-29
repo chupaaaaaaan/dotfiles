@@ -1264,6 +1264,8 @@
   :ensure t
   :defer t
   :if (eq system-type 'windows-nt)
+  :custom
+  (lsp-python-ms-executable "~/Microsoft.Python.LanguageServer")
   :hook
   (python-mode . (lambda ()
                    (require 'lsp-python-ms)

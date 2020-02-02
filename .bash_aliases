@@ -26,11 +26,14 @@ dimg() {
     docker images --format "table {{.ID}}\t{{.Repository}}:{{.Tag}}\t{{.Size}}"|peco|tr -s ' '|cut -d' ' -f1
 }
 
+drun() {
+    docker run --rm -d $1 "$(dimg)"
+}
+
 alias dstop='dpsa|xargs -r -I@ docker stop @'
 alias drmc='dpsa|xargs -r -I@ docker rm @'
 alias drmi='dimg|xargs -r -I@ docker rmi @'
 alias drmi_none='d images -q -f "dangling=true"|xargs -r -I@ docker rmi @'
-alias drun='docker run --rm -d $(dimg)'
 alias dexe='docker exec -it $(dpsa) /bin/bash'
 
 # kubernetes

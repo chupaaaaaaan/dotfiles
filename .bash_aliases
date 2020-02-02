@@ -23,7 +23,7 @@ dpsa() {
 }
 
 dimg() {
-    docker images --format "table {{.ID}}\t{{.Repository}}:{{.Tag}}\t{{.Size}}"|peco|tr -s ' '|cut -d' ' -f1
+    docker images --format "table {{.ID}}\t{{.Repository}}:{{.Tag}}\t{{.Size}}"|peco|tr -s ' '|cut -d' ' -f2
 }
 
 drun() {

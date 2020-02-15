@@ -1051,6 +1051,7 @@
 ;; lsp
 (use-package lsp-mode
   :ensure t
+  :disabled
   :defer t
   :commands lsp
 
@@ -1058,10 +1059,13 @@
   (lsp-prefer-flymake nil)
   (lsp-document-sync-method 'incremental)
   (lsp-enable-snippet t)
-  (lsp-print-io t)
+  (lsp-completion-at-point t)
+  (lsp-flycheck-live-reporting t)
+  (lsp-prefer-capf t)
+  (lsp-log-io t)
 
   :hook
-  (haskell-mode . lsp)
+  ;; (haskell-mode . lsp)
   ;; (java-mode . lsp)
 
   :bind
@@ -1071,6 +1075,7 @@
 
 (use-package lsp-ui
   :ensure t
+  :disabled
   :defer t
   :after lsp-mode
   :hook
@@ -1098,9 +1103,7 @@
   (lsp-ui-imenu-kind-position 'top)
 
   (lsp-ui-flycheck-enable t)
-  ;; (lsp-ui-flycheck-list-position 'right)
   (lsp-ui-flycheck-list-position 'bottom)
-  (lsp-ui-flycheck-live-reporting t)
 
   (lsp-ui-sideline-enable nil)
   (lsp-ui-sideline-show-symbol t)
@@ -1122,16 +1125,13 @@
   
   :bind
   (:map lsp-mode-map
-        ("C-c C-r" . lsp-ui-peek-find-references)
-        ("C-c C-d" . lsp-ui-peek-find-definitions)
-        ("C-c C-i" . lsp-ui-peek-find-implementation)
         ("C-c m"   . lsp-ui-imenu)
-        ("C-c s"   . lsp-ui-sideline-mode)
         ("C-c d"   . ladicle/toggle-lsp-ui-doc)))
 
 
 (use-package company-lsp
   :ensure t
+  :disabled
   :defer t
   :commands company-lsp
   :custom
@@ -1144,14 +1144,25 @@
   (add-to-list 'company-backends 'company-lsp))
 
 
+(use-package lsp-ivy
+  :ensure t
+  :disabled
+  :commands lsp-ivy-workspace-symbol
+  :bind
+  (:map lsp-ivy-map
+        ("C-c C-c" . lsp-ivy-workspace-symbol)
+        ("C-u C-c C-c" . lsp-ivy-global-workspace-symbol)))
+
 (use-package lsp-treemacs
   :ensure t
+  :disabled
   :defer t
   :after lsp-mode treemacs
   :commands lsp-treemacs-errors-list)
 
 (use-package dap-mode
   :ensure t
+  :disabled
   :defer t
   :config
   (dap-mode t)
@@ -1206,10 +1217,14 @@
 ;; for ghc-8.0.2 and later
 (use-package lsp-haskell
   :ensure t
+  :disabled
   :defer t
   :after lsp-mode haskell-mode
   :custom
   (lsp-haskell-process-path-hie "hie-wrapper"))
+
+(use-package haskell-mode
+  :ensure t)
 
 (use-package flycheck-haskell
   :ensure t

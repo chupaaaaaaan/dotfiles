@@ -223,6 +223,39 @@
   :ensure t
   :diminish
   (dashboard-mode page-break-lines-mode)
+  :bind
+  ("<f10>" . open-dashboard)
+  (:map dashboard-mode-map
+        ("<f10>" . quit-dashboard))
+  :preface
+  ;; https://qiita.com/minoruGH/items/f6ddc75ab8a28e8b694e
+  (defun open-dashboard ()
+    "Open the *dashboard* buffer and jump to the first widget."
+    (interactive)
+    (delete-other-windows)
+    ;; Refresh dashboard buffer
+    (if (get-buffer dashboard-buffer-name)
+        (kill-buffer dashboard-buffer-name))
+    (dashboard-insert-startupify-lists)
+    (switch-to-buffer dashboard-buffer-name)
+    ;; Jump to the first section
+    (goto-char (point-min))
+    (dashboard-goto-recent-files))
+
+  (defun quit-dashboard ()
+    "Quit dashboard window."
+    (interactive)
+    (quit-window t)
+    (when (and dashboard-recover-layout-p
+               (bound-and-true-p winner-mode))
+      (winner-undo)
+      (setq dashboard-recover-layout-p nil)))
+
+  (defun dashboard-goto-recent-files ()
+    "Go to recent files."
+    (interactive)
+    (funcall (local-key-binding "r")))
+
   :custom
   (dashboard-center-content nil)
   (dashboard-set-file-icons t)
@@ -237,7 +270,8 @@
   :custom-face
   (dashboard-heading ((t (:foreground "#f1fa8c" :weight bold))))
   :hook
-  (after-init . dashboard-setup-startup-hook))
+  (after-init . dashboard-setup-startup-hook)
+  (after-init . winner-mode))
 
 ;; Highlights
 ;; highlight on the current line
@@ -1224,7 +1258,15 @@
   (lsp-haskell-process-path-hie "hie-wrapper"))
 
 (use-package haskell-mode
-  :ensure t)
+  :ensure t
+  :custom
+  (haskell-stylish-on-save t)
+  (haskell-tags-on-save t)
+  (haskell-compile-ignore-cabal t)
+  (haskell-compile-command "stack ghc -Wall -ferror-spans -fforce-recomp -c %s")
+  :bind
+  (:map haskell-mode-map
+        ("C-c C-c" . haskell-compile)))
 
 (use-package flycheck-haskell
   :ensure t

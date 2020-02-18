@@ -127,7 +127,25 @@ SSH_COLOR="${BLUE}"
 
 [ -n "${SSH_CONNECTION}" ] && SSH_COLOR="${RED}"
 __KUBE_PS1_CMD=$((which kubectl > /dev/null 2>&1) && echo "\$(kube_ps1)")
-__GIT_PS1_CMD="\$(__git_ps1 \" (${MAGENTA}%s${RESET})\")"
+__GIT_PS1_CMD="\$(___git_ps1_toggled)"
+__GIT_PS1_TOGGLE=1
+
+
+___git_ps1_toggled () {
+    if [ "${__GIT_PS1_TOGGLE}" -eq "1" ]; then
+        __git_ps1 " (${MAGENTA}%s${RESET})"
+    else
+        :
+    fi
+}
+
+giton () {
+    __GIT_PS1_TOGGLE=1
+}
+
+gitoff () {
+    __GIT_PS1_TOGGLE=0
+}
 
 if [ `id -u` -eq 0 ]; then
     PS1="${BOLD}${GREEN}\D{%F} ${YELLOW}\t${RESET}|${BOLD}${RED}\u${WHITE}@${SSH_COLOR}\h${RESET}${__KUBE_PS1_CMD}${__GIT_PS1_CMD}${RESET}| ${CYAN}\w${RESET}"$'\n# '

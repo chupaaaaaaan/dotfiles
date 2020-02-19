@@ -976,19 +976,22 @@
   
   :bind
   (:map company-active-map
-        ("C-n" . company-select-next)
-        ("C-p" . company-select-previous)
-        ("C-s" . company-filter-candidates)
         ("<tab>" . company-complete-common-or-cycle)
-        ("M-n" . nil)
-        ("M-p" . nil)
-        ("C-h" . nil))
+        ("C-n"   . company-select-next)
+        ("C-p"   . company-select-previous)
+        ("C-s"   . company-filter-candidates)
+        ("C-h"   . nil)
+        ("M-n"   . nil)
+        ("M-p"   . nil))
   (:map company-search-map
         ("<tab>" . company-complete-common-or-cycle)
-        ("C-s" . company-select-next)
-        ("C-r" . company-select-previous)
-        ("C-n" . company-select-next)
-        ("C-p" . company-select-previous)))
+        ("C-n"   . company-select-next)
+        ("C-p"   . company-select-previous)
+        ("C-s"   . company-search-repeat-forward)
+        ("C-r"   . company-search-repeat-backward)
+        ("C-h"   . company-search-delete-char)
+        ("M-n"   . nil)
+        ("M-p"   . nil)))
 
 (use-package company-box
   :ensure t
@@ -1263,15 +1266,40 @@
   (haskell-stylish-on-save t)
   (haskell-tags-on-save t)
   (haskell-compile-ignore-cabal t)
-  (haskell-compile-command "stack ghc -Wall -ferror-spans -fforce-recomp -c %s")
+  (haskell-compile-command "stack ghc -- -Wall -ferror-spans -fforce-recomp %s")
+  (haskell-mode-hook '(capitalized-words-mode
+                       highlight-uses-mode
+                       interactive-haskell-mode
+                       ;; flyspell-prog-mode
+                       ;; haskell-decl-scan-mode
+                       ;; haskell-indentation-mode
+                       ))
   :bind
   (:map haskell-mode-map
-        ("C-c C-c" . haskell-compile)))
+        ("C-c C-c" . haskell-compile)
+        ("C-c C-l" . haskell-process-load-or-reload)
+        ("C-`"     . haskell-interactive-bring)
+        ("C-c C-k" . haskell-interactive-mode-clear)
+        ("C-c C-t" . haskell-process-do-type)
+        ("C-c C-i" . haskell-process-do-info)
+        ))
+
+(use-package haskell-interactive-mode
+  :ensure haskell-mode
+  :defer
+  :custom
+  (haskell-process-type 'stack-ghci)
+  (haskell-process-suggest-remove-import-lines t)
+  (haskell-process-auto-import-loaded-modules t)
+  (haskell-process-log t)
+  :config
+  (require 'haskell-process nil t)
+
+  )
 
 (use-package flycheck-haskell
   :ensure t
   :defer t
-  ;; :disabled
   :hook
   (flycheck-mode . flycheck-haskell-setup))
 
@@ -1342,4 +1370,4 @@
     '(add-hook 'nginx-mode-hook #'company-nginx-keywords)))
 
 ;; load customize file
-(load custom-file t)
+;; (load custom-file t)

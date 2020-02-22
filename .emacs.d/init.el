@@ -976,7 +976,7 @@
   
   :bind
   (:map company-active-map
-        ("<tab>" . company-complete-common-or-cycle)
+        ("<tab>" . company-complete)
         ("C-n"   . company-select-next)
         ("C-p"   . company-select-previous)
         ("C-s"   . company-filter-candidates)
@@ -984,7 +984,6 @@
         ("M-n"   . nil)
         ("M-p"   . nil))
   (:map company-search-map
-        ("<tab>" . company-complete-common-or-cycle)
         ("C-n"   . company-select-next)
         ("C-p"   . company-select-previous)
         ("C-s"   . company-search-repeat-forward)
@@ -1030,7 +1029,7 @@
   :defer t
   :bind
   ("M-0"       . treemacs-select-window)
-  ("C-x t 1"   . treemacs-delete-other-windows)
+  ;; ("C-x t 1"   . treemacs-delete-other-windows)
   ("C-x t t"   . treemacs)
   ("C-x t B"   . treemacs-bookmark)
   ("C-x t C-t" . treemacs-find-file)
@@ -1038,7 +1037,7 @@
 
   :custom
   (treemacs-is-never-other-window t)
-  (treemacs-no-delete-other-windows nil)
+  (treemacs-no-delete-other-windows t)
 
   :config
   (treemacs-follow-mode t)
@@ -1267,34 +1266,30 @@
   (haskell-tags-on-save t)
   (haskell-compile-ignore-cabal t)
   (haskell-compile-command "stack ghc -- -Wall -ferror-spans -fforce-recomp %s")
-  (haskell-mode-hook '(capitalized-words-mode
-                       highlight-uses-mode
-                       interactive-haskell-mode
-                       ;; flyspell-prog-mode
-                       ;; haskell-decl-scan-mode
-                       ;; haskell-indentation-mode
-                       ))
-  :bind
-  (:map haskell-mode-map
-        ("C-c C-c" . haskell-compile)
-        ("C-c C-l" . haskell-process-load-or-reload)
-        ("C-`"     . haskell-interactive-bring)
-        ("C-c C-k" . haskell-interactive-mode-clear)
-        ("C-c C-t" . haskell-process-do-type)
-        ("C-c C-i" . haskell-process-do-info)
-        ))
-
-(use-package haskell-interactive-mode
-  :ensure haskell-mode
-  :defer
-  :custom
   (haskell-process-type 'stack-ghci)
   (haskell-process-suggest-remove-import-lines t)
   (haskell-process-auto-import-loaded-modules t)
   (haskell-process-log t)
-  :config
-  (require 'haskell-process nil t)
-
+  (haskell-mode-hook '(capitalized-words-mode
+                       highlight-uses-mode
+                       interactive-haskell-mode
+                       haskell-indentation-mode
+                       ;; flyspell-prog-mode
+                       ;; haskell-decl-scan-mode
+                       (lambda () (set (make-local-variable 'company-backends)
+                                       (append '((company-capf company-dabbrev-code)) company-backends)))))
+  :bind
+  (:map haskell-mode-map
+        ("C-`"     . haskell-interactive-bring)
+        ("C-c C-k" . haskell-interactive-mode-clear)
+        ("C-c C-c" . haskell-compile)
+        ("M-."     . haskell-mode-jump-tag-find)
+        ("C-c C-t" . haskell-mode-show-type-at)
+        ("C-c C-l" . haskell-process-load-or-reload)
+        ("C-c C-i" . haskell-process-do-info))
+  ;; :config
+  ;; (require 'haskell-interactive-mode nil t)
+  ;; (require 'haskell-process nil t)
   )
 
 (use-package flycheck-haskell

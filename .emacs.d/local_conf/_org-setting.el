@@ -1,6 +1,7 @@
+(setq my:org-directory "~/Dropbox/org/")
 (setq my:org-capture-templates
       '(("tweet"          "その瞬間、考えていることをつぶやこう。"                               item  (file+headline ladicle/get-today-diary "Log")  "%(ladicle/org-get-time) %?\n"                  :prepend nil)
-        ("memo"           "今日の日記へ、メモを残そう。"                                         entry (file+headline ladicle/get-today-diary "Memo") "* %?\n"                                        :empty-lines 1 :jump-to-captured 1 :unnarrowed nil)
+        ("memo"           "今日の日記へ、メモを残そう。"                                         entry (file+headline ladicle/get-today-diary "Memo") "* %? :MEMO:\n"                                 :empty-lines 1 :jump-to-captured 1 :unnarrowed nil)
         ("books-memo"     "読書メモ。読んだ本の感想や、自分なりのまとめなど。"                   entry (file+headline ladicle/get-today-diary "Memo") "* %?\n"                                        :empty-lines 1 :jump-to-captured 1 :unnarrowed nil)
         ("inbox"          "タスクの作成。スケジュールを入れよう。"                               entry (file+headline inbox-file "Inbox")             "* TODO %?\n  %U\n"                             :empty-lines 1 :jump-to-captured nil)
         ("interrupt-task" "割り込みタスクの作成。すぐに時間計測が始まって、終わったら元に戻る。" entry (file+headline inbox-file "Inbox")             "* TODO %?\n  %U\n"                             :empty-lines 1 :clock-in 1 :clock-resume 1)

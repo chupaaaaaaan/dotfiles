@@ -726,11 +726,12 @@
   :ensure t
   :defer t
   :custom
-  (org-directory "~/Dropbox/org/")
+  (org-directory my:org-directory)
   ;; agenda-files
   (inbox-file (concat org-directory "inbox.org"))
   (schedule-file (concat org-directory "schedule.org"))
-  (org-agenda-files (list inbox-file schedule-file))
+  (diary-dir (concat org-directory "diary"))
+  (org-agenda-files (list inbox-file schedule-file diary-dir))
 
   (org-default-notes-file (concat org-directory "notes.org"))
   (org-clock-out-remove-zero-time-clocks t)
@@ -750,6 +751,7 @@
   ("M-i l y" . (lambda () (interactive) (ladicle/open-org-file (ladicle/get-yesterday-diary))))
   ("M-i l p" . (lambda () (interactive) (ladicle/open-org-file (ladicle/get-diary-from-cal))))
   ("M-i l t" . (lambda () (interactive) (ladicle/open-org-file (ladicle/get-today-diary))))
+  ("M-i l m" . (lambda () (interactive) (org-tags-view nil "MEMO")))
   (:map org-mode-map
         ;; ("C-c i" . org-clock-in)
         ;; ("C-c o" . org-clock-out)

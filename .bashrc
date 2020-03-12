@@ -147,6 +147,12 @@ gitoff () {
     __GIT_PS1_TOGGLE=0
 }
 
+gitroot () {
+    if git rev-parse --is-inside-work-tree > /dev/null 2>&1; then
+        cd `pwd`/`git rev-parse --show-cdup`
+    fi
+}
+
 if [ `id -u` -eq 0 ]; then
     PS1="${BOLD}${GREEN}\D{%F} ${YELLOW}\t${RESET}|${BOLD}${RED}\u${WHITE}@${SSH_COLOR}\h${RESET}${__KUBE_PS1_CMD}${__GIT_PS1_CMD}${RESET}| ${CYAN}\w${RESET}"$'\n# '
 else

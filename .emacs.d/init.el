@@ -452,6 +452,11 @@
   :ensure t
   :defer t)
 
+;; counsel-M-xを速くするに必須！
+;; counsel--M-x-externsで検索
+(use-package amx
+  :ensure t)
+
 (use-package ivy-rich
   :ensure t
   :defer t

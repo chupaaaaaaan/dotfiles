@@ -752,6 +752,8 @@
   ("C-c c" . counsel-org-capture)
   ("C-c a" . org-agenda)
   ("C-c l" . org-store-link)
+  ("C-+"   . (lambda () (interactive) (chupaaaaaaan/insert-today-string)))
+  ("C-*"   . (lambda () (interactive) (chupaaaaaaan/insert-timestamp-string)))
   ("M-i l i" . (lambda () (interactive) (ladicle/open-org-file inbox-file)))
   ("M-i l s" . (lambda () (interactive) (ladicle/open-org-file schedule-file)))
   ("M-i l y" . (lambda () (interactive) (ladicle/open-org-file (ladicle/get-yesterday-diary))))
@@ -784,6 +786,10 @@
 
 
   :preface
+  (defun chupaaaaaaan/insert-today-string ()
+    (insert (format-time-string "%Y-%m-%d" (current-time))))
+  (defun chupaaaaaaan/insert-timestamp-string ()
+    (insert (format-time-string "%Y-%m-%d %T" (current-time))))
   (defun ladicle/get-today-diary ()
     (concat org-directory (format-time-string "diary/%Y-%m-%d.org" (current-time))))
   (defun ladicle/get-yesterday-diary ()

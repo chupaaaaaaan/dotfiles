@@ -748,6 +748,8 @@
   (org-todo-keywords '((sequence "TODO(t)" "WIP(w)" "PENDING(p)" "|" "DONE(d)" "CANCELED(c)")))
   (org-capture-templates my:org-capture-templates)
 
+  (org-archive-location "archive_%s::")
+
   :bind
   ("C-c c" . counsel-org-capture)
   ("C-c a" . org-agenda)

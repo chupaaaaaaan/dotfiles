@@ -690,6 +690,7 @@
 
 (use-package counsel-tramp
   :ensure t
+  :disabled
   :bind
   ("C-c C-f" . counsel-tramp))
 

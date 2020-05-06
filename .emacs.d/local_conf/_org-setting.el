@@ -1,4 +1,10 @@
 (setq my:org-directory "~/org/")
+(setq my:org-tag-alist '((:startgroup . nil)
+                         ("read" . ?r)
+                         ("study" . ?s)
+                         ("develop" . ?d)
+                         (:endgroup . nil)
+                         ("chore" . ?c)))
 (setq my:org-capture-templates
       '(("daily-report"   "その日のまとめをしよう。"                           entry (file+headline ladicle/get-today-diary "Memo") "* レポート%?\n%(org-clock-report)\n"           :empty-lines 1)
         ("tweet"          "その瞬間、考えていることをつぶやこう。"             item  (file+headline ladicle/get-today-diary "Log")  "%(ladicle/org-get-time) %?\n"                  :prepend nil)

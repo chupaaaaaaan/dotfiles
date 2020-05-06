@@ -741,14 +741,31 @@
   (org-agenda-files (list inbox-file schedule-file))
 
   (org-default-notes-file (concat org-directory "notes.org"))
+
+  ;; Org clock
   (org-clock-out-remove-zero-time-clocks t)
   (org-clock-clocktable-default-properties '(:maxlevel 2 :scope agenda :fileskip0 t :link t :block today :match ""))
   (org-clock-clocked-in-display 'mode-line) ;; 'frame-title
+  (org-timer-default-timer 30)
 
+  ;; Org TODO
   (org-refile-targets '((org-agenda-files :maxlevel . 3)))
   (org-todo-keywords '((sequence "TODO(t)" "WIP(w)" "PENDING(p)" "|" "DONE(d)" "CANCELED(c)")))
+  (org-enforce-todo-dependencies t)
+  (org-track-ordered-property-with-tag t)
   (org-capture-templates my:org-capture-templates)
+  (org-agenda-dim-blocked-tasks t)
 
+  ;; tags
+  (org-tag-alist my:org-tag-alist)
+
+  ;; property
+  (org-global-properties '(("Effort_ALL" . "0 0:15 0:30 1:00 1:30 2:00 3:00 4:00 5:00")))
+  
+  ;; columns
+  (org-columns-default-format "%40ITEM %TAGS %TODO %BLOCKED %PRIORITY %SCHEDULED %DEADLINE %EFFORT{:} %CLOCKSUM %CLOCKSUM_T")
+
+  ;; archive
   (org-archive-location "archive_%s::")
 
   :bind

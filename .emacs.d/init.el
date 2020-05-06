@@ -761,7 +761,7 @@
 
   ;; property
   (org-global-properties '(("Effort_ALL" . "0 0:15 0:30 1:00 1:30 2:00 3:00 4:00 5:00")))
-  
+
   ;; columns
   (org-columns-default-format "%40ITEM %TAGS %TODO %BLOCKED %PRIORITY %SCHEDULED %DEADLINE %EFFORT{:} %CLOCKSUM %CLOCKSUM_T")
 
@@ -1007,7 +1007,7 @@
 
   :hook
   (after-init . global-company-mode)
-  
+
   :bind
   (:map company-active-map
         ("<tab>" . company-complete)
@@ -1150,10 +1150,10 @@
   :after lsp-mode
   :hook
   (lsp-mode . lsp-ui-mode)
-  
+
   ;; :custom-face
   ;; (lsp-ui-doc-background ((nil (:background "black"))))
-  
+
   :custom
   (lsp-ui-doc-enable nil)
   (lsp-ui-doc-header t)
@@ -1180,7 +1180,7 @@
   (lsp-ui-sideline-show-hover t)
   (lsp-ui-sideline-show-diagnostics nil)
   (lsp-ui-sideline-show-code-actions nil)
-  
+
   :preface
   ;; https://ladicle.com/post/config/#lsp
   (defun ladicle/toggle-lsp-ui-doc ()
@@ -1192,7 +1192,7 @@
           (lsp-ui-doc--hide-frame))
       (lsp-ui-doc-mode 1))
     (message "Lsp-Ui-Doc mode %s in current buffer" (if lsp-ui-doc-mode "enabled" "disabled")))
-  
+
   :bind
   (:map lsp-mode-map
         ("C-c m"   . lsp-ui-imenu)

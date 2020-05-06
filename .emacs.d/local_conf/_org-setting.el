@@ -3,7 +3,7 @@
       '(("daily-report"   "その日のまとめをしよう。"                           entry (file+headline ladicle/get-today-diary "Memo") "* レポート%?\n%(org-clock-report)\n"           :empty-lines 1)
         ("tweet"          "その瞬間、考えていることをつぶやこう。"             item  (file+headline ladicle/get-today-diary "Log")  "%(ladicle/org-get-time) %?\n"                  :prepend nil)
         ("memo"           "今日の日記へ、メモを残そう。"                       entry (file+headline ladicle/get-today-diary "Memo") "* %? :MEMO:\n"                                 :empty-lines 1 :jump-to-captured 1 :unnarrowed nil)
-        ("books-memo"     "読書メモ。読んだ本の感想や、自分なりのまとめなど。" entry (file+headline ladicle/get-today-diary "Memo") "* %?\n"                                        :empty-lines 1 :jump-to-captured 1 :unnarrowed nil)
+        ("books-memo"     "読書メモ。読んだ本の感想や、自分なりのまとめなど。" entry (file+headline ladicle/get-today-diary "Memo") "* %? :BOOK:\n"                                 :empty-lines 1 :jump-to-captured 1 :unnarrowed nil)
         ("inbox"          "タスクの作成。スケジュールを入れよう。"             entry (file+headline inbox-file "Inbox")             "* TODO %?\n  %U\n"                             :empty-lines 1 :jump-to-captured nil)
         ("interrupt-task" "割り込みタスクの作成。終わったら元のタスクへ。"     entry (file+headline inbox-file "Inbox")             "* TODO %?\n  %U\n"                             :empty-lines 1 :clock-in 1 :clock-resume 1)
         ("schedule"       "カレンダーにイベントを追加しよう。"                 entry (file+headline schedule-file "Schedule")       "* %?\n  SCHEDULED: <%(org-read-date)>\n  %U\n" :empty-lines 1)

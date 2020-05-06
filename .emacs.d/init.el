@@ -753,8 +753,10 @@
   (org-todo-keywords '((sequence "TODO(t)" "WIP(w)" "PENDING(p)" "|" "DONE(d)" "CANCELED(c)")))
   (org-enforce-todo-dependencies t)
   (org-track-ordered-property-with-tag t)
-  (org-capture-templates my:org-capture-templates)
   (org-agenda-dim-blocked-tasks t)
+
+  ;; capture
+  (org-capture-templates my:org-capture-templates)
 
   ;; tags
   (org-tag-alist my:org-tag-alist)

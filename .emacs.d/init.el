@@ -746,34 +746,45 @@
   (org-agenda-files (list agenda-dir))
 
   ;; agenda
+  (tag-search-habit   "HABIT")
+  (tag-search-inbox   "INBOX")
+  (tag-search-wip     "-HABIT-INBOX-PROJECT-SOMEDAY/WIP")
+  (tag-search-todo    "-HABIT-INBOX-PROJECT-SOMEDAY/TODO")
+  (tag-search-pending "-HABIT-INBOX-PROJECT-SOMEDAY/PENDING")
+  (tag-search-project "-HABIT+PROJECT/-DONE-CANCELED")
+  (tag-search-someday "-HABIT+SOMEDAY/-DONE-CANCELED")
   (org-agenda-span 'day)
   (org-agenda-custom-commands
-   '((" " "Agenda: 予定表" ((agenda    "" nil)
-                            (tags-todo "INBOX"
-                                       ((org-agenda-overriding-header "Inbox")
-                                        ;; (org-tags-match-list-sublevels 'indented)
-                                        (org-tags-match-list-sublevels nil)
-                                        ))
-                            (tags-todo "-INBOX-PROJECT-SOMEDAY/WIP"
-                                       ((org-agenda-overriding-header "Work in progress")
-                                        (org-tags-match-list-sublevels t)
-                                        (org-agenda-sorting-strategy '(todo-state-down effort-up category-keep))))
-                            (tags-todo "-INBOX-PROJECT-SOMEDAY/TODO"
-                                       ((org-agenda-overriding-header "Next actions")
-                                        (org-tags-match-list-sublevels 'indented)
-                                        (org-agenda-sorting-strategy '(category-keep))))
-                            (tags-todo "-INBOX-PROJECT-SOMEDAY/PENDING"
-                                       ((org-agenda-overriding-header "Waiting")
-                                        (org-tags-match-list-sublevels 'indented)))
-                            (tags-todo "PROJECT/-DONE-CANCELED"
-                                       ((org-agenda-overriding-header "Project")
-                                        (org-tags-match-list-sublevels nil)
-                                        (org-agenda-sorting-strategy '(category-keep))))
-                            (tags-todo "SOMEDAY/-DONE-CANCELED"
-                                       ((org-agenda-overriding-header "Someday")
-                                        (org-tags-match-list-sublevels nil)
-                                        (org-agenda-sorting-strategy '(category-keep))))
-                            nil))))
+   '(("h" "Habits: 習慣タスク"
+      tags-todo tag-search-habit ((org-agenda-overriding-header "Habit")
+                                  (org-agenda-sorting-strategy
+                                   '(todo-state-down effort-up category-keep))))
+     (" " "Agenda: 予定表"
+      ((agenda    "" nil)
+       (tags-todo tag-search-inbox
+                  ((org-agenda-overriding-header "Inbox")
+                   ;; (org-tags-match-list-sublevels 'indented)
+                   (org-tags-match-list-sublevels nil)))
+       (tags-todo tag-search-wip
+                  ((org-agenda-overriding-header "Work in progress")
+                   (org-tags-match-list-sublevels t)
+                   (org-agenda-sorting-strategy '(todo-state-down effort-up category-keep))))
+       (tags-todo tag-search-todo
+                  ((org-agenda-overriding-header "Next actions")
+                   (org-tags-match-list-sublevels 'indented)
+                   (org-agenda-sorting-strategy '(category-keep))))
+       (tags-todo tag-search-pending
+                  ((org-agenda-overriding-header "Waiting")
+                   (org-tags-match-list-sublevels 'indented)))
+       (tags-todo tag-search-project
+                  ((org-agenda-overriding-header "Project")
+                   (org-tags-match-list-sublevels nil)
+                   (org-agenda-sorting-strategy '(category-keep))))
+       (tags-todo tag-search-someday
+                  ((org-agenda-overriding-header "Someday")
+                   (org-tags-match-list-sublevels nil)
+                   (org-agenda-sorting-strategy '(category-keep))))
+       nil))))
 
   ;; refile
   (org-refile-targets '((org-agenda-files :maxlevel . 3)

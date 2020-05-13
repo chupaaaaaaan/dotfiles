@@ -1,0 +1,2 @@
+#+FILETAGS: INBOX
+* Inbox

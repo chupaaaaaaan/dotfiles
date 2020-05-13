@@ -6,13 +6,16 @@
                          (:endgroup . nil)
                          ("chore" . ?c)))
 (setq my:org-capture-templates
-      '(("daily-report"   "その日のまとめをしよう。"                           entry (file+headline ladicle/get-today-diary "Memo") "* レポート%?\n%(org-clock-report)\n"           :empty-lines 1)
-        ("tweet"          "その瞬間、考えていることをつぶやこう。"             item  (file+headline ladicle/get-today-diary "Log")  "%(ladicle/org-get-time) %?\n"                  :prepend nil)
-        ("memo"           "今日の日記へ、メモを残そう。"                       entry (file+headline ladicle/get-today-diary "Memo") "* %? :MEMO:\n"                                 :empty-lines 1 :jump-to-captured 1 :unnarrowed nil)
-        ("books-memo"     "読書メモ。読んだ本の感想や、自分なりのまとめなど。" entry (file+headline ladicle/get-today-diary "Memo") "* %? :BOOK:\n"                                 :empty-lines 1 :jump-to-captured 1 :unnarrowed nil)
-        ("inbox"          "タスクの作成。スケジュールを入れよう。"             entry (file+headline inbox-file "Inbox")             "* TODO %?\n  %U\n"                             :empty-lines 1 :jump-to-captured nil)
-        ("interrupt-task" "割り込みタスクの作成。終わったら元のタスクへ。"     entry (file+headline inbox-file "Inbox")             "* TODO %?\n  %U\n"                             :empty-lines 1 :clock-in 1 :clock-resume 1)
-        ("schedule"       "カレンダーにイベントを追加しよう。"                 entry (file+headline schedule-file "Schedule")       "* %?\n  SCHEDULED: <%(org-read-date)>\n  %U\n" :empty-lines 1)
-        ("hack-emacs"     "Emacsをハックするアイデアを集めよう！"              item  (file+headline inbox-file "Hacking Emacs")     "[ ] %?"                                        :prepend 1)
-        ("wish-memo"      "欲しいものリスト！"                                 entry (file+headline inbox-file "My Wishes")         "* TODO %?"                                     :prepend 1)
-        ("link"           "現在位置のリンクを、時間計測中のタスクに追加。"     item  (clock)                                        "%A\n"                                          :immediate-finish 1 :prepend nil)))
+      '(("tweet"      "セルフツイート"   item  (file+headline ladicle/get-today-diary "Log")          "%(ladicle/org-get-time) %?\n" :prepend nil)
+        ("memo"       "雑多なメモ"       entry (file+headline ladicle/get-today-diary "Memo")         "* %? :MEMO:\n"                :empty-lines 1 :jump-to-captured 1 :unnarrowed nil)
+        ("inbox"      "タスクの作成"     entry (file+headline inbox-file "Inbox")                     "* TODO %?\n  %U\n"            :empty-lines 1 :jump-to-captured nil)
+        ("interrupt"  "割り込みタスク"   entry (file+headline inbox-file "Inbox")                     "* TODO %?\n  %U\n"            :empty-lines 1 :clock-in 1 :clock-resume 1)
+        ("schedule"   "カレンダー"       entry (file+headline schedule-file "Schedule")               "* %?\n  SCHEDULED: <%(org-read-date)>\n  %U\n" :empty-lines 1)
+        ("hack-emacs" "Emacsをハック"    item  (file+headline org-default-notes-file "Hacking Emacs") "[ ] %?"                       :prepend 1)
+        ("link"       "リンクを追加。"   item  (clock)                                                "%A\n"                         :immediate-finish 1 :prepend nil)))
+
+;; ("daily-report"   "その日のまとめ"   entry (file+headline ladicle/get-today-diary "Memo") "* Report%?\n%(org-clock-report)\n"             :empty-lines 1)
+;; ("books-memo"     "読書メモ"         entry (file+headline ladicle/get-today-diary "Memo") "* %? :BOOK:\n"                                 :empty-lines 1 :jump-to-captured 1 :unnarrowed nil)
+;; ("wish-memo"      "欲しいものリスト" entry (file+headline inbox-file "My Wishes")         "* TODO %?"                                     :prepend 1)
+
+;;

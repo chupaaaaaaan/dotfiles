@@ -732,24 +732,68 @@
   :ensure t
   :defer t
   :custom
+  ;; default path
   (org-directory my:org-directory)
-  ;; agenda-files
-  (inbox-file (concat org-directory "inbox.org"))
-  (schedule-file (concat org-directory "schedule.org"))
-  (diary-dir (concat org-directory "diary"))
-  ;; (org-agenda-files (list inbox-file schedule-file diary-dir))
-  (org-agenda-files (list inbox-file schedule-file))
-
   (org-default-notes-file (concat org-directory "notes.org"))
 
-  ;; Org clock
+  ;; agenda-files
+  (agenda-dir (concat org-directory "agenda/"))
+  (agenda-archive-dir (concat agenda-dir "archive/"))
+  (inbox-file (concat agenda-dir "inbox.org"))
+  (project-file (concat agenda-dir "project.org"))
+  (someday-file (concat agenda-dir "someday.org"))
+  (schedule-file (concat agenda-dir "schedule.org"))
+  (org-agenda-files (list agenda-dir))
+
+  ;; agenda
+  (org-agenda-span 'day)
+  (org-agenda-custom-commands
+   '((" " "Agenda: 予定表" ((agenda    "" nil)
+                            (tags-todo "INBOX"
+                                       ((org-agenda-overriding-header "Inbox")
+                                        ;; (org-tags-match-list-sublevels 'indented)
+                                        (org-tags-match-list-sublevels nil)
+                                        ))
+                            (tags-todo "-INBOX-PROJECT-SOMEDAY/WIP"
+                                       ((org-agenda-overriding-header "Work in progress")
+                                        (org-tags-match-list-sublevels t)
+                                        (org-agenda-sorting-strategy '(todo-state-down effort-up category-keep))))
+                            (tags-todo "-INBOX-PROJECT-SOMEDAY/TODO"
+                                       ((org-agenda-overriding-header "Next actions")
+                                        (org-tags-match-list-sublevels 'indented)
+                                        (org-agenda-sorting-strategy '(category-keep))))
+                            (tags-todo "-INBOX-PROJECT-SOMEDAY/PENDING"
+                                       ((org-agenda-overriding-header "Waiting")
+                                        (org-tags-match-list-sublevels 'indented)))
+                            (tags-todo "PROJECT/-DONE-CANCELED"
+                                       ((org-agenda-overriding-header "Project")
+                                        (org-tags-match-list-sublevels nil)
+                                        (org-agenda-sorting-strategy '(category-keep))))
+                            (tags-todo "SOMEDAY/-DONE-CANCELED"
+                                       ((org-agenda-overriding-header "Someday")
+                                        (org-tags-match-list-sublevels nil)
+                                        (org-agenda-sorting-strategy '(category-keep))))
+                            nil))))
+
+  ;; refile
+  (org-refile-targets '((org-agenda-files :maxlevel . 3)
+                        (project-file :maxlevel . 1)
+                        (someday-file :maxlevel . 1)))
+
+  ;; log
+  (org-log-done 'time)
+  (org-log-done-with-time t)
+  (org-log-into-drawer t)
+  (org-log-redeadline 'time)
+  (org-log-reschedule 'time)
+  
+  ;; clock/timer
   (org-clock-out-remove-zero-time-clocks t)
   (org-clock-clocktable-default-properties '(:maxlevel 2 :scope agenda :fileskip0 t :link t :block today :match ""))
   (org-clock-clocked-in-display 'mode-line) ;; 'frame-title
   (org-timer-default-timer 30)
 
-  ;; Org TODO
-  (org-refile-targets '((org-agenda-files :maxlevel . 3)))
+  ;; todo
   (org-todo-keywords '((sequence "TODO(t)" "WIP(w)" "PENDING(p)" "|" "DONE(d)" "CANCELED(c)")))
   (org-enforce-todo-dependencies t)
   (org-track-ordered-property-with-tag t)
@@ -762,22 +806,25 @@
   (org-tag-alist my:org-tag-alist)
 
   ;; property
-  (org-global-properties '(("Effort_ALL" . "0 0:15 0:30 1:00 1:30 2:00 3:00 4:00 5:00")))
+  (org-global-properties '(("Effort_ALL" . "0:05 0:15 0:30 1:00 1:30 2:00 2:30 3:00")))
 
   ;; columns
-  (org-columns-default-format "%40ITEM %TAGS %TODO %BLOCKED %PRIORITY %SCHEDULED %DEADLINE %EFFORT{:} %CLOCKSUM %CLOCKSUM_T")
+  ;; (org-columns-default-format "%40ITEM %TAGS %TODO %BLOCKED %PRIORITY %SCHEDULED %DEADLINE %EFFORT{:} %CLOCKSUM %CLOCKSUM_T")
+  (org-columns-default-format "%40ITEM %TODO %SCHEDULED %DEADLINE %EFFORT{:} %CLOCKSUM %CLOCKSUM_T")
 
   ;; archive
-  (org-archive-location "archive_%s::")
+  (org-archive-location (concat agenda-archive-dir "archive_%s::"))
 
   :bind
   ("C-c c" . counsel-org-capture)
   ("C-c a" . org-agenda)
   ("C-c l" . org-store-link)
+  ("<f12>" . org-agenda)
   ("C-+"   . (lambda () (interactive) (insert (chupaaaaaaan/insert-today-string))))
-  ("C-*"   . (lambda () (interactive) insert((chupaaaaaaan/insert-timestamp-string))))
-  ("M-i l i" . (lambda () (interactive) (ladicle/open-org-file inbox-file)))
-  ("M-i l s" . (lambda () (interactive) (ladicle/open-org-file schedule-file)))
+  ("C-*"   . (lambda () (interactive) (insert (chupaaaaaaan/insert-timestamp-string))))
+  ("M-i l i" . (lambda () (interactive) (switch-to-buffer (counsel-find-file agenda-dir))))
+  ;; ("M-i l i" . (lambda () (interactive) (ladicle/open-org-file inbox-file)))
+  ;; ("M-i l s" . (lambda () (interactive) (ladicle/open-org-file schedule-file)))
   ("M-i l y" . (lambda () (interactive) (ladicle/open-org-file (ladicle/get-yesterday-diary))))
   ("M-i l p" . (lambda () (interactive) (ladicle/open-org-file (ladicle/get-diary-from-cal))))
   ("M-i l t" . (lambda () (interactive) (ladicle/open-org-file (ladicle/get-today-diary))))

@@ -748,13 +748,14 @@
   ;; agenda
   (tag-search-habit   "HABIT")
   (tag-search-inbox   "INBOX")
-  (tag-search-wip     "-HABIT-INBOX-PROJECT-SOMEDAY/WIP")
+  (tag-search-wip     "-HABIT-INBOX-PROJECT-SOMEDAY/+WIP|+NEXT")
   (tag-search-todo    "-HABIT-INBOX-PROJECT-SOMEDAY/TODO")
-  (tag-search-pending "-HABIT-INBOX-PROJECT-SOMEDAY/PENDING")
+  (tag-search-pending "-HABIT-INBOX-PROJECT-SOMEDAY/+HOLDING|+PENDING")
   (tag-search-project "-HABIT+PROJECT/-DONE-CANCELED")
   (tag-search-someday "-HABIT+SOMEDAY/-DONE-CANCELED")
   (org-agenda-span 'day)
   (org-agenda-include-diary t)
+  (org-agenda-dim-blocked-tasks t)
   (org-agenda-window-setup 'only-window)
   (org-agenda-custom-commands
    '(("h" "Habits: 習慣タスク"
@@ -807,10 +808,18 @@
   (org-timer-default-timer 30)
 
   ;; todo
-  (org-todo-keywords '((sequence "TODO(t)" "WIP(w)" "PENDING(p)" "|" "DONE(d)" "CANCELED(c)")))
+  ;; TODO:     仕掛中でないタスク
+  ;; WIP:      仕掛中のタスク
+  ;; NEXT:     仕掛中のタスク (待ちがあるが、すぐにWIPにできる)
+  ;; DONE:     完了したタスク
+  ;; HOLDING:  自己起因で中断しているタスク
+  ;; PENDING:  他者起因で中断しているタスク
+  ;; CANCELED: キャンセルされたタスク
+  (org-todo-keywords '((sequence "TODO(t)" "WIP(w)" "NEXT(n)" "|" "DONE(d)")
+                       (sequence "HOLDING(h@)" "PENDING(p@)" "|" "CANCELED(c@)")))
   (org-enforce-todo-dependencies t)
+  (org-enforce-todo-checkbox-dependencies t)
   (org-track-ordered-property-with-tag t)
-  (org-agenda-dim-blocked-tasks t)
 
   ;; capture
   (org-capture-templates my:org-capture-templates)

@@ -754,6 +754,8 @@
   (tag-search-project "-HABIT+PROJECT/-DONE-CANCELED")
   (tag-search-someday "-HABIT+SOMEDAY/-DONE-CANCELED")
   (org-agenda-span 'day)
+  (org-agenda-include-diary t)
+  (org-agenda-window-setup 'only-window)
   (org-agenda-custom-commands
    '(("h" "Habits: 習慣タスク"
       tags-todo tag-search-habit ((org-agenda-overriding-header "Habit")
@@ -932,7 +934,7 @@
   ;;       ("C-c p" . org-pomodoro))
   :bind
   (:map org-agenda-mode-map
-        ("p" . org-pomodoro))
+        ("P" . org-pomodoro))
 
   ;; :preface
   ;; (defun chupaaaaaaan:pomodoro-notify (title body)

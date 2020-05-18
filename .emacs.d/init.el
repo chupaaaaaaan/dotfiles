@@ -79,7 +79,7 @@
 ;;   :config
 ;;   (all-the-icons-ivy-setup))
 
-(defun chupaaaaaaan:font-setting ()
+(defun chpn:font-setting ()
   "Initialize fonts on window-system"
   (interactive)
 
@@ -113,7 +113,7 @@
 (setq use-default-font-for-symbols nil)
 (setq inhibit-compacting-font-caches t)
 
-(add-hook 'after-init-hook #'chupaaaaaaan:font-setting)
+(add-hook 'after-init-hook #'chpn:font-setting)
 
 
 ;; locale and environment
@@ -167,8 +167,8 @@
 (define-prefix-command 'ladicle-toggle-map)
 (define-key global-map (kbd "M-t") 'ladicle-toggle-map)
 
-(define-prefix-command 'ladicle-link-map)
-(define-key global-map (kbd "M-i l") 'ladicle-link-map)
+(define-prefix-command 'chpn-org-map)
+(define-key global-map (kbd "M-i l") 'chpn-org-map)
 
 
 (global-unset-key (kbd "C-x C-c"))
@@ -757,12 +757,13 @@
   (org-agenda-include-diary t)
   (org-agenda-dim-blocked-tasks t)
   (org-agenda-window-setup 'only-window)
+  (org-agenda-log-mode-items '(closed clock))
   (org-agenda-custom-commands
    '(("h" "Habits: 習慣タスク"
       tags-todo tag-search-habit ((org-agenda-overriding-header "Habit")
                                   (org-agenda-sorting-strategy
                                    '(todo-state-down effort-up category-keep))))
-     (" " "Agenda: 予定表"
+     ("i" "Agenda: 予定表"
       ((agenda    "" nil)
        (tags-todo tag-search-inbox
                   ((org-agenda-overriding-header "Inbox")
@@ -841,10 +842,10 @@
   ("C-c c" . counsel-org-capture)
   ("C-c a" . org-agenda)
   ("C-c l" . org-store-link)
-  ("<f12>" . org-agenda)
-  ("C-+"   . (lambda () (interactive) (insert (chupaaaaaaan/insert-today-string))))
-  ("C-*"   . (lambda () (interactive) (insert (chupaaaaaaan/insert-timestamp-string))))
-  ("M-i l i" . (lambda () (interactive) (ladicle/open-org-file (counsel-find-file agenda-dir))))
+  ("C-+"   . (lambda () (interactive) (insert (chpn/insert-today-string))))
+  ("C-*"   . (lambda () (interactive) (insert (chpn/insert-timestamp-string))))
+  ("M-i l i" . (lambda () (interactive) (org-agenda nil " ")))
+  ("M-i l u" . (lambda () (interactive) (ladicle/open-org-file (counsel-find-file agenda-dir))))
   ("M-i l y" . (lambda () (interactive) (ladicle/open-org-file (ladicle/get-yesterday-diary))))
   ("M-i l p" . (lambda () (interactive) (ladicle/open-org-file (ladicle/get-diary-from-cal))))
   ("M-i l t" . (lambda () (interactive) (ladicle/open-org-file (ladicle/get-today-diary))))
@@ -877,9 +878,9 @@
 
 
   :preface
-  (defun chupaaaaaaan/insert-today-string ()
+  (defun chpn/insert-today-string ()
     (format-time-string "%Y-%m-%d" (current-time)))
-  (defun chupaaaaaaan/insert-timestamp-string ()
+  (defun chpn/insert-timestamp-string ()
     (format-time-string "%Y-%m-%d %T" (current-time)))
   (defun ladicle/org-get-time ()
     (format-time-string "<%H:%M>" (current-time)))
@@ -946,7 +947,7 @@
         ("P" . org-pomodoro))
 
   ;; :preface
-  ;; (defun chupaaaaaaan:pomodoro-notify (title body)
+  ;; (defun chpn:pomodoro-notify (title body)
   ;;   "Save buffers and stop clocking when kill emacs."
   ;;   (cond
   ;;    ((eq system-type 'darwin)
@@ -957,8 +958,8 @@
   ;;     (w32-notification-notify :title title :body body))))
 
   ;; :hook
-  ;; (org-pomodoro-started  . (lambda () (chupaaaaaaan:pomodoro-notify "org-pomodoro" "Let's focus for 25 minutes!")))
-  ;; (org-pomodoro-finished  . (lambda () (chupaaaaaaan:pomodoro-notify "org-pomodoro" "Well done! Take a break.")))
+  ;; (org-pomodoro-started  . (lambda () (chpn:pomodoro-notify "org-pomodoro" "Let's focus for 25 minutes!")))
+  ;; (org-pomodoro-finished  . (lambda () (chpn:pomodoro-notify "org-pomodoro" "Well done! Take a break.")))
   ;; (org-pomodoro-started  . (lambda () (notify :title "org-pomodoro" :body "Let's focus for 25 minutes!")))
   ;; (org-pomodoro-finished . (lambda () (notify :title "org-pomodoro" :body "Well done! Take a break.")))
 
@@ -1188,35 +1189,36 @@
   :hook
   (flycheck-mode . flycheck-posframe-mode))
 
-
 ;; lsp
 (use-package lsp-mode
   :ensure t
-  :disabled
+  ;; :disabled
   :defer t
   :commands lsp
 
   :custom
-  (lsp-prefer-flymake nil)
-  (lsp-document-sync-method 'incremental)
+  (lsp-diagnostic-package :auto)
   (lsp-enable-snippet t)
   (lsp-completion-at-point t)
   (lsp-flycheck-live-reporting t)
   (lsp-prefer-capf t)
-  (lsp-log-io t)
+  ;; (lsp-log-io t)
+  ;; 何故かこれを設定しているとlanguage-serverと通信できない？っぽいので、コメントアウト
+  ;; (lsp-document-sync-method 'lsp--sync-incremental)
 
   :hook
-  ;; (haskell-mode . lsp)
+  (haskell-mode . lsp)
   ;; (java-mode . lsp)
 
-  :bind
-  (:map lsp-mode-map
-        ("C-c C-l" . lsp-lens-mode)))
+  ;; :bind
+  ;; (:map lsp-mode-map
+  ;;       ("C-c C-l" . lsp-lens-mode))
+  )
 
 
 (use-package lsp-ui
   :ensure t
-  :disabled
+  ;; :disabled
   :defer t
   :after lsp-mode
   :hook
@@ -1243,7 +1245,7 @@
   (lsp-ui-imenu-enable t)
   (lsp-ui-imenu-kind-position 'top)
 
-  (lsp-ui-flycheck-enable t)
+  ;; (lsp-ui-flycheck-enable t)
   (lsp-ui-flycheck-list-position 'bottom)
 
   (lsp-ui-sideline-enable nil)
@@ -1272,7 +1274,7 @@
 
 (use-package company-lsp
   :ensure t
-  :disabled
+  ;; :disabled
   :defer t
   :commands company-lsp
   :custom
@@ -1287,7 +1289,7 @@
 
 (use-package lsp-ivy
   :ensure t
-  :disabled
+  ;; :disabled
   :commands lsp-ivy-workspace-symbol
   :bind
   (:map lsp-ivy-map
@@ -1296,7 +1298,7 @@
 
 (use-package lsp-treemacs
   :ensure t
-  :disabled
+  ;; :disabled
   :defer t
   :after lsp-mode treemacs
   :commands lsp-treemacs-errors-list)
@@ -1315,14 +1317,14 @@
   :disabled
   :defer t
   ;; :init
-  ;; (setq chupaaaaaaan:lombok-path (expand-file-name (concat user-emacs-directory "eclipse.jdt.ls/server/boot-server/lombok.jar")))
+  ;; (setq chpn:lombok-path (expand-file-name (concat user-emacs-directory "eclipse.jdt.ls/server/boot-server/lombok.jar")))
   ;; :custom
   ;; (lsp-java-vmargs (list "-noverify"
   ;;                        "-Xmx1G"
   ;;                        "-XX:+UseG1GC"
   ;;                        "-XX:+UseStringDeduplication"
-  ;;                        (concat "-javaagent:" chupaaaaaaan:lombok-path)
-  ;;                        (concat "-Xbootclasspath/a:" chupaaaaaaan:lombok-path)))
+  ;;                        (concat "-javaagent:" chpn:lombok-path)
+  ;;                        (concat "-Xbootclasspath/a:" chpn:lombok-path)))
 
   :hook
   (java-mode . lsp-java-boot-lens-mode))
@@ -1334,6 +1336,7 @@
 
 (use-package meghanada
   :ensure t
+  :disabled
   :defer t
   :hook
   (java-mode . (lambda ()
@@ -1358,7 +1361,7 @@
 ;; for ghc-8.0.2 and later
 (use-package lsp-haskell
   :ensure t
-  :disabled
+  ;; :disabled
   :defer t
   :after lsp-mode haskell-mode
   :custom
@@ -1367,31 +1370,32 @@
 (use-package haskell-mode
   :ensure t
   :custom
-  (haskell-stylish-on-save t)
-  (haskell-tags-on-save t)
+  ;; (haskell-stylish-on-save t)
+  ;; (haskell-tags-on-save t)
   (haskell-compile-ignore-cabal t)
   (haskell-compile-command "stack ghc -- -Wall -ferror-spans -fforce-recomp %s")
   (haskell-process-type 'stack-ghci)
   (haskell-process-suggest-remove-import-lines t)
   (haskell-process-auto-import-loaded-modules t)
   (haskell-process-log t)
-  (haskell-mode-hook '(capitalized-words-mode
-                       highlight-uses-mode
-                       interactive-haskell-mode
-                       haskell-indentation-mode
-                       ;; flyspell-prog-mode
-                       ;; haskell-decl-scan-mode
-                       (lambda () (set (make-local-variable 'company-backends)
-                                       (append '((company-capf company-dabbrev-code)) company-backends)))))
+  ;; (haskell-mode-hook '(capitalized-words-mode
+  ;;                      highlight-uses-mode
+  ;;                      interactive-haskell-mode
+  ;;                      haskell-indentation-mode
+  ;;                      ;; flyspell-prog-mode
+  ;;                      ;; haskell-decl-scan-mode
+  ;;                      (lambda () (set (make-local-variable 'company-backends)
+  ;;                                      (append '((company-capf company-dabbrev-code)) company-backends)))))
   :bind
   (:map haskell-mode-map
         ("C-`"     . haskell-interactive-bring)
         ("C-c C-k" . haskell-interactive-mode-clear)
         ("C-c C-c" . haskell-compile)
-        ("M-."     . haskell-mode-jump-tag-find)
-        ("C-c C-t" . haskell-mode-show-type-at)
-        ("C-c C-l" . haskell-process-load-or-reload)
-        ("C-c C-i" . haskell-process-do-info))
+        ;; ("M-."     . haskell-mode-jump-tag-find)
+        ;; ("C-c C-t" . haskell-mode-show-type-at)
+        ("C-c C-l" . haskell-process-load-file)
+        ;; ("C-c C-i" . haskell-process-do-info)
+        )
   ;; :config
   ;; (require 'haskell-interactive-mode nil t)
   ;; (require 'haskell-process nil t)

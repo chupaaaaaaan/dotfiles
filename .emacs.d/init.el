@@ -844,7 +844,7 @@
   ("C-c l" . org-store-link)
   ("C-+"   . (lambda () (interactive) (insert (chpn/insert-today-string))))
   ("C-*"   . (lambda () (interactive) (insert (chpn/insert-timestamp-string))))
-  ("M-i l i" . (lambda () (interactive) (org-agenda nil " ")))
+  ("M-i l i" . (lambda () (interactive) (org-agenda nil "i")))
   ("M-i l u" . (lambda () (interactive) (ladicle/open-org-file (counsel-find-file agenda-dir))))
   ("M-i l y" . (lambda () (interactive) (ladicle/open-org-file (ladicle/get-yesterday-diary))))
   ("M-i l p" . (lambda () (interactive) (ladicle/open-org-file (ladicle/get-diary-from-cal))))
@@ -1188,7 +1188,8 @@
   ;; :disabled
   :defer t
   :commands lsp
-
+  :hook
+  (haskell-mode . lsp)
   :custom
   (lsp-diagnostic-package :auto)
   (lsp-enable-snippet t)
@@ -1230,7 +1231,6 @@
   (lsp-ui-imenu-enable t)
   (lsp-ui-imenu-kind-position 'top)
 
-  ;; (lsp-ui-flycheck-enable t)
   (lsp-ui-flycheck-list-position 'bottom)
 
   (lsp-ui-sideline-enable nil)
@@ -1253,6 +1253,7 @@
 
   :bind
   (:map lsp-mode-map
+        ("C-c s"   . lsp-ui-sideline-mode)
         ("C-c m"   . lsp-ui-imenu)
         ("C-c d"   . ladicle/toggle-lsp-ui-doc)))
 
@@ -1327,14 +1328,11 @@
     (setq meghanada-maven-path "mvn"))))
 
 ;; Haskell
-;; for ghc-8.0.2 and later
 (use-package lsp-haskell
   :ensure t
   ;; :disabled
   :defer t
   :after lsp-mode haskell-mode
-  :hook
-  (haskell-mode . lsp)
   :custom
   (lsp-haskell-process-path-hie "hie-wrapper"))
 
@@ -1374,6 +1372,7 @@
 
 (use-package flycheck-haskell
   :ensure t
+  :disabled
   :defer t
   :hook
   (flycheck-mode . flycheck-haskell-setup))

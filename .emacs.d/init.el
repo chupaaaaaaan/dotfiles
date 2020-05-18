@@ -1258,18 +1258,20 @@
 (use-package lsp-ivy
   :ensure t
   ;; :disabled
-  :commands lsp-ivy-workspace-symbol
+  :demand t
+  :after lsp-mode
   :bind
-  (:map lsp-ivy-map
+  (:map lsp-mode-map
         ("C-c C-c" . lsp-ivy-workspace-symbol)
         ("C-u C-c C-c" . lsp-ivy-global-workspace-symbol)))
 
 (use-package lsp-treemacs
   :ensure t
   ;; :disabled
-  :defer t
+  :demand t
   :after lsp-mode treemacs
-  :commands lsp-treemacs-errors-list)
+  :custom
+  (lsp-treemacs-sync-mode t))
 
 (use-package dap-mode
   :ensure t
@@ -1357,7 +1359,7 @@
   (:map haskell-mode-map
         ("C-`"     . haskell-interactive-bring)
         ("C-c C-k" . haskell-interactive-mode-clear)
-        ("C-c C-c" . haskell-compile)
+        ("C-c C-h" . haskell-compile)
         ;; ("M-."     . haskell-mode-jump-tag-find)
         ;; ("C-c C-t" . haskell-mode-show-type-at)
         ("C-c C-l" . haskell-process-load-file)

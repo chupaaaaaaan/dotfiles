@@ -939,9 +939,6 @@
   (org-pomodoro-mode-line ((t (:foreground "#ff5555"))))
   (org-pomodoro-mode-line-break   ((t (:foreground "#50fa7b"))))
 
-  ;; :bind
-  ;; (:map org-mode-map
-  ;;       ("C-c p" . org-pomodoro))
   :bind
   (:map org-agenda-mode-map
         ("P" . org-pomodoro))
@@ -1175,10 +1172,6 @@
   :defer t
   ;; :disabled
   :hook
-  ;; (emacs-lisp-mode . flycheck-mode)
-  ;; (haskell-mode . flycheck-mode)
-  ;; (java-mode . flycheck-mode)
-  ;; (elm-mode . flycheck-mode)
   (after-init . global-flycheck-mode))
 
 
@@ -1205,14 +1198,6 @@
   ;; (lsp-log-io t)
   ;; 何故かこれを設定しているとlanguage-serverと通信できない？っぽいので、コメントアウト
   ;; (lsp-document-sync-method 'lsp--sync-incremental)
-
-  :hook
-  (haskell-mode . lsp)
-  ;; (java-mode . lsp)
-
-  ;; :bind
-  ;; (:map lsp-mode-map
-  ;;       ("C-c C-l" . lsp-lens-mode))
   )
 
 
@@ -1270,22 +1255,6 @@
   (:map lsp-mode-map
         ("C-c m"   . lsp-ui-imenu)
         ("C-c d"   . ladicle/toggle-lsp-ui-doc)))
-
-
-(use-package company-lsp
-  :ensure t
-  ;; :disabled
-  :defer t
-  :commands company-lsp
-  :custom
-  (company-lsp-cache-candidates nil)
-  (company-lsp-async t)
-  (company-lsp-enable-snippet t)
-  (company-lsp-enable-recompletion t)
-  (company-lsp-match-candidate-predicate 'company-lsp-match-candidate-flex)
-  :config
-  (add-to-list 'company-backends 'company-lsp))
-
 
 (use-package lsp-ivy
   :ensure t
@@ -1364,6 +1333,8 @@
   ;; :disabled
   :defer t
   :after lsp-mode haskell-mode
+  :hook
+  (haskell-mode . lsp)
   :custom
   (lsp-haskell-process-path-hie "hie-wrapper"))
 

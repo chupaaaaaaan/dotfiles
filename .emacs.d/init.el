@@ -849,8 +849,6 @@
   ("M-i l y" . (lambda () (interactive) (ladicle/open-org-file (ladicle/get-yesterday-diary))))
   ("M-i l p" . (lambda () (interactive) (ladicle/open-org-file (ladicle/get-diary-from-cal))))
   ("M-i l t" . (lambda () (interactive) (ladicle/open-org-file (ladicle/get-today-diary))))
-  ;; ("M-i l i" . (lambda () (interactive) (ladicle/open-org-file inbox-file)))
-  ;; ("M-i l s" . (lambda () (interactive) (ladicle/open-org-file schedule-file)))
   ;; ("M-i l m" . (lambda () (interactive) (org-tags-view nil "MEMO")))
   (:map org-mode-map
         ;; ("C-c i" . org-clock-in)

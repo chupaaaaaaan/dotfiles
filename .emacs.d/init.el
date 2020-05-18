@@ -748,7 +748,7 @@
   ;; agenda
   (tag-search-habit   "HABIT")
   (tag-search-inbox   "INBOX")
-  (tag-search-wip     "-HABIT-INBOX-PROJECT-SOMEDAY/+WIP|+NEXT")
+  (tag-search-wip     "-HABIT-INBOX-PROJECT-SOMEDAY/+WIP|+WAIT")
   (tag-search-todo    "-HABIT-INBOX-PROJECT-SOMEDAY/TODO")
   (tag-search-pending "-HABIT-INBOX-PROJECT-SOMEDAY/+HOLDING|+PENDING")
   (tag-search-project "-HABIT+PROJECT/-DONE-CANCELED")
@@ -811,12 +811,12 @@
   ;; todo
   ;; TODO:     仕掛中でないタスク
   ;; WIP:      仕掛中のタスク
-  ;; NEXT:     仕掛中のタスク (待ちがあるが、すぐにWIPにできる)
+  ;; WAIT:     仕掛中のタスク (待ちがあるが、すぐにWIPにできる)
   ;; DONE:     完了したタスク
   ;; HOLDING:  自己起因で中断しているタスク
   ;; PENDING:  他者起因で中断しているタスク
   ;; CANCELED: キャンセルされたタスク
-  (org-todo-keywords '((sequence "TODO(t)" "WIP(w)" "NEXT(n)" "|" "DONE(d)")
+  (org-todo-keywords '((sequence "TODO(t)" "WIP(w)" "WAIT(a)" "|" "DONE(d)")
                        (sequence "HOLDING(h@)" "PENDING(p@)" "|" "CANCELED(c@)")))
   (org-enforce-todo-dependencies t)
   (org-enforce-todo-checkbox-dependencies t)

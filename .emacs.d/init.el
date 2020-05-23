@@ -16,7 +16,7 @@
 (add-to-load-path "public_repos")
 
 ;; separate customize file
-(setq custom-file "~/.emacs.d/customize.el")
+(setq custom-file (concat user-emacs-directory "customize.el"))
 
 ;; load local configures
 (dolist (lcnf (directory-files (concat user-emacs-directory "local_conf") t "^[^_].+\\.el$"))
@@ -79,7 +79,7 @@
 ;;   :config
 ;;   (all-the-icons-ivy-setup))
 
-(defun chpn:font-setting ()
+(defun chpn/font-setting ()
   "Initialize fonts on window-system"
   (interactive)
 
@@ -113,12 +113,17 @@
 (setq use-default-font-for-symbols nil)
 (setq inhibit-compacting-font-caches t)
 
-(add-hook 'after-init-hook #'chpn:font-setting)
-
+(add-hook 'after-init-hook #'chpn/font-setting)
 
 ;; locale and environment
 (set-language-environment "Japanese")
 (prefer-coding-system 'utf-8)
+
+
+;; Functions
+(defun chpn/open-file (fname) (switch-to-buffer (find-file-noselect fname)))
+
+
 
 ;; OS
 ;; Mac
@@ -178,7 +183,9 @@
 (global-set-key (kbd "C-h")   'delete-backward-char)
 (global-set-key (kbd "M-t l") 'toggle-truncate-lines)
 (global-set-key (kbd "C-t")   'other-window)
+(global-set-key [f5] (lambda () (interactive) (customize-group-other-window)))
 (global-set-key [f6] (lambda () (interactive) (counsel-M-x "^counsel ")))
+(global-set-key [f7] (lambda () (interactive) (chpn/open-file (concat user-emacs-directory "init.el"))))
 
 
 ;; Doom-themes
@@ -754,7 +761,7 @@
   (tag-search-project "-HABIT+PROJECT/-DONE-CANCELED")
   (tag-search-someday "-HABIT+SOMEDAY/-DONE-CANCELED")
   (org-agenda-span 'day)
-  (org-agenda-include-diary t)
+  (org-agenda-include-diary nil)
   (org-agenda-dim-blocked-tasks t)
   (org-agenda-window-setup 'only-window)
   (org-agenda-log-mode-items '(closed clock))
@@ -845,10 +852,10 @@
   ("C-+"   . (lambda () (interactive) (insert (chpn/insert-today-string))))
   ("C-*"   . (lambda () (interactive) (insert (chpn/insert-timestamp-string))))
   ("M-i l i" . (lambda () (interactive) (org-agenda nil "i")))
-  ("M-i l u" . (lambda () (interactive) (ladicle/open-org-file (counsel-find-file agenda-dir))))
-  ("M-i l y" . (lambda () (interactive) (ladicle/open-org-file (ladicle/get-yesterday-diary))))
-  ("M-i l p" . (lambda () (interactive) (ladicle/open-org-file (ladicle/get-diary-from-cal))))
-  ("M-i l t" . (lambda () (interactive) (ladicle/open-org-file (ladicle/get-today-diary))))
+  ("M-i l u" . (lambda () (interactive) (chpn/open-file (counsel-find-file agenda-dir))))
+  ("M-i l y" . (lambda () (interactive) (chpn/open-file (ladicle/get-yesterday-diary))))
+  ("M-i l p" . (lambda () (interactive) (chpn/open-file (ladicle/get-diary-from-cal))))
+  ("M-i l t" . (lambda () (interactive) (chpn/open-file (ladicle/get-today-diary))))
   ;; ("M-i l m" . (lambda () (interactive) (org-tags-view nil "MEMO")))
   (:map org-mode-map
         ;; ("C-c i" . org-clock-in)
@@ -888,8 +895,6 @@
     (concat org-directory (format-time-string "diary/%Y-%m-%d.org" (time-add (current-time) (* -24 3600)))))
   (defun ladicle/get-diary-from-cal ()
     (concat org-directory (format-time-string "diary/%Y-%m-%d.org" (apply 'encode-time (parse-time-string (concat (org-read-date) " 00:00"))))))
-  (defun ladicle/open-org-file (fname)
-    (switch-to-buffer (find-file-noselect fname)))
   (defun ladicle/task-clocked-time ()
     "Return a string with the clocked time and effort, if any"
     (interactive)

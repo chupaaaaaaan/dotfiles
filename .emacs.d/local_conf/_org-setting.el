@@ -12,8 +12,8 @@
 (setq pend "  :END:\n")
 (setq peff "  :Effort: %(org-read-property-value \"Effort\")\n")
 
-(setq todo-entry     (concat "* TODO %?\n  %U\n" sche pbgn peff pend))
-(setq schedule-entry (concat "* %?\n  %U\n" scht))
+(setq todo-entry     (concat "* TODO %?\n" sche pbgn peff pend "  %U\n"))
+(setq schedule-entry (concat "* %?\n" scht "  %U\n"))
 
 (setq my:org-capture-templates
       (list (list

@@ -760,6 +760,8 @@
   (tag-search-pending "-HABIT-INBOX-PROJECT-SOMEDAY/+HOLDING|+PENDING")
   (tag-search-project "-HABIT+PROJECT/-DONE-CANCELED")
   (tag-search-someday "-HABIT+SOMEDAY/-DONE-CANCELED")
+  (tag-report-daily   "-PROJECT-SOMEDAY+CLOSED<\"<tomorrow>\"+CLOSED>=\"<today>\"")
+  (tag-report-weekly  "-PROJECT-SOMEDAY+CLOSED<\"<tomorrow>\"+CLOSED>=\"<-1w>\"")
   (org-agenda-span 'day)
   (org-agenda-include-diary nil)
   (org-agenda-dim-blocked-tasks t)
@@ -778,15 +780,20 @@
                    (org-tags-match-list-sublevels nil)))
        (tags-todo tag-search-wip
                   ((org-agenda-overriding-header "Work in progress")
-                   (org-tags-match-list-sublevels t)
-                   (org-agenda-sorting-strategy '(todo-state-down effort-up category-keep))))
+                   (org-tags-match-list-sublevels nil)
+                   (org-agenda-sorting-strategy '(effort-up scheduled-up))))
        (tags-todo tag-search-todo
                   ((org-agenda-overriding-header "Next actions")
                    (org-tags-match-list-sublevels 'indented)
-                   (org-agenda-sorting-strategy '(category-keep))))
+                   (org-agenda-sorting-strategy '(scheduled-up))))
        (tags-todo tag-search-pending
                   ((org-agenda-overriding-header "Waiting")
-                   (org-tags-match-list-sublevels 'indented)))
+                   (org-tags-match-list-sublevels 'indented)
+                   (org-agenda-sorting-strategy '(scheduled-up))))
+       (tags tag-report-daily
+             ((org-agenda-overriding-header "Daily Closed")))
+       (tags tag-report-weekly
+             ((org-agenda-overriding-header "Weekly Closed")))
        (tags-todo tag-search-project
                   ((org-agenda-overriding-header "Project")
                    (org-tags-match-list-sublevels nil)
@@ -840,7 +847,7 @@
 
   ;; columns
   ;; (org-columns-default-format "%40ITEM %TAGS %TODO %BLOCKED %PRIORITY %SCHEDULED %DEADLINE %EFFORT{:} %CLOCKSUM %CLOCKSUM_T")
-  (org-columns-default-format "%40ITEM %TODO %SCHEDULED %DEADLINE %EFFORT{:} %CLOCKSUM %CLOCKSUM_T")
+  (org-columns-default-format "%40ITEM %TODO %SCHEDULED %DEADLINE %EFFORT %CLOCKSUM %CLOCKSUM_T")
 
   ;; archive
   (org-archive-location (concat agenda-archive-dir "archive_%s::"))

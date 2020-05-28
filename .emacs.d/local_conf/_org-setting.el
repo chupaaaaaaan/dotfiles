@@ -5,6 +5,56 @@
                          ("develop" . ?d)
                          (:endgroup . nil)
                          ("chore" . ?c)))
+
+(setq tag-search-habit   "+HABIT")
+(setq tag-search-inbox   "+INBOX")
+(setq tag-search-wip     "+WORK/+WIP|+WAIT")
+(setq tag-search-todo    "+WORK/TODO")
+(setq tag-search-pending "+WORK/+HOLDING|+PENDING")
+(setq tag-search-project "+PROJECT/-DONE-CANCELED")
+(setq tag-search-someday "+SOMEDAY/-DONE-CANCELED")
+(setq tag-report-daily   "+CLOSED<\"<tomorrow>\"+CLOSED>=\"<today>\"")
+(setq tag-report-weekly  "+CLOSED<\"<today>\"+CLOSED>=\"<-1w>\"")
+
+(setq my:org-agenda-custom-commands
+      '(("h" "Habits: 習慣タスク"
+         tags-todo tag-search-habit ((org-agenda-overriding-header "Habit")
+                                     (org-agenda-sorting-strategy
+                                      '(todo-state-down effort-up category-keep))))
+        ("i" "Agenda: 予定表"
+         ((agenda    "" nil)
+          (tags-todo tag-search-inbox
+                     ((org-agenda-overriding-header "Inbox")
+                      (org-tags-match-list-sublevels nil)))
+          (tags-todo tag-search-wip
+                     ((org-agenda-overriding-header "Work in progress")
+                      (org-tags-match-list-sublevels nil)
+                      (org-agenda-sorting-strategy '(effort-up scheduled-up))))
+          (tags-todo tag-search-todo
+                     ((org-agenda-overriding-header "Next actions")
+                      (org-tags-match-list-sublevels 'indented)
+                      (org-agenda-sorting-strategy '(scheduled-up))))
+          (tags-todo tag-search-pending
+                     ((org-agenda-overriding-header "Waiting")
+                      (org-tags-match-list-sublevels 'indented)
+                      (org-agenda-sorting-strategy '(scheduled-up))))
+          (tags tag-report-daily
+                ((org-agenda-overriding-header "Daily Closed")))
+          (tags tag-report-weekly
+                ((org-agenda-overriding-header "Weekly Closed")))
+          (tags-todo tag-search-project
+                     ((org-agenda-overriding-header "Project")
+                      (org-tags-match-list-sublevels nil)
+                      (org-agenda-sorting-strategy '(category-keep))))
+          (tags-todo tag-search-someday
+                     ((org-agenda-overriding-header "Someday")
+                      (org-tags-match-list-sublevels nil)
+                      (org-agenda-sorting-strategy '(category-keep))))
+          nil))))
+
+
+
+
 (setq sche "  SCHEDULED: <%(org-read-date)>\n")
 (setq scht "  SCHEDULED: <%(org-read-date t)>\n")
 (setq dead "  DEADLINE: <%(org-read-date)>\n")

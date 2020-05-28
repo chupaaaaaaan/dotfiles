@@ -753,58 +753,15 @@
   (org-agenda-files (list agenda-dir))
 
   ;; agenda
-  (tag-search-habit   "HABIT")
-  (tag-search-inbox   "INBOX")
-  (tag-search-wip     "-HABIT-INBOX-PROJECT-SOMEDAY/+WIP|+WAIT")
-  (tag-search-todo    "-HABIT-INBOX-PROJECT-SOMEDAY/TODO")
-  (tag-search-pending "-HABIT-INBOX-PROJECT-SOMEDAY/+HOLDING|+PENDING")
-  (tag-search-project "-HABIT+PROJECT/-DONE-CANCELED")
-  (tag-search-someday "-HABIT+SOMEDAY/-DONE-CANCELED")
-  (tag-report-daily   "-PROJECT-SOMEDAY+CLOSED<\"<tomorrow>\"+CLOSED>=\"<today>\"")
-  (tag-report-weekly  "-PROJECT-SOMEDAY+CLOSED<\"<tomorrow>\"+CLOSED>=\"<-1w>\"")
   (org-agenda-span 'day)
   (org-agenda-include-diary nil)
   (org-agenda-dim-blocked-tasks t)
   (org-agenda-window-setup 'only-window)
   (org-agenda-log-mode-items '(closed clock))
-  (org-agenda-custom-commands
-   '(("h" "Habits: 習慣タスク"
-      tags-todo tag-search-habit ((org-agenda-overriding-header "Habit")
-                                  (org-agenda-sorting-strategy
-                                   '(todo-state-down effort-up category-keep))))
-     ("i" "Agenda: 予定表"
-      ((agenda    "" nil)
-       (tags-todo tag-search-inbox
-                  ((org-agenda-overriding-header "Inbox")
-                   ;; (org-tags-match-list-sublevels 'indented)
-                   (org-tags-match-list-sublevels nil)))
-       (tags-todo tag-search-wip
-                  ((org-agenda-overriding-header "Work in progress")
-                   (org-tags-match-list-sublevels nil)
-                   (org-agenda-sorting-strategy '(effort-up scheduled-up))))
-       (tags-todo tag-search-todo
-                  ((org-agenda-overriding-header "Next actions")
-                   (org-tags-match-list-sublevels 'indented)
-                   (org-agenda-sorting-strategy '(scheduled-up))))
-       (tags-todo tag-search-pending
-                  ((org-agenda-overriding-header "Waiting")
-                   (org-tags-match-list-sublevels 'indented)
-                   (org-agenda-sorting-strategy '(scheduled-up))))
-       (tags tag-report-daily
-             ((org-agenda-overriding-header "Daily Closed")))
-       (tags tag-report-weekly
-             ((org-agenda-overriding-header "Weekly Closed")))
-       (tags-todo tag-search-project
-                  ((org-agenda-overriding-header "Project")
-                   (org-tags-match-list-sublevels nil)
-                   (org-agenda-sorting-strategy '(category-keep))))
-       (tags-todo tag-search-someday
-                  ((org-agenda-overriding-header "Someday")
-                   (org-tags-match-list-sublevels nil)
-                   (org-agenda-sorting-strategy '(category-keep))))
-       nil))))
+  (org-agenda-custom-commands my:org-agenda-custom-commands)
 
   ;; refile
+  ;; (org-refile-use-outline-path 'file)
   (org-refile-targets '((org-agenda-files :maxlevel . 3)
                         (project-file :maxlevel . 1)
                         (someday-file :maxlevel . 1)))

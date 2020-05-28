@@ -747,9 +747,6 @@
   (agenda-dir (concat org-directory "agenda/"))
   (agenda-archive-dir (concat agenda-dir "archive/"))
   (inbox-file (concat agenda-dir "inbox.org"))
-  (project-file (concat agenda-dir "project.org"))
-  (someday-file (concat agenda-dir "someday.org"))
-  (schedule-file (concat agenda-dir "schedule.org"))
   (org-agenda-files (list agenda-dir))
 
   ;; agenda
@@ -763,10 +760,7 @@
   ;; refile
   (org-refile-use-outline-path 'file)
   (org-outline-path-complete-in-steps nil)
-  (org-refile-targets '((org-agenda-files :maxlevel . 3)
-                        ;; (project-file :maxlevel . 1)
-                        ;; (someday-file :maxlevel . 1)
-                        ))
+  (org-refile-targets '((org-agenda-files :maxlevel . 2)))
 
   ;; log
   (org-log-done 'time)

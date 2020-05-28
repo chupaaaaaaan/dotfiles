@@ -39,9 +39,11 @@
                       (org-tags-match-list-sublevels 'indented)
                       (org-agenda-sorting-strategy '(scheduled-up))))
           (tags tag-report-daily
-                ((org-agenda-overriding-header "Daily Closed")))
+                ((org-agenda-overriding-header "Daily Closed")
+                 (org-agenda-sorting-strategy '(timestamp-down))))
           (tags tag-report-weekly
-                ((org-agenda-overriding-header "Weekly Closed")))
+                ((org-agenda-overriding-header "Weekly Closed")
+                 (org-agenda-sorting-strategy '(timestamp-down))))
           (tags-todo tag-search-project
                      ((org-agenda-overriding-header "Project")
                       (org-tags-match-list-sublevels nil)

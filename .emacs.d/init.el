@@ -761,10 +761,12 @@
   (org-agenda-custom-commands my:org-agenda-custom-commands)
 
   ;; refile
-  ;; (org-refile-use-outline-path 'file)
+  (org-refile-use-outline-path 'file)
+  (org-outline-path-complete-in-steps nil)
   (org-refile-targets '((org-agenda-files :maxlevel . 3)
-                        (project-file :maxlevel . 1)
-                        (someday-file :maxlevel . 1)))
+                        ;; (project-file :maxlevel . 1)
+                        ;; (someday-file :maxlevel . 1)
+                        ))
 
   ;; log
   (org-log-done 'time)

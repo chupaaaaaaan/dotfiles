@@ -52,9 +52,6 @@
                       (org-agenda-sorting-strategy '(category-keep))))
           nil))))
 
-
-
-
 (setq sche "  SCHEDULED: <%(org-read-date)>\n")
 (setq scht "  SCHEDULED: <%(org-read-date t)>\n")
 (setq dead "  DEADLINE: <%(org-read-date)>\n")
@@ -80,19 +77,19 @@
 
             (list
              "inbox" "タスクの作成" 'entry
-             '(file+headline inbox-file "Inbox")
+             '(file inbox-file)
              todo-entry
              :empty-lines 1 :jump-to-captured nil)
 
             (list
              "interrupt" "割り込みタスク" 'entry
-             '(file+headline inbox-file "Inbox")
+             '(file inbox-file)
              "* TODO %?\n  %U\n"
              :empty-lines 1 :clock-in 1 :clock-resume 1)
 
             (list
              "schedule" "カレンダー" 'entry
-             '(file+headline schedule-file "Schedule")
+             '(file inbox-file)
              schedule-entry
              :empty-lines 1)
 

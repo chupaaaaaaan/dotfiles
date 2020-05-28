@@ -1,5 +1,4 @@
 #+FILETAGS: HABIT
 #+PROPERTY STYLE="habit"
-* Habit
-** TODO 習慣タスク
-   SCHEDULED: <2020-01-01 水 .+1d>
+* TODO 習慣タスク
+  SCHEDULED: <2020-01-01 水 .+1d>

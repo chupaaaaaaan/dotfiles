@@ -771,7 +771,7 @@
   
   ;; clock/timer
   (org-clock-out-remove-zero-time-clocks t)
-  (org-clock-clocktable-default-properties '(:maxlevel 2 :scope agenda-with-archives :fileskip0 t :link t :block today :match ""))
+  (org-clock-clocktable-default-properties '(:maxlevel 2 :scope agenda :fileskip0 t :link t :block today :match ""))
   (org-clock-clocked-in-display 'mode-line) ;; 'frame-title
   (org-timer-default-timer 30)
 

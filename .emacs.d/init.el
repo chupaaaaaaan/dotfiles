@@ -747,7 +747,7 @@
   (agenda-dir (concat org-directory "agenda/"))
   (agenda-archive-dir (concat agenda-dir "archive/"))
   (inbox-file (concat agenda-dir "inbox.org"))
-  (org-agenda-files (list agenda-dir))
+  (org-agenda-files (list agenda-dir org-default-notes-file))
 
   ;; agenda
   (org-agenda-span 'day)

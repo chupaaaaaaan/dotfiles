@@ -17,42 +17,41 @@
 (setq tag-report-weekly  "+CLOSED<\"<today>\"+CLOSED>=\"<-1w>\"")
 
 (setq my:org-agenda-custom-commands
-      '(("h" "Habits: 習慣タスク"
-         tags-todo tag-search-habit ((org-agenda-overriding-header "Habit")
-                                     (org-agenda-sorting-strategy
-                                      '(todo-state-down effort-up category-keep))))
-        ("i" "Agenda: 予定表"
-         ((agenda    "" nil)
-          (tags-todo tag-search-inbox
-                     ((org-agenda-overriding-header "Inbox")
-                      (org-tags-match-list-sublevels nil)))
-          (tags-todo tag-search-wip
-                     ((org-agenda-overriding-header "Work in progress")
-                      (org-tags-match-list-sublevels nil)
-                      (org-agenda-sorting-strategy '(effort-up scheduled-up))))
-          (tags-todo tag-search-todo
-                     ((org-agenda-overriding-header "Next actions")
-                      (org-tags-match-list-sublevels 'indented)
-                      (org-agenda-sorting-strategy '(scheduled-up))))
-          (tags-todo tag-search-pending
-                     ((org-agenda-overriding-header "Waiting")
-                      (org-tags-match-list-sublevels 'indented)
-                      (org-agenda-sorting-strategy '(scheduled-up))))
-          (tags tag-report-daily
-                ((org-agenda-overriding-header "Daily Closed")
-                 (org-agenda-sorting-strategy '(timestamp-down))))
-          (tags tag-report-weekly
-                ((org-agenda-overriding-header "Weekly Closed")
-                 (org-agenda-sorting-strategy '(timestamp-down))))
-          (tags-todo tag-search-project
-                     ((org-agenda-overriding-header "Project")
-                      (org-tags-match-list-sublevels nil)
-                      (org-agenda-sorting-strategy '(category-keep))))
-          (tags-todo tag-search-someday
-                     ((org-agenda-overriding-header "Someday")
-                      (org-tags-match-list-sublevels nil)
-                      (org-agenda-sorting-strategy '(category-keep))))
-          nil))))
+      (list (list "h" "Habits: 習慣タスク"
+                  'tags-todo tag-search-habit '((org-agenda-overriding-header "Habit")
+                                                (org-agenda-sorting-strategy '(todo-state-down effort-up category-keep))))
+            (list "i" "Agenda: 予定表"
+                  (list (list 'agenda    "" nil)
+                        (list 'tags-todo tag-search-inbox
+                              '((org-agenda-overriding-header "Inbox")
+                                (org-tags-match-list-sublevels nil)))
+                        (list 'tags-todo tag-search-wip
+                              '((org-agenda-overriding-header "Work in progress")
+                                (org-tags-match-list-sublevels nil)
+                                (org-agenda-sorting-strategy '(effort-up scheduled-up))))
+                        (list 'tags-todo tag-search-todo
+                              '((org-agenda-overriding-header "Next actions")
+                                (org-tags-match-list-sublevels 'indented)
+                                (org-agenda-sorting-strategy '(scheduled-up))))
+                        (list 'tags-todo tag-search-pending
+                              '((org-agenda-overriding-header "Waiting")
+                                (org-tags-match-list-sublevels 'indented)
+                                (org-agenda-sorting-strategy '(scheduled-up))))
+                        (list 'tags tag-report-daily
+                              '((org-agenda-overriding-header "Daily Closed")
+                                (org-agenda-sorting-strategy '(timestamp-down))))
+                        (list 'tags tag-report-weekly
+                              '((org-agenda-overriding-header "Weekly Closed")
+                                (org-agenda-sorting-strategy '(timestamp-down))))
+                        (list 'tags-todo tag-search-project
+                              '((org-agenda-overriding-header "Project")
+                                (org-tags-match-list-sublevels nil)
+                                (org-agenda-sorting-strategy '(category-keep))))
+                        (list 'tags-todo tag-search-someday
+                              '((org-agenda-overriding-header "Someday")
+                                (org-tags-match-list-sublevels nil)
+                                (org-agenda-sorting-strategy '(category-keep))))
+                        nil))))
 
 (setq sche "  SCHEDULED: <%(org-read-date)>\n")
 (setq scht "  SCHEDULED: <%(org-read-date t)>\n")

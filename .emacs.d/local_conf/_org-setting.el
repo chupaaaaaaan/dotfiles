@@ -55,7 +55,7 @@
 
 (setq sche "  SCHEDULED: <%(org-read-date)>\n")
 (setq scht "  SCHEDULED: <%(org-read-date t)>\n")
-(setq dead "  DEADLINE: <%(org-read-date)>\n")
+(setq schd "  DEADLINE: <%(org-read-date)> SCHEDULED: <%(org-read-date)>\n")
 (setq pbgn "  :PROPERTIES:\n")
 (setq pend "  :END:\n")
 (setq peff "  :Effort: %(org-read-property-value \"Effort\")\n")

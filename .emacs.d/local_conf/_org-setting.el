@@ -28,7 +28,7 @@
                         (list 'tags-todo tag-search-wip
                               '((org-agenda-overriding-header "Work in progress")
                                 (org-tags-match-list-sublevels nil)
-                                (org-agenda-sorting-strategy '(effort-up scheduled-up))))
+                                (org-agenda-sorting-strategy '(priority-down effort-up scheduled-up))))
                         (list 'tags-todo tag-search-todo
                               '((org-agenda-overriding-header "Next actions")
                                 (org-tags-match-list-sublevels 'indented)
@@ -55,12 +55,12 @@
 
 (setq sche "  SCHEDULED: <%(org-read-date)>\n")
 (setq scht "  SCHEDULED: <%(org-read-date t)>\n")
-(setq dead "  DEADLINE: <%(org-read-date)>\n")
+(setq schd "  DEADLINE: <%(org-read-date)> SCHEDULED: <%(org-read-date)>\n")
 (setq pbgn "  :PROPERTIES:\n")
 (setq pend "  :END:\n")
 (setq peff "  :Effort: %(org-read-property-value \"Effort\")\n")
 
-(setq todo-entry     (concat "* TODO %?\n" sche pbgn peff pend "  %U\n"))
+(setq todo-entry     (concat "* TODO [#B] %?\n" sche pbgn peff pend "  %U\n"))
 (setq schedule-entry (concat "* %?\n" scht "  %U\n"))
 
 (setq my:org-capture-templates
@@ -85,7 +85,7 @@
             (list
              "interrupt" "割り込みタスク" 'entry
              '(file inbox-file)
-             "* TODO %?\n  %U\n"
+             "* TODO [#B] %?\n  %U\n"
              :empty-lines 1 :clock-in 1 :clock-resume 1)
 
             (list

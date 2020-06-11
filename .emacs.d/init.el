@@ -837,9 +837,11 @@
   (org-mode . (lambda ()
                 (dolist (key '("C-'" "C-," "C-."))
                   (unbind-key key org-mode-map))))
-  (org-agenda-mode . (lambda ()
-                       (setq org-agenda-weekday-num (string-to-number (format-time-string "%u" (current-time))))
-                       (custom-set-variables '(org-agenda-start-on-weekday org-agenda-weekday-num))))
+
+  ;; agenda-viewのweekly viewで、週の始まりを今日（の曜日）にする
+  ;; (org-agenda-mode . (lambda ()
+  ;;                      (setq org-agenda-weekday-num (string-to-number (format-time-string "%u" (current-time))))
+  ;;                      (custom-set-variables '(org-agenda-start-on-weekday org-agenda-weekday-num))))
 
 
   :preface

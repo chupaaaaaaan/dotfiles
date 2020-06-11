@@ -20,6 +20,7 @@
 .emacs.d/meghanada/
 .emacs.d/network-security.data
 .emacs.d/places
+.emacs.d/plantuml.jar
 .emacs.d/projectile-bookmarks.eld
 .emacs.d/projectile.cache
 .emacs.d/public_repos/

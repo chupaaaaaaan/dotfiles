@@ -1408,5 +1408,16 @@
   (eval-after-load 'nginx-mode
     '(add-hook 'nginx-mode-hook #'company-nginx-keywords)))
 
+(use-package plantuml-mode
+  :ensure t
+  :defer t
+
+  :custom
+  (plantuml-default-exec-mode 'jar)
+  (plantuml-jar-path (concat user-emacs-directory "plantuml.jar"))
+  (plantuml-output-type "png")
+
+  :mode "\\.pu\\'")
+
 ;; load customize file
 ;; (load custom-file t)

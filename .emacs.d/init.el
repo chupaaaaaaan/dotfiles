@@ -754,7 +754,7 @@
   (org-agenda-include-diary nil)
   (org-agenda-dim-blocked-tasks t)
   (org-agenda-window-setup 'only-window)
-  (org-agenda-log-mode-items '(closed clock))
+  (org-agenda-log-mode-items '(clock))
   (org-agenda-custom-commands my:org-agenda-custom-commands)
 
   ;; refile

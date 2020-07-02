@@ -42,3 +42,6 @@ kube-ps1.sh
 # git
 git-completion.bash
 git-prompt.sh
+
+# ghc
+.ghc/ghci_history

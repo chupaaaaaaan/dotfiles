@@ -1306,7 +1306,7 @@
 (use-package haskell-mode
   :ensure t
   :custom
-  ;; (haskell-stylish-on-save t)
+  (haskell-stylish-on-save t)
   ;; (haskell-tags-on-save t)
   (haskell-compile-ignore-cabal t)
   (haskell-compile-command "stack ghc -- -Wall -ferror-spans -fforce-recomp %s")
@@ -1314,14 +1314,14 @@
   (haskell-process-suggest-remove-import-lines t)
   (haskell-process-auto-import-loaded-modules t)
   (haskell-process-log t)
-  ;; (haskell-mode-hook '(capitalized-words-mode
-  ;;                      highlight-uses-mode
-  ;;                      interactive-haskell-mode
-  ;;                      haskell-indentation-mode
-  ;;                      ;; flyspell-prog-mode
-  ;;                      ;; haskell-decl-scan-mode
-  ;;                      (lambda () (set (make-local-variable 'company-backends)
-  ;;                                      (append '((company-capf company-dabbrev-code)) company-backends)))))
+  (haskell-mode-hook '(capitalized-words-mode
+                       highlight-uses-mode
+                       interactive-haskell-mode
+                       haskell-indentation-mode
+                       ;; flyspell-prog-mode
+                       ;; haskell-decl-scan-mode
+                       (lambda () (set (make-local-variable 'company-backends)
+                                       (append '((company-capf company-dabbrev-code)) company-backends)))))
   :bind
   (:map haskell-mode-map
         ("C-`"     . haskell-interactive-bring)

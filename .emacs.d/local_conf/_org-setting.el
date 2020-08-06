@@ -8,7 +8,7 @@
 
 (setq tag-search-habit   "+HABIT")
 (setq tag-search-inbox   "+INBOX")
-(setq tag-search-wip     "+WORK/+WIP|+WAIT")
+(setq tag-search-wip     "/+WIP|+WAIT")
 (setq tag-search-todo    "+WORK/TODO")
 (setq tag-search-pending "+WORK/+HOLDING|+PENDING")
 (setq tag-search-project "+PROJECT/-DONE-CANCELED")
@@ -45,7 +45,7 @@
                                 (org-agenda-sorting-strategy '(timestamp-down))))
                         (list 'tags-todo tag-search-project
                               '((org-agenda-overriding-header "Project")
-                                (org-tags-match-list-sublevels nil)
+                                (org-tags-match-list-sublevels 'indented)
                                 (org-agenda-sorting-strategy '(category-keep))))
                         (list 'tags-todo tag-search-someday
                               '((org-agenda-overriding-header "Someday")

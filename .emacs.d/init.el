@@ -896,9 +896,15 @@
   :custom
   (org-pomodoro-ask-upon-killing t)
   (org-pomodoro-keep-killed-pomodoro-time t)
+  (org-pomodoro-manual-break t)
+  (org-pomodoro-long-break-frequency 4)
   (org-pomodoro-format "%s") ;;  
   (org-pomodoro-short-break-format "%s")
   (org-pomodoro-long-break-format  "%s")
+  (org-pomodoro-overtime-format "%s")
+  (org-pomodoro-length 25)
+  (org-pomodoro-short-break-length 5)
+  (org-pomodoro-long-break-length 15)
 
   :custom-face
   (org-pomodoro-mode-line ((t (:foreground "#ff5555"))))
@@ -910,11 +916,26 @@
         ("P" . org-pomodoro))
 
   :preface
+  ;; from https://gist.github.com/ayman/bb72a25e16af9e6f30bf
+  (defvar terminal-notifier-command
+    (executable-find "terminal-notifier")
+    "The path to terminal-notifier.")
+
+  (defun terminal-notifier-notify (title message)
+    "Show a message with `terminal-notifier-command`."
+    (start-process "terminal-notifier"
+                   "*terminal-notifier*"
+                   terminal-notifier-command
+                   "-title" title
+                   "-message" message
+                   "-activate" "org.gnu.Emacs"
+                   "-sender" "org.gnu.Emacs"))
+
   (defun chpn:pomodoro-notify (title body)
     "Save buffers and stop clocking when kill emacs."
     (cond
      ((eq system-type 'darwin)
-      (notifications-notify :title title :body body))
+      (terminal-notifier-notify title body))
      ((eq system-type 'gnu/linux)
       (notifications-notify :title title :body body))
      ((eq system-type 'windows-nt)
@@ -922,15 +943,7 @@
 
   :hook
   (org-pomodoro-started  . (lambda () (chpn:pomodoro-notify "org-pomodoro" "Let's focus for 25 minutes!")))
-  (org-pomodoro-finished  . (lambda () (chpn:pomodoro-notify "org-pomodoro" "Well done! Take a break.")))
-  ;; (org-pomodoro-started  . (lambda () (notify :title "org-pomodoro" :body "Let's focus for 25 minutes!")))
-  ;; (org-pomodoro-finished . (lambda () (notify :title "org-pomodoro" :body "Well done! Take a break.")))
-
-  ;; :config
-  ;; (when (eq system-type 'darwin)
-  ;;   (setq alert-default-style 'osx-notifier))
-  ;; (require 'alert)
-  )
+  (org-pomodoro-finished  . (lambda () (chpn:pomodoro-notify "org-pomodoro" "Well done! Take a break."))))
 
 (use-package org-mobile-sync
   :ensure t

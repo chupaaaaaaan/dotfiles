@@ -906,22 +906,23 @@
 
   :bind
   (:map org-agenda-mode-map
+        ("W" . org-agenda-refile)
         ("P" . org-pomodoro))
 
-  ;; :preface
-  ;; (defun chpn:pomodoro-notify (title body)
-  ;;   "Save buffers and stop clocking when kill emacs."
-  ;;   (cond
-  ;;    ((eq system-type 'darwin)
-  ;;     (notifications-notify :title title :body body))
-  ;;    ((eq system-type 'gnu/linux)
-  ;;     (notifications-notify :title title :body body))
-  ;;    ((eq system-type 'windows-nt)
-  ;;     (w32-notification-notify :title title :body body))))
+  :preface
+  (defun chpn:pomodoro-notify (title body)
+    "Save buffers and stop clocking when kill emacs."
+    (cond
+     ((eq system-type 'darwin)
+      (notifications-notify :title title :body body))
+     ((eq system-type 'gnu/linux)
+      (notifications-notify :title title :body body))
+     ((eq system-type 'windows-nt)
+      (w32-notification-notify :title title :body body))))
 
-  ;; :hook
-  ;; (org-pomodoro-started  . (lambda () (chpn:pomodoro-notify "org-pomodoro" "Let's focus for 25 minutes!")))
-  ;; (org-pomodoro-finished  . (lambda () (chpn:pomodoro-notify "org-pomodoro" "Well done! Take a break.")))
+  :hook
+  (org-pomodoro-started  . (lambda () (chpn:pomodoro-notify "org-pomodoro" "Let's focus for 25 minutes!")))
+  (org-pomodoro-finished  . (lambda () (chpn:pomodoro-notify "org-pomodoro" "Well done! Take a break.")))
   ;; (org-pomodoro-started  . (lambda () (notify :title "org-pomodoro" :body "Let's focus for 25 minutes!")))
   ;; (org-pomodoro-finished . (lambda () (notify :title "org-pomodoro" :body "Well done! Take a break.")))
 

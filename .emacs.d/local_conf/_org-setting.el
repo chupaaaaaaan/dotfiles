@@ -8,9 +8,9 @@
 
 (setq tag-search-habit   "+HABIT")
 (setq tag-search-inbox   "+INBOX")
-(setq tag-search-wip     "/+WIP|+WAIT")
+(setq tag-search-wip     "/+WIP")
 (setq tag-search-todo    "+WORK/TODO")
-(setq tag-search-pending "+WORK/+HOLDING|+PENDING")
+(setq tag-search-pending "/+HOLDING|+PENDING")
 (setq tag-search-project "+PROJECT/-DONE-CANCELED")
 (setq tag-search-someday "+SOMEDAY/-DONE-CANCELED")
 (setq tag-report-daily   "+CLOSED<\"<tomorrow>\"+CLOSED>=\"<today>\"")
@@ -33,24 +33,24 @@
                               '((org-agenda-overriding-header "Next actions")
                                 (org-tags-match-list-sublevels 'indented)
                                 (org-agenda-sorting-strategy '(scheduled-up))))
-                        (list 'tags-todo tag-search-pending
-                              '((org-agenda-overriding-header "Waiting")
-                                (org-tags-match-list-sublevels 'indented)
-                                (org-agenda-sorting-strategy '(scheduled-up))))
-                        (list 'tags tag-report-daily
-                              '((org-agenda-overriding-header "Daily Closed")
-                                (org-agenda-sorting-strategy '(timestamp-down))))
-                        (list 'tags tag-report-weekly
-                              '((org-agenda-overriding-header "Weekly Closed")
-                                (org-agenda-sorting-strategy '(timestamp-down))))
                         (list 'tags-todo tag-search-project
                               '((org-agenda-overriding-header "Project")
                                 (org-tags-match-list-sublevels 'indented)
                                 (org-agenda-sorting-strategy '(category-keep))))
+                        (list 'tags-todo tag-search-pending
+                              '((org-agenda-overriding-header "Waiting")
+                                (org-tags-match-list-sublevels 'indented)
+                                (org-agenda-sorting-strategy '(scheduled-up))))
                         (list 'tags-todo tag-search-someday
                               '((org-agenda-overriding-header "Someday")
                                 (org-tags-match-list-sublevels nil)
                                 (org-agenda-sorting-strategy '(category-keep))))
+                        ;; (list 'tags tag-report-daily
+                        ;;       '((org-agenda-overriding-header "Daily Closed")
+                        ;;         (org-agenda-sorting-strategy '(timestamp-down))))
+                        ;; (list 'tags tag-report-weekly
+                        ;;       '((org-agenda-overriding-header "Weekly Closed")
+                        ;;         (org-agenda-sorting-strategy '(timestamp-down))))
                         nil))))
 
 (setq sche "  SCHEDULED: <%(org-read-date)>\n")

@@ -8,9 +8,10 @@
 
 (setq tag-search-habit   "+HABIT")
 (setq tag-search-inbox   "+INBOX")
-(setq tag-search-wip     "/+WIP")
 (setq tag-search-todo    "+WORK/TODO")
-(setq tag-search-pending "/+HOLDING|+PENDING")
+(setq tag-search-wip     "-INBOX-HABIT/+WIP")
+(setq tag-search-note    "-INBOX-HABIT/+NOTE")
+(setq tag-search-pending "-INBOX-HABIT/+HOLDING|+PENDING")
 (setq tag-search-project "+PROJECT/-DONE-CANCELED")
 (setq tag-search-someday "+SOMEDAY/-DONE-CANCELED")
 (setq tag-report-daily   "+CLOSED<\"<tomorrow>\"+CLOSED>=\"<today>\"")
@@ -37,6 +38,9 @@
                               '((org-agenda-overriding-header "Project")
                                 (org-tags-match-list-sublevels 'indented)
                                 (org-agenda-sorting-strategy '(category-keep))))
+                        (list 'tags-todo tag-search-note
+                              '((org-agenda-overriding-header "Documents/Notes")
+                                (org-tags-match-list-sublevels nil)))
                         (list 'tags-todo tag-search-pending
                               '((org-agenda-overriding-header "Waiting")
                                 (org-tags-match-list-sublevels 'indented)

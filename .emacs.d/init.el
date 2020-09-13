@@ -783,7 +783,7 @@
   ;; HOLDING:  自己起因で中断しているタスク
   ;; PENDING:  他者起因で中断しているタスク
   ;; CANCELED: キャンセルされたタスク
-  (org-todo-keywords '((sequence "TODO(t)" "WIP(w)" "|" "DONE(d)")
+  (org-todo-keywords '((sequence "TODO(t)" "WIP(w)" "NOTE(n)" "|" "DONE(d)")
                        (sequence "HOLDING(h@)" "PENDING(p@)" "|" "CANCELED(c@)")))
   (org-enforce-todo-dependencies t)
   (org-enforce-todo-checkbox-dependencies t)

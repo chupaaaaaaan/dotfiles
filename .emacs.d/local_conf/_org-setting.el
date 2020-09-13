@@ -22,7 +22,7 @@
                   'tags-todo tag-search-habit '((org-agenda-overriding-header "Habit")
                                                 (org-agenda-sorting-strategy '(todo-state-down effort-up category-keep))))
             (list "i" "Agenda: 予定表"
-                  (list (list 'agenda    "" nil)
+                  (list (list 'agenda "" nil)
                         (list 'tags-todo tag-search-inbox
                               '((org-agenda-overriding-header "Inbox")
                                 (org-tags-match-list-sublevels nil)))

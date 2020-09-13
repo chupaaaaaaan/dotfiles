@@ -917,19 +917,13 @@
 
   :preface
   ;; from https://gist.github.com/ayman/bb72a25e16af9e6f30bf
-  (defvar terminal-notifier-command
-    (executable-find "terminal-notifier")
-    "The path to terminal-notifier.")
-
   (defun terminal-notifier-notify (title message)
     "Show a message with `terminal-notifier-command`."
     (start-process "terminal-notifier"
                    "*terminal-notifier*"
-                   terminal-notifier-command
+                   (executable-find "terminal-notifier")
                    "-title" title
-                   "-message" message
-                   "-activate" "org.gnu.Emacs"
-                   "-sender" "org.gnu.Emacs"))
+                   "-message" message))
 
   (defun chpn:pomodoro-notify (title body)
     "Save buffers and stop clocking when kill emacs."
@@ -942,8 +936,12 @@
       (w32-notification-notify :title title :body body))))
 
   :hook
-  (org-pomodoro-started  . (lambda () (chpn:pomodoro-notify "org-pomodoro" "Let's focus for 25 minutes!")))
-  (org-pomodoro-finished  . (lambda () (chpn:pomodoro-notify "org-pomodoro" "Well done! Take a break."))))
+  (org-pomodoro-started              . (lambda () (chpn:pomodoro-notify "Org Pomodoro" "スタート！25分間がんばろう")))
+  (org-pomodoro-overtime             . (lambda () (chpn:pomodoro-notify "Org Pomodoro" "25分間お疲れ様！まだがんばる？")))
+  (org-pomodoro-finished             . (lambda () (chpn:pomodoro-notify "Org Pomodoro" "お疲れ様！休憩にしましょう")))
+  (org-pomodoro-short-break-finished . (lambda () (chpn:pomodoro-notify "Org Pomodoro" "小休憩終わり！またがんばりましょう")))
+  (org-pomodoro-long-break-finished  . (lambda () (chpn:pomodoro-notify "Org Pomodoro" "Pomodoroを一周したよ！またよろしくね")))
+  (org-pomodoro-killed               . (lambda () (chpn:pomodoro-notify "Org Pomodoro" "Pomodoroをkillしたよ！またよろしくね"))))
 
 (use-package org-mobile-sync
   :ensure t

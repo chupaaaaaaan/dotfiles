@@ -912,7 +912,7 @@
 
   :bind
   (:map org-agenda-mode-map
-        ("W" . org-agenda-refile)
+        ("w" . org-agenda-refile)
         ("P" . org-pomodoro))
 
   :preface

@@ -296,11 +296,19 @@
   ;; (show-paren-match ((nil (:underline "#ff5555"))))
   (show-paren-match ((nil (:background "#44475a" :foreground "#f1fa8c"))))
   :custom
-  (show-paren-mode t)
   (show-paren-delay 0)
   (show-paren-style 'mixed)
   (show-paren-when-point-inside-paren t)
-  (show-paren-when-point-in-periphery t))
+  (show-paren-when-point-in-periphery t)
+
+  :preface
+  (defun toggle-show-paren ()
+    "Toggle show paren."
+    (interactive)
+    (show-paren-mode (if show-paren-mode -1 1))
+    (message "Show paren %s" (if show-paren-mode "enabled" "disabled")))
+  :bind
+  ("M-t p" . toggle-show-paren))
 
 (use-package rainbow-delimiters
   :ensure t
@@ -424,8 +432,8 @@
 (use-package scroll-lock
   :ensure t
   :defer t
-  :disabled
-  :init
+  ;; :disabled
+  :preface
   (defun toggle-scroll-lock ()
     "Toggle scroll lock."
     (interactive)

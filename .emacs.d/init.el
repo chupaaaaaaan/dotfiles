@@ -1321,41 +1321,10 @@
   :defer t
   :after lsp-mode haskell-mode
   :custom
-  (lsp-haskell-process-path-hie "hie-wrapper"))
+  (lsp-haskell-server-path "haskell-language-server-wrapper"))
 
 (use-package haskell-mode
-  :ensure t
-  :custom
-  (haskell-stylish-on-save t)
-  ;; (haskell-tags-on-save t)
-  (haskell-compile-ignore-cabal t)
-  (haskell-compile-command "stack ghc -- -Wall -ferror-spans -fforce-recomp %s")
-  (haskell-process-type 'stack-ghci)
-  (haskell-process-suggest-remove-import-lines t)
-  (haskell-process-auto-import-loaded-modules t)
-  (haskell-process-log t)
-  (haskell-mode-hook '(capitalized-words-mode
-                       highlight-uses-mode
-                       interactive-haskell-mode
-                       haskell-indentation-mode
-                       ;; flyspell-prog-mode
-                       ;; haskell-decl-scan-mode
-                       (lambda () (set (make-local-variable 'company-backends)
-                                       (append '((company-capf company-dabbrev-code)) company-backends)))))
-  :bind
-  (:map haskell-mode-map
-        ("C-`"     . haskell-interactive-bring)
-        ("C-c C-k" . haskell-interactive-mode-clear)
-        ("C-c C-h" . haskell-compile)
-        ;; ("M-."     . haskell-mode-jump-tag-find)
-        ;; ("C-c C-t" . haskell-mode-show-type-at)
-        ("C-c C-l" . haskell-process-load-file)
-        ;; ("C-c C-i" . haskell-process-do-info)
-        )
-  ;; :config
-  ;; (require 'haskell-interactive-mode nil t)
-  ;; (require 'haskell-process nil t)
-  )
+  :ensure t)
 
 (use-package flycheck-haskell
   :ensure t

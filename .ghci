@@ -1,3 +1,4 @@
 :set -package unicode-show
 import qualified Text.Show.Unicode
 :set -interactive-print=Text.Show.Unicode.uprint
+:set prompt "λ %l> "

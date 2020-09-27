@@ -1176,15 +1176,14 @@
   :hook
   (haskell-mode . lsp)
   :custom
-  (lsp-diagnostic-package :auto)
-  (lsp-enable-snippet t)
-  (lsp-completion-at-point t)
-  (lsp-flycheck-live-reporting t)
-  (lsp-prefer-capf t)
   ;; (lsp-log-io t)
-  ;; 何故かこれを設定しているとlanguage-serverと通信できない？っぽいので、コメントアウト
+  (lsp-diagnostics-provider :auto)
+  (lsp-completion-provider :capf)
   ;; (lsp-document-sync-method 'lsp--sync-incremental)
-  )
+
+  :bind
+  (:map lsp-mode-map
+        ("C-c l" . lsp-lens-mode)))
 
 
 (use-package lsp-ui
@@ -1208,15 +1207,15 @@
   (lsp-ui-doc-use-childframe t)
   (lsp-ui-doc-use-webkit nil)
 
-  (lsp-ui-peek-enable t)
-  (lsp-ui-peek-peek-height 20)
-  (lsp-ui-peek-list-width 50)
-  (lsp-ui-peek-fontify 'on-demand)
+  (lsp-ui-flycheck-list-position 'bottom)
 
   (lsp-ui-imenu-enable t)
   (lsp-ui-imenu-kind-position 'top)
 
-  (lsp-ui-flycheck-list-position 'bottom)
+  (lsp-ui-peek-enable t)
+  (lsp-ui-peek-peek-height 20)
+  (lsp-ui-peek-list-width 50)
+  (lsp-ui-peek-fontify 'on-demand)
 
   (lsp-ui-sideline-enable nil)
   (lsp-ui-sideline-show-symbol t)

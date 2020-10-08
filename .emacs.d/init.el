@@ -1182,6 +1182,9 @@
   :defer t
   :commands lsp
   :hook
+  (lsp-mode . (lambda ()
+                (let ((lsp-keymap-prefix "M-l"))
+                  (lsp-enable-which-key-integration))))
   (haskell-mode . lsp)
   (java-mode    . lsp)
   :custom
@@ -1189,7 +1192,9 @@
   (lsp-diagnostics-provider :auto)
   (lsp-completion-provider :capf)
   ;; (lsp-document-sync-method 'lsp--sync-incremental)
-  )
+
+  :config
+  (define-key lsp-mode-map (kbd "M-l") lsp-command-map))
 
 
 (use-package lsp-ui

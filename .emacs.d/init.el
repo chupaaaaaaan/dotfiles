@@ -3,17 +3,17 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;; load-path setting
-(defun add-to-load-path (&rest paths)
-  (let (path)
-    (dolist (path paths paths)
-      (let ((elisp-dir
-             (expand-file-name (concat user-emacs-directory path))))
-        (add-to-list 'load-path elisp-dir)
-        (if (fboundp 'normal-top-level-add-subdirs-to-load-path)
-            (normal-top-level-add-subdirs-to-load-path))))))
+;; (defun add-to-load-path (&rest paths)
+;;   (let (path)
+;;     (dolist (path paths paths)
+;;       (let ((elisp-dir
+;;              (expand-file-name (concat user-emacs-directory path))))
+;;         (add-to-list 'load-path elisp-dir)
+;;         (if (fboundp 'normal-top-level-add-subdirs-to-load-path)
+;;             (normal-top-level-add-subdirs-to-load-path))))))
 
 ;; add directories under "~/.emacs.d/" to load-path
-(add-to-load-path "public_repos")
+;; (add-to-load-path "public_repos")
 
 ;; separate customize file
 (setq custom-file (concat user-emacs-directory "customize.el"))

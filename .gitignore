@@ -1,5 +1,6 @@
 # backup files
-*~
+**/*~
+**/#*
 
 # emacs 
 .emacs.d/.cache/

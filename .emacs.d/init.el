@@ -1260,20 +1260,10 @@
   :config
   (dap-auto-configure-mode))
 
-;; Java (STS4)
+;; Java
 (use-package lsp-java
-  :ensure lsp-java
-  :after lsp-mode java-mode
-  ;; :init
-  ;; (setq chpn:lombok-path (expand-file-name (concat user-emacs-directory "eclipse.jdt.ls/server/boot-server/lombok.jar")))
-  ;; :custom
-  ;; (lsp-java-vmargs (list "-noverify"
-  ;;                        "-Xmx1G"
-  ;;                        "-XX:+UseG1GC"
-  ;;                        "-XX:+UseStringDeduplication"
-  ;;                        (concat "-javaagent:" chpn:lombok-path)
-  ;;                        (concat "-Xbootclasspath/a:" chpn:lombok-path)))
-  )
+  :ensure t
+  :after lsp-mode)
 
 (use-package dap-java
   :ensure nil)

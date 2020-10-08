@@ -1183,15 +1183,13 @@
   :commands lsp
   :hook
   (haskell-mode . lsp)
+  (java-mode    . lsp)
   :custom
   ;; (lsp-log-io t)
   (lsp-diagnostics-provider :auto)
   (lsp-completion-provider :capf)
   ;; (lsp-document-sync-method 'lsp--sync-incremental)
-
-  :bind
-  (:map lsp-mode-map
-        ("C-c l" . lsp-lens-mode)))
+  )
 
 
 (use-package lsp-ui
@@ -1224,6 +1222,7 @@
   (lsp-ui-peek-peek-height 20)
   (lsp-ui-peek-list-width 50)
   (lsp-ui-peek-fontify 'on-demand)
+  (lsp-ui-peek-show-directory nil)
 
   (lsp-ui-sideline-enable nil)
   (lsp-ui-sideline-show-symbol t)
@@ -1231,23 +1230,11 @@
   (lsp-ui-sideline-show-diagnostics nil)
   (lsp-ui-sideline-show-code-actions nil)
 
-  :preface
-  ;; https://ladicle.com/post/config/#lsp
-  (defun ladicle/toggle-lsp-ui-doc ()
-    "Toggle Lsp-Ui-Doc mode."
-    (interactive)
-    (if lsp-ui-doc-mode
-        (progn
-          (lsp-ui-doc-mode -1)
-          (lsp-ui-doc--hide-frame))
-      (lsp-ui-doc-mode 1))
-    (message "Lsp-Ui-Doc mode %s in current buffer" (if lsp-ui-doc-mode "enabled" "disabled")))
-
   :bind
   (:map lsp-mode-map
         ("C-c s"   . lsp-ui-sideline-mode)
         ("C-c m"   . lsp-ui-imenu)
-        ("C-c d"   . ladicle/toggle-lsp-ui-doc)))
+        ("C-c d"   . lsp-ui-doc-mode)))
 
 (use-package lsp-ivy
   :ensure t
@@ -1269,17 +1256,14 @@
 
 (use-package dap-mode
   :ensure t
-  :disabled
-  :defer t
+  :after lsp-mode
   :config
-  (dap-mode t)
-  (dap-ui-mode t))
+  (dap-auto-configure-mode))
 
 ;; Java (STS4)
-(use-package lsp-java-boot
+(use-package lsp-java
   :ensure lsp-java
-  :disabled
-  :defer t
+  :after lsp-mode java-mode
   ;; :init
   ;; (setq chpn:lombok-path (expand-file-name (concat user-emacs-directory "eclipse.jdt.ls/server/boot-server/lombok.jar")))
   ;; :custom
@@ -1289,14 +1273,10 @@
   ;;                        "-XX:+UseStringDeduplication"
   ;;                        (concat "-javaagent:" chpn:lombok-path)
   ;;                        (concat "-Xbootclasspath/a:" chpn:lombok-path)))
-
-  :hook
-  (java-mode . lsp-java-boot-lens-mode))
+  )
 
 (use-package dap-java
-  :disabled
-  :defer t)
-
+  :ensure nil)
 
 (use-package meghanada
   :ensure t

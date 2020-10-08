@@ -12,10 +12,12 @@
 .emacs.d/customize.el
 .emacs.d/elpa/
 .emacs.d/eclipse.jdt.ls/
+.emacs.d/flycheck_*
 .emacs.d/history
 .emacs.d/kkcrc
 .emacs.d/local_conf/*
 !.emacs.d/local_conf/_*
+.emacs.d/lombok.jar
 .emacs.d/.lsp-session*
 .emacs.d/meghanada/
 .emacs.d/network-security.data

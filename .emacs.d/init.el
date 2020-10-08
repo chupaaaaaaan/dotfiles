@@ -1379,13 +1379,12 @@
 (use-package plantuml-mode
   :ensure t
   :defer t
-
   :custom
   (plantuml-default-exec-mode 'jar)
   (plantuml-jar-path (concat user-emacs-directory "plantuml.jar"))
   (plantuml-output-type "png")
 
-  :mode "\\.pu\\'")
+  :mode "\\.puml\\'")
 
 ;; load customize file
 ;; (load custom-file t)

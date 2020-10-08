@@ -1143,6 +1143,14 @@
   :config
   (counsel-projectile-mode 1))
 
+(use-package treemacs-projectile
+  :ensure t
+  :after treemacs projectile)
+
+(use-package treemacs-magit
+  :ensure t
+  :after treemacs magit)
+
 (use-package treemacs-icons-dired
   :ensure t
   :defer t

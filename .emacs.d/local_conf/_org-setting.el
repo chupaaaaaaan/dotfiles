@@ -29,11 +29,11 @@
                         (list 'tags-todo tag-search-wip
                               '((org-agenda-overriding-header "Work in progress")
                                 (org-tags-match-list-sublevels nil)
-                                (org-agenda-sorting-strategy '(priority-down effort-up scheduled-up))))
+                                (org-agenda-sorting-strategy '(effort-up priority-down scheduled-up))))
                         (list 'tags-todo tag-search-todo
                               '((org-agenda-overriding-header "Next actions")
                                 (org-tags-match-list-sublevels 'indented)
-                                (org-agenda-sorting-strategy '(scheduled-up))))
+                                (org-agenda-sorting-strategy '(priority-down deadline-up scheduled-up))))
                         (list 'tags-todo tag-search-project
                               '((org-agenda-overriding-header "Project")
                                 (org-tags-match-list-sublevels 'indented)

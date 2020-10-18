@@ -1108,6 +1108,7 @@
         ("C-c p" . projectile-command-map))
   :custom
   (projectile-completion-system 'ivy)
+  (projectile-use-git-grep t)
   (projectile-project-root-files '("dune-project"
                                    "pubspec.yaml"
                                    "info.rkt"
@@ -1181,7 +1182,6 @@
   :ensure t
   :after counsel projectile
   :custom
-  (projectile-completion-system 'ivy)
   (counsel-projectile-sort-files t)
   (counsel-projectile-sort-projects t)
   :config

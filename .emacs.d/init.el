@@ -134,7 +134,11 @@
   (use-package exec-path-from-shell
     :ensure t
     :init
-    (exec-path-from-shell-initialize)))
+    (exec-path-from-shell-initialize))
+  ;; バックスラッシュを含むキーバインドの設定
+  (define-key local-function-key-map [?\C-¥] [?\C-\\])
+  (define-key local-function-key-map [?\M-¥] [?\M-\\])
+  (define-key local-function-key-map [?\C-\M-¥] [?\C-\M-\\]))
 
 ;; GNU/Linux
 (when (eq system-type 'gnu/linux))
@@ -1394,6 +1398,17 @@
   (plantuml-output-type "png")
 
   :mode "\\.puml\\'")
+
+(use-package nxml-mode
+  :mode
+  (("\.xml$"   . nxml-mode)
+   ("\.xsl$"   . nxml-mode)
+   ("\.xhtml$" . nxml-mode)
+   ("\.page$"  . nxml-mode))
+  :custom
+  (nxml-child-indent 2)
+  (nxml-attribute-indent 2)
+  (nxml-slash-auto-complete-flag t))
 
 ;; load customize file
 ;; (load custom-file t)

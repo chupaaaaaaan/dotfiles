@@ -44,20 +44,20 @@
   :custom
   (use-package-compute-statistics t)
   ;; (use-package-always-defer nil)
+  )
 
-  ;; customize general settings
-  (inhibit-startup-screen -1)
-  (menu-bar-mode nil)
-  (tool-bar-mode nil)
-  (scroll-bar-mode nil)
-  (indent-tabs-mode nil)
-  (transient-mark-mode t)
-  (savehist-mode t)
-  (history-delete-duplicates t)
-  (history-length 1000)
-  (message-log-max 10000)
-  ;(gc-cons-threshold (* 10 gc-cons-threshold))
-  (mouse-yank-at-point t))
+(custom-set-variables '(inhibit-startup-screen -1)
+                      '(menu-bar-mode nil)
+                      '(tool-bar-mode nil)
+                      '(scroll-bar-mode nil)
+                      '(indent-tabs-mode nil)
+                      '(transient-mark-mode t)
+                      '(savehist-mode t)
+                      '(history-delete-duplicates t)
+                      '(history-length 1000)
+                      '(message-log-max 10000)
+                      '(gc-cons-threshold (* 10 gc-cons-threshold))
+                      '(mouse-yank-at-point t))
 
 ;;TODO: 雑多な設定を整理する
 ;; maximize frame
@@ -371,11 +371,10 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Backup setting
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(setq backup-directory-alist         `((".*" . ,temporary-file-directory)))
-;; (setq auto-save-file-name-transforms `((".*" ,temporary-file-directory t)))
-
-(setq auto-save-timeout 15)
-(setq auto-save-interval 60)
+(custom-set-variables '(auto-save-timeout 10)
+                      '(auto-save-interval 30)
+                      ;; '(auto-save-file-name-transforms `((".*" ,temporary-file-directory t)))
+                      '(backup-directory-alist `((".*" . ,temporary-file-directory))))
 
 ;; (setq make-backup-files nil)
 ;; (setq auto-save-default nil)

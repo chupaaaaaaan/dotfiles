@@ -29,7 +29,7 @@
                         (list 'tags-todo tag-search-wip
                               '((org-agenda-overriding-header "Work in progress")
                                 (org-tags-match-list-sublevels nil)
-                                (org-agenda-sorting-strategy '(effort-up priority-down scheduled-up))))
+                                (org-agenda-sorting-strategy '(priority-down scheduled-up effort-up))))
                         (list 'tags-todo tag-search-todo
                               '((org-agenda-overriding-header "Next actions")
                                 (org-tags-match-list-sublevels 'indented)
@@ -59,7 +59,7 @@
 
 (setq sche "  SCHEDULED: <%(org-read-date)>\n")
 (setq scht "  SCHEDULED: <%(org-read-date t)>\n")
-(setq schd "  DEADLINE: <%(org-read-date)> SCHEDULED: <%(org-read-date)>\n")
+(setq schd "  DEADLINE: <%(org-read-date)>\n")
 (setq pbgn "  :PROPERTIES:\n")
 (setq pend "  :END:\n")
 (setq peff "  :Effort: %(org-read-property-value \"Effort\")\n")

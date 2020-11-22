@@ -844,6 +844,7 @@
   (org-mode . (lambda ()
                 (dolist (key '("C-'" "C-," "C-."))
                   (unbind-key key org-mode-map))))
+  (auto-save . org-save-all-org-buffers)
 
   ;; agenda-viewのweekly viewで、週の始まりを今日（の曜日）にする
   ;; (org-agenda-mode . (lambda ()

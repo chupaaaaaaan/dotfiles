@@ -375,8 +375,8 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Backup setting
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(custom-set-variables '(auto-save-timeout 10)
-                      '(auto-save-interval 30)
+(custom-set-variables '(auto-save-timeout 20)
+                      '(auto-save-interval 60)
                       ;; '(auto-save-file-name-transforms `((".*" ,temporary-file-directory t)))
                       '(backup-directory-alist `((".*" . ,temporary-file-directory))))
 

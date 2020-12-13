@@ -108,7 +108,7 @@
              "chore" "雑務・休憩など" 'entry
              '(file inbox-file)
              "* DONE :chore:%?\n  %U\n"
-             :empty-lines 1 :jump-to-captured nil)
+             :empty-lines 1 :clock-in 1 :clock-resume 1)
 
             (list
              "link" "リンクを追加" 'item

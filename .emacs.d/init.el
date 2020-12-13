@@ -789,7 +789,6 @@
   ;; todo
   ;; TODO:     仕掛中でないタスク
   ;; WIP:      仕掛中のタスク
-  ;; WAIT:     仕掛中のタスク (待ちがあるが、すぐにWIPにできる)
   ;; DONE:     完了したタスク
   ;; HOLDING:  自己起因で中断しているタスク
   ;; PENDING:  他者起因で中断しているタスク
@@ -797,7 +796,7 @@
   (org-todo-keywords '((sequence "TODO(t)" "WIP(w)" "NOTE(n)" "|" "DONE(d)")
                        (sequence "HOLDING(h@)" "PENDING(p@)" "|" "CANCELED(c@)")))
   (org-enforce-todo-dependencies t)
-  (org-enforce-todo-checkbox-dependencies t)
+  (org-enforce-todo-checkbox-dependencies nil)
   (org-track-ordered-property-with-tag t)
 
   ;; capture
@@ -863,6 +862,8 @@
     (format-time-string "%Y-%m-%d %T" (current-time)))
   (defun ladicle/org-get-time ()
     (format-time-string "<%H:%M>" (current-time)))
+  (defun chpn/today-memo-string ()
+    (concat org-directory (format-time-string "memo/%Y-%m-%d-" (current-time)) (read-string "memo title: ") ".org"))
   (defun ladicle/get-today-diary ()
     (concat org-directory (format-time-string "diary/%Y-%m-%d.org" (current-time))))
   (defun ladicle/get-yesterday-diary ()

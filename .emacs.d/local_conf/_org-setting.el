@@ -33,7 +33,7 @@
                         (list 'tags-todo tag-search-todo
                               '((org-agenda-overriding-header "Next actions")
                                 (org-tags-match-list-sublevels 'indented)
-                                (org-agenda-sorting-strategy '(priority-down deadline-up scheduled-up))))
+                                (org-agenda-sorting-strategy '(priority-down scheduled-up))))
                         (list 'tags-todo tag-search-project
                               '((org-agenda-overriding-header "Project")
                                 (org-tags-match-list-sublevels 'indented)
@@ -64,20 +64,26 @@
 (setq pend "  :END:\n")
 (setq peff "  :Effort: %(org-read-property-value \"Effort\")\n")
 
-(setq todo-entry     (concat "* TODO [#B] %?\n" sche pbgn peff pend "  %U\n"))
+(setq todo-entry     (concat "* TODO [#C] %?\n" pbgn peff pend "  %U\n"))
 (setq schedule-entry (concat "* %?\n" scht "  %U\n"))
 
 (setq my:org-capture-templates
       (list (list
-             "tweet" "セルフツイート" 'item
+             "tweet" "一言メモ" 'item
              '(file+headline ladicle/get-today-diary "Log")
              "%(ladicle/org-get-time) %?\n"
              :prepend nil)
 
             (list
-             "memo" "雑多なメモ" 'entry
-             '(file+headline ladicle/get-today-diary "Memo")
-             "* %? :MEMO:\n"
+             "diary" "日記" 'entry
+             '(file+headline ladicle/get-today-diary "Diary")
+             "* %?\n"
+             :empty-lines 1 :jump-to-captured 1 :unnarrowed nil)
+
+            (list
+             "memo" "メモ・記録" 'entry
+             '(file chpn/today-memo-string)
+             "* %?\n"
              :empty-lines 1 :jump-to-captured 1 :unnarrowed nil)
 
             (list
@@ -87,7 +93,7 @@
              :empty-lines 1 :jump-to-captured nil)
 
             (list
-             "interrupt" "割り込みタスク" 'entry
+             "interrupt" "割り込み作業" 'entry
              '(file inbox-file)
              "* TODO [#B] %?\n  %U\n"
              :empty-lines 1 :clock-in 1 :clock-resume 1)
@@ -99,10 +105,10 @@
              :empty-lines 1)
 
             (list
-             "hack-emacs" "Emacsをハック" 'checkitem
-             '(file+headline org-default-notes-file "Hacking Emacs")
-             "[ ] %?"
-             :prepend 1)
+             "chore" "雑務・休憩など" 'entry
+             '(file inbox-file)
+             "* DONE :chore:%?\n  %U\n"
+             :empty-lines 1 :jump-to-captured nil)
 
             (list
              "link" "リンクを追加" 'item

@@ -95,7 +95,7 @@
             (list
              "interrupt" "割り込み作業" 'entry
              '(file inbox-file)
-             "* TODO [#B] %?\n  %U\n"
+             "* TODO [#C] %?\n  %U\n"
              :empty-lines 1 :clock-in 1 :clock-resume 1)
 
             (list

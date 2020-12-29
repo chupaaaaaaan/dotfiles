@@ -39,9 +39,9 @@ alias mv='gmv -i'
 alias rm='grm -i'
 
 # some more ls
-alias l='gls -CF'
-alias la='gls -A'
-alias ll='gls -alF'
+alias l='gls -CF --color=auto'
+alias la='gls -A --color=auto'
+alias ll='gls -alF --color=auto'
 
 # emacs
 alias em='emacsclient -t -a ""'

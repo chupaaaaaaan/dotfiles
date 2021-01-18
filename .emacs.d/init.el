@@ -796,7 +796,7 @@
   (org-todo-keywords '((sequence "TODO(t)" "WIP(w)" "NOTE(n)" "|" "DONE(d)")
                        (sequence "HOLDING(h@)" "PENDING(p@)" "|" "CANCELED(c@)")))
   (org-enforce-todo-dependencies t)
-  (org-enforce-todo-checkbox-dependencies nil)
+  (org-enforce-todo-checkbox-dependencies t)
   (org-track-ordered-property-with-tag t)
 
   ;; capture

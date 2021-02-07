@@ -771,7 +771,11 @@
   ;; refile
   (org-refile-use-outline-path 'file)
   (org-outline-path-complete-in-steps nil)
-  (org-refile-targets '((org-agenda-files :maxlevel . 1)))
+  (org-refile-targets '((org-agenda-files . (:todo . "TODO"))
+                        (org-agenda-files . (:todo . "NEXT"))
+                        (org-agenda-files . (:todo . "WAIT"))
+                        (org-agenda-files . (:todo . "REF"))
+                        (org-agenda-files . (:todo . "SOME"))))
 
   ;; log
   (org-log-done 'time)

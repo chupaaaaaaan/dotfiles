@@ -22,19 +22,19 @@
                                                 (org-agenda-sorting-strategy '(todo-state-down effort-up category-keep))))
             (list "i" "Agenda: 予定表"
                   (list (list 'agenda "" nil)
-                        (list 'tags-todo tag-search-inbox
-                              '((org-agenda-overriding-header "Inbox")
-                                (org-tags-match-list-sublevels nil)))
                         (list 'tags-todo tag-search-next
                               '((org-agenda-overriding-header "Next Actions")
                                 (org-tags-match-list-sublevels nil)
                                 (org-agenda-sorting-strategy '(priority-down scheduled-up effort-up))))
                         nil))
             (list "p" "Project: プロジェクト"
-                  (list (list 'tags-todo tag-search-project
+                  (list (list 'tags-todo tag-search-inbox
+                              '((org-agenda-overriding-header "Inbox")
+                                (org-tags-match-list-sublevels nil)))
+                        (list 'tags-todo tag-search-project
                               '((org-agenda-overriding-header "Project")
                                 (org-tags-match-list-sublevels 'indented)
-                                (org-agenda-sorting-strategy '(scheduled-up))))
+                                (org-agenda-sorting-strategy '(priority-down scheduled-up))))
                         nil))
             (list "w" "Waiting for: 待ち状態"
                   (list (list 'tags-todo tag-search-pending

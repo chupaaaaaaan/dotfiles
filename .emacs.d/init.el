@@ -771,7 +771,7 @@
   ;; refile
   (org-refile-use-outline-path 'file)
   (org-outline-path-complete-in-steps nil)
-  (org-refile-targets '((org-agenda-files :maxlevel . 2)))
+  (org-refile-targets '((org-agenda-files :maxlevel . 1)))
 
   ;; log
   (org-log-done 'time)
@@ -793,8 +793,7 @@
   ;; HOLDING:  自己起因で中断しているタスク
   ;; PENDING:  他者起因で中断しているタスク
   ;; CANCELED: キャンセルされたタスク
-  (org-todo-keywords '((sequence "TODO(t)" "WIP(w)" "NOTE(n)" "|" "DONE(d)")
-                       (sequence "HOLDING(h@)" "PENDING(p@)" "|" "CANCELED(c@)")))
+  (org-todo-keywords '((sequence "TODO(t)" "NEXT(n)" "WAIT(w)" "REF(r)" "SOME(s)" "|" "DONE(d)" "CANCELED(c@)")))
   (org-enforce-todo-dependencies t)
   (org-enforce-todo-checkbox-dependencies t)
   (org-track-ordered-property-with-tag t)

@@ -8,12 +8,11 @@
 
 (setq tag-search-habit   "+HABIT")
 (setq tag-search-inbox   "+INBOX")
-(setq tag-search-todo    "+WORK/TODO")
-(setq tag-search-wip     "-INBOX-HABIT/+WIP")
-(setq tag-search-note    "-INBOX-HABIT/+NOTE")
-(setq tag-search-pending "-INBOX-HABIT/+HOLDING|+PENDING")
-(setq tag-search-project "+PROJECT/-DONE-CANCELED")
-(setq tag-search-someday "+SOMEDAY/-DONE-CANCELED")
+(setq tag-search-next    "-INBOX-HABIT/+NEXT")
+(setq tag-search-note    "-INBOX-HABIT/+REF")
+(setq tag-search-pending "-INBOX-HABIT/+WAIT")
+(setq tag-search-someday "-INBOX-HABIT/+SOME")
+(setq tag-search-project "-INBOX-HABIT/-REF-SOME-DONE-CANCELED")
 (setq tag-report-daily   "+CLOSED<\"<tomorrow>\"+CLOSED>=\"<today>\"")
 (setq tag-report-weekly  "+CLOSED<\"<today>\"+CLOSED>=\"<-1w>\"")
 
@@ -26,36 +25,35 @@
                         (list 'tags-todo tag-search-inbox
                               '((org-agenda-overriding-header "Inbox")
                                 (org-tags-match-list-sublevels nil)))
-                        (list 'tags-todo tag-search-wip
-                              '((org-agenda-overriding-header "Work in progress")
+                        (list 'tags-todo tag-search-next
+                              '((org-agenda-overriding-header "Next Actions")
                                 (org-tags-match-list-sublevels nil)
                                 (org-agenda-sorting-strategy '(priority-down scheduled-up effort-up))))
-                        (list 'tags-todo tag-search-todo
-                              '((org-agenda-overriding-header "Next actions")
-                                (org-tags-match-list-sublevels 'indented)
-                                (org-agenda-sorting-strategy '(priority-down scheduled-up))))
-                        (list 'tags-todo tag-search-project
+                        nil))
+            (list "p" "Project: プロジェクト"
+                  (list (list 'tags-todo tag-search-project
                               '((org-agenda-overriding-header "Project")
                                 (org-tags-match-list-sublevels 'indented)
-                                (org-agenda-sorting-strategy '(category-keep))))
-                        (list 'tags-todo tag-search-note
-                              '((org-agenda-overriding-header "Documents/Notes")
-                                (org-tags-match-list-sublevels nil)))
-                        (list 'tags-todo tag-search-pending
-                              '((org-agenda-overriding-header "Waiting")
-                                (org-tags-match-list-sublevels 'indented)
                                 (org-agenda-sorting-strategy '(scheduled-up))))
-                        (list 'tags-todo tag-search-someday
-                              '((org-agenda-overriding-header "Someday")
-                                (org-tags-match-list-sublevels nil)
+                        nil))
+            (list "w" "Waiting for: 待ち状態"
+                  (list (list 'tags-todo tag-search-pending
+                              '((org-agenda-overriding-header "Waiting for")
+                                (org-tags-match-list-sublevels 'indented)
                                 (org-agenda-sorting-strategy '(category-keep))))
-                        ;; (list 'tags tag-report-daily
-                        ;;       '((org-agenda-overriding-header "Daily Closed")
-                        ;;         (org-agenda-sorting-strategy '(timestamp-down))))
-                        ;; (list 'tags tag-report-weekly
-                        ;;       '((org-agenda-overriding-header "Weekly Closed")
-                        ;;         (org-agenda-sorting-strategy '(timestamp-down))))
-                        nil))))
+                        nil))
+            (list "r" "Reference: 参考資料など"
+                  (list (list 'tags-todo tag-search-note
+                              '((org-agenda-overriding-header "Reference")
+                                (org-tags-match-list-sublevels nil)))
+                        nil))
+            (list "s" "Someday: いつかやる/多分やる"
+                  (list (list 'tags-todo tag-search-someday
+                              '((org-agenda-overriding-header "Someday")
+                                (org-agenda-sorting-strategy '(category-keep))
+                                (org-tags-match-list-sublevels nil)))
+                        nil))
+            ))
 
 (setq sche "  SCHEDULED: <%(org-read-date)>\n")
 (setq scht "  SCHEDULED: <%(org-read-date t)>\n")
@@ -64,7 +62,7 @@
 (setq pend "  :END:\n")
 (setq peff "  :Effort: %(org-read-property-value \"Effort\")\n")
 
-(setq todo-entry     (concat "* TODO [#C] %?\n" pbgn peff pend "  %U\n"))
+(setq todo-entry     (concat "* TODO [#C] %?\n  %U\n"))
 (setq schedule-entry (concat "* %?\n" scht "  %U\n"))
 
 (setq my:org-capture-templates

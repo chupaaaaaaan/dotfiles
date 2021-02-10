@@ -34,7 +34,7 @@
                         (list 'tags-todo tag-search-project
                               '((org-agenda-overriding-header "Project")
                                 (org-tags-match-list-sublevels 'indented)
-                                (org-agenda-sorting-strategy '(priority-down scheduled-up))))
+                                (org-agenda-sorting-strategy '(category-keep))))
                         nil))
             (list "w" "Waiting for: 待ち状態"
                   (list (list 'tags-todo tag-search-pending
@@ -47,7 +47,7 @@
                               '((org-agenda-overriding-header "Reference")
                                 (org-tags-match-list-sublevels nil)))
                         nil))
-            (list "s" "Someday: いつかやる/多分やる"
+            (list "y" "Someday: いつかやる/多分やる"
                   (list (list 'tags-todo tag-search-someday
                               '((org-agenda-overriding-header "Someday")
                                 (org-agenda-sorting-strategy '(category-keep))

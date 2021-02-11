@@ -749,15 +749,16 @@
 (use-package org
   :ensure t
   :defer t
+  :init
+  ;; agenda-files definition
+  (setq agenda-dir (concat my:org-directory "agenda/"))
+  (setq agenda-archive-dir (concat agenda-dir "archive/"))
+  (setq inbox-file (concat agenda-dir "inbox.org"))
+
   :custom
-  ;; default path
+  ;; files and directories
   (org-directory my:org-directory)
   (org-default-notes-file (concat org-directory "notes.org"))
-
-  ;; agenda-files
-  (agenda-dir (concat org-directory "agenda/"))
-  (agenda-archive-dir (concat agenda-dir "archive/"))
-  (inbox-file (concat agenda-dir "inbox.org"))
   (org-agenda-files (list agenda-dir org-default-notes-file))
 
   ;; agenda

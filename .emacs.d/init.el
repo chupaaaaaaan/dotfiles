@@ -1343,6 +1343,10 @@
   :config
   (add-to-list 'company-backends 'company-elm))
 
+(use-package company-elm
+  :ensure t
+  :defer t)
+
 (use-package flycheck-elm
   :ensure t
   :defer t
@@ -1383,6 +1387,10 @@
   (python-mode . (lambda ()
                    (require 'lsp-python-ms)
                    (lsp))))
+
+(use-package apache-mode
+  :ensure t
+  :defer t)
 
 (use-package nginx-mode
   :ensure t

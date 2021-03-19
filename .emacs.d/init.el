@@ -1419,5 +1419,23 @@
   (nxml-attribute-indent 2)
   (nxml-slash-auto-complete-flag t))
 
+(use-package web-mode
+  :ensure t
+  :defer t
+  :mode
+  (("\.html$" . web-mode))
+  :custom
+  (web-mode-markup-indent-offset 4)
+  (web-mode-css-indent-offset 4)
+  (web-mode-code-indent-offset 4)
+  (web-mode-enable-auto-pairing t)
+  (web-mode-enable-auto-closing t)
+  :custom-face
+  (web-mode-doctype-face ((nil (:foreground "Pink3"))))
+  (web-mode-html-tag-face ((nil (:foreground "Green"))))
+  (web-mode-html-attr-value-face ((nil (:foreground "Yellow"))))
+  (web-mode-html-attr-name-face ((nil (:foreground "#0FF"))))
+  )
+
 ;; load customize file
 ;; (load custom-file t)

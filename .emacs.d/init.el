@@ -141,7 +141,11 @@
   (define-key local-function-key-map [?\C-\M-¥] [?\C-\M-\\]))
 
 ;; GNU/Linux
-(when (eq system-type 'gnu/linux))
+(when (eq system-type 'gnu/linux)
+  (use-package exec-path-from-shell
+    :ensure t
+    :init
+    (exec-path-from-shell-initialize)))
 
 ;; Windows
 (when (eq system-type 'windows-nt)

@@ -1200,6 +1200,7 @@
                   (lsp-enable-which-key-integration))))
   (haskell-mode . lsp)
   (java-mode    . lsp)
+  ;; (elm-mode     . lsp)
   :custom
   ;; (lsp-log-io t)
   (lsp-diagnostics-provider :auto)
@@ -1344,20 +1345,8 @@
   :defer t
   :custom
   (elm-package-json "elm.json")
-  :config
-  (add-to-list 'company-backends 'company-elm))
-
-(use-package company-elm
-  :ensure t
-  :defer t)
-
-(use-package flycheck-elm
-  :ensure t
-  :defer t
-  ;; :bind
-  ;; (:map elm-mode-map
   :hook
-  (flycheck-mode . flycheck-elm-setup))
+  (elm-mode . elm-format-on-save-mode))
 
 (use-package dockerfile-mode
   :ensure t

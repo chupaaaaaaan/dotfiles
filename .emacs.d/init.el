@@ -1230,6 +1230,7 @@
 ;; Java
 (use-package lsp-java
   :ensure t
+  :disabled
   :after lsp-mode
   :custom
   (lsp-java-maven-download-sources t)

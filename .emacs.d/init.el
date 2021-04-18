@@ -1183,25 +1183,25 @@
   (lsp-ui-flycheck-list-position 'bottom)
 
   (lsp-ui-imenu-enable t)
+  (lsp-ui-imenu-auto-refresh t)
   (lsp-ui-imenu-kind-position 'top)
+  (lsp-ui-imenu-window-width 50)
 
-  (lsp-ui-peek-enable t)
-  (lsp-ui-peek-peek-height 20)
+  (lsp-ui-peek-enable nil)
+  (lsp-ui-peek-peek-height 50)
   (lsp-ui-peek-list-width 50)
   (lsp-ui-peek-fontify 'on-demand)
-  (lsp-ui-peek-show-directory nil)
+  (lsp-ui-peek-show-directory t)
 
   (lsp-ui-sideline-enable nil)
   (lsp-ui-sideline-show-symbol t)
   (lsp-ui-sideline-show-hover t)
   (lsp-ui-sideline-show-diagnostics nil)
-  (lsp-ui-sideline-show-code-actions nil)
+  (lsp-ui-sideline-show-code-actions t)
 
   :bind
   (:map lsp-mode-map
-        ("C-c s"   . lsp-ui-sideline-mode)
-        ("C-c m"   . lsp-ui-imenu)
-        ("C-c d"   . lsp-ui-doc-mode)))
+        ("C-c m" . lsp-ui-imenu)))
 
 (use-package lsp-ivy
   :ensure t

@@ -1141,21 +1141,22 @@
   ;; :disabled
   :defer t
   :commands lsp
-  :hook
-  (lsp-mode . (lambda ()
-                (let ((lsp-keymap-prefix "M-l"))
-                  (lsp-enable-which-key-integration))))
-  (haskell-mode . lsp)
-  (java-mode    . lsp)
-  ;; (elm-mode     . lsp)
   :custom
   ;; (lsp-log-io t)
   (lsp-diagnostics-provider :auto)
   (lsp-completion-provider :capf)
+  (lsp-lens-enable t)
+  (lsp-keymap-prefix "M-l")
+  ;; https://github.com/emacs-lsp/lsp-mode/issues/2435
+  ;; Is there a workaround to use while this is not fixed?
+  (lsp-headerline-breadcrumb-enable nil)
   ;; (lsp-document-sync-method 'lsp--sync-incremental)
-
-  :config
-  (define-key lsp-mode-map (kbd "M-l") lsp-command-map))
+  :hook
+  (lsp-mode . lsp-enable-which-key-integration)
+  (haskell-mode . lsp)
+  (java-mode    . lsp)
+  ;; (elm-mode     . lsp)
+  )
 
 
 (use-package lsp-ui
@@ -1267,10 +1268,17 @@
   :defer t
   :after lsp-mode haskell-mode
   :custom
-  (lsp-haskell-server-path "haskell-language-server-wrapper"))
+  (lsp-haskell-server-path "haskell-language-server-wrapper")
+  (lsp-haskell-formatting-provider "fourmolu"))
 
 (use-package haskell-mode
-  :ensure t)
+  :ensure t
+  ;; :hook
+  ;; (haskell-mode . haskell-auto-insert-module-template)
+  :bind
+  (:map haskell-mode-map
+        ("C-c C-h" . haskell-compile)
+        ("C-c ?" . hoogle)))
 
 (use-package flycheck-haskell
   :ensure t

@@ -760,11 +760,12 @@
   (org-tag-alist my:org-tag-alist)
 
   ;; property
-  (org-global-properties '(("Effort_ALL" . "0:05 0:15 0:30 1:00 1:30 2:00 2:30 3:00")))
+  (org-global-properties '(("Effort_ALL" . "0:05 0:15 0:30 1:00 1:30 2:00 2:30 3:00")
+                           ("Product")))
 
   ;; columns
   ;; (org-columns-default-format "%40ITEM %TAGS %TODO %BLOCKED %PRIORITY %SCHEDULED %DEADLINE %EFFORT{:} %CLOCKSUM %CLOCKSUM_T")
-  (org-columns-default-format "%40ITEM %TODO %SCHEDULED %DEADLINE %EFFORT %CLOCKSUM %CLOCKSUM_T")
+  (org-columns-default-format "%40ITEM %TODO %Product %DEADLINE %EFFORT %CLOCKSUM %CLOCKSUM_T")
 
   ;; archive
   (org-archive-location (concat agenda-archive-dir "archive_%s::"))
@@ -819,12 +820,12 @@
     (format-time-string "<%H:%M>" (current-time)))
   (defun chpn/today-memo-string ()
     (concat org-directory (format-time-string "memo/%Y-%m-%d_" (current-time)) (read-string "memo title: ") ".org"))
-  (defun ladicle/get-today-diary ()
-    (concat org-directory (format-time-string "diary/%Y-%m-%d.org" (current-time))))
-  (defun ladicle/get-yesterday-diary ()
-    (concat org-directory (format-time-string "diary/%Y-%m-%d.org" (time-add (current-time) (* -24 3600)))))
-  (defun ladicle/get-diary-from-cal ()
-    (concat org-directory (format-time-string "diary/%Y-%m-%d.org" (apply 'encode-time (parse-time-string (concat (org-read-date) " 00:00"))))))
+  ;; (defun ladicle/get-today-diary ()
+  ;;   (concat org-directory (format-time-string "diary/%Y-%m-%d.org" (current-time))))
+  ;; (defun ladicle/get-yesterday-diary ()
+  ;;   (concat org-directory (format-time-string "diary/%Y-%m-%d.org" (time-add (current-time) (* -24 3600)))))
+  ;; (defun ladicle/get-diary-from-cal ()
+  ;;   (concat org-directory (format-time-string "diary/%Y-%m-%d.org" (apply 'encode-time (parse-time-string (concat (org-read-date) " 00:00"))))))
   (defun ladicle/task-clocked-time ()
     "Return a string with the clocked time and effort, if any"
     (interactive)
@@ -881,6 +882,7 @@
   :bind
   (:map org-agenda-mode-map
         ("w" . org-agenda-refile)
+        ("l" . org-agenda-set-property)
         ("P" . org-pomodoro))
 
   :preface

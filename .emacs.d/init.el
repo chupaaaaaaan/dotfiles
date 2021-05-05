@@ -777,9 +777,9 @@
   ("C-+"   . (lambda () (interactive) (insert (chpn/insert-today-string))))
   ("C-*"   . (lambda () (interactive) (insert (chpn/insert-timestamp-string))))
   ;; ("M-i l i" . (lambda () (interactive) (org-agenda nil "i")))
-  ("M-i l t" . (lambda () (interactive) (chpn/open-file (ladicle/get-today-diary))))
-  ("M-i l y" . (lambda () (interactive) (chpn/open-file (ladicle/get-yesterday-diary))))
-  ("M-i l p" . (lambda () (interactive) (chpn/open-file (ladicle/get-diary-from-cal))))
+  ;; ("M-i l t" . (lambda () (interactive) (chpn/open-file (ladicle/get-today-diary))))
+  ;; ("M-i l y" . (lambda () (interactive) (chpn/open-file (ladicle/get-yesterday-diary))))
+  ;; ("M-i l p" . (lambda () (interactive) (chpn/open-file (ladicle/get-diary-from-cal))))
   ("M-i l u" . (lambda () (interactive) (chpn/open-file (counsel-find-file agenda-dir))))
   ;; ("M-i l m" . (lambda () (interactive) (org-tags-view nil "MEMO")))
   (:map org-mode-map

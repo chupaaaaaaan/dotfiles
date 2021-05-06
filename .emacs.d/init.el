@@ -704,6 +704,7 @@
   (setq agenda-dir (concat my:org-directory "agenda/"))
   (setq agenda-archive-dir (concat agenda-dir "archive/"))
   (setq inbox-file (concat agenda-dir "inbox.org"))
+  (setq schedule-file (concat agenda-dir "schedule.org"))
 
   :custom
   ;; files and directories
@@ -761,11 +762,11 @@
 
   ;; property
   (org-global-properties '(("Effort_ALL" . "0:05 0:15 0:30 1:00 1:30 2:00 2:30 3:00")
-                           ("Product")))
+                           ("DELIVERABLE")))
 
   ;; columns
   ;; (org-columns-default-format "%40ITEM %TAGS %TODO %BLOCKED %PRIORITY %SCHEDULED %DEADLINE %EFFORT{:} %CLOCKSUM %CLOCKSUM_T")
-  (org-columns-default-format "%40ITEM %TODO %Product %DEADLINE %EFFORT %CLOCKSUM %CLOCKSUM_T")
+  (org-columns-default-format "%40ITEM %TODO %DELIVERABLE %DEADLINE %EFFORT %CLOCKSUM %CLOCKSUM_T")
 
   ;; archive
   (org-archive-location (concat agenda-archive-dir "archive_%s::"))
@@ -882,7 +883,7 @@
   :bind
   (:map org-agenda-mode-map
         ("w" . org-agenda-refile)
-        ("l" . org-agenda-set-property)
+        ("d" . org-agenda-set-property)
         ("P" . org-pomodoro))
 
   :preface
@@ -913,15 +914,15 @@
   (org-pomodoro-long-break-finished  . (lambda () (chpn:pomodoro-notify "Org Pomodoro" "Pomodoroを一周したよ！またよろしくね")))
   (org-pomodoro-killed               . (lambda () (chpn:pomodoro-notify "Org Pomodoro" "Pomodoroをkillしたよ！またよろしくね"))))
 
-(use-package org-mobile-sync
-  :ensure t
-  :defer t
-  :after org
-  :custom
-  (org-mobile-directory "~/Dropbox/Apps/MobileOrg/")
-  (org-mobile-inbox-for-pull "~/Dropbox/org/from-mobile.org")
-  :config
-  (org-mobile-sync-mode t))
+;; (use-package org-mobile-sync
+;;   :ensure t
+;;   :defer t
+;;   :after org
+;;   :custom
+;;   (org-mobile-directory "~/Dropbox/Apps/MobileOrg/")
+;;   (org-mobile-inbox-for-pull "~/Dropbox/org/from-mobile.org")
+;;   :config
+;;   (org-mobile-sync-mode t))
 
 (use-package org-re-reveal
   :ensure t

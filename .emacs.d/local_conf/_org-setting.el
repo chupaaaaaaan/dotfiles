@@ -4,7 +4,7 @@
                          ("study" . ?s)
                          ("develop" . ?d)
                          (:endgroup . nil)
-                         ("chore" . ?c)))
+                         ("break" . ?b)))
 
 (setq tag-search-habit   "+HABIT")
 (setq tag-search-inbox   "+INBOX")
@@ -61,51 +61,60 @@
 (setq pbgn "  :PROPERTIES:\n")
 (setq pend "  :END:\n")
 (setq peff "  :Effort: %(org-read-property-value \"Effort\")\n")
+(setq prod "  :DELIVERABLE: \n")
+(setq ckdt "  :COOKIE_DATA: checkbox \n")
 
-(setq todo-entry     (concat "* TODO [#C] %?\n  %U\n"))
-(setq schedule-entry (concat "* %?\n" scht "  %U\n"))
+(setq todo-entry      (concat "* TODO [#C] [/] %?\n" pbgn prod ckdt pend "  %U\n"))
+(setq interrupt-entry (concat "* NEXT [#C] [/] %?\n" pbgn prod ckdt pend "  %U\n"))
+(setq schedule-entry  (concat "* %?\n" scht "  %U\n"))
 
 (setq my:org-capture-templates
-      (list (list
-             "tweet" "一言メモ" 'item
-             '(file+headline ladicle/get-today-diary "Log")
-             "%(ladicle/org-get-time) %?\n"
-             :prepend nil)
+      (list ;; (list
+            ;;  "tweet" "一言メモ" 'item
+            ;;  '(file+headline ladicle/get-today-diary "Log")
+            ;;  "%(ladicle/org-get-time) %?\n"
+            ;;  :prepend nil)
+
+            ;; (list
+            ;;  "diary" "日記" 'entry
+            ;;  '(file+headline ladicle/get-today-diary "Diary")
+            ;;  "* %?\n"
+            ;;  :empty-lines 1 :jump-to-captured 1 :unnarrowed nil)
 
             (list
-             "diary" "日記" 'entry
-             '(file+headline ladicle/get-today-diary "Diary")
-             "* %?\n"
-             :empty-lines 1 :jump-to-captured 1 :unnarrowed nil)
-
-            (list
-             "memo" "メモ・記録" 'entry
-             '(file chpn/today-memo-string)
-             "* %?\n"
-             :empty-lines 1 :jump-to-captured 1 :unnarrowed nil)
-
-            (list
-             "inbox" "タスクの作成" 'entry
+             "inbox" "新規プロジェクト" 'entry
              '(file inbox-file)
              todo-entry
              :empty-lines 1 :jump-to-captured nil)
 
+            ;; (list
+            ;;  "subproject" "サブプロジェクトを追加" 'entry
+            ;;  '(file (chpn/org-get-current-file-name) (chpn/org-get-heading-title))
+            ;;  todo-entry
+            ;;  :empty-lines 1 :jump-to-captured nil)
+
             (list
-             "interrupt" "割り込み作業" 'entry
+             "interrupt" "突発作業" 'entry
              '(file inbox-file)
-             "* TODO [#C] %?\n  %U\n"
+             interrupt-entry
              :empty-lines 1 :clock-in 1 :clock-resume 1)
 
             (list
-             "schedule" "カレンダー" 'entry
-             '(file inbox-file)
+             "schedule" "予定作業" 'entry
+             '(file schedule-file)
              schedule-entry
              :empty-lines 1)
 
             (list
-             "chore" "雑務・休憩など" 'entry
+             "memo" "メモ・記録" 'entry
+             '(file chpn/today-memo-string)
+             "%?\n"
+             :empty-lines 1 :jump-to-captured 1 :unnarrowed nil)
+
+            (list
+             "break" "休憩" 'entry
              '(file inbox-file)
-             "* DONE %? :chore:\n  %U\n"
+             "* DONE 休憩（%?）  :break:\n  %U\n"
              :empty-lines 1 :clock-in 1 :clock-resume 1)
 
             (list

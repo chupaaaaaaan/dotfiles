@@ -65,7 +65,7 @@
 (setq ckdt "  :COOKIE_DATA: checkbox \n")
 
 (setq todo-entry      (concat "* TODO [#C] [/] %?\n" pbgn prod ckdt pend "  %U\n"))
-(setq interrupt-entry (concat "* NEXT [#C] [/] %?\n" pbgn prod ckdt pend "  %U\n"))
+(setq interrupt-entry (concat "* NEXT [#C] [/] %?  :interrupt:\n" pbgn prod ckdt pend "  %U\n"))
 (setq schedule-entry  (concat "* %?\n" scht "  %U\n"))
 
 (setq my:org-capture-templates

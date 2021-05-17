@@ -190,11 +190,32 @@
 ;; Settings that do not depend on some major modes or minor modes
 (global-set-key (kbd "C-h")   'delete-backward-char)
 (global-set-key (kbd "M-t l") 'toggle-truncate-lines)
-(global-set-key (kbd "C-t")   'other-window)
+;; (global-set-key (kbd "C-t")   'other-window)
 (global-set-key [f5] (lambda () (interactive) (customize-group-other-window)))
 (global-set-key [f6] (lambda () (interactive) (counsel-M-x "^counsel ")))
 (global-set-key [f7] (lambda () (interactive) (chpn/open-file (concat user-emacs-directory "init.el"))))
 
+
+;; Window management
+(use-package golden-ratio
+  :ensure t
+  :custom
+  (golden-ratio-mode nil)
+  :bind
+  ("M-t g" . golden-ratio-mode))
+
+(use-package ace-window
+  :ensure t
+  :bind
+  ("M-o" . ace-window))
+
+
+(use-package perspective
+  :ensure t
+  :bind
+  ("C-x C-b" . persp-list-buffers)
+  :config
+  (persp-mode))
 
 ;; Doom-themes
 ;; https://github.com/hlissner/emacs-doom-themes
@@ -1077,10 +1098,12 @@
 ;; treemacs
 (use-package treemacs
   :ensure t
-  :defer t
+  ;; :defer t
   :bind
-  ("M-0"       . treemacs-select-window)
-  ("M-1"       . treemacs)
+  ("M-1" . treemacs-select-window)
+  ("M-0" . treemacs)
+  (:map treemacs-mode-map
+        ("M-1" . other-window))
   ;; ("C-x t 1"   . treemacs-delete-other-windows)
   ;; ("C-x t B"   . treemacs-bookmark)
   ;; ("C-x t C-t" . treemacs-find-file)
@@ -1089,8 +1112,7 @@
   :custom
   (treemacs-is-never-other-window t)
   (treemacs-no-delete-other-windows t)
-
-  :config
+  (treemacs-width 20)
   (treemacs-follow-mode t)
   (treemacs-filewatch-mode t)
   (treemacs-fringe-indicator-mode t)
@@ -1239,8 +1261,8 @@
   (lsp-java-maven-download-sources t)
   (lsp-java-maven-update-snapshots t))
 
-(use-package dap-java
-  :ensure nil)
+;; (use-package dap-java
+;;   :ensure nil)
 
 (use-package meghanada
   :ensure t

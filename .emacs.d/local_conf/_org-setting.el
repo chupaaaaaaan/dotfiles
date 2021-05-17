@@ -1,10 +1,14 @@
 (setq my:org-directory "~/org/")
 (setq my:org-tag-alist '((:startgroup . nil)
-                         ("read" . ?r)
-                         ("study" . ?s)
+                         ("design" . ?s)
                          ("develop" . ?d)
+                         ("meeting" . ?m)
                          (:endgroup . nil)
-                         ("break" . ?b)))
+                         (:startgroup . nil)
+                         ("work" . ?w)
+                         ("qanda" . ?q)
+                         ("break" . ?b)
+                         (:endgroup . nil)))
 
 (setq tag-search-habit   "+HABIT")
 (setq tag-search-inbox   "+INBOX")
@@ -54,20 +58,7 @@
                                 (org-tags-match-list-sublevels nil)))
                         nil))
             ))
-
-(setq sche "  SCHEDULED: <%(org-read-date)>\n")
-(setq scht "  SCHEDULED: <%(org-read-date t)>\n")
-(setq schd "  DEADLINE: <%(org-read-date)>\n")
-(setq pbgn "  :PROPERTIES:\n")
-(setq pend "  :END:\n")
-(setq peff "  :Effort: %(org-read-property-value \"Effort\")\n")
-(setq prod "  :DELIVERABLE: \n")
-(setq ckdt "  :COOKIE_DATA: checkbox \n")
-
-(setq todo-entry      (concat "* TODO [#C] [/] %?\n" pbgn prod ckdt pend "  %U\n"))
-(setq interrupt-entry (concat "* NEXT [#C] [/] %?  :interrupt:\n" pbgn prod ckdt pend "  %U\n"))
-(setq schedule-entry  (concat "* %?\n" scht "  %U\n"))
-
+(setq capture-templates-dir (concat my:org-directory "capture_templates/"))
 (setq my:org-capture-templates
       (list ;; (list
             ;;  "tweet" "一言メモ" 'item
@@ -84,7 +75,7 @@
             (list
              "inbox" "新規プロジェクト" 'entry
              '(file inbox-file)
-             todo-entry
+             (concat "%[" capture-templates-dir "inbox.org" "]")
              :empty-lines 1 :jump-to-captured nil)
 
             ;; (list
@@ -96,19 +87,19 @@
             (list
              "interrupt" "突発作業" 'entry
              '(file inbox-file)
-             interrupt-entry
+             (concat "%[" capture-templates-dir "interrupt.org" "]")
              :empty-lines 1 :clock-in 1 :clock-resume 1)
 
             (list
              "schedule" "予定作業" 'entry
              '(file schedule-file)
-             schedule-entry
+             (concat "%[" capture-templates-dir "schedule.org" "]")
              :empty-lines 1)
 
             (list
-             "memo" "メモ・記録" 'entry
+             "memo" "メモ・記録" 'plain
              '(file chpn/today-memo-string)
-             "%?\n"
+             (concat "%[" capture-templates-dir "memo.org" "]")
              :empty-lines 1 :jump-to-captured 1 :unnarrowed nil)
 
             (list

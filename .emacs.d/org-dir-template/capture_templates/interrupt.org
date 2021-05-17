@@ -1,0 +1,6 @@
+* NEXT [#C] [/] %?                                                :interrupt:
+  :PROPERTIES:
+  :DELIVERABLE:
+  :COOKIE_DATA: checkbox
+  :END:
+  %U

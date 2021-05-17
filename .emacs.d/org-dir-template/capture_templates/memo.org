@@ -1,0 +1,3 @@
+#+OPTIONS: ^:{}
+#+OPTIONS: \n:t
+* %?

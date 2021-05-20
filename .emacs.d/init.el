@@ -209,11 +209,30 @@
   :bind
   ("M-o" . ace-window))
 
+(use-package bs :ensure t)
 
 (use-package perspective
   :ensure t
+  :after counsel
+  :custom
+  (persp-state-default-file (concat user-emacs-directory "persp-state-file"))
   :bind
-  ("C-x C-b" . persp-list-buffers)
+  ("C-x b"   . persp-counsel-switch-buffer)
+  ("C-x C-b" . persp-bs-show)
+  ("C-M-1"   . (lambda () (interactive) (persp-switch "1")))
+  ("C-M-2"   . (lambda () (interactive) (persp-switch "2")))
+  ("C-M-3"   . (lambda () (interactive) (persp-switch "3")))
+  ("C-M-4"   . (lambda () (interactive) (persp-switch "4")))
+  ("C-M-5"   . (lambda () (interactive) (persp-switch "5")))
+  :hook
+  (persp-state-after-load . persp-my-setup)
+  (after-init . persp-my-setup)
+  (kill-emacs . persp-state-save)
+  :preface
+  (defun persp-my-setup ()
+    (let ((persp-first-perspective "2"))
+      (persp-switch persp-first-perspective)
+      (persp-kill "main")))
   :config
   (persp-mode))
 
@@ -663,7 +682,8 @@
   ("C-M-z" . counsel-fzf)
   ("C-M-r" . counsel-recentf)
   ("C-M-f" . counsel-ag)
-  ("C-x C-b" . counsel-ibuffer)
+  ;; ("C-x b" . counsel-switch-buffer)
+  ;; ("C-x C-b" . counsel-ibuffer)
   (:map ivy-minibuffer-map
         ("C-w" . ivy-backward-kill-word)
         ("C-k" . ivy-kill-line)

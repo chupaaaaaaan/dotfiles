@@ -200,7 +200,12 @@
 (use-package golden-ratio
   :ensure t
   :custom
-  (golden-ratio-mode nil)
+  (golden-ratio-mode t)
+  (golden-ratio-extra-commands '(ace-window
+                                 projectile-vc
+                                 persp-list-buffers
+                                 quit-window
+                                 ))
   :bind
   ("M-t g" . golden-ratio-mode))
 

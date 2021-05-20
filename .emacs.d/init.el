@@ -295,6 +295,7 @@
   ;; (show-paren-match ((nil (:underline "#ff5555"))))
   (show-paren-match ((nil (:background "#44475a" :foreground "#f1fa8c"))))
   :custom
+  (show-paren-mode t)
   (show-paren-delay 0)
   (show-paren-style 'mixed)
   (show-paren-when-point-inside-paren t)
@@ -762,7 +763,7 @@
   (org-agenda-span 'day)
   (org-agenda-include-diary nil)
   (org-agenda-dim-blocked-tasks t)
-  (org-agenda-window-setup 'only-window)
+  (org-agenda-window-setup 'current-window)
   (org-agenda-log-mode-items '(clock))
   (org-agenda-custom-commands my:org-agenda-custom-commands)
 
@@ -1133,7 +1134,6 @@
   ;; ("C-x t B"   . treemacs-bookmark)
   ;; ("C-x t C-t" . treemacs-find-file)
   ;; ("C-x t M-t" . treemacs-find-tag)
-
   :custom
   (treemacs-is-never-other-window t)
   (treemacs-no-delete-other-windows t)

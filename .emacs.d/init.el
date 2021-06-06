@@ -205,6 +205,7 @@
                                  projectile-vc
                                  persp-list-buffers
                                  quit-window
+                                 undo-tree-visualizer-quit
                                  ))
   :bind
   ("M-t g" . golden-ratio-mode))

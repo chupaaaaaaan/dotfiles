@@ -206,6 +206,7 @@
                                  persp-list-buffers
                                  quit-window
                                  undo-tree-visualizer-quit
+                                 magit-mode-bury-buffer
                                  ))
   :bind
   ("M-t g" . golden-ratio-mode))

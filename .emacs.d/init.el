@@ -252,7 +252,7 @@
   (doom-themes-enable-bold t)
   (doom-themes-enable-italic t)
   :config
-  (load-theme 'doom-dracula t)
+  (load-theme 'doom-one t)
   (doom-themes-neotree-config)
   (doom-themes-org-config))
 

@@ -1288,8 +1288,8 @@
   (lsp-java-maven-download-sources t)
   (lsp-java-maven-update-snapshots t))
 
-;; (use-package dap-java
-;;   :ensure nil)
+(use-package dap-java
+  :ensure nil)
 
 (use-package meghanada
   :ensure t

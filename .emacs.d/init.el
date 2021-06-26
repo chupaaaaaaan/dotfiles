@@ -1290,7 +1290,7 @@
 
 (use-package dap-java
   :ensure nil
-  :after dap-mode
+  :after dap-mode lsp-java
   )
 
 (use-package meghanada

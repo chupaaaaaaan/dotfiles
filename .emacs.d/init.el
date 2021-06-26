@@ -1289,7 +1289,9 @@
   (lsp-java-maven-update-snapshots t))
 
 (use-package dap-java
-  :ensure nil)
+  :ensure nil
+  :after dap-mode
+  )
 
 (use-package meghanada
   :ensure t

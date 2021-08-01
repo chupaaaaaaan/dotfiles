@@ -822,6 +822,9 @@
   ;; archive
   (org-archive-location (concat agenda-archive-dir "archive_%s::"))
 
+  ;; source code
+  (org-src-tab-acts-natively t)
+
   :bind
   ("C-c c" . counsel-org-capture)
   ("C-c a" . org-agenda)

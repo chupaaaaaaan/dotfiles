@@ -181,7 +181,7 @@
 (define-key global-map (kbd "M-t") 'ladicle-toggle-map)
 
 (define-prefix-command 'chpn-org-map)
-(define-key global-map (kbd "M-i l") 'chpn-org-map)
+(define-key global-map (kbd "M-q") 'chpn-org-map)
 
 
 (global-unset-key (kbd "C-x C-c"))
@@ -753,6 +753,7 @@
   :init
   ;; agenda-files definition
   (setq agenda-dir (concat my:org-directory "agenda/"))
+  (setq org-memo-dir (concat my:org-directory "memo/"))
   (setq agenda-archive-dir (concat agenda-dir "archive/"))
   (setq inbox-file (concat agenda-dir "inbox.org"))
   (setq schedule-file (concat agenda-dir "schedule.org"))
@@ -831,12 +832,13 @@
   ("C-c l" . org-store-link)
   ("C-+"   . (lambda () (interactive) (insert (chpn/insert-today-string))))
   ("C-*"   . (lambda () (interactive) (insert (chpn/insert-timestamp-string))))
-  ;; ("M-i l i" . (lambda () (interactive) (org-agenda nil "i")))
-  ;; ("M-i l t" . (lambda () (interactive) (chpn/open-file (ladicle/get-today-diary))))
-  ;; ("M-i l y" . (lambda () (interactive) (chpn/open-file (ladicle/get-yesterday-diary))))
-  ;; ("M-i l p" . (lambda () (interactive) (chpn/open-file (ladicle/get-diary-from-cal))))
-  ("M-i l u" . (lambda () (interactive) (chpn/open-file (counsel-find-file agenda-dir))))
-  ;; ("M-i l m" . (lambda () (interactive) (org-tags-view nil "MEMO")))
+  (:map chpn-org-map
+        ("i" . (lambda () (interactive) (org-agenda nil "i")))
+        ("p" . (lambda () (interactive) (org-agenda nil "p")))
+        ("t" . (lambda () (interactive) (chpn/open-file (ladicle/get-today-diary))))
+        ("y" . (lambda () (interactive) (chpn/open-file (ladicle/get-yesterday-diary))))
+        ("c" . (lambda () (interactive) (chpn/open-file (ladicle/get-diary-from-cal))))
+        ("m" . (lambda () (interactive) (chpn/open-file (counsel-find-file org-memo-dir)))))
   (:map org-mode-map
         ;; ("C-c i" . org-clock-in)
         ;; ("C-c o" . org-clock-out)
@@ -875,12 +877,12 @@
     (format-time-string "<%H:%M>" (current-time)))
   (defun chpn/today-memo-string ()
     (concat org-directory (format-time-string "memo/%Y-%m-%d_" (current-time)) (read-string "memo title: ") ".org"))
-  ;; (defun ladicle/get-today-diary ()
-  ;;   (concat org-directory (format-time-string "diary/%Y-%m-%d.org" (current-time))))
-  ;; (defun ladicle/get-yesterday-diary ()
-  ;;   (concat org-directory (format-time-string "diary/%Y-%m-%d.org" (time-add (current-time) (* -24 3600)))))
-  ;; (defun ladicle/get-diary-from-cal ()
-  ;;   (concat org-directory (format-time-string "diary/%Y-%m-%d.org" (apply 'encode-time (parse-time-string (concat (org-read-date) " 00:00"))))))
+  (defun ladicle/get-today-diary ()
+    (concat org-directory (format-time-string "diary/%Y-%m-%d.org" (current-time))))
+  (defun ladicle/get-yesterday-diary ()
+    (concat org-directory (format-time-string "diary/%Y-%m-%d.org" (time-add (current-time) (* -24 3600)))))
+  (defun ladicle/get-diary-from-cal ()
+    (concat org-directory (format-time-string "diary/%Y-%m-%d.org" (apply 'encode-time (parse-time-string (concat (org-read-date) " 00:00"))))))
   (defun ladicle/task-clocked-time ()
     "Return a string with the clocked time and effort, if any"
     (interactive)

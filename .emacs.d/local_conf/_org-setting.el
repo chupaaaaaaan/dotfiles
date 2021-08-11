@@ -66,11 +66,11 @@
             ;;  "%(ladicle/org-get-time) %?\n"
             ;;  :prepend nil)
 
-            ;; (list
-            ;;  "diary" "日記" 'entry
-            ;;  '(file+headline ladicle/get-today-diary "Diary")
-            ;;  "* %?\n"
-            ;;  :empty-lines 1 :jump-to-captured 1 :unnarrowed nil)
+            (list
+             "diary" "日記" 'entry
+             '(file+headline ladicle/get-today-diary "Diary")
+             "* %?\n"
+             :empty-lines 1 :jump-to-captured 1 :unnarrowed nil)
 
             (list
              "inbox" "新規プロジェクト" 'entry

@@ -36,6 +36,11 @@ alias drmi='dimg|xargs -r -I@ docker rmi @'
 alias drmi_none='d images -q -f "dangling=true"|xargs -r -I@ docker rmi @'
 alias dexe='docker exec -it $(dpsa) /bin/bash'
 
+# AWS EC2 Instances
+ec2ips() {
+    aws ec2 describe-instances --query 'Reservations[*].Instances[].[PublicIpAddress, InstanceId, Tags[?Key==`Name`] | [0].Value]' --output text|grep -v "^None"|peco|cut -f1
+}
+
 # kubernetes
 alias k='kubectl'
 alias kx='kubectx'

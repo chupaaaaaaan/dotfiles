@@ -23,11 +23,11 @@ dpsa() {
 }
 
 dimg() {
-    docker images --format "table {{.ID}}\t{{.Repository}}:{{.Tag}}\t{{.Size}}"|peco|tr -s ' '|cut -d' ' -f2
+    docker images --format "table {{.ID}}\t{{.Repository}}:{{.Tag}}\t{{.Size}}"|peco|tr -s ' '|cut -d' ' -f1
 }
 
 drun() {
-    docker run --rm -d $1 "$(dimg)"
+    docker run --rm -d "$@" "$(dimg)"
 }
 
 alias dstop='dpsa|xargs -r -I@ docker stop @'

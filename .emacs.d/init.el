@@ -1206,9 +1206,6 @@
   (lsp-completion-provider :capf)
   (lsp-lens-enable t)
   (lsp-keymap-prefix "M-l")
-  ;; https://github.com/emacs-lsp/lsp-mode/issues/2435
-  ;; Is there a workaround to use while this is not fixed?
-  (lsp-headerline-breadcrumb-enable nil)
   ;; (lsp-document-sync-method 'lsp--sync-incremental)
   :hook
   (lsp-mode . lsp-enable-which-key-integration)

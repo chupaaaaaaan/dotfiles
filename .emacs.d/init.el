@@ -1208,11 +1208,9 @@
   (lsp-keymap-prefix "M-l")
   ;; (lsp-document-sync-method 'lsp--sync-incremental)
   :hook
-  (lsp-mode . lsp-enable-which-key-integration)
-  (haskell-mode . lsp)
-  (java-mode    . lsp)
-  ;; (elm-mode     . lsp)
-  )
+  ;; (elm-mode  . lsp)
+  (lsp-mode  . lsp-enable-which-key-integration)
+  (java-mode . lsp))
 
 
 (use-package lsp-ui
@@ -1332,8 +1330,9 @@
 
 (use-package haskell-mode
   :ensure t
-  ;; :hook
+  :hook
   ;; (haskell-mode . haskell-auto-insert-module-template)
+  (haskell-mode . lsp)
   :bind
   (:map haskell-mode-map
         ("C-c C-h" . haskell-compile)

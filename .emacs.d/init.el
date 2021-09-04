@@ -1199,7 +1199,7 @@
   :ensure t
   ;; :disabled
   :defer t
-  :commands lsp
+  :commands (lsp lsp-deferred)
   :custom
   ;; (lsp-log-io t)
   (lsp-diagnostics-provider :auto)
@@ -1208,8 +1208,8 @@
   (lsp-keymap-prefix "M-l")
   ;; (lsp-document-sync-method 'lsp--sync-incremental)
   :hook
-  ;; (elm-mode  . lsp)
   (lsp-mode  . lsp-enable-which-key-integration)
+  ;; (elm-mode  . lsp)
   (java-mode . lsp))
 
 
@@ -1386,13 +1386,17 @@
 (use-package lsp-python-ms
   :ensure t
   :defer t
-  :if (eq system-type 'windows-nt)
   :custom
-  (lsp-python-ms-executable "~/Microsoft.Python.LanguageServer")
+  (lsp-python-ms-auto-install-server t)
   :hook
-  (python-mode . (lambda ()
-                   (require 'lsp-python-ms)
-                   (lsp))))
+  (python-mode . lsp-deferred))
+
+(use-package python
+  :ensure t
+  :custom
+  (python-shell-interpreter "python3")
+  (python-indent-guess-indent-offset-verbose nil))
+
 
 (use-package apache-mode
   :ensure t

@@ -1182,7 +1182,6 @@
 (use-package flycheck
   :ensure t
   :defer t
-  ;; :disabled
   :hook
   (after-init . global-flycheck-mode))
 
@@ -1197,7 +1196,6 @@
 ;; lsp
 (use-package lsp-mode
   :ensure t
-  ;; :disabled
   :defer t
   :commands (lsp lsp-deferred)
   :custom
@@ -1215,7 +1213,6 @@
 
 (use-package lsp-ui
   :ensure t
-  ;; :disabled
   :defer t
   :after lsp-mode
   :hook
@@ -1259,7 +1256,6 @@
 
 (use-package lsp-ivy
   :ensure t
-  ;; :disabled
   :demand t
   :after lsp-mode
   :bind
@@ -1269,7 +1265,6 @@
 
 (use-package lsp-treemacs
   :ensure t
-  ;; :disabled
   :demand t
   :after lsp-mode treemacs
   :custom
@@ -1292,36 +1287,11 @@
 
 (use-package dap-java
   :ensure nil
-  :after dap-mode lsp-java
-  )
-
-(use-package meghanada
-  :ensure t
-  :disabled
-  :defer t
-  :hook
-  (java-mode . (lambda ()
-                 (meghanada-mode t)
-                 ;; (meghanada-telemetry-enable t)
-                 (setq c-basic-offset 2)
-                 ;; use code format
-                 (add-hook 'before-save-hook 'meghanada-code-beautify-before-save)))
-  :bind
-  (:map meghanada-mode-map
-        ("C-c C-c C-m" . meghanada-exec-main))
-  :config
-  (cond
-   ((eq system-type 'windows-nt)
-    (setq meghanada-java-path (expand-file-name "bin/java.exe" (getenv "JAVA_HOME")))
-    (setq meghanada-maven-path "mvn.cmd"))
-   (t
-    (setq meghanada-java-path "java")
-    (setq meghanada-maven-path "mvn"))))
+  :after dap-mode lsp-java)
 
 ;; Haskell
 (use-package lsp-haskell
   :ensure t
-  ;; :disabled
   :defer t
   :after lsp-mode haskell-mode
   :custom
@@ -1331,19 +1301,11 @@
 (use-package haskell-mode
   :ensure t
   :hook
-  ;; (haskell-mode . haskell-auto-insert-module-template)
   (haskell-mode . lsp)
   :bind
   (:map haskell-mode-map
         ("C-c C-h" . haskell-compile)
         ("C-c ?" . hoogle)))
-
-(use-package flycheck-haskell
-  :ensure t
-  :disabled
-  :defer t
-  :hook
-  (flycheck-mode . flycheck-haskell-setup))
 
 (use-package terraform-mode
   :ensure t

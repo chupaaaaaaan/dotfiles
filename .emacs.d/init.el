@@ -56,6 +56,7 @@
                       '(history-delete-duplicates t)
                       '(history-length 1000)
                       '(message-log-max 10000)
+                      '(gnutls-algorithm-priority "normal:-vers-tls1.3")
                       '(gc-cons-threshold (* 10 gc-cons-threshold))
                       '(mouse-yank-at-point t))
 

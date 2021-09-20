@@ -1143,7 +1143,6 @@
   :ensure t
   :after counsel projectile
   :custom
-  (projectile-completion-system 'ivy)
   (counsel-projectile-sort-files t)
   (counsel-projectile-sort-projects t)
   :config

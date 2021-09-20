@@ -1108,15 +1108,14 @@
 ;; projectile
 (use-package projectile
   :ensure t
-  :defer t
   :bind
   ("C-c p" . projectile-command-map)
   (:map projectile-mode-map
         ("C-c p" . projectile-command-map))
   :custom
   (projectile-completion-system 'ivy)
-  :config
-  (projectile-mode 1))
+  :hook
+  (after-init . projectile-mode))
 
 ;; treemacs
 (use-package treemacs

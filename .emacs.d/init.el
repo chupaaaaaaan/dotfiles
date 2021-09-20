@@ -1133,7 +1133,7 @@
   :custom
   (treemacs-is-never-other-window t)
   (treemacs-no-delete-other-windows t)
-  (treemacs-width 20)
+  ;; (treemacs-width 20)
   (treemacs-follow-mode t)
   (treemacs-filewatch-mode t)
   (treemacs-fringe-indicator-mode t)

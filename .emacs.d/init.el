@@ -202,13 +202,13 @@
   :ensure t
   :custom
   (golden-ratio-mode t)
-  (golden-ratio-extra-commands '(ace-window
-                                 projectile-vc
-                                 persp-list-buffers
-                                 quit-window
-                                 undo-tree-visualizer-quit
-                                 magit-mode-bury-buffer
-                                 ))
+  (golden-ratio-extra-commands
+   '(ace-window
+     projectile-vc
+     persp-list-buffers
+     quit-window
+     undo-tree-visualizer-quit
+     magit-mode-bury-buffer))
   :bind
   ("M-t g" . golden-ratio-mode))
 

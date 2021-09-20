@@ -252,7 +252,7 @@
   :hook
   (after-init . doom-modeline-mode)
   :custom
-  (doom-modeline-buffer-file-name-style 'truncate-except-project)
+  (doom-modeline-buffer-file-name-style 'auto)
   ;; (doom-modeline-display-default-persp-name t)
   ;; (doom-modeline-mode t)
   ;; (doom-modeline-icon t)

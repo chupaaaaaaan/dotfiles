@@ -1114,6 +1114,8 @@
         ("C-c p" . projectile-command-map))
   :custom
   (projectile-completion-system 'ivy)
+  (projectile-enable-caching t)
+  (projectile-require-project-root t)
   :hook
   (after-init . projectile-mode))
 

@@ -227,7 +227,9 @@
   (persp-state-default-file (concat user-emacs-directory "persp-state-file"))
   (persp-modestring-short t)
   :bind
-  ("C-x b"   . persp-ivy-switch-buffer)
+  ;; ("C-x b"   . persp-ivy-switch-buffer)
+  ("C-x b"   . persp-switch-to-buffer*)
+  ("C-x k"   . persp-kill-buffer*)
   ("C-x C-b" . persp-bs-show)
   :hook
   (after-init . persp-mode)

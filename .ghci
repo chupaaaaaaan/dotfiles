@@ -1,4 +1,10 @@
-:set -package unicode-show
-import qualified Text.Show.Unicode
-:set -interactive-print=Text.Show.Unicode.uprint
+:set -package pretty-simple
+import Text.Pretty.Simple (pPrint)
+:set -interactive-print pPrint
 :set prompt "λ %l> "
+
+:seti -XOverloadedStrings
+:seti -XScopedTypeVariables
+:set -Wall
+:set +s
+:set +t

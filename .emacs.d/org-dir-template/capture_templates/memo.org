@@ -1,3 +1,4 @@
 #+OPTIONS: ^:{}
 #+OPTIONS: \n:t
-* %?
+#+OPTIONS: toc:nil
+%?

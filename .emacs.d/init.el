@@ -228,7 +228,8 @@
   (persp-modestring-short t)
   :bind
   ;; ("C-x b"   . persp-ivy-switch-buffer)
-  ("C-x b"   . persp-switch-to-buffer*)
+  ("C-x b"   . persp-counsel-switch-buffer)
+  ;; ("C-x b"   . persp-switch-to-buffer*)
   ("C-x k"   . persp-kill-buffer*)
   ("C-x C-b" . persp-bs-show)
   :hook
@@ -791,7 +792,7 @@
   ;; HOLDING:  自己起因で中断しているタスク
   ;; PENDING:  他者起因で中断しているタスク
   ;; CANCELED: キャンセルされたタスク
-  (org-todo-keywords '((sequence "TODO(t)" "NEXT(n)" "WAIT(w@)" "REF(r)" "SOME(s)" "|" "DONE(d)" "CANCELED(c@)")))
+  (org-todo-keywords '((sequence "TODO(t)" "NEXT(n)" "WAIT(w@)" "REFR(r)" "SOME(s)" "|" "DONE(d)" "CANCELED(c@)")))
   (org-enforce-todo-dependencies t)
   (org-enforce-todo-checkbox-dependencies t)
   (org-track-ordered-property-with-tag t)
@@ -803,12 +804,11 @@
   (org-tag-alist my:org-tag-alist)
 
   ;; property
-  (org-global-properties '(("Effort_ALL" . "0:05 0:15 0:30 1:00 1:30 2:00 2:30 3:00")
-                           ("DELIVERABLE")))
+  (org-global-properties '(("Effort_ALL" . "0:05 0:15 0:30 1:00 1:30 2:00 2:30 3:00")))
 
   ;; columns
   ;; (org-columns-default-format "%40ITEM %TAGS %TODO %BLOCKED %PRIORITY %SCHEDULED %DEADLINE %EFFORT{:} %CLOCKSUM %CLOCKSUM_T")
-  (org-columns-default-format "%40ITEM %TODO %DELIVERABLE %DEADLINE %EFFORT %CLOCKSUM %CLOCKSUM_T")
+  (org-columns-default-format "%40ITEM %TODO %PRIORITY %SCHEDULED %DEADLINE %EFFORT %CLOCKSUM %CLOCKSUM_T")
 
   ;; archive
   (org-archive-location (concat agenda-archive-dir "archive_%s::"))

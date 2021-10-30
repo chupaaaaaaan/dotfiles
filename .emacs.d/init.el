@@ -1008,15 +1008,15 @@
   ("M-g s" . magit-status))
 
 (use-package gitattributes-mode
-  :ensure t
+  :ensure git-modes
   :defer t)
 
 (use-package gitconfig-mode
-  :ensure t
+  :ensure git-modes
   :defer t)
 
 (use-package gitignore-mode
-  :ensure t
+  :ensure git-modes
   :defer t)
 
 (use-package git-gutter

@@ -18,11 +18,13 @@
 
             (list "i" "Agenda: 予定表"
                   (list (list 'agenda "" nil)
+
                         (list 'tags-todo "-INBOX-HABIT/+NEXT"
                               '((org-agenda-overriding-header "Next Actions")
                                 (org-tags-match-list-sublevels nil)
                                 (org-agenda-sorting-strategy '(priority-down scheduled-up effort-up))))
                         nil))
+
             (list "p" "Project: プロジェクト"
                   (list (list 'tags-todo "+INBOX"
                               '((org-agenda-overriding-header "Inbox")
@@ -33,17 +35,20 @@
                                 (org-tags-match-list-sublevels 'indented)
                                 (org-agenda-sorting-strategy '(priority-down scheduled-up))))
                         nil))
+
             (list "w" "Waiting for: 待ち状態"
                   (list (list 'tags-todo "-INBOX-HABIT/+WAIT"
                               '((org-agenda-overriding-header "Waiting for")
                                 (org-tags-match-list-sublevels 'indented)
                                 (org-agenda-sorting-strategy '(category-keep))))
                         nil))
+
             (list "r" "Reference: 参考資料など"
                   (list (list 'tags-todo "-INBOX-HABIT/+REFR"
                               '((org-agenda-overriding-header "Reference")
                                 (org-tags-match-list-sublevels nil)))
                         nil))
+
             (list "y" "Someday: いつかやる/多分やる"
                   (list (list 'tags-todo "-INBOX-HABIT/+SOME"
                               '((org-agenda-overriding-header "Someday")
@@ -52,16 +57,17 @@
                         nil))
 
             (list "d" "Done: 完了"
-                  (list (list 'tags-todo "+CLOSED<\"<tomorrow>\"+CLOSED>=\"<today>\""
-                              '((org-agenda-overriding-header "Done Daily")
-                                (org-tags-match-list-sublevels nil)
-                                ))
+                  (list (list 'tags "+CLOSED<\"<tomorrow>\"+CLOSED>=\"<today>\""
+                              '((org-agenda-overriding-header "Today's Done")
+                                (org-tags-match-list-sublevels nil)))
 
-                        (list 'tags-todo "+CLOSED<\"<today>\"+CLOSED>=\"<-1w>\""
-                              '((org-agenda-overriding-header "Done Weekly")
-                                (org-tags-match-list-sublevels 'indented)
-                                (org-agenda-sorting-strategy '(priority-down scheduled-up))
-                                ))
+                        (list 'tags "+CLOSED<\"<today>\"+CLOSED>=\"<yesterday>\""
+                              '((org-agenda-overriding-header "Yesterday's Done")
+                                (org-tags-match-list-sublevels nil)))
+
+                        (list 'tags "+CLOSED<\"<yesterday>\"+CLOSED>=\"<-1w>\""
+                              '((org-agenda-overriding-header "Weekly Done")
+                                (org-tags-match-list-sublevels nil)))
                         nil))
 
             ))

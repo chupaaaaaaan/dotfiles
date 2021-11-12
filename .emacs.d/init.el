@@ -1388,6 +1388,9 @@
   (nxml-attribute-indent 2)
   (nxml-slash-auto-complete-flag t))
 
+(use-package sql-indent
+  :ensure t)
+
 (use-package web-mode
   :ensure t
   :defer t

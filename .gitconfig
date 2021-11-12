@@ -1,22 +1,25 @@
 [core]
-        autoCRLF = false
-        quotepath = false
-        pager = "LESSCHARSET=utf-8 less"
+	autoCRLF = false
+	quotepath = false
+	pager = "LESSCHARSET=utf-8 less"
+	preloadindex = true
+	fscache = true
 
 [user]
-        name = "Takayuki Uchida"
-        email = jacobitebeerlove@gmail.com
+	name = "Takayuki Uchida"
+	email = jacobitebeerlove@gmail.com
 
 [color]
-        ui = true
+	ui = true
 
 [push]
-        default = simple
+	default = simple
 
 [alias]
-        lg    = log --graph --date=relative --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cd) %C(bold blue)<%an>%Creset'
-        lga   = log --graph --date=relative --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cd) %C(bold blue)<%an>%Creset' --all --first-parent
-        lgall = log --graph --date=relative --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cd) %C(bold blue)<%an>%Creset' --all
+	l     = log --graph --date=relative --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cd) %C(bold blue)<%an>%Creset' --first-parent
+	lg    = log --graph --date=relative --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cd) %C(bold blue)<%an>%Creset'
+	lga   = log --graph --date=relative --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cd) %C(bold blue)<%an>%Creset' --all --first-parent
+	lgall = log --graph --date=relative --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cd) %C(bold blue)<%an>%Creset' --all
 
 [credential]
-        helper = store
+	helper = store

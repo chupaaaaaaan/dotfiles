@@ -1281,7 +1281,7 @@
   ; :disabled
   :after lsp-mode
   :custom
-  (lsp-java-configuration-maven-user-settings (concat default-directory ".m2/settings.xml"))
+  (lsp-java-configuration-maven-user-settings (concat home-directory ".m2/settings.xml"))
   (lsp-java-import-maven-enabled t)
   (lsp-java-maven-download-sources t)
   (lsp-java-maven-update-snapshots t))

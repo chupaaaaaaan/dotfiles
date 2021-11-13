@@ -139,19 +139,28 @@
   ;; バックスラッシュを含むキーバインドの設定
   (define-key local-function-key-map [?\C-¥] [?\C-\\])
   (define-key local-function-key-map [?\M-¥] [?\M-\\])
-  (define-key local-function-key-map [?\C-\M-¥] [?\C-\M-\\]))
+  (define-key local-function-key-map [?\C-\M-¥] [?\C-\M-\\])
+
+  ;; home directory
+  (setq home-directory (concat (getenv "HOME") "/")))
 
 ;; GNU/Linux
 (when (eq system-type 'gnu/linux)
   (use-package exec-path-from-shell
     :ensure t
     :init
-    (exec-path-from-shell-initialize)))
+    (exec-path-from-shell-initialize))
+
+  ;; home directory
+  (setq home-directory (concat (getenv "HOME") "/")))
 
 ;; Windows
 (when (eq system-type 'windows-nt)
   (setq file-name-coding-system 'cp932)
   (setq locale-coding-system 'cp932)
+
+  ;; home directory
+  (setq home-directory (concat (getenv "HOMEPATH") "/"))
 
   ;; default path
   (setq default-directory (concat (getenv "HOMEPATH") "/"))

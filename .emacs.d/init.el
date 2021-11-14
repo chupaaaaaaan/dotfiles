@@ -1402,6 +1402,12 @@
 (use-package sql-indent
   :ensure t)
 
+(use-package vterm
+  :ensure t
+  :bind
+  (:map vterm-mode-map
+        ("C-h"   . vterm-send-C-h)))
+
 (use-package web-mode
   :ensure t
   :defer t

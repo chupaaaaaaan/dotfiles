@@ -1230,7 +1230,7 @@
   (lsp-ui-doc-use-childframe t)
   (lsp-ui-doc-use-webkit nil)
 
-  (lsp-ui-flycheck-list-position 'bottom)
+  (lsp-ui-flycheck-list-position 'right)
 
   (lsp-ui-imenu-enable t)
   (lsp-ui-imenu-auto-refresh t)

@@ -1300,6 +1300,17 @@
   ; :disabled
   :after lsp-mode
   :custom
+  (lsp-java-vmargs (list "-XX:+UseParallelGC"
+                         "-XX:GCTimeRatio=4"
+                         "-XX:AdaptiveSizePolicyWeight=90"
+                         "-Dsun.zip.disableMemoryMapping=true"
+                         (concat "-javaagent:" (expand-file-name user-emacs-directory) "lombok.jar")
+                         (concat "-Xbootclasspath/a:" (expand-file-name user-emacs-directory) "lombok.jar")
+                         ;; "-noverify"
+                         ;; "-XX:+UseG1GC"
+                         ;; "-XX:+UseStringDeduplication"
+                         "-Xmx1G"
+                         "-Xms100m"))
   (lsp-java-configuration-maven-user-settings (concat home-directory ".m2/settings.xml"))
   (lsp-java-import-maven-enabled t)
   (lsp-java-maven-download-sources t)

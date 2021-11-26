@@ -1434,9 +1434,12 @@
 
 (use-package vterm
   :ensure t
+  :custom
+  (vterm-environment (list "LANG=ja_JP.UTF-8"))
   :bind
   (:map vterm-mode-map
-        ("C-h"   . vterm-send-C-h)))
+        ("C-h" . vterm-send-C-h)
+        ("C-g" . vterm-send-C-g)))
 
 (use-package web-mode
   :ensure t

@@ -824,6 +824,25 @@
 
   ;; source code
   (org-src-tab-acts-natively t)
+  (org-src-lang-modes '(("C" . c)
+                        ("C++" . c++)
+                        ("asymptote" . asy)
+                        ("bash" . sh)
+                        ("beamer" . latex)
+                        ("calc" . fundamental)
+                        ("cpp" . c++)
+                        ("ditaa" . artist)
+                        ("dot" . fundamental)
+                        ("elisp" . emacs-lisp)
+                        ("ocaml" . tuareg)
+                        ("plantuml" . plantuml)
+                        ("screen" . shell-script)
+                        ("shell" . sh)
+                        ("sqlite" . sql)))
+
+  ;; plantuml
+  (org-plantuml-jar-path (concat user-emacs-directory "plantuml.jar"))
+  (org-babel-load-languages '((plantuml . t)))
 
   :bind
   ("C-c c" . counsel-org-capture)

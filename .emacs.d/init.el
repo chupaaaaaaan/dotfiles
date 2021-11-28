@@ -762,7 +762,7 @@
   ;; files and directories
   (org-directory my:org-directory)
   (org-default-notes-file (concat org-directory "notes.org"))
-  (org-agenda-files (list agenda-dir org-default-notes-file))
+  (org-agenda-files (list agenda-dir org-default-notes-file org-memo-dir))
 
   ;; agenda
   (org-agenda-span 'day)

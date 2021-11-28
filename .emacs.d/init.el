@@ -894,7 +894,7 @@
   (defun ladicle/org-get-time ()
     (format-time-string "<%R>" (current-time)))
   (defun chpn/today-memo-string ()
-    (concat org-directory (format-time-string "memo/%F_" (current-time)) (read-string "memo title: ") ".org"))
+    (concat org-memo-dir (read-string "memo title: ") ".org"))
   (defun ladicle/get-today-diary ()
     (concat org-directory (format-time-string "diary/%F.org" (current-time))))
   (defun ladicle/get-yesterday-diary ()

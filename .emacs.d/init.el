@@ -1130,6 +1130,7 @@
 
 (use-package company-quickhelp
   :ensure t
+  :disabled
   :defer t
   :after company
   :hook

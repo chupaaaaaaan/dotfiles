@@ -768,7 +768,7 @@
   ;; files and directories
   (org-directory my:org-directory)
   (org-default-notes-file (concat org-directory "notes.org"))
-  (org-agenda-files (list agenda-dir org-default-notes-file org-memo-dir))
+  (org-agenda-files (list agenda-dir org-default-notes-file))
 
   ;; agenda
   (org-agenda-span 'day)
@@ -857,12 +857,12 @@
   ("C-+"   . (lambda () (interactive) (insert (chpn/insert-today-string))))
   ("C-*"   . (lambda () (interactive) (insert (chpn/insert-timestamp-string))))
   (:map chpn-org-map
-        ("i" . (lambda () (interactive) (org-agenda nil "i")))
-        ("p" . (lambda () (interactive) (org-agenda nil "p")))
-        ("t" . (lambda () (interactive) (chpn/open-file (ladicle/get-today-diary))))
-        ("y" . (lambda () (interactive) (chpn/open-file (ladicle/get-yesterday-diary))))
-        ("c" . (lambda () (interactive) (chpn/open-file (ladicle/get-diary-from-cal))))
-        ("m" . (lambda () (interactive) (chpn/open-file (counsel-find-file org-memo-dir)))))
+        ("i" . agenda-inbox)
+        ("p" . agenda-project)
+        ("t" . diary-today)
+        ("y" . diary-yesterday)
+        ("c" . diary-from-cal)
+        ("m" . open-memo))
   (:map org-mode-map
         ;; ("C-c i" . org-clock-in)
         ;; ("C-c o" . org-clock-out)
@@ -893,20 +893,20 @@
 
 
   :preface
-  (defun chpn/insert-today-string ()
-    (format-time-string "%F" (current-time)))
-  (defun chpn/insert-timestamp-string ()
-    (format-time-string "%F %T" (current-time)))
-  (defun ladicle/org-get-time ()
-    (format-time-string "<%R>" (current-time)))
-  (defun chpn/today-memo-string ()
-    (concat org-memo-dir (read-string "memo title: ") ".org"))
-  (defun ladicle/get-today-diary ()
-    (concat org-directory (format-time-string "diary/%F.org" (current-time))))
-  (defun ladicle/get-yesterday-diary ()
-    (concat org-directory (format-time-string "diary/%F.org" (time-add (current-time) (* -24 3600)))))
-  (defun ladicle/get-diary-from-cal ()
-    (concat org-directory (format-time-string "diary/%F.org" (apply 'encode-time (parse-time-string (concat (org-read-date) " 00:00"))))))
+  (defun agenda-inbox    () (interactive) (org-agenda nil "i"))
+  (defun agenda-project  () (interactive) (org-agenda nil "p"))
+  (defun diary-today     () (interactive) (chpn/open-file (ladicle/get-today-diary)))
+  (defun diary-yesterday () (interactive) (chpn/open-file (ladicle/get-yesterday-diary)))
+  (defun diary-from-cal  () (interactive) (chpn/open-file (ladicle/get-diary-from-cal)))
+  (defun open-memo       () (interactive) (chpn/open-file (counsel-find-file org-memo-dir)))
+
+  (defun chpn/insert-today-string     () (format-time-string "%F"    (current-time)))
+  (defun chpn/insert-timestamp-string () (format-time-string "%F %T" (current-time)))
+  (defun ladicle/org-get-time         () (format-time-string "<%R>"  (current-time)))
+  (defun chpn/today-memo-string       () (concat org-memo-dir  (read-string "memo title: ") ".org"))
+  (defun ladicle/get-today-diary      () (concat org-directory (format-time-string "diary/%F.org" (current-time))))
+  (defun ladicle/get-yesterday-diary  () (concat org-directory (format-time-string "diary/%F.org" (time-add (current-time) (* -24 3600)))))
+  (defun ladicle/get-diary-from-cal   () (concat org-directory (format-time-string "diary/%F.org" (apply 'encode-time (parse-time-string (concat (org-read-date) " 00:00"))))))
   (defun ladicle/task-clocked-time ()
     "Return a string with the clocked time and effort, if any"
     (interactive)

@@ -1,3 +1,6 @@
+[init]
+	defaultBranch = "develop"
+
 [core]
 	autoCRLF = false
 	quotepath = false

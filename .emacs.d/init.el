@@ -1256,6 +1256,8 @@
   (lsp-ui-doc-position 'bottom)
   (lsp-ui-doc-max-width 150)
   (lsp-ui-doc-max-height 30)
+  (lsp-ui-doc-show-with-mouse t)
+  (lsp-ui-doc-show-with-cursor t)
   (lsp-ui-doc-use-childframe t)
   (lsp-ui-doc-use-webkit nil)
 

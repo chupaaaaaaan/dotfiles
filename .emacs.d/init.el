@@ -130,8 +130,6 @@
 ;; Functions
 (defun chpn/open-file (fname) (switch-to-buffer (find-file-noselect fname)))
 
-
-
 ;; OS
 ;; Mac
 (when (eq system-type 'darwin)
@@ -861,7 +859,7 @@
   ("C-*"   . (lambda () (interactive) (insert (chpn/insert-timestamp-string))))
   (:map chpn-org-map
         ("i" . agenda-inbox)
-        ("p" . agenda-project)
+        ("p" . agenda-task)
         ("t" . diary-today)
         ("y" . diary-yesterday)
         ("c" . diary-from-cal)
@@ -897,7 +895,7 @@
 
   :preface
   (defun agenda-inbox    () (interactive) (org-agenda nil "i"))
-  (defun agenda-project  () (interactive) (org-agenda nil "p"))
+  (defun agenda-task     () (interactive) (org-agenda nil "p"))
   (defun diary-today     () (interactive) (chpn/open-file (ladicle/get-today-diary)))
   (defun diary-yesterday () (interactive) (chpn/open-file (ladicle/get-yesterday-diary)))
   (defun diary-from-cal  () (interactive) (chpn/open-file (ladicle/get-diary-from-cal)))
@@ -965,6 +963,7 @@
 
   :bind
   (:map org-agenda-mode-map
+        ("C" . org-agenda-columns)
         ("w" . org-agenda-refile)
         ("d" . org-agenda-set-property)
         ("P" . org-pomodoro))

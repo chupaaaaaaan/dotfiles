@@ -25,7 +25,7 @@
                                 (org-agenda-sorting-strategy '(priority-down scheduled-up effort-up))))
                         nil))
 
-            (list "p" "Project: プロジェクト"
+            (list "p" "Tasks: タスク"
                   (list (list 'tags-todo "+INBOX"
                               '((org-agenda-overriding-header "Inbox")
                                 (org-tags-match-list-sublevels nil)))

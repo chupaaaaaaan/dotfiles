@@ -1469,6 +1469,7 @@
   (web-mode-code-indent-offset 4)
   (web-mode-enable-auto-pairing t)
   (web-mode-enable-auto-closing t)
+  (web-mode-auto-close-style 2)
   :custom-face
   (web-mode-doctype-face ((nil (:foreground "Pink3"))))
   (web-mode-html-tag-face ((nil (:foreground "Green"))))

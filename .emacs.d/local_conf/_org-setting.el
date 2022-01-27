@@ -31,7 +31,7 @@
                                 (org-tags-match-list-sublevels nil)))
 
                         (list 'tags-todo "-INBOX-HABIT/-REFR-SOME-DONE-CANCELED"
-                              '((org-agenda-overriding-header "Project")
+                              '((org-agenda-overriding-header "Tasks")
                                 (org-tags-match-list-sublevels 'indented)
                                 (org-agenda-sorting-strategy '(priority-down scheduled-up))))
                         nil))

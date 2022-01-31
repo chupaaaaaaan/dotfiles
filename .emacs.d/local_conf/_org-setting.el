@@ -33,7 +33,7 @@
                         (list 'tags-todo "-INBOX-HABIT/-REFR-SOME-DONE-CANCELED"
                               '((org-agenda-overriding-header "Tasks")
                                 (org-tags-match-list-sublevels 'indented)
-                                (org-agenda-sorting-strategy '(priority-down scheduled-up))))
+                                (org-agenda-sorting-strategy '(category-keep))))
                         nil))
 
             (list "w" "Waiting for: 待ち状態"
@@ -86,7 +86,7 @@
              :empty-lines 1 :jump-to-captured 1 :unnarrowed nil)
 
             (list
-             "inbox" "新規プロジェクト" 'entry
+             "inbox" "新規タスク" 'entry
              '(file inbox-file)
              (concat "%[" capture-templates-dir "inbox.org" "]")
              :empty-lines 1 :jump-to-captured nil)

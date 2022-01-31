@@ -21,14 +21,14 @@
 
                         (list 'tags-todo "-INBOX-HABIT/+NEXT"
                               '((org-agenda-overriding-header "Next Actions")
-                                (org-tags-match-list-sublevels nil)
+                                (org-tags-match-list-sublevels t)
                                 (org-agenda-sorting-strategy '(priority-down scheduled-up effort-up))))
                         nil))
 
             (list "p" "Tasks: タスク"
                   (list (list 'tags-todo "+INBOX"
                               '((org-agenda-overriding-header "Inbox")
-                                (org-tags-match-list-sublevels t)))
+                                (org-tags-match-list-sublevels nil)))
 
                         (list 'tags-todo "-INBOX-HABIT/-REFR-SOME-DONE-CANCELED"
                               '((org-agenda-overriding-header "Tasks")

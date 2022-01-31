@@ -28,7 +28,7 @@
             (list "p" "Tasks: タスク"
                   (list (list 'tags-todo "+INBOX"
                               '((org-agenda-overriding-header "Inbox")
-                                (org-tags-match-list-sublevels nil)))
+                                (org-tags-match-list-sublevels t)))
 
                         (list 'tags-todo "-INBOX-HABIT/-REFR-SOME-DONE-CANCELED"
                               '((org-agenda-overriding-header "Tasks")

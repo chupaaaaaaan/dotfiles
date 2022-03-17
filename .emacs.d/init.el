@@ -1013,7 +1013,7 @@
                    "-title" title
                    "-message" message))
 
-  (defun chpn:pomodoro-notify (title body)
+  (defun chpn/pomodoro-notify (title body)
     "Save buffers and stop clocking when kill emacs."
     (cond
      ((eq system-type 'darwin)
@@ -1024,12 +1024,12 @@
       (w32-notification-notify :title title :body body))))
 
   :hook
-  (org-pomodoro-started              . (lambda () (chpn:pomodoro-notify "Org Pomodoro" "スタート！25分間がんばろう")))
-  (org-pomodoro-overtime             . (lambda () (chpn:pomodoro-notify "Org Pomodoro" "25分間お疲れ様！まだがんばる？")))
-  (org-pomodoro-finished             . (lambda () (chpn:pomodoro-notify "Org Pomodoro" "お疲れ様！休憩にしましょう")))
-  (org-pomodoro-short-break-finished . (lambda () (chpn:pomodoro-notify "Org Pomodoro" "小休憩終わり！またがんばりましょう")))
-  (org-pomodoro-long-break-finished  . (lambda () (chpn:pomodoro-notify "Org Pomodoro" "Pomodoroを一周したよ！またよろしくね")))
-  (org-pomodoro-killed               . (lambda () (chpn:pomodoro-notify "Org Pomodoro" "Pomodoroをkillしたよ！またよろしくね"))))
+  (org-pomodoro-started              . (lambda () (chpn/pomodoro-notify "Org Pomodoro" "スタート！25分間がんばろう")))
+  (org-pomodoro-overtime             . (lambda () (chpn/pomodoro-notify "Org Pomodoro" "25分間お疲れ様！まだがんばる？")))
+  (org-pomodoro-finished             . (lambda () (chpn/pomodoro-notify "Org Pomodoro" "お疲れ様！休憩にしましょう")))
+  (org-pomodoro-short-break-finished . (lambda () (chpn/pomodoro-notify "Org Pomodoro" "小休憩終わり！またがんばりましょう")))
+  (org-pomodoro-long-break-finished  . (lambda () (chpn/pomodoro-notify "Org Pomodoro" "Pomodoroを一周したよ！またよろしくね")))
+  (org-pomodoro-killed               . (lambda () (chpn/pomodoro-notify "Org Pomodoro" "Pomodoroをkillしたよ！またよろしくね"))))
 
 ;; (use-package org-mobile-sync
 ;;   :ensure t

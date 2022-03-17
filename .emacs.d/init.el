@@ -15,25 +15,42 @@
 ;; add directories under "~/.emacs.d/" to load-path
 ;; (add-to-load-path "public_repos")
 
-;; separate customize file
-(setq custom-file (concat user-emacs-directory "customize.el"))
+(eval-and-compile
+  (customize-set-variable
+   'package-archives '(("org" . "https://orgmode.org/elpa/")
+                       ("melpa" . "https://melpa.org/packages/")
+                       ("gnu" . "https://elpa.gnu.org/packages/")))
+  (package-initialize)
+
+  (unless (package-installed-p 'use-package)
+    (package-refresh-contents)
+    (package-install 'use-package))
+
+  (unless (package-installed-p 'leaf)
+    (package-refresh-contents)
+    (package-install 'leaf))
+
+  (leaf leaf-keywords
+    :ensure t
+    :init
+    ;; optional packages if you want to use :hydra, :el-get, :blackout,,,
+    (leaf hydra :ensure t)
+    (leaf el-get :ensure t)
+    (leaf blackout :ensure t)
+
+    :config
+    ;; initialize leaf-keywords.el
+    (leaf-keywords-init)))
 
 ;; load local configures
-(dolist (lcnf (directory-files (concat user-emacs-directory "local_conf") t "^[^_].+\\.el$"))
-  (load-file lcnf))
+(dolist (local-conf (directory-files (concat user-emacs-directory "local_conf") t "^[^_].+\\.el$"))
+  (load-file local-conf))
 
-;; package.el
-(require 'package nil t)
-(package-initialize)
-
-;; add repositories
-(add-to-list 'package-archives '("org"           . "https://orgmode.org/elpa/"))
-(add-to-list 'package-archives '("melpa-stable"  . "https://stable.melpa.org/packages/"))
-(add-to-list 'package-archives '("melpa"         . "https://melpa.org/packages/"))
-
-(unless (package-installed-p 'use-package)
-  (package-refresh-contents)
-  (package-install 'use-package))
+(leaf leaf-tree :ensure t)
+(leaf leaf-convert :ensure t)
+(leaf transient-dwim
+  :ensure t
+  :bind (("M-=" . transient-dwim-dispatch)))
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -42,23 +59,41 @@
 
 (use-package use-package
   :custom
-  (use-package-compute-statistics t)
   ;; (use-package-always-defer nil)
-  )
+  (use-package-compute-statistics t))
 
-(custom-set-variables '(inhibit-startup-screen -1)
-                      '(menu-bar-mode nil)
-                      '(tool-bar-mode nil)
-                      '(scroll-bar-mode nil)
-                      '(indent-tabs-mode nil)
-                      '(transient-mark-mode t)
-                      '(savehist-mode t)
-                      '(history-delete-duplicates t)
-                      '(history-length 1000)
-                      '(message-log-max 10000)
-                      '(gnutls-algorithm-priority "normal:-vers-tls1.3")
-                      '(gc-cons-threshold (* 10 gc-cons-threshold))
-                      '(mouse-yank-at-point t))
+(leaf cus-start
+  :custom
+  `((menu-bar-mode . nil)
+    (tool-bar-mode . nil)
+    (indent-tabs-mode . nil)
+    (transient-mark-mode . t)
+    (history-delete-duplicates . t)
+    (history-length . 1000)
+    (message-log-max . 10000)
+    (gc-cons-threshold . ,(* 10 gc-cons-threshold))))
+
+(leaf cus-edit
+  :custom
+  `((custom-file . ,(concat user-emacs-directory "customize.el"))))
+
+(leaf startup
+  :custom
+  (inhibit-startup-screen . t))
+
+(leaf scroll-bar
+  :custom
+  (scroll-bar-mode . nil))
+
+(leaf savehist
+  :custom
+  (savehist-mode . t))
+
+(leaf mouse
+  :custom
+  (mouse-yank-at-point . t))
+
+;; (custom-set-variables '(gnutls-algorithm-priority "normal:-vers-tls1.3"))
 
 ;;TODO: 雑多な設定を整理する
 ;; maximize frame

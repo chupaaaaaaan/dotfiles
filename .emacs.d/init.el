@@ -780,18 +780,14 @@
   :ensure t
   :defer t
   :init
-  ;; agenda-files definition
-  (setq agenda-dir (concat my:org-directory "agenda/"))
-  (setq org-memo-dir (concat my:org-directory "memo/"))
-  (setq agenda-archive-dir (concat agenda-dir "archive/"))
-  (setq inbox-file (concat agenda-dir "inbox.org"))
-  (setq schedule-file (concat agenda-dir "schedule.org"))
+  (setq agenda-dir "~/org/agenda/")
+  (setq capture-template-dir "~/org/capture_templates/")
 
   :custom
   ;; files and directories
-  (org-directory my:org-directory)
+  (org-directory "~/org/")
   (org-default-notes-file (concat org-directory "notes.org"))
-  (org-agenda-files (list agenda-dir org-default-notes-file))
+  (org-agenda-files '(agenda-dir ,org-default-notes-file))
 
   ;; agenda
   (org-agenda-span 'day)
@@ -799,7 +795,54 @@
   (org-agenda-dim-blocked-tasks t)
   (org-agenda-window-setup 'current-window)
   (org-agenda-log-mode-items '(clock))
-  (org-agenda-custom-commands my:org-agenda-custom-commands)
+  (org-agenda-custom-commands
+   `(("h" "Habits: 習慣タスク"
+      tags-todo "+HABIT" ((org-agenda-overriding-header "Habit")
+                          (org-agenda-sorting-strategy '(todo-state-down effort-up category-keep))))
+
+     ("i" "Agenda: 予定表"
+      ((agenda "" nil)
+       (tags-todo "-INBOX-HABIT/+NEXT"
+                  ((org-agenda-overriding-header "Next Actions")
+                   (org-tags-match-list-sublevels nil)
+                   (org-agenda-sorting-strategy '(priority-down scheduled-up effort-up)))) nil))
+
+     ("p" "Tasks: タスク"
+      ((tags-todo "+INBOX"
+                  ((org-agenda-overriding-header "Inbox")
+                   (org-tags-match-list-sublevels nil)))
+       (tags-todo "-INBOX-HABIT/-REFR-SOME-DONE-CANCELED"
+                  ((org-agenda-overriding-header "Tasks")
+                   (org-tags-match-list-sublevels 'indented)
+                   (org-agenda-sorting-strategy '(priority-down scheduled-up)))) nil))
+
+     ("w" "Waiting for: 待ち状態"
+      ((tags-todo "-INBOX-HABIT/+WAIT"
+                  ((org-agenda-overriding-header "Waiting for")
+                   (org-tags-match-list-sublevels 'indented)
+                   (org-agenda-sorting-strategy '(category-keep)))) nil))
+
+     ("r" "Reference: 参考資料など"
+      ((tags-todo "-INBOX-HABIT/+REFR"
+                  ((org-agenda-overriding-header "Reference")
+                   (org-tags-match-list-sublevels nil))) nil))
+
+     ("y" "Someday: いつかやる/多分やる"
+      ((tags-todo "-INBOX-HABIT/+SOME"
+                  ((org-agenda-overriding-header "Someday")
+                   (org-agenda-sorting-strategy '(category-keep))
+                   (org-tags-match-list-sublevels nil))) nil))
+
+     ("d" "Done: 完了"
+      ((tags "+CLOSED<\"<tomorrow>\"+CLOSED>=\"<today>\""
+             ((org-agenda-overriding-header "Today's Done")
+              (org-tags-match-list-sublevels nil)))
+       (tags "+CLOSED<\"<today>\"+CLOSED>=\"<yesterday>\""
+             ((org-agenda-overriding-header "Yesterday's Done")
+              (org-tags-match-list-sublevels nil)))
+       (tags "+CLOSED<\"<yesterday>\"+CLOSED>=\"<-1w>\""
+             ((org-agenda-overriding-header "Weekly Done")
+              (org-tags-match-list-sublevels nil))) nil))))
 
   ;; refile
   (org-refile-use-outline-path 'file)
@@ -807,7 +850,7 @@
   (org-refile-targets '((org-agenda-files . (:todo . "TODO"))
                         (org-agenda-files . (:todo . "NEXT"))
                         (org-agenda-files . (:todo . "WAIT"))
-                        (org-agenda-files . (:todo . "REF"))
+                        (org-agenda-files . (:todo . "REFR"))
                         (org-agenda-files . (:todo . "SOME"))))
 
   ;; log
@@ -824,22 +867,49 @@
   (org-timer-default-timer 30)
 
   ;; todo
-  ;; TODO:     仕掛中でないタスク
-  ;; WIP:      仕掛中のタスク
-  ;; DONE:     完了したタスク
-  ;; HOLDING:  自己起因で中断しているタスク
-  ;; PENDING:  他者起因で中断しているタスク
-  ;; CANCELED: キャンセルされたタスク
   (org-todo-keywords '((sequence "TODO(t)" "NEXT(n)" "WAIT(w@)" "REFR(r)" "SOME(s)" "|" "DONE(d)" "CANCELED(c@)")))
   (org-enforce-todo-dependencies t)
   (org-enforce-todo-checkbox-dependencies t)
   (org-track-ordered-property-with-tag t)
 
   ;; capture
-  (org-capture-templates my:org-capture-templates)
+  (org-capture-templates
+   `(("diary" "日記" entry
+      (file+headline ladicle/get-today-diary "Diary")
+      "* %?\n"
+      :empty-lines 1 :jump-to-captured 1 :unnarrowed nil)
+     ("tweet" "一言メモ" item
+      (file+headline ladicle/get-today-diary "Log")
+      "%(ladicle/org-get-time) %?\n"
+      :prepend nil)
+     ("inbox" "新規プロジェクト" entry
+      (file (concat agenda-dir "inbox.org"))
+      ,(concat "%[" capture-template-dir "inbox.org]")
+      :empty-lines 1 :jump-to-captured nil)
+     ("interrupt" "突発作業" entry
+      (file (concat agenda-dir "inbox.org"))
+      ,(concat "%[" capture-template-dir "interrupt.org]")
+      :empty-lines 1 :clock-in 1 :clock-resume 1)
+     ("schedule" "予定作業" entry
+      (file (concat agenda-dir "schedule.org"))
+      ,(concat "%[" capture-template-dir "schedule.org]")
+      :empty-lines 1)
+     ("memo" "メモ・記録" plain
+      (file chpn/today-memo-string)
+      ,(concat "%[" capture-template-dir "memo.org]")
+      :empty-lines 1 :jump-to-captured 1 :unnarrowed nil)
+     ("break" "休憩" entry
+      (file (concat agenda-dir "inbox.org"))
+      "* DONE 休憩（%?）  :break:\n  %U\n"
+      :empty-lines 1 :clock-in 1 :clock-resume 1)
+     ("link" "リンクを追加" item
+      (clock)
+      "%A\n"
+      :immediate-finish 1 :prepend nil)))
 
   ;; tags
-  (org-tag-alist my:org-tag-alist)
+  (org-tag-alist '((:startgroup . nil) ("design" . ?s) ("develop" . ?d) ("meeting" . ?m) (:endgroup . nil)
+                   (:startgroup . nil) ("work"   . ?w) ("qanda"   . ?q) ("break"   . ?b) (:endgroup . nil)))
 
   ;; property
   (org-global-properties '(("Effort_ALL" . "0:05 0:15 0:30 1:00 1:30 2:00 2:30 3:00")))
@@ -849,7 +919,7 @@
   (org-columns-default-format "%40ITEM %TODO %PRIORITY %SCHEDULED %DEADLINE %EFFORT %CLOCKSUM %CLOCKSUM_T")
 
   ;; archive
-  (org-archive-location (concat agenda-archive-dir "archive_%s::"))
+  (org-archive-location (concat org-directory "agenda/archive/archive_%s::"))
 
   ;; source code
   (org-src-tab-acts-natively t)
@@ -921,12 +991,12 @@
   (defun diary-today     () (interactive) (chpn/open-file (ladicle/get-today-diary)))
   (defun diary-yesterday () (interactive) (chpn/open-file (ladicle/get-yesterday-diary)))
   (defun diary-from-cal  () (interactive) (chpn/open-file (ladicle/get-diary-from-cal)))
-  (defun open-memo       () (interactive) (chpn/open-file (counsel-find-file org-memo-dir)))
+  (defun open-memo       () (interactive) (chpn/open-file (counsel-find-file "~/org/memo/")))
 
   (defun chpn/insert-today-string     () (format-time-string "%F"    (current-time)))
   (defun chpn/insert-timestamp-string () (format-time-string "%F %T" (current-time)))
   (defun ladicle/org-get-time         () (format-time-string "<%R>"  (current-time)))
-  (defun chpn/today-memo-string       () (concat org-memo-dir  (read-string "memo title: ") ".org"))
+  (defun chpn/today-memo-string       () (concat org-directory "memo/" (read-string "memo title: ") ".org"))
   (defun ladicle/get-today-diary      () (concat org-directory (format-time-string "diary/%F.org" (current-time))))
   (defun ladicle/get-yesterday-diary  () (concat org-directory (format-time-string "diary/%F.org" (time-add (current-time) (* -24 3600)))))
   (defun ladicle/get-diary-from-cal   () (concat org-directory (format-time-string "diary/%F.org" (apply 'encode-time (parse-time-string (concat (org-read-date) " 00:00"))))))

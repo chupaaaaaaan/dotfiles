@@ -178,32 +178,19 @@
   ;; バックスラッシュを含むキーバインドの設定
   (define-key local-function-key-map [?\C-¥] [?\C-\\])
   (define-key local-function-key-map [?\M-¥] [?\M-\\])
-  (define-key local-function-key-map [?\C-\M-¥] [?\C-\M-\\])
-
-  ;; home directory
-  (setq home-directory (concat (getenv "HOME") "/")))
+  (define-key local-function-key-map [?\C-\M-¥] [?\C-\M-\\]))
 
 ;; GNU/Linux
 (when (eq system-type 'gnu/linux)
   (use-package exec-path-from-shell
     :ensure t
     :init
-    (exec-path-from-shell-initialize))
-
-  ;; home directory
-  (setq home-directory (concat (getenv "HOME") "/")))
+    (exec-path-from-shell-initialize)))
 
 ;; Windows
 (when (eq system-type 'windows-nt)
   (setq file-name-coding-system 'cp932)
-  (setq locale-coding-system 'cp932)
-
-  ;; home directory
-  (setq home-directory (concat (getenv "HOMEPATH") "/"))
-
-  ;; default path
-  (setq default-directory (concat (getenv "HOMEPATH") "/"))
-  (setq command-line-default-directory (concat (getenv "HOMEPATH") "/")))
+  (setq locale-coding-system 'cp932))
 
 
 ;; Keymap
@@ -1346,18 +1333,18 @@
   ; :disabled
   :after lsp-mode
   :custom
-  (lsp-java-vmargs (list "-XX:+UseParallelGC"
-                         "-XX:GCTimeRatio=4"
-                         "-XX:AdaptiveSizePolicyWeight=90"
-                         "-Dsun.zip.disableMemoryMapping=true"
-                         (concat "-javaagent:" (expand-file-name user-emacs-directory) "lombok.jar")
-                         (concat "-Xbootclasspath/a:" (expand-file-name user-emacs-directory) "lombok.jar")
-                         ;; "-noverify"
-                         ;; "-XX:+UseG1GC"
-                         ;; "-XX:+UseStringDeduplication"
-                         "-Xmx1G"
-                         "-Xms100m"))
-  (lsp-java-configuration-maven-user-settings (concat home-directory ".m2/settings.xml"))
+  (lsp-java-vmargs `("-XX:+UseParallelGC"
+                     "-XX:GCTimeRatio=4"
+                     "-XX:AdaptiveSizePolicyWeight=90"
+                     "-Dsun.zip.disableMemoryMapping=true"
+                     ,(concat "-javaagent:" (expand-file-name user-emacs-directory) "lombok.jar")
+                     ,(concat "-Xbootclasspath/a:" (expand-file-name user-emacs-directory) "lombok.jar")
+                     ;; "-noverify"
+                     ;; "-XX:+UseG1GC"
+                     ;; "-XX:+UseStringDeduplication"
+                     "-Xmx1G"
+                     "-Xms100m"))
+  (lsp-java-configuration-maven-user-settings "~/.m2/settings.xml")
   (lsp-java-import-maven-enabled t)
   (lsp-java-maven-download-sources t)
   (lsp-java-maven-update-snapshots t))

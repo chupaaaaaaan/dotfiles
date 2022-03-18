@@ -783,7 +783,7 @@
   ;; files and directories
   (org-directory "~/org/")
   (org-default-notes-file (concat org-directory "notes.org"))
-  (org-agenda-files '(agenda-dir ,org-default-notes-file))
+  (org-agenda-files `(,agenda-dir ,org-default-notes-file))
 
   ;; agenda
   (org-agenda-span 'day)

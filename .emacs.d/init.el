@@ -155,7 +155,7 @@
 (setq use-default-font-for-symbols nil)
 (setq inhibit-compacting-font-caches t)
 
-(add-hook 'after-init-hook #'chpn/font-setting)
+(add-hook 'emacs-startup-hook #'chpn/font-setting)
 
 ;; locale and environment
 (set-language-environment "Japanese")
@@ -207,7 +207,8 @@
   :ensure t
   :demand t
   :diminish which-key-mode
-  :hook (after-init . which-key-mode))
+  :hook
+  (emacs-startup . which-key-mode))
 
 ;; define prefix-key
 (define-prefix-command 'ladicle-window-map)
@@ -271,7 +272,7 @@
   ("C-x k"   . persp-kill-buffer*)
   ("C-x C-b" . persp-bs-show)
   :hook
-  (after-init . persp-mode)
+  (emacs-startup . persp-mode)
   (kill-emacs . persp-state-save))
 
 ;; Doom-themes
@@ -291,7 +292,7 @@
   :ensure t
   :demand t
   :hook
-  (after-init . doom-modeline-mode)
+  (emacs-startup . doom-modeline-mode)
   :custom
   (doom-modeline-buffer-file-name-style 'auto)
   ;; (doom-modeline-display-default-persp-name t)
@@ -432,7 +433,7 @@
   :ensure nil
   :defer t
   :hook
-  (after-init . recentf-mode)
+  (emacs-startup . recentf-mode)
   :custom
   (recentf-max-saved-items 20000000)
   (recentf-auto-cleanup 'never)
@@ -711,7 +712,7 @@
   (swiper-action-recenter t)
   (counsel-yank-pop-height 15)
   :hook
-  (after-init . ivy-mode)
+  (emacs-startup . ivy-mode)
   (ivy-mode . counsel-mode)
   :bind
   ("C-s" . swiper)
@@ -751,7 +752,7 @@
   ("C-r" . anzu-query-replace-regexp)
   ;; ("C-M-r" . anzu-query-replace-at-cursor-thing)
   :hook
-  (after-init . global-anzu-mode)
+  (emacs-startup . global-anzu-mode)
   :custom
   (anzu-deactivate-region t)
   (anzu-search-threshold 1000))
@@ -966,7 +967,7 @@
         ("C-c e" . org-set-effort))
 
   :hook
-  (after-init . (lambda () (interactive) (org-agenda nil "i")))
+  (emacs-startup . (lambda () (interactive) (org-agenda nil "i")))
   (kill-emacs . ladicle/org-clock-out-and-save-when-exit)
   (org-clock-in . (lambda ()
                     (setq org-mode-line-string (ladicle/task-clocked-time))
@@ -1151,7 +1152,7 @@
   :ensure t
   :defer t
   :hook
-  (after-init . global-git-gutter-mode)
+  (emacs-startup . global-git-gutter-mode)
   :custom
   (git-gutter:modified-sign "=")
   (git-gutter:added-sign    "+")
@@ -1182,7 +1183,7 @@
   :ensure t
   :defer t
   :hook
-  (after-init . yas-global-mode)
+  (emacs-startup . yas-global-mode)
   :config
   (use-package yasnippet-snippets :ensure t))
 
@@ -1197,7 +1198,7 @@
   (company-selection-wrap-around t)
 
   :hook
-  (after-init . global-company-mode)
+  (emacs-startup . global-company-mode)
 
   :bind
   (:map company-active-map
@@ -1248,7 +1249,7 @@
   (projectile-enable-caching t)
   (projectile-require-project-root t)
   :hook
-  (after-init . projectile-mode))
+  (emacs-startup . projectile-mode))
 
 ;; treemacs
 (use-package treemacs
@@ -1302,7 +1303,7 @@
   :ensure t
   :defer t
   :hook
-  (after-init . global-flycheck-mode))
+  (emacs-startup . global-flycheck-mode))
 
 
 (use-package flycheck-posframe

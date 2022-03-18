@@ -71,6 +71,8 @@
     (history-delete-duplicates . t)
     (history-length . 1000)
     (message-log-max . 10000)
+    (auto-save-timeout . 20)
+    (auto-save-interval . 60)
     (gc-cons-threshold . ,(* 10 gc-cons-threshold))))
 
 (leaf cus-edit
@@ -79,6 +81,7 @@
 
 (leaf startup
   :custom
+  ;; (auto-save-list-file-prefix . nil)
   (inhibit-startup-screen . t))
 
 (leaf scroll-bar
@@ -92,6 +95,12 @@
 (leaf mouse
   :custom
   (mouse-yank-at-point . t))
+
+(leaf files
+  :custom
+  (backup-directory-alist . `((".*" . ,temporary-file-directory)))
+  (make-backup-files . t)
+  (auto-save-default . t))
 
 ;; (custom-set-variables '(gnutls-algorithm-priority "normal:-vers-tls1.3"))
 
@@ -401,20 +410,6 @@
   (display-time-format " %F %R ")
   :config
   (display-time-mode t))
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Backup setting
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(custom-set-variables '(auto-save-timeout 20)
-                      '(auto-save-interval 60)
-                      ;; '(auto-save-file-name-transforms `((".*" ,temporary-file-directory t)))
-                      '(backup-directory-alist `((".*" . ,temporary-file-directory))))
-
-;; (setq make-backup-files nil)
-;; (setq auto-save-default nil)
-;; (setq auto-save-list-file-name nil)
-;; (setq auto-save-list-file-prefix nil)
-
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Utility

@@ -1463,21 +1463,15 @@
   :hook
   (elm-mode . elm-format-on-save-mode))
 
-(use-package dockerfile-mode
-  :ensure t
-  :defer t)
+(use-package dockerfile-mode :ensure t)
 
-(use-package docker-compose-mode
-  :ensure t
-  :defer t)
+(use-package docker-compose-mode :ensure t)
 
 (use-package jenkinsfile-mode
   :ensure t
   :defer t)
 
-(use-package markdown-mode
-  :ensure t
-  :defer t)
+(use-package markdown-mode :ensure t)
 
 (use-package rjsx-mode
   :ensure t
@@ -1499,10 +1493,7 @@
   (python-shell-interpreter "python3")
   (python-indent-guess-indent-offset-verbose nil))
 
-
-(use-package apache-mode
-  :ensure t
-  :defer t)
+(use-package apache-mode :ensure t)
 
 (use-package nginx-mode
   :ensure t
@@ -1538,8 +1529,7 @@
   (nxml-attribute-indent 2)
   (nxml-slash-auto-complete-flag t))
 
-(use-package sql-indent
-  :ensure t)
+(use-package sql-indent :ensure t)
 
 (use-package vterm
   :ensure t
@@ -1566,8 +1556,4 @@
   (web-mode-doctype-face ((nil (:foreground "Pink3"))))
   (web-mode-html-tag-face ((nil (:foreground "Green"))))
   (web-mode-html-attr-value-face ((nil (:foreground "Yellow"))))
-  (web-mode-html-attr-name-face ((nil (:foreground "#0FF"))))
-  )
-
-;; load customize file
-;; (load custom-file t)
+  (web-mode-html-attr-name-face ((nil (:foreground "#0FF")))))

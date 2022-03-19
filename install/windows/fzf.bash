@@ -7,6 +7,6 @@ shift
 
 ### install fzf ###
 curl -L -o fzf.zip https://github.com/junegunn/fzf/releases/download/${VERSION}/fzf-${VERSION}-windows_amd64.zip &&
-    unzip -o -j -d ~/.local/bin fzf.zip "**/fzf.exe" &&
+    unzip -o -j -d ~/.local/bin fzf.zip "fzf.exe" &&
     chmod +x ~/.local/bin/fzf.exe &&
     rm -f fzf.zip

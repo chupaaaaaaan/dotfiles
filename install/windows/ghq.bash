@@ -10,4 +10,3 @@ curl -L -o ghq.zip https://github.com/x-motemen/ghq/releases/download/${VERSION}
     unzip -o -j -d ~/.local/bin ghq.zip "**/ghq.exe" &&
     chmod +x ~/.local/bin/ghq.exe &&
     rm -f ghq.zip
-

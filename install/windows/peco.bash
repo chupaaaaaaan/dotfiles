@@ -10,4 +10,3 @@ curl -L -o peco.zip https://github.com/peco/peco/releases/download/${VERSION}/pe
     unzip -o -j -d ~/.local/bin peco.zip "**/peco.exe" &&
     chmod +x ~/.local/bin/peco.exe &&
     rm -f peco.zip
-

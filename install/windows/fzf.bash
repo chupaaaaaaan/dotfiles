@@ -10,4 +10,3 @@ curl -L -o fzf.zip https://github.com/junegunn/fzf/releases/download/${VERSION}/
     unzip -o -j -d ~/.local/bin fzf.zip "**/fzf.exe" &&
     chmod +x ~/.local/bin/fzf.exe &&
     rm -f fzf.zip
-

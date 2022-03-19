@@ -1437,7 +1437,7 @@
   (haskell-indentation-where-post-offset 4)
   (haskell-indentation-where-pre-offset 4)
   :hook
-  (haskell-mode . lsp)
+  (haskell-mode . lsp-deferred)
   :bind
   (:map haskell-mode-map
         ("C-c C-h" . haskell-compile)
@@ -1475,11 +1475,9 @@
   :init
   (add-to-list 'auto-mode-alist '(".*\\.js\\'" . rjsx-mode)))
 
-(use-package lsp-python-ms
+(use-package lsp-pyright
   :ensure t
   :defer t
-  :custom
-  (lsp-python-ms-auto-install-server t)
   :hook
   (python-mode . lsp-deferred))
 

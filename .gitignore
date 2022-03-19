@@ -38,15 +38,5 @@
 .emacs.d/url/
 .emacs.d/workspace/
 
-# peco
-peco*
-
-# kube-ps1
-kube-ps1.sh
-
-# git
-git-completion.bash
-git-prompt.sh
-
 # ghc
 .ghc/ghci_history

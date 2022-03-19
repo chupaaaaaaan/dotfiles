@@ -16,14 +16,14 @@ fi
 
 ### install tools ###
 case "$(uname -s)" in
-    "Linux")
+    Linux)
         ;;
-    "Darwin")
+    Darwin)
         ./install/darwin/ghq.bash v1.2.1
         ./install/darwin/fzf.bash 0.29.0
         ./install/darwin/peco.bash v0.5.10
         ;;
-    "MINGW64_NT-*")
+    MINGW64_NT-*)
         ./install/windows/ghq.bash v1.2.1
         ./install/windows/fzf.bash 0.29.0
         ./install/windows/peco.bash v0.5.10

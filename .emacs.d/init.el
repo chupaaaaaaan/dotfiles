@@ -2,18 +2,8 @@
 ;; Package loading
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-;; load-path setting
-;; (defun add-to-load-path (&rest paths)
-;;   (let (path)
-;;     (dolist (path paths paths)
-;;       (let ((elisp-dir
-;;              (expand-file-name (concat user-emacs-directory path))))
-;;         (add-to-list 'load-path elisp-dir)
-;;         (if (fboundp 'normal-top-level-add-subdirs-to-load-path)
-;;             (normal-top-level-add-subdirs-to-load-path))))))
-
-;; add directories under "~/.emacs.d/" to load-path
-;; (add-to-load-path "public_repos")
+;; load local configures
+(mapc (lambda (lc) (when (file-regular-p lc) (load-file lc))) (directory-files "~/.elisp/local/" t))
 
 (eval-and-compile
   (customize-set-variable
@@ -40,17 +30,23 @@
     (leaf hydra :ensure t)
     (leaf el-get :ensure t)
     (leaf blackout :ensure t)
-
     :config
     ;; initialize leaf-keywords.el
     (leaf-keywords-init)))
 
-;; load local configures
-(dolist (local-conf (directory-files (concat user-emacs-directory "local_conf") t "^[^_].+\\.el$"))
-  (load-file local-conf))
+(leaf leaf
+  :config
+  (leaf leaf-convert :ensure t)
+  (leaf leaf-tree
+    :ensure t
+    :custom
+    ((imenu-list-size . 30)
+     (imenu-list-position . 'left))))
 
-(leaf leaf-tree :ensure t)
-(leaf leaf-convert :ensure t)
+(leaf macrostep
+  :ensure t
+  :bind (("C-c e" . macrostep-expand)))
+
 (leaf transient-dwim
   :ensure t
   :bind (("M-=" . transient-dwim-dispatch)))
@@ -775,15 +771,11 @@
 (use-package org
   :ensure t
   :defer t
-  :init
-  (setq agenda-dir "~/org/agenda/")
-  (setq capture-template-dir "~/org/capture_templates/")
-
   :custom
   ;; files and directories
   (org-directory "~/org/")
   (org-default-notes-file (concat org-directory "notes.org"))
-  (org-agenda-files `(,agenda-dir ,org-default-notes-file))
+  (org-agenda-files `(,(concat org-directory agenda-dir) ,org-default-notes-file))
 
   ;; agenda
   (org-agenda-span 'day)
@@ -879,23 +871,23 @@
       "%(ladicle/org-get-time) %?\n"
       :prepend nil)
      ("inbox" "新規プロジェクト" entry
-      (file (concat agenda-dir "inbox.org"))
-      ,(concat "%[" capture-template-dir "inbox.org]")
+      (file ,(concat org-directory agenda-dir "inbox.org"))
+      ,(concat "%[" org-directory capture-template-dir "inbox.org]")
       :empty-lines 1 :jump-to-captured nil)
      ("interrupt" "突発作業" entry
-      (file (concat agenda-dir "inbox.org"))
-      ,(concat "%[" capture-template-dir "interrupt.org]")
+      (file ,(concat org-directory agenda-dir "inbox.org"))
+      ,(concat "%[" org-directory capture-template-dir "interrupt.org]")
       :empty-lines 1 :clock-in 1 :clock-resume 1)
      ("schedule" "予定作業" entry
-      (file (concat agenda-dir "schedule.org"))
-      ,(concat "%[" capture-template-dir "schedule.org]")
+      (file ,(concat org-directory agenda-dir "schedule.org"))
+      ,(concat "%[" org-directory capture-template-dir "schedule.org]")
       :empty-lines 1)
      ("memo" "メモ・記録" plain
       (file chpn/today-memo-string)
-      ,(concat "%[" capture-template-dir "memo.org]")
+      ,(concat "%[" org-directory capture-template-dir "memo.org]")
       :empty-lines 1 :jump-to-captured 1 :unnarrowed nil)
      ("break" "休憩" entry
-      (file (concat agenda-dir "inbox.org"))
+      (file ,(concat org-directory agenda-dir "inbox.org"))
       "* DONE 休憩（%?）  :break:\n  %U\n"
       :empty-lines 1 :clock-in 1 :clock-resume 1)
      ("link" "リンクを追加" item
@@ -982,6 +974,11 @@
 
 
   :preface
+  (setq agenda-dir "agenda/")
+  (setq capture-template-dir "capture_templates/")
+  (defun chpn/deploy-templates-if-not-exist (from-base to-base dirlist)
+    (mapc (lambda (dir) (unless (f-directory? (concat to-base dir))
+                          (f-copy (concat from-base dir) to-base))) dirlist))
   (defun agenda-inbox    () (interactive) (org-agenda nil "i"))
   (defun agenda-task     () (interactive) (org-agenda nil "p"))
   (defun diary-today     () (interactive) (chpn/open-file (ladicle/get-today-diary)))
@@ -1015,7 +1012,10 @@
   (defun ladicle/org-clock-out-and-save-when-exit ()
     "Save buffers and stop clocking when kill emacs."
     (ignore-errors (org-clock-out) t)
-    (save-some-buffers t)))
+    (save-some-buffers t))
+
+  :init
+  (chpn/deploy-templates-if-not-exist (concat user-emacs-directory "org-dir-template/") "~/org/" `(,agenda-dir ,capture-template-dir)))
 
 (use-package org-bullets
   :ensure t

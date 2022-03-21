@@ -17,8 +17,6 @@
 .emacs.d/flycheck_*
 .emacs.d/history
 .emacs.d/kkcrc
-.emacs.d/local_conf/*
-!.emacs.d/local_conf/_*
 .emacs.d/lombok.jar
 .emacs.d/.lsp-session*
 .emacs.d/meghanada/

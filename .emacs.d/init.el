@@ -61,6 +61,8 @@
   ;; (use-package-always-defer nil)
   (use-package-compute-statistics t))
 
+(leaf f :ensure t)
+
 (leaf cus-start
   :custom
   `((menu-bar-mode . nil)
@@ -101,6 +103,12 @@
   (backup-directory-alist . `((".*" . ,temporary-file-directory)))
   (make-backup-files . t)
   (auto-save-default . t))
+
+(leaf autorevert
+  :custom
+  (global-auto-revert-mode . t)
+  (auto-revert-interval . 0.5))
+
 
 ;; (custom-set-variables '(gnutls-algorithm-priority "normal:-vers-tls1.3"))
 
@@ -165,7 +173,6 @@
 ;; locale and environment
 (set-language-environment "Japanese")
 (prefer-coding-system 'utf-8)
-
 
 ;; Functions
 (defun chpn/open-file (fname) (switch-to-buffer (find-file-noselect fname)))
@@ -376,48 +383,37 @@
   (highlight-indent-guides-method 'character))
 
 ;; volatile-highlights
-(use-package volatile-highlights
+(leaf volatile-highlights
   :ensure t
-  :demand t
-  :diminish t
+  :blackout t
   :after undo-tree
+  :custom
+  (volatile-highlights-mode . t)
   :config
-  (volatile-highlights-mode t)
   (vhl/define-extension 'undo-tree 'undo-tree-yank 'undo-tree-move)
   (vhl/install-extension 'undo-tree))
 
-;; Modeline (Doom)
-;; https://github.com/seagle0128/doom-modeline
-(use-package nyan-mode
+(leaf nyan-mode
   :ensure t
-  :demand t
   :custom
-  (nyan-cat-face-number 4)
-  (nyan-animate-nyancat t)
-  :config
-  (nyan-mode 1))
+  (nyan-cat-face-number . 4)
+  (nyan-animate-nyancat . t)
+  (nyan-mode . t))
 
-;; datetime format
-(use-package time
-  :ensure t
-  :demand t
+(leaf time
   :custom
-  (display-time-interval 60)
-  (display-time-format " %F %R ")
-  :config
-  (display-time-mode t))
+  (display-time-interval . 60)
+  (display-time-format . " %F %R ")
+  (display-time-mode . t))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Utility
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; saveplace
-(use-package saveplace
-  :ensure t
-  :demand t
+
+(leaf saveplace
   :custom
-  (save-place-file (concat user-emacs-directory "places"))
-  :config
-  (save-place-mode))
+  `((save-place-mode . t)
+    (save-place-file . ,(concat temporary-file-directory "emacs-saveplace"))))
 
 ;; Recent files
 (use-package recentf
@@ -453,17 +449,13 @@
 
 
 ;; scroll-lock
-(use-package scroll-lock
-  :ensure t
-  :defer t
-  ;; :disabled
+(leaf scroll-lock
   :preface
   (defun toggle-scroll-lock ()
     "Toggle scroll lock."
     (interactive)
     (scroll-lock-mode (if scroll-lock-mode -1 1))
     (message "Scroll lock %s" (if scroll-lock-mode "enabled" "disabled")))
-
   :bind
   ("M-t m" . toggle-scroll-lock))
 
@@ -475,26 +467,14 @@
 ;;   (global-set-key (kbd "C-c d") 'ediff-files)
 ;;   )
 
-;; undo-tree
-(use-package undo-tree
+(leaf undo-tree
   :ensure t
-  :demand t
-  :diminish t
-  :config
-  (global-undo-tree-mode t))
+  :blackout t
+  :custom
+  (global-undo-tree-mode . t)
+  (undo-tree-history-directory-alist . `((".*" . ,temporary-file-directory))))
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Search / Replace
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; hydra
-(use-package hydra
-  :ensure t
-  :defer t)
-
-;; counsel-M-xを速くするに必須！
-;; counsel--M-x-externsで検索
-(use-package amx
-  :ensure t)
+(leaf amx :ensure t)
 
 (use-package ivy-rich
   :ensure t
@@ -1292,21 +1272,18 @@
   :config
   (treemacs-icons-dired-mode))
 
-
-;; flycheck
-(use-package flycheck
+(leaf flycheck
   :ensure t
-  :defer t
-  :hook
-  (emacs-startup . global-flycheck-mode))
-
-
-(use-package flycheck-posframe
-  :ensure t
-  :defer t
-  :after flycheck
-  :hook
-  (flycheck-mode . flycheck-posframe-mode))
+  :bind (("M-n" . flycheck-next-error)
+         ("M-p" . flycheck-previous-error))
+  :custom
+  `((flycheck-temp-prefix . ,(concat temporary-file-directory "flycheck"))
+    (global-flycheck-mode . t))
+  :config
+  (leaf flycheck-posframe
+    :ensure t
+    :hook
+    (flycheck-mode-hook . flycheck-posframe-mode)))
 
 ;; lsp
 (use-package lsp-mode

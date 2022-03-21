@@ -3,8 +3,13 @@
 cd $(dirname $0)
 
 ### create directories ###
+mkdir -p ~/.bash_profile.d
+mkdir -p ~/.bashrc.d
 mkdir -p ~/.local/bin
 mkdir -p ~/.local/share/tools
+mkdir -p ~/.local/share/applications
+mkdir -p ~/bin
+mkdir -p ~/.elisp/local
 
 
 ### check architecture ###
@@ -19,14 +24,15 @@ case "$(uname -s)" in
     Linux)
         ;;
     Darwin)
-        ./install/darwin/ghq.bash v1.2.1
-        ./install/darwin/fzf.bash 0.29.0
-        ./install/darwin/peco.bash v0.5.10
+        bash install/darwin/gnutools.bash
+        bash install/darwin/ghq.bash v1.2.1
+        bash install/darwin/fzf.bash 0.29.0
+        bash install/darwin/peco.bash v0.5.10
         ;;
     MINGW64_NT-*)
-        ./install/windows/ghq.bash v1.2.1
-        ./install/windows/fzf.bash 0.29.0
-        ./install/windows/peco.bash v0.5.10
+        bash install/windows/ghq.bash v1.2.1
+        bash install/windows/fzf.bash 0.29.0
+        bash install/windows/peco.bash v0.5.10
         ;;
     *)
         echo "Incompatible OS type: $(uname -s)" 1>&2
@@ -35,12 +41,13 @@ case "$(uname -s)" in
 esac
 
 
-./install/share/kube-ps1.sh.bash
-./install/share/git.bash
+bash install/share/kube-ps1.sh.bash
+bash install/share/git.bash
+bash install/share/local-elisp.bash
 
 
 
-
+### deploy dotfiles ###
 for file in .??*
 do
     [ "${file}" = ".gitignore" ] && continue

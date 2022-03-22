@@ -1,4 +1,12 @@
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; package --- Summary
+
+;;; Commentary:
+
+;; chupaaaaaaan's Emacs settings.
+
+;;; Code:
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Package loading
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -11,8 +19,9 @@
                        ("melpa"        . "https://melpa.org/packages/")
                        ("melpa-stable" . "https://stable.melpa.org/packages/")
                        ("gnu"          . "https://elpa.gnu.org/packages/")))
-  (customize-set-variable
-   'package-user-dir "~/.elisp/elpa")
+  (customize-set-variable 'package-user-dir "~/.elisp/elpa")
+  (customize-set-variable 'gnutls-algorithm-priority  "normal:-vers-tls1.3")
+
   (package-initialize)
 
   (unless (package-installed-p 'use-package)
@@ -56,13 +65,6 @@
 ;; General setting
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(use-package use-package
-  :custom
-  ;; (use-package-always-defer nil)
-  (use-package-compute-statistics t))
-
-(leaf f :ensure t)
-
 (leaf cus-start
   :custom
   `((menu-bar-mode . nil)
@@ -79,12 +81,12 @@
 
 (leaf cus-edit
   :custom
-  `((custom-file . ,(concat user-emacs-directory "customize.el"))))
+  `((custom-file . ,(concat temporary-file-directory "emacs-customize.el"))))
 
 (leaf startup
   :custom
-  ;; (auto-save-list-file-prefix . nil)
-  (inhibit-startup-screen . t))
+  `((auto-save-list-file-prefix . ,(concat temporary-file-directory "emacs-auto-saves-"))
+    (inhibit-startup-screen . t)))
 
 (leaf scroll-bar
   :custom
@@ -92,7 +94,8 @@
 
 (leaf savehist
   :custom
-  (savehist-mode . t))
+  `((savehist-mode . t)
+    (savehist-file . ,(concat temporary-file-directory "emacs-savehistory"))))
 
 (leaf mouse
   :custom
@@ -109,8 +112,15 @@
   (global-auto-revert-mode . t)
   (auto-revert-interval . 0.5))
 
+(leaf simple
+  :require t
+  :config
+  (line-number-mode 1)
+  (column-number-mode 1))
 
-;; (custom-set-variables '(gnutls-algorithm-priority "normal:-vers-tls1.3"))
+(leaf bookmark
+  :custom
+  `((bookmark-default-file . ,(concat temporary-file-directory "emacs-bookmarks"))))
 
 ;;TODO: 雑多な設定を整理する
 ;; maximize frame
@@ -135,7 +145,7 @@
 ;;   (all-the-icons-ivy-setup))
 
 (defun chpn/font-setting ()
-  "Initialize fonts on window-system"
+  "Initialize fonts on 'window-system."
   (interactive)
 
   (cond
@@ -175,7 +185,9 @@
 (prefer-coding-system 'utf-8)
 
 ;; Functions
-(defun chpn/open-file (fname) (switch-to-buffer (find-file-noselect fname)))
+(defun chpn/open-file (fname)
+  "Open FNAME and switch to the buffer non-interactively."
+  (switch-to-buffer (find-file-noselect fname)))
 
 ;; OS
 ;; Mac
@@ -244,154 +256,44 @@
 (global-set-key [f6] (lambda () (interactive) (counsel-M-x "^counsel ")))
 (global-set-key [f7] (lambda () (interactive) (chpn/open-file (concat user-emacs-directory "init.el"))))
 
-
-;; Window management
-(use-package golden-ratio
+(leaf golden-ratio
   :ensure t
-  :custom
-  (golden-ratio-mode t)
-  (golden-ratio-extra-commands
-   '(ace-window
-     projectile-vc
-     persp-list-buffers
-     quit-window
-     undo-tree-visualizer-quit
-     magit-mode-bury-buffer))
-  (golden-ratio-exclude-modes
-   '(treemacs-mode
-     lsp-ui-imenu-mode))
+  :leaf-defer nil
   :bind
-  ("M-t g" . golden-ratio-mode))
-
-(use-package ace-window
-  :ensure t
+  ("M-t g" . golden-ratio-mode)
   :custom
-  (aw-dispatch-always t)
+  (golden-ratio-mode . t)
+  (golden-ratio-extra-commands . '(ace-window
+                                   projectile-vc
+                                   persp-list-buffers
+                                   quit-window
+                                   undo-tree-visualizer-quit
+                                   magit-mode-bury-buffer))
+  (golden-ratio-exclude-modes . '(treemacs-mode
+                                  lsp-ui-imenu-mode)))
+
+(leaf ace-window
+  :ensure t
+  :leaf-defer nil
   :bind
-  ("M-o" . ace-window))
-
-(use-package bs :ensure t)
-
-(use-package perspective
-  :ensure t
+  ("M-o" . ace-window)
   :custom
-  (persp-state-default-file (concat user-emacs-directory "persp-state-file"))
-  (persp-modestring-short t)
+  (aw-dispatch-always . t))
+
+(leaf perspective
+  :ensure t
+  :leaf-defer nil
+  :custom
+  `((persp-state-default-file . ,(concat temporary-file-directory "emacs-persp-state-file"))
+    (persp-modestring-short . t))
   :bind
   ;; ("C-x b"   . persp-ivy-switch-buffer)
-  ("C-x b"   . persp-counsel-switch-buffer)
   ;; ("C-x b"   . persp-switch-to-buffer*)
+  ("C-x b"   . persp-counsel-switch-buffer)
   ("C-x k"   . persp-kill-buffer*)
   ("C-x C-b" . persp-bs-show)
   :hook
-  (emacs-startup . persp-mode)
-  (kill-emacs . persp-state-save))
-
-;; Doom-themes
-;; https://github.com/hlissner/emacs-doom-themes
-(use-package doom-themes
-  :ensure t
-  :demand t
-  :custom
-  (doom-themes-enable-bold t)
-  (doom-themes-enable-italic t)
-  :config
-  (load-theme 'doom-one t)
-  (doom-themes-neotree-config)
-  (doom-themes-org-config))
-
-(use-package doom-modeline
-  :ensure t
-  :demand t
-  :hook
-  (emacs-startup . doom-modeline-mode)
-  :custom
-  (doom-modeline-buffer-file-name-style 'auto)
-  ;; (doom-modeline-display-default-persp-name t)
-  ;; (doom-modeline-mode t)
-  ;; (doom-modeline-icon t)
-  ;; (doom-modeline-major-mode-icon t)
-  ;; (doom-modeline-major-mode-color-icon t)
-  ;; (doom-modeline-minor-modes nil)
-  :config
-  (set-cursor-color "cyan")
-  (line-number-mode 1)
-  (column-number-mode 1))
-
-(use-package hide-mode-line
-  :ensure t
-  :demand t
-  :disabled
-  :hook
-  (treemacs-mode . hide-mode-line-mode))
-
-;; Highlights
-;; highlight on the current line
-(use-package hl-line
-  :ensure t
-  :demand t
-  :config
-  (global-hl-line-mode t))
-
-;; highlight between two corresponding parentheses
-(use-package paren
-  :ensure t
-  :demand t
-  :custom-face
-  ;; (show-paren-match ((nil (:underline "#ff5555"))))
-  (show-paren-match ((nil (:background "#44475a" :foreground "#f1fa8c"))))
-  :custom
-  (show-paren-mode t)
-  (show-paren-delay 0)
-  (show-paren-style 'mixed)
-  (show-paren-when-point-inside-paren t)
-  (show-paren-when-point-in-periphery t)
-
-  :preface
-  (defun toggle-show-paren ()
-    "Toggle show paren."
-    (interactive)
-    (show-paren-mode (if show-paren-mode -1 1))
-    (message "Show paren %s" (if show-paren-mode "enabled" "disabled")))
-  :bind
-  ("M-t p" . toggle-show-paren))
-
-(use-package rainbow-delimiters
-  :ensure t
-  :demand t
-  :hook
-  (prog-mode . rainbow-delimiters-mode))
-
-(use-package highlight-indent-guides
-  :ensure t
-  :demand t
-  :diminish
-  :preface
-  (defun toggle-highlight-indent-guides ()
-    "Toggle highlight indent guides."
-    (interactive)
-    (highlight-indent-guides-mode (if highlight-indent-guides-mode -1 1))
-    (message "Highlight indent guides %s" (if highlight-indent-guides-mode "enabled" "disabled")))
-  :bind
-  ("M-t i" . toggle-highlight-indent-guides)
-  ;; :hook
-  ;; ((prog-mode yaml-mode) . highlight-indent-guides-mode)
-  :custom
-  (highlight-indent-guides-character 124)
-  (highlight-indent-guides-auto-enabled t)
-  (highlight-indent-guides-responsive t)
-  (highlight-indent-guides-method 'character))
-
-;; volatile-highlights
-(leaf volatile-highlights
-  :ensure t
-  :blackout t
-  :after undo-tree
-  :custom
-  (volatile-highlights-mode . t)
-  :config
-  (vhl/define-extension 'undo-tree 'undo-tree-yank 'undo-tree-move)
-  (vhl/install-extension 'undo-tree))
+  (kill-emacs-hook . persp-state-save))
 
 (leaf nyan-mode
   :ensure t
@@ -405,6 +307,97 @@
   (display-time-interval . 60)
   (display-time-format . " %F %R ")
   (display-time-mode . t))
+
+(leaf doom-modeline
+  :ensure t
+  ;; :after all-the-icons shrink-path
+  :custom
+  (doom-modeline-mode . t)
+  (doom-modeline-buffer-file-name-style . 'auto)
+  (doom-modeline-display-default-persp-name . t))
+
+(use-package hide-mode-line
+  :ensure t
+  :demand t
+  :disabled
+  :hook
+  (treemacs-mode . hide-mode-line-mode))
+
+(leaf hl-line
+  :custom
+  (global-hl-line-mode . t))
+
+(leaf paren
+  :leaf-defer nil
+  :custom-face
+  ;; (show-paren-match ((nil (:underline "#ff5555"))))
+  (show-paren-match . '((nil (:background "#44475a" :foreground "#f1fa8c"))))
+  :custom
+  (show-paren-mode . t)
+  (show-paren-delay . 0)
+  (show-paren-style . 'mixed)
+  (show-paren-when-point-inside-paren . t)
+  (show-paren-when-point-in-periphery . t)
+  :bind
+  ("M-t p" . toggle-show-paren)
+  :preface
+  (defun toggle-show-paren ()
+    "Toggle show paren."
+    (interactive)
+    (show-paren-mode (if show-paren-mode -1 1))
+    (message "Show paren %s" (if show-paren-mode "enabled" "disabled"))))
+
+(leaf rainbow-delimiters
+  :ensure t
+  :hook
+  (prog-mode-hook . rainbow-delimiters-mode))
+
+(leaf highlight-indent-guides
+  :ensure t
+  :blackout t
+  :bind
+  ("M-t i" . toggle-highlight-indent-guides)
+  :hook
+  ((prog-mode-hook yaml-mode-hook) . highlight-indent-guides-mode)
+  :custom
+  (highlight-indent-guides-character . 124)
+  (highlight-indent-guides-auto-enabled . t)
+  (highlight-indent-guides-responsive . t)
+  (highlight-indent-guides-method . 'column) ;; or 'fill, 'character, 'bitmap
+  :preface
+  (defun toggle-highlight-indent-guides ()
+    "Toggle highlight indent guides."
+    (interactive)
+    (highlight-indent-guides-mode (if highlight-indent-guides-mode -1 1))
+    (message "Highlight indent guides %s" (if highlight-indent-guides-mode "enabled" "disabled"))))
+
+;; volatile-highlights
+(leaf volatile-highlights
+  :ensure t
+  :blackout t
+  :custom
+  (volatile-highlights-mode . t)
+  :config
+  (vhl/define-extension 'undo-tree 'undo-tree-yank 'undo-tree-move)
+  (vhl/install-extension 'undo-tree))
+
+
+(leaf doom-themes
+  :ensure t
+  :custom
+  (doom-themes-enable-bold . t)
+  (doom-themes-enable-italic . t)
+  :config
+  (load-theme 'doom-one t)
+  (doom-themes-neotree-config)
+  (doom-themes-org-config)
+  (leaf frame
+    :require t
+    :config
+    (set-cursor-color "cyan")))
+
+
+
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Utility
@@ -422,6 +415,7 @@
   :hook
   (emacs-startup . recentf-mode)
   :custom
+  (recentf-save-file (concat temporary-file-directory "emacs-recentf"))
   (recentf-max-saved-items 20000000)
   (recentf-auto-cleanup 'never)
   (recentf-exclude '((expand-file-name package-user-dir)
@@ -474,7 +468,10 @@
   (global-undo-tree-mode . t)
   (undo-tree-history-directory-alist . `((".*" . ,temporary-file-directory))))
 
-(leaf amx :ensure t)
+(leaf amx
+  :ensure t
+  :custom
+  `((amx-save-file . ,(concat temporary-file-directory "emacs-amx-items"))))
 
 (use-package ivy-rich
   :ensure t
@@ -852,19 +849,19 @@
       :prepend nil)
      ("inbox" "新規プロジェクト" entry
       (file ,(concat org-directory agenda-dir "inbox.org"))
-      ,(concat "%[" org-directory capture-template-dir "inbox.org]")
+      ,(concat "%[" org-directory capture-template-dir "inbox.org" "]")
       :empty-lines 1 :jump-to-captured nil)
      ("interrupt" "突発作業" entry
       (file ,(concat org-directory agenda-dir "inbox.org"))
-      ,(concat "%[" org-directory capture-template-dir "interrupt.org]")
+      ,(concat "%[" org-directory capture-template-dir "interrupt.org" "]")
       :empty-lines 1 :clock-in 1 :clock-resume 1)
      ("schedule" "予定作業" entry
       (file ,(concat org-directory agenda-dir "schedule.org"))
-      ,(concat "%[" org-directory capture-template-dir "schedule.org]")
+      ,(concat "%[" org-directory capture-template-dir "schedule.org" "]")
       :empty-lines 1)
      ("memo" "メモ・記録" plain
       (file chpn/today-memo-string)
-      ,(concat "%[" org-directory capture-template-dir "memo.org]")
+      ,(concat "%[" org-directory capture-template-dir "memo.org" "]")
       :empty-lines 1 :jump-to-captured 1 :unnarrowed nil)
      ("break" "休憩" entry
       (file ,(concat org-directory agenda-dir "inbox.org"))
@@ -1220,6 +1217,8 @@
   (:map projectile-mode-map
         ("C-c p" . projectile-command-map))
   :custom
+  (projectile-known-projects-file (concat temporary-file-directory "emacs-projectile-bookmarks.eld"))
+  (projectile-cache-file (concat temporary-file-directory "emacs-projectile.cache"))
   (projectile-completion-system 'ivy)
   (projectile-enable-caching t)
   (projectile-require-project-root t)
@@ -1380,8 +1379,8 @@
                      "-XX:GCTimeRatio=4"
                      "-XX:AdaptiveSizePolicyWeight=90"
                      "-Dsun.zip.disableMemoryMapping=true"
-                     ,(concat "-javaagent:" (expand-file-name user-emacs-directory) "lombok.jar")
-                     ,(concat "-Xbootclasspath/a:" (expand-file-name user-emacs-directory) "lombok.jar")
+                     ,(concat "-javaagent:" (concat user-emacs-directory "lombok.jar"))
+                     ,(concat "-Xbootclasspath/a:" (concat user-emacs-directory "lombok.jar"))
                      ;; "-noverify"
                      ;; "-XX:+UseG1GC"
                      ;; "-XX:+UseStringDeduplication"
@@ -1528,3 +1527,6 @@
   (web-mode-html-tag-face ((nil (:foreground "Green"))))
   (web-mode-html-attr-value-face ((nil (:foreground "Yellow"))))
   (web-mode-html-attr-name-face ((nil (:foreground "#0FF")))))
+
+(provide 'init)
+;;; init.el ends here

@@ -1,3 +1,5 @@
+;;; package --- Summary
+
 ;;; Commentary:
 
 ;; chupaaaaaaan's Emacs settings.

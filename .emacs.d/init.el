@@ -1,5 +1,3 @@
-;;; package --- Summary
-
 ;;; Commentary:
 
 ;; chupaaaaaaan's Emacs settings.
@@ -10,8 +8,21 @@
 ;; Package loading
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+
+(eval-and-compile
+  ;; directory
+  (defconst chpn/dir-cache "~/.cache/emacs/")
+  (unless (file-directory-p chpn/dir-cache)
+    (make-directory chpn/dir-cache t))
+
+  (defconst chpn/dir-pkg-elpa "~/.elisp/elpa/")
+  (defconst chpn/dir-pkg-elget "~/.elisp/el-get/")
+  (defconst chpn/dir-pkg-local "~/.elisp/local/")
+  (unless (file-directory-p chpn/dir-pkg-local)
+    (make-directory chpn/dir-pkg-local t)))
+
 ;; load local configures
-(mapc (lambda (lc) (when (file-regular-p lc) (load-file lc))) (directory-files "~/.elisp/local/" t))
+(mapc (lambda (lc) (when (file-regular-p lc) (load-file lc))) (directory-files chpn/dir-pkg-local t))
 
 (eval-and-compile
   (customize-set-variable
@@ -19,7 +30,7 @@
                        ("melpa"        . "https://melpa.org/packages/")
                        ("melpa-stable" . "https://stable.melpa.org/packages/")
                        ("gnu"          . "https://elpa.gnu.org/packages/")))
-  (customize-set-variable 'package-user-dir "~/.elisp/elpa")
+  (customize-set-variable 'package-user-dir chpn/dir-pkg-elpa)
   (customize-set-variable 'gnutls-algorithm-priority  "normal:-vers-tls1.3")
 
   (package-initialize)
@@ -37,7 +48,10 @@
     :init
     ;; optional packages if you want to use :hydra, :el-get, :blackout,,,
     (leaf hydra :ensure t)
-    (leaf el-get :ensure t)
+    (leaf el-get
+      :ensure t
+      :custom
+      `((el-get-dir . ,chpn/dir-pkg-elget)))
     (leaf blackout :ensure t)
     :config
     ;; initialize leaf-keywords.el
@@ -81,11 +95,11 @@
 
 (leaf cus-edit
   :custom
-  `((custom-file . ,(concat temporary-file-directory "emacs-customize.el"))))
+  `((custom-file . ,(concat chpn/dir-cache "customize.el"))))
 
 (leaf startup
   :custom
-  `((auto-save-list-file-prefix . ,(concat temporary-file-directory "emacs-auto-saves-"))
+  `((auto-save-list-file-prefix . ,(concat chpn/dir-cache "auto-saves-"))
     (inhibit-startup-screen . t)))
 
 (leaf scroll-bar
@@ -95,7 +109,7 @@
 (leaf savehist
   :custom
   `((savehist-mode . t)
-    (savehist-file . ,(concat temporary-file-directory "emacs-savehistory"))))
+    (savehist-file . ,(concat chpn/dir-cache "history"))))
 
 (leaf mouse
   :custom
@@ -103,7 +117,7 @@
 
 (leaf files
   :custom
-  (backup-directory-alist . `((".*" . ,temporary-file-directory)))
+  (backup-directory-alist . `((".*" . ,chpn/dir-cache)))
   (make-backup-files . t)
   (auto-save-default . t))
 
@@ -120,7 +134,25 @@
 
 (leaf bookmark
   :custom
-  `((bookmark-default-file . ,(concat temporary-file-directory "emacs-bookmarks"))))
+  `((bookmark-default-file . ,(concat chpn/dir-cache "bookmarks"))))
+
+(leaf shut-up :ensure t)
+
+(leaf bs
+  :bind
+  (("M-]" . bs-cycle-next)
+   ("M-[" . bs-cycle-previous))
+  :custom
+  ((bs-max-window-height . 10)
+   (bs-cycle-configuration-name . "files"))
+  :config
+  (leaf bsv
+    :el-get (bsv
+             :url "https://github.com/takaxp/bsv.git"
+             :features bsv)
+    :config
+    (bsv-disable-advices)))
+
 
 ;;TODO: 雑多な設定を整理する
 ;; maximize frame
@@ -144,24 +176,18 @@
 ;;   :config
 ;;   (all-the-icons-ivy-setup))
 
-(defun chpn/font-setting ()
-  "Initialize fonts on 'window-system."
-  (interactive)
-
-  (cond
-   ((or (eq window-system 'x)
-        (eq window-system 'w32)
-        (eq window-system 'ns))
-    (let* ((size my:font-size)
-           (family my:font-family)
-           (h (round (* size 10))))
-      (set-face-attribute 'default nil :family family :height h)
-      (set-fontset-font nil 'unicode           (font-spec :family family) nil 'append)
-      (set-fontset-font nil 'japanese-jisx0208 (font-spec :family family) nil 'append)
-      (set-fontset-font nil 'japanese-jisx0212 (font-spec :family family) nil 'append)
-      (set-fontset-font nil 'katakana-jisx0201 (font-spec :family family) nil 'append)
-      (add-to-list 'face-font-rescale-alist (cons family 1.0))
-      (when (featurep 'all-the-icons)
+(leaf all-the-icons
+  :ensure t
+  :when (display-graphic-p)
+  :if (or (eq window-system 'x) (eq window-system 'w32) (eq window-system 'ns))
+  :config
+  (let* ((size my:font-size) (family my:font-family) (h (round (* size 10))))
+        (set-face-attribute 'default nil :family family :height h)
+        (set-fontset-font nil 'unicode           (font-spec :family family) nil 'append)
+        (set-fontset-font nil 'japanese-jisx0208 (font-spec :family family) nil 'append)
+        (set-fontset-font nil 'japanese-jisx0212 (font-spec :family family) nil 'append)
+        (set-fontset-font nil 'katakana-jisx0201 (font-spec :family family) nil 'append)
+        (add-to-list 'face-font-rescale-alist (cons family 1.0))
         (set-fontset-font nil 'unicode (font-spec :family "all-the-icons")   nil 'append)
         (set-fontset-font nil 'unicode (font-spec :family "Material Icons")  nil 'append)
         (set-fontset-font nil 'unicode (font-spec :family "FontAwesome")     nil 'append)
@@ -170,15 +196,13 @@
         (set-fontset-font nil 'unicode (font-spec :family "Weather Icons")   nil 'append)
         (add-to-list 'face-font-rescale-alist (cons "FontAwesome" 0.85))
         (add-to-list 'face-font-rescale-alist (cons "file-icons" 0.85))
-        (add-to-list 'face-font-rescale-alist (cons "github-octicons" 0.85)))
-      (message (format "Setup for %s with %f" family size))))
-   (t
-    (message "Not have window-system"))))
+        (add-to-list 'face-font-rescale-alist (cons "github-octicons" 0.85))
+        (message (format "Setup for %s with %f" family size))))
 
 (setq use-default-font-for-symbols nil)
 (setq inhibit-compacting-font-caches t)
 
-(add-hook 'emacs-startup-hook #'chpn/font-setting)
+;; (add-hook 'emacs-startup-hook #'chpn/font-setting)
 
 ;; locale and environment
 (set-language-environment "Japanese")
@@ -255,6 +279,7 @@
 (global-set-key [f5] (lambda () (interactive) (customize-group-other-window)))
 (global-set-key [f6] (lambda () (interactive) (counsel-M-x "^counsel ")))
 (global-set-key [f7] (lambda () (interactive) (chpn/open-file (concat user-emacs-directory "init.el"))))
+(global-set-key [f8] (lambda () (interactive) (switch-to-buffer "*scratch*")))
 
 (leaf golden-ratio
   :ensure t
@@ -262,15 +287,15 @@
   :bind
   ("M-t g" . golden-ratio-mode)
   :custom
-  (golden-ratio-mode . t)
-  (golden-ratio-extra-commands . '(ace-window
-                                   projectile-vc
-                                   persp-list-buffers
-                                   quit-window
-                                   undo-tree-visualizer-quit
-                                   magit-mode-bury-buffer))
-  (golden-ratio-exclude-modes . '(treemacs-mode
-                                  lsp-ui-imenu-mode)))
+  ((golden-ratio-mode . t)
+   (golden-ratio-extra-commands . '(ace-window
+                                    projectile-vc
+                                    persp-list-buffers
+                                    quit-window
+                                    undo-tree-visualizer-quit
+                                    magit-mode-bury-buffer))
+   (golden-ratio-exclude-modes . '(treemacs-mode
+                                   lsp-ui-imenu-mode))))
 
 (leaf ace-window
   :ensure t
@@ -284,7 +309,7 @@
   :ensure t
   :leaf-defer nil
   :custom
-  `((persp-state-default-file . ,(concat temporary-file-directory "emacs-persp-state-file"))
+  `((persp-state-default-file . ,(concat chpn/dir-cache "persp-state-file"))
     (persp-modestring-short . t))
   :bind
   ;; ("C-x b"   . persp-ivy-switch-buffer)
@@ -310,6 +335,7 @@
 
 (leaf doom-modeline
   :ensure t
+  :after all-the-icons
   ;; :after all-the-icons shrink-path
   :custom
   (doom-modeline-mode . t)
@@ -355,6 +381,7 @@
 (leaf highlight-indent-guides
   :ensure t
   :blackout t
+  :defvar highlight-indent-guides-mode
   :bind
   ("M-t i" . toggle-highlight-indent-guides)
   :hook
@@ -406,44 +433,37 @@
 (leaf saveplace
   :custom
   `((save-place-mode . t)
-    (save-place-file . ,(concat temporary-file-directory "emacs-saveplace"))))
+    (save-place-file . ,(concat chpn/dir-cache "places"))))
 
 ;; Recent files
-(use-package recentf
-  :ensure nil
-  :defer t
-  :hook
-  (emacs-startup . recentf-mode)
+(leaf recentf
   :custom
-  (recentf-save-file (concat temporary-file-directory "emacs-recentf"))
-  (recentf-max-saved-items 20000000)
-  (recentf-auto-cleanup 'never)
-  (recentf-exclude '((expand-file-name package-user-dir)
-                     ".cache"
-                     "cache"
-                     "recentf"
-                     "COMMIT_EDITMSG\\'"))
-  :preface
-  (defun ladicle/recentf-save-list-silence ()
-    (interactive)
-    (let ((message-log-max nil))
-      (if (fboundp 'shut-up)
-          (shut-up (recentf-save-list))
-        (recentf-save-list)))
-    (message ""))
-  (defun ladicle/recentf-cleanup-silence ()
-    (interactive)
-    (let ((message-log-max nil))
-      (if shutup-p
-          (shut-up (recentf-cleanup))
-        (recentf-cleanup)))
-    (message ""))
-  :hook
-  (focus-out-hook . (ladicle/recentf-save-list-silence ladicle/recentf-cleanup-silence)))
-
+  `((recentf-mode . t)
+    (recentf-save-file . ,(concat chpn/dir-cache "recentf"))
+    (recentf-max-saved-items . 20000000)
+    (recentf-auto-cleanup . 'never))
+  ;; :hook
+  ;; (focus-out-hook . (ladicle/recentf-save-list-silence ladicle/recentf-cleanup-silence))
+  ;; :preface
+  ;; (defun ladicle/recentf-save-list-silence ()
+  ;;   (interactive)
+  ;;   (let ((message-log-max nil))
+  ;;     (if (fboundp 'shut-up)
+  ;;         (shut-up (recentf-save-list))
+  ;;       (recentf-save-list)))
+  ;;   (message ""))
+  ;; (defun ladicle/recentf-cleanup-silence ()
+  ;;   (interactive)
+  ;;   (let ((message-log-max nil))
+  ;;     (if (fboundp 'shut-up)
+  ;;         (shut-up (recentf-cleanup))
+  ;;       (recentf-cleanup)))
+  ;;   (message ""))
+  )
 
 ;; scroll-lock
 (leaf scroll-lock
+  :defvar scroll-lock-mode
   :preface
   (defun toggle-scroll-lock ()
     "Toggle scroll lock."
@@ -466,12 +486,12 @@
   :blackout t
   :custom
   (global-undo-tree-mode . t)
-  (undo-tree-history-directory-alist . `((".*" . ,temporary-file-directory))))
+  (undo-tree-history-directory-alist . `((".*" . ,chpn/dir-cache))))
 
 (leaf amx
   :ensure t
   :custom
-  `((amx-save-file . ,(concat temporary-file-directory "emacs-amx-items"))))
+  `((amx-save-file . ,(concat chpn/dir-cache "emacs-amx-items"))))
 
 (use-package ivy-rich
   :ensure t
@@ -725,22 +745,18 @@
   (anzu-deactivate-region t)
   (anzu-search-threshold 1000))
 
-(use-package google-this
+(leaf go-translate
   :ensure t
-  :defer t
-  :bind
-  ("M-i G" . google-this))
-
-(use-package google-translate
-  :ensure t
-  :defer t
-  :bind
-  ("M-i t" . google-translate-at-point)
-  ("M-i T" . google-translate-at-point-reverse)
-
   :custom
-  (google-translate-default-source-language "en")
-  (google-translate-default-target-language "ja"))
+  (gts-translate-list . '(("en" "ja")))
+  :bind
+  (("M-i t" . google-translate-at-point))
+  :config
+  (setq gts-default-translator
+        (gts-translator
+         :picker (gts-prompt-picker)
+         :engines `(,(gts-google-engine) ,(gts-google-rpc-engine))
+         :render (gts-buffer-render))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Org mode
@@ -954,8 +970,8 @@
   (setq agenda-dir "agenda/")
   (setq capture-template-dir "capture_templates/")
   (defun chpn/deploy-templates-if-not-exist (from-base to-base dirlist)
-    (mapc (lambda (dir) (unless (f-directory? (concat to-base dir))
-                          (f-copy (concat from-base dir) to-base))) dirlist))
+    (mapc (lambda (dir) (unless (file-directory-p (concat to-base dir))
+                          (copy-directory (concat from-base dir) to-base nil t))) dirlist))
   (defun agenda-inbox    () (interactive) (org-agenda nil "i"))
   (defun agenda-task     () (interactive) (org-agenda nil "p"))
   (defun diary-today     () (interactive) (chpn/open-file (ladicle/get-today-diary)))
@@ -1217,8 +1233,8 @@
   (:map projectile-mode-map
         ("C-c p" . projectile-command-map))
   :custom
-  (projectile-known-projects-file (concat temporary-file-directory "emacs-projectile-bookmarks.eld"))
-  (projectile-cache-file (concat temporary-file-directory "emacs-projectile.cache"))
+  (projectile-known-projects-file (concat chpn/dir-cache "emacs-projectile-bookmarks.eld"))
+  (projectile-cache-file (concat chpn/dir-cache "emacs-projectile.cache"))
   (projectile-completion-system 'ivy)
   (projectile-enable-caching t)
   (projectile-require-project-root t)
@@ -1276,7 +1292,7 @@
   :bind (("M-n" . flycheck-next-error)
          ("M-p" . flycheck-previous-error))
   :custom
-  `((flycheck-temp-prefix . ,(concat temporary-file-directory "flycheck"))
+  `((flycheck-temp-prefix . ,(concat chpn/dir-cache "flycheck"))
     (global-flycheck-mode . t))
   :config
   (leaf flycheck-posframe
@@ -1419,6 +1435,11 @@
         ("C-c C-h" . haskell-compile)
         ("C-c ?" . hoogle)))
 
+(leaf restclient
+  :ensure t
+  :config
+  (leaf ob-restclient :ensure t))
+
 (use-package terraform-mode
   :ensure t
   :defer t
@@ -1435,9 +1456,11 @@
   :hook
   (elm-mode . elm-format-on-save-mode))
 
-(use-package dockerfile-mode :ensure t)
+(leaf yaml-mode :ensure t)
 
-(use-package docker-compose-mode :ensure t)
+(leaf docker-compose-mode
+  :ensure t
+  :after yaml-mode)
 
 (use-package jenkinsfile-mode
   :ensure t

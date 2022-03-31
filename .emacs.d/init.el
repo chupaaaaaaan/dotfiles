@@ -141,6 +141,7 @@
 (leaf shut-up :ensure t)
 
 (leaf bs
+  :leaf-defer nil
   :bind
   (("M-]" . bs-cycle-next)
    ("M-[" . bs-cycle-previous))
@@ -320,7 +321,9 @@
   ("C-x k"   . persp-kill-buffer*)
   ("C-x C-b" . persp-bs-show)
   :hook
-  (kill-emacs-hook . persp-state-save))
+  (kill-emacs-hook . persp-state-save)
+  :config
+  (persp-mode))
 
 (leaf nyan-mode
   :ensure t

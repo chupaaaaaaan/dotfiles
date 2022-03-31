@@ -1469,6 +1469,10 @@
 
 (use-package markdown-mode :ensure t)
 
+(leaf js
+  :hook
+  (js-mode-hook . lsp-deferred))
+
 (leaf typescript-mode
   :ensure t
   :hook

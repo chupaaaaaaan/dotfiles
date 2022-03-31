@@ -1386,7 +1386,10 @@
   :after lsp-mode
   :config
   (dap-auto-configure-mode)
-  (leaf dap-chrome :require t))
+  (leaf dap-chrome
+    :require t
+    :config
+    (dap-chrome-setup)))
 
 (leaf lsp-java
   :ensure t

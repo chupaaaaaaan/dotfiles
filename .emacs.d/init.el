@@ -1492,7 +1492,8 @@
 
 (leaf tree-sitter
   :ensure t
-  :hook ((typescript-mode typescript-tsx-mode) . tree-sitter-hl-mode)
+  :hook
+  ((typescript-mode typescript-tsx-mode) . tree-sitter-hl-mode)
   :config
   (leaf tree-sitter-langs
     :ensure t

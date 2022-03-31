@@ -1467,11 +1467,11 @@
 
 (use-package markdown-mode :ensure t)
 
-(use-package rjsx-mode
-  :ensure t
-  :defer t
-  :init
-  (add-to-list 'auto-mode-alist '(".*\\.js\\'" . rjsx-mode)))
+;; (use-package rjsx-mode
+;;   :ensure t
+;;   :defer t
+;;   :init
+;;   (add-to-list 'auto-mode-alist '(".*\\.js\\'" . rjsx-mode)))
 
 (use-package lsp-pyright
   :ensure t

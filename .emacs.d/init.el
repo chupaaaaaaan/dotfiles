@@ -1381,37 +1381,34 @@
   :custom
   (lsp-treemacs-sync-mode t))
 
-(use-package dap-mode
+(leaf dap-mode
   :ensure t
   :after lsp-mode
   :config
-  (dap-auto-configure-mode))
+  (dap-auto-configure-mode)
+  (leaf dap-chrome :require t))
 
-;; Java
-(use-package lsp-java
+(leaf lsp-java
   :ensure t
-  ; :disabled
-  :after lsp-mode
+  :after lsp-mode dap-mode
   :custom
-  (lsp-java-vmargs `("-XX:+UseParallelGC"
-                     "-XX:GCTimeRatio=4"
-                     "-XX:AdaptiveSizePolicyWeight=90"
-                     "-Dsun.zip.disableMemoryMapping=true"
-                     ,(concat "-javaagent:" (concat user-emacs-directory "lombok.jar"))
-                     ,(concat "-Xbootclasspath/a:" (concat user-emacs-directory "lombok.jar"))
-                     ;; "-noverify"
-                     ;; "-XX:+UseG1GC"
-                     ;; "-XX:+UseStringDeduplication"
-                     "-Xmx1G"
-                     "-Xms100m"))
-  (lsp-java-configuration-maven-user-settings "~/.m2/settings.xml")
-  (lsp-java-import-maven-enabled t)
-  (lsp-java-maven-download-sources t)
-  (lsp-java-maven-update-snapshots t))
-
-(use-package dap-java
-  :ensure nil
-  :after dap-mode lsp-java)
+  (lsp-java-vmargs . `("-XX:+UseParallelGC"
+                       "-XX:GCTimeRatio=4"
+                       "-XX:AdaptiveSizePolicyWeight=90"
+                       "-Dsun.zip.disableMemoryMapping=true"
+                       ,(concat "-javaagent:" (concat user-emacs-directory "lombok.jar"))
+                       ,(concat "-Xbootclasspath/a:" (concat user-emacs-directory "lombok.jar"))
+                       ;; "-noverify"
+                       ;; "-XX:+UseG1GC"
+                       ;; "-XX:+UseStringDeduplication"
+                       "-Xmx1G"
+                       "-Xms100m"))
+  (lsp-java-configuration-maven-user-settings . "~/.m2/settings.xml")
+  (lsp-java-import-maven-enabled . t)
+  (lsp-java-maven-download-sources . t)
+  (lsp-java-maven-update-snapshots . t)
+  :config
+  (leaf dap-java :require t))
 
 ;; Haskell
 (use-package lsp-haskell

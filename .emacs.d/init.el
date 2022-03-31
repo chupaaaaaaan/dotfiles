@@ -1305,7 +1305,6 @@
 ;; lsp
 (use-package lsp-mode
   :ensure t
-  :defer t
   :commands (lsp lsp-deferred)
   :custom
   ;; (lsp-log-io t)
@@ -1317,7 +1316,7 @@
   :hook
   (lsp-mode  . lsp-enable-which-key-integration)
   ;; (elm-mode  . lsp)
-  (java-mode . lsp))
+  (java-mode . lsp-deferred))
 
 
 (use-package lsp-ui

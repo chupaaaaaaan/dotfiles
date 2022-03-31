@@ -9,6 +9,7 @@
 .emacs.d/ac-comphist.dat
 .emacs.d/eclipse.jdt.ls/
 .emacs.d/eshell/
+.emacs.d/.extension/
 .emacs.d/kkcrc
 .emacs.d/lombok.jar
 .emacs.d/.lsp-session*

@@ -752,7 +752,7 @@
   :custom
   (gts-translate-list . '(("en" "ja")))
   :bind
-  (("M-i t" . google-translate-at-point))
+  (("M-i t" . gts-do-translate))
   :config
   (setq gts-default-translator
         (gts-translator
@@ -1385,10 +1385,7 @@
   :after lsp-mode
   :config
   (dap-auto-configure-mode)
-  (leaf dap-chrome
-    :require t
-    :config
-    (dap-chrome-setup)))
+  (leaf dap-chrome :require t))
 
 (leaf lsp-java
   :ensure t
@@ -1471,16 +1468,37 @@
 
 (leaf js
   :hook
-  (js-mode-hook . lsp-deferred))
+  (js-mode-hook . lsp-deferred)
+  :custom
+  ((js-indent-level . 2)
+   (js-jsx-indent-level . 2)))
 
+;; from https://github.com/emacs-typescript/typescript.el/issues/4#issuecomment-873485004
 (leaf typescript-mode
   :ensure t
   :hook
-  (typescript-mode-hook . lsp-deferred)
+  ((typescript-mode-hook . lsp-deferred)
+   (typescript-mode-hook . subword-mode))
   :mode
-  (".*\\.ts\\'" ".*\\.tsx\\'")
+  (".*\\.tsx\\'" . typescript-tsx-mode)
+  :init
+  (define-derived-mode typescript-tsx-mode typescript-mode "TypeScript[TSX]")
+  :custom
+  (typescript-indent-level . 2)
   :config
-  (leaf ob-typescript :ensure t :after org))
+  (leaf ob-typescript
+    :ensure t
+    :after org))
+
+(leaf tree-sitter
+  :ensure t
+  :hook ((typescript-mode typescript-tsx-mode) . tree-sitter-hl-mode)
+  :config
+  (leaf tree-sitter-langs
+    :ensure t
+    :config
+    (tree-sitter-require 'tsx)
+    (add-to-list 'tree-sitter-major-mode-language-alist '(typescript-tsx-mode . tsx))))
 
 (use-package lsp-pyright
   :ensure t

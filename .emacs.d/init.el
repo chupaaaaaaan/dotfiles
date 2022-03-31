@@ -1470,6 +1470,11 @@
 
 (use-package markdown-mode :ensure t)
 
+(leaf typescript-mode
+  :ensure t
+  :config
+  (leaf ob-typescript :ensure t :after org))
+
 ;; (use-package rjsx-mode
 ;;   :ensure t
 ;;   :defer t

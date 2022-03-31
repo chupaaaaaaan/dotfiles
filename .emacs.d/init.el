@@ -1472,14 +1472,12 @@
 
 (leaf typescript-mode
   :ensure t
+  :hook
+  (typescript-mode-hook . lsp-deferred)
+  :mode
+  (".*\\.ts\\'" ".*\\.tsx\\'")
   :config
   (leaf ob-typescript :ensure t :after org))
-
-;; (use-package rjsx-mode
-;;   :ensure t
-;;   :defer t
-;;   :init
-;;   (add-to-list 'auto-mode-alist '(".*\\.js\\'" . rjsx-mode)))
 
 (use-package lsp-pyright
   :ensure t

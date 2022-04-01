@@ -1398,8 +1398,8 @@
                        "-XX:GCTimeRatio=4"
                        "-XX:AdaptiveSizePolicyWeight=90"
                        "-Dsun.zip.disableMemoryMapping=true"
-                       ,(concat "-javaagent:" (concat user-emacs-directory "lombok.jar"))
-                       ,(concat "-Xbootclasspath/a:" (concat user-emacs-directory "lombok.jar"))
+                       ,(concat "-javaagent:" (expand-file-name "lombok.jar" user-emacs-directory))
+                       ,(concat "-Xbootclasspath/a:" (expand-file-name "lombok.jar" user-emacs-directory))
                        ;; "-noverify"
                        ;; "-XX:+UseG1GC"
                        ;; "-XX:+UseStringDeduplication"

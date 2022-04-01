@@ -1306,89 +1306,72 @@
     (flycheck-mode-hook . flycheck-posframe-mode)))
 
 ;; lsp
-(use-package lsp-mode
+(leaf lsp-mode
   :ensure t
   :commands (lsp lsp-deferred)
   :custom
-  ;; (lsp-log-io t)
-  (lsp-diagnostics-provider :auto)
-  (lsp-completion-provider :capf)
-  (lsp-lens-enable t)
-  (lsp-keymap-prefix "M-l")
-  ;; (lsp-document-sync-method 'lsp--sync-incremental)
+  ((lsp-diagnostics-provider . :auto)
+   (lsp-completion-provider . :capf)
+   (lsp-lens-enable . t)
+   ;; (lsp-log-io t)
+   ;; (lsp-document-sync-method 'lsp--sync-incremental)   
+   (lsp-keymap-prefix . "M-l"))
   :hook
-  (lsp-mode  . lsp-enable-which-key-integration)
-  ;; (elm-mode  . lsp)
-  (java-mode . lsp-deferred))
-
-
-(use-package lsp-ui
-  :ensure t
-  :defer t
-  :after lsp-mode
-  :hook
-  (lsp-mode . lsp-ui-mode)
-
-  ;; :custom-face
-  ;; (lsp-ui-doc-background ((nil (:background "black"))))
-
-  :custom
-  (lsp-ui-doc-enable nil)
-  (lsp-ui-doc-header t)
-  (lsp-ui-doc-include-signature t)
-  (lsp-ui-doc-position 'bottom)
-  (lsp-ui-doc-max-width 150)
-  (lsp-ui-doc-max-height 30)
-  (lsp-ui-doc-show-with-mouse t)
-  (lsp-ui-doc-show-with-cursor t)
-  (lsp-ui-doc-use-childframe t)
-  (lsp-ui-doc-use-webkit nil)
-
-  (lsp-ui-flycheck-list-position 'right)
-
-  (lsp-ui-imenu-enable t)
-  (lsp-ui-imenu-auto-refresh t)
-  (lsp-ui-imenu-kind-position 'top)
-  (lsp-ui-imenu-window-width 50)
-
-  (lsp-ui-peek-enable nil)
-  (lsp-ui-peek-peek-height 50)
-  (lsp-ui-peek-list-width 50)
-  (lsp-ui-peek-fontify 'on-demand)
-  (lsp-ui-peek-show-directory t)
-
-  (lsp-ui-sideline-enable nil)
-  (lsp-ui-sideline-show-symbol t)
-  (lsp-ui-sideline-show-hover t)
-  (lsp-ui-sideline-show-diagnostics nil)
-  (lsp-ui-sideline-show-code-actions t)
-
+  ((lsp-mode-hook . lsp-enable-which-key-integration)
+   (lsp-mode-hook . lsp-ui-mode)
+   ;; (elm-mode-hook  . lsp)
+   (java-mode-hook       . lsp-deferred)
+   (haskell-mode-hook    . lsp-deferred)
+   (js-mode-hook         . lsp-deferred)
+   (typescript-mode-hook . lsp-deferred)
+   (python-mode-hook     . lsp-deferred))
   :bind
-  (:map lsp-mode-map
-        ("C-c m" . lsp-ui-imenu)))
-
-(use-package lsp-ivy
-  :ensure t
-  :demand t
-  :after lsp-mode
-  :bind
-  (:map lsp-mode-map
-        ("C-c C-c" . lsp-ivy-workspace-symbol)
-        ("C-u C-c C-c" . lsp-ivy-global-workspace-symbol)))
-
-(use-package lsp-treemacs
-  :ensure t
-  :demand t
-  :after lsp-mode treemacs
-  :custom
-  (lsp-treemacs-sync-mode t))
-
-(leaf dap-mode
-  :ensure t
-  :after lsp-mode
+  (lsp-mode-map
+   ("C-c m" . lsp-ui-imenu)
+   ("C-c C-c" . lsp-ivy-workspace-symbol)
+   ("C-u C-c C-c" . lsp-ivy-global-workspace-symbol))
   :config
-  (dap-auto-configure-mode)
-  (leaf dap-chrome :require t))
+  (leaf lsp-ui
+    :ensure t
+    ;; :custom-face
+    ;; (lsp-ui-doc-background ((nil (:background "black"))))
+    :custom
+    ((lsp-ui-doc-enable . nil)
+     (lsp-ui-doc-header . t)
+     (lsp-ui-doc-include-signature . t)
+     (lsp-ui-doc-position . 'bottom)
+     (lsp-ui-doc-max-width . 150)
+     (lsp-ui-doc-max-height . 30)
+     (lsp-ui-doc-show-with-mouse . t)
+     (lsp-ui-doc-show-with-cursor . t)
+     (lsp-ui-doc-use-childframe . t)
+     (lsp-ui-doc-use-webkit . nil)
+     (lsp-ui-flycheck-list-position . 'right)
+     (lsp-ui-imenu-enable . t)
+     (lsp-ui-imenu-auto-refresh . t)
+     (lsp-ui-imenu-kind-position . 'top)
+     (lsp-ui-imenu-window-width . 50)
+     (lsp-ui-peek-enable . nil)
+     (lsp-ui-peek-peek-height . 50)
+     (lsp-ui-peek-list-width . 50)
+     (lsp-ui-peek-fontify . 'on-demand)
+     (lsp-ui-peek-show-directory . t)
+     (lsp-ui-sideline-enable . nil)
+     (lsp-ui-sideline-show-symbol . t)
+     (lsp-ui-sideline-show-hover . t)
+     (lsp-ui-sideline-show-diagnostics . nil)
+     (lsp-ui-sideline-show-code-actions . t)))
+  (leaf lsp-ivy :ensure t :after ivy)
+  (leaf lsp-treemacs
+    :ensure t
+    :after treemacs
+    :custom
+    (lsp-treemacs-sync-mode . t))
+  (leaf dap-mode
+    :ensure t
+    :config
+    (dap-auto-configure-mode)
+    (leaf dap-chrome :require t)))
 
 (leaf lsp-java
   :ensure t
@@ -1412,29 +1395,25 @@
   :config
   (leaf dap-java :require t))
 
-;; Haskell
-(use-package lsp-haskell
+(leaf lsp-haskell
   :ensure t
-  :defer t
-  :after lsp-mode haskell-mode
+  :after lsp-mode
   :custom
-  (lsp-haskell-server-path "haskell-language-server-wrapper")
-  (lsp-haskell-formatting-provider "fourmolu"))
+  (lsp-haskell-server-path . "haskell-language-server-wrapper")
+  (lsp-haskell-formatting-provider . "fourmolu"))
 
-(use-package haskell-mode
+(leaf haskell-mode
   :ensure t
   :custom
-  (haskell-indentation-layout-offset 4)
-  (haskell-indentation-left-offset 4)
-  (haskell-indentation-starter-offset 4)
-  (haskell-indentation-where-post-offset 4)
-  (haskell-indentation-where-pre-offset 4)
-  :hook
-  (haskell-mode . lsp-deferred)
+  (haskell-indentation-layout-offset . 4)
+  (haskell-indentation-left-offset . 4)
+  (haskell-indentation-starter-offset . 4)
+  (haskell-indentation-where-post-offset . 4)
+  (haskell-indentation-where-pre-offset . 4)
   :bind
-  (:map haskell-mode-map
-        ("C-c C-h" . haskell-compile)
-        ("C-c ?" . hoogle)))
+  (haskell-mode-map
+   ("C-c C-h" . haskell-compile)
+   ("C-c ?" . hoogle)))
 
 (leaf restclient
   :ensure t
@@ -1470,8 +1449,6 @@
 (use-package markdown-mode :ensure t)
 
 (leaf js
-  :hook
-  (js-mode-hook . lsp-deferred)
   :custom
   ((js-indent-level . 2)
    (js-jsx-indent-level . 2)))
@@ -1480,8 +1457,7 @@
 (leaf typescript-mode
   :ensure t
   :hook
-  ((typescript-mode-hook . lsp-deferred)
-   (typescript-mode-hook . subword-mode))
+  (typescript-mode-hook . subword-mode)
   :mode
   (".*\\.tsx\\'" . typescript-tsx-mode)
   :init
@@ -1504,82 +1480,68 @@
     (tree-sitter-require 'tsx)
     (add-to-list 'tree-sitter-major-mode-language-alist '(typescript-tsx-mode . tsx))))
 
-(use-package lsp-pyright
-  :ensure t
-  :defer t
-  :hook
-  (python-mode . lsp-deferred))
+(leaf lsp-pyright :ensure t :after lsp-mode)
 
-(use-package python
-  :ensure t
+(leaf python
   :custom
-  (python-shell-interpreter "python3")
-  (python-indent-guess-indent-offset-verbose nil))
+  ((python-shell-interpreter . "python3")
+   (python-indent-guess-indent-offset-verbose . nil)))
 
-(use-package apache-mode :ensure t)
+(leaf apache-mode :ensure t)
 
-(use-package nginx-mode
+
+(leaf nginx-mode
   :ensure t
-  :defer t
-  :init
-  (add-to-list 'auto-mode-alist '("/nginx/sites-\\(?:available\\|enabled\\)/" . nginx-mode)))
-
-(use-package company-nginx
-  :ensure t
-  :defer t
+  :mode ("/nginx/sites-\\(?:available\\|enabled\\)/")
   :config
-  (eval-after-load 'nginx-mode
-    '(add-hook 'nginx-mode-hook #'company-nginx-keywords)))
+  (leaf company-nginx
+    :ensure t
+    :after company
+    :hook
+    (nginx-mode-hook . company-nginx-keywords)))
 
-(use-package plantuml-mode
+(leaf plantuml-mode
   :ensure t
-  :defer t
+  :mode ("\\.puml\\'")
   :custom
-  (plantuml-default-exec-mode 'jar)
-  (plantuml-jar-path (concat user-emacs-directory "plantuml.jar"))
-  (plantuml-output-type "png")
+  `((plantuml-default-exec-mode . 'jar)
+   (plantuml-jar-path . ,(concat user-emacs-directory "plantuml.jar"))
+   (plantuml-output-type . "png")))
 
-  :mode "\\.puml\\'")
-
-(use-package nxml-mode
-  :mode
-  (("\.xml$"   . nxml-mode)
-   ("\.xsl$"   . nxml-mode)
-   ("\.xhtml$" . nxml-mode)
-   ("\.page$"  . nxml-mode))
+(leaf nxml-mode
+  :mode ("\.xml$" "\.xsl$" "\.xhtml$" "\.page$")
   :custom
-  (nxml-child-indent 2)
-  (nxml-attribute-indent 2)
-  (nxml-slash-auto-complete-flag t))
+  ((nxml-child-indent . 2)
+   (nxml-attribute-indent . 2)
+   (nxml-slash-auto-complete-flag . t)))
 
-(use-package sql-indent :ensure t)
+(leaf sql-indent :ensure t)
 
-(use-package vterm
+;; (use-package vterm
+;;   :ensure t
+;;   :custom
+;;   (vterm-environment (list "LANG=ja_JP.UTF-8"))
+;;   :bind
+;;   (:map vterm-mode-map
+;;         ("C-h" . vterm-send-C-h)
+;;         ("C-g" . vterm-send-C-g)))
+
+(leaf web-mode
   :ensure t
+  :mode ("\.html$")
   :custom
-  (vterm-environment (list "LANG=ja_JP.UTF-8"))
-  :bind
-  (:map vterm-mode-map
-        ("C-h" . vterm-send-C-h)
-        ("C-g" . vterm-send-C-g)))
-
-(use-package web-mode
-  :ensure t
-  :defer t
-  :mode
-  (("\.html$" . web-mode))
-  :custom
-  (web-mode-markup-indent-offset 4)
-  (web-mode-css-indent-offset 4)
-  (web-mode-code-indent-offset 4)
-  (web-mode-enable-auto-pairing t)
-  (web-mode-enable-auto-closing t)
-  (web-mode-auto-close-style 2)
+  (web-mode-markup-indent-offset . 4)
+  (web-mode-css-indent-offset . 4)
+  (web-mode-code-indent-offset . 4)
+  (web-mode-enable-auto-pairing . t)
+  (web-mode-enable-auto-closing . t)
+  (web-mode-auto-close-style . 2)
   :custom-face
-  (web-mode-doctype-face ((nil (:foreground "Pink3"))))
-  (web-mode-html-tag-face ((nil (:foreground "Green"))))
-  (web-mode-html-attr-value-face ((nil (:foreground "Yellow"))))
-  (web-mode-html-attr-name-face ((nil (:foreground "#0FF")))))
+  (web-mode-doctype-face . '((nil (:foreground "Pink3"))))
+  (web-mode-html-tag-face . '((nil (:foreground "Green"))))
+  (web-mode-html-attr-value-face . '((nil (:foreground "Yellow"))))
+  (web-mode-html-attr-name-face . '((nil (:foreground "#0FF")))))
+
 
 (provide 'init)
 ;;; init.el ends here

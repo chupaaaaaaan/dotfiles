@@ -1480,7 +1480,11 @@
     (tree-sitter-require 'tsx)
     (add-to-list 'tree-sitter-major-mode-language-alist '(typescript-tsx-mode . tsx))))
 
-(leaf lsp-pyright :ensure t :after lsp-mode)
+(leaf lsp-pyright
+  :ensure t
+  :after lsp-mode
+  :custom
+  (lsp-pyright-python-executable-cmd . "python3"))
 
 (leaf python
   :custom

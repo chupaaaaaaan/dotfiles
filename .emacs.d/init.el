@@ -138,6 +138,17 @@
   :custom
   `((bookmark-default-file . ,(concat chpn/dir-cache "bookmarks"))))
 
+(leaf elec-pair
+  :bind
+  ("<f5>" . electric-pair-local-mode)
+  :custom
+  (electric-pair-mode . t))
+
+(leaf hungry-delete
+  :ensure t
+  :custom
+  (global-hungry-delete-mode . t))
+
 (leaf shut-up :ensure t)
 
 (leaf bs
@@ -279,7 +290,6 @@
 (global-set-key (kbd "C-h")   'delete-backward-char)
 (global-set-key (kbd "M-t l") 'toggle-truncate-lines)
 ;; (global-set-key (kbd "C-t")   'other-window)
-(global-set-key [f5] (lambda () (interactive) (customize-group-other-window)))
 (global-set-key [f6] (lambda () (interactive) (counsel-M-x "^counsel ")))
 (global-set-key [f7] (lambda () (interactive) (chpn/open-file (concat user-emacs-directory "init.el"))))
 (global-set-key [f8] (lambda () (interactive) (switch-to-buffer "*scratch*")))

@@ -1360,7 +1360,7 @@
      (lsp-ui-imenu-enable . t)
      (lsp-ui-imenu-auto-refresh . t)
      (lsp-ui-imenu-kind-position . 'top)
-     (lsp-ui-imenu-window-width . 50)
+     (lsp-ui-imenu-window-width . 0)
      (lsp-ui-peek-enable . nil)
      (lsp-ui-peek-peek-height . 50)
      (lsp-ui-peek-list-width . 50)

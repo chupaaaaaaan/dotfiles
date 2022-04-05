@@ -140,12 +140,14 @@
 
 (leaf elec-pair
   :bind
-  ("<f5>" . electric-pair-local-mode)
+  ("<f5> p" . electric-pair-local-mode)
   :custom
   (electric-pair-mode . t))
 
 (leaf hungry-delete
   :ensure t
+  :bind
+  ("<f5> d" . hungry-delete-mode)
   :custom
   (global-hungry-delete-mode . t))
 

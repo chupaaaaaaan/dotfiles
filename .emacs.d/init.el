@@ -1432,6 +1432,8 @@
   :config
   (leaf ob-restclient :ensure t))
 
+(leaf urlenc :ensure t)
+
 (use-package terraform-mode
   :ensure t
   :defer t

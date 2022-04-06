@@ -1308,6 +1308,7 @@ Original function is from `https://github.com/ema2159/centaur-tabs#my-personal-c
   (projectile-completion-system 'ivy)
   (projectile-enable-caching t)
   (projectile-require-project-root t)
+  (projectile-dirconfig-comment-prefix "#")
   :hook
   (emacs-startup . projectile-mode))
 

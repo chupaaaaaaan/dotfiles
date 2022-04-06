@@ -153,22 +153,75 @@
 
 (leaf shut-up :ensure t)
 
-(leaf bs
+(leaf uniquify
+  :require t
+  :custom
+  ((uniquify-buffer-name-style . 'post-forward)
+   (uniquify-separator . "|")))
+
+(leaf centaur-tabs
+  :ensure t
   :leaf-defer nil
   :bind
-  (("M-]" . bs-cycle-next)
-   ("M-[" . bs-cycle-previous))
+  (("M-[" . centaur-tabs-backward)
+   ("M-]" . centaur-tabs-forward)
+   ("C-c t b" . centaur-tabs-counsel-switch-group)
+   ("C-c t p" . centaur-tabs-group-by-projectile-project)
+   ("C-c t g" . centaur-tabs-group-buffer-groups))
+  :hook
+  ((term-mode-hook . centaur-tabs-local-mode)
+   (calendar-mode-hook . centaur-tabs-local-mode)
+   (helpful-mode-hook . centaur-tabs-local-mode))
   :custom
-  ((bs-max-window-height . 10)
-   (bs-cycle-configuration-name . "files"))
+  ((centaur-tabs-style . "bar")
+   (centaur-tabs-height . 20)
+   (centaur-tabs-set-icons . t)
+   (centaur-tabs-set-bar . 'over)
+   ;; (centaur-tabs-set-modified-marker . t)
+   (centaur-tabs-set-close-button . nil))
   :config
-  (leaf bsv
-    :el-get (bsv
-             :url "https://github.com/takaxp/bsv.git"
-             :features bsv)
-    :config
-    (bsv-disable-advices)))
+  (centaur-tabs-mode t)
+  (centaur-tabs-headline-match)
+  (defun centaur-tabs-buffer-groups ()
+    "`centaur-tabs-buffer-groups' control buffers' group rules.
 
+Group centaur-tabs with mode if buffer is derived from `eshell-mode' `emacs-lisp-mode' `dired-mode' `org-mode' `magit-mode'.
+All buffer name start with * will group to \"Emacs\".
+Other buffer group by `centaur-tabs-get-group-name' with project name.
+Original function is from `https://github.com/ema2159/centaur-tabs#my-personal-configuration'."
+    (list
+     (cond
+      ;; ((not (eq (file-remote-p (buffer-file-name)) nil))
+      ;; "Remote")
+      ((or (string-equal "*" (substring (buffer-name) 0 1))
+           (memq major-mode '(magit-process-mode
+                              magit-status-mode
+                              magit-diff-mode
+                              magit-log-mode
+                              magit-file-mode
+                              magit-blob-mode
+                              magit-blame-mode)))
+       "Emacs")
+      ((derived-mode-p 'prog-mode)
+       "Editing")
+      ((derived-mode-p 'dired-mode)
+       "Dired")
+      ((memq major-mode '(helpful-mode
+                          help-mode))
+       "Help")
+      ((memq major-mode '(org-mode
+                          org-agenda-clockreport-mode
+                          org-src-mode
+                          org-agenda-mode
+                          org-beamer-mode
+                          org-indent-mode
+                          org-bullets-mode
+                          org-cdlatex-mode
+                          org-agenda-log-mode
+                          diary-mode))
+       "OrgMode")
+      (t
+       (centaur-tabs-get-group-name (current-buffer)))))))
 
 ;;TODO: 雑多な設定を整理する
 ;; maximize frame

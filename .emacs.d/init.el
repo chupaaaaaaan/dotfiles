@@ -360,6 +360,7 @@ Original function is from `https://github.com/ema2159/centaur-tabs#my-personal-c
                                     projectile-vc
                                     persp-list-buffers
                                     quit-window
+                                    xref-goto-xref
                                     undo-tree-visualizer-quit
                                     magit-mode-bury-buffer))
    (golden-ratio-exclude-modes . '(treemacs-mode

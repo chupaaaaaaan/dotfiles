@@ -177,11 +177,13 @@
    (centaur-tabs-height . 20)
    (centaur-tabs-set-icons . t)
    (centaur-tabs-set-bar . 'over)
+   (centaur-tabs-cycle-scope . 'tabs)
    ;; (centaur-tabs-set-modified-marker . t)
    (centaur-tabs-set-close-button . nil))
   :config
   (centaur-tabs-mode t)
   (centaur-tabs-headline-match)
+  ;; (centaur-tabs-enable-buffer-reordering)
   (defun centaur-tabs-buffer-groups ()
     "`centaur-tabs-buffer-groups' control buffers' group rules.
 

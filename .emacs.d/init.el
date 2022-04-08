@@ -1395,7 +1395,7 @@ Original function is from `https://github.com/ema2159/centaur-tabs#my-personal-c
    (lsp-completion-provider . :capf)
    (lsp-lens-enable . t)
    ;; (lsp-log-io t)
-   ;; (lsp-document-sync-method 'lsp--sync-incremental)   
+   ;; (lsp-document-sync-method 'lsp--sync-incremental)
    (lsp-keymap-prefix . "M-l"))
   :hook
   ((lsp-mode-hook . lsp-enable-which-key-integration)

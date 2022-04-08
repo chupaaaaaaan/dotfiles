@@ -2,4 +2,4 @@
 
 cd $(dirname $0)
 
-find ../../.emacs.d/local_conf -type f ! -name "_*" | xargs -I@ cp -n @ ~/.elisp/local
+find ../../.emacs.d/local/ -type f | xargs -I@ cp -n @ ~/.elisp/local

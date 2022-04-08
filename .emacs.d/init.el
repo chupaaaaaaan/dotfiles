@@ -828,8 +828,17 @@ Original function is from `https://github.com/ema2159/centaur-tabs#my-personal-c
   (setq gts-default-translator
         (gts-translator
          :picker (gts-prompt-picker)
-         :engines `(,(gts-google-engine) ,(gts-google-rpc-engine))
-         :render (gts-buffer-render))))
+         :engines (gts-google-engine)
+         :render (gts-buffer-render)))
+  (setq gts-prompt-for-translate-keymap
+        (let ((map (make-sparse-keymap)))
+          (set-keymap-parent map minibuffer-local-map)
+          (define-key map "\C-g" #'top-level)
+          (define-key map "\M-n" #'gts-prompt-picker-next-path)
+          (define-key map "\M-p" (lambda () (interactive) (gts-prompt-picker-next-path t)))
+          (define-key map "\C-l" #'delete-minibuffer-contents)
+          (define-key map [C-return] (lambda () (interactive) (exit-minibuffer)))
+          map)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Org mode

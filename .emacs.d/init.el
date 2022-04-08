@@ -822,6 +822,7 @@ Original function is from `https://github.com/ema2159/centaur-tabs#my-personal-c
 
 (leaf go-translate
   :ensure t
+  :defvar (gts-default-translator gts-prompt-for-translate-keymap)
   :custom
   (gts-translate-list . '(("en" "ja")))
   :bind
@@ -1558,6 +1559,7 @@ Original function is from `https://github.com/ema2159/centaur-tabs#my-personal-c
   :config
   (leaf tree-sitter-langs
     :ensure t
+    :defvar (tree-sitter-major-mode-language-alist)
     :config
     (tree-sitter-require 'tsx)
     (add-to-list 'tree-sitter-major-mode-language-alist '(typescript-tsx-mode . tsx))))

@@ -23,10 +23,10 @@
   (unless (file-directory-p chpn/dir-pkg-local)
     (make-directory chpn/dir-pkg-local t)))
 
-;; load local configures
-(mapc (lambda (lc) (when (file-regular-p lc) (load-file lc))) (directory-files chpn/dir-pkg-local t))
-
 (eval-and-compile
+  (add-to-list 'load-path chpn/dir-pkg-local)
+  (require 'local-proxy-conf nil t)
+
   (customize-set-variable
    'package-archives '(("org"          . "https://orgmode.org/elpa/")
                        ("melpa"        . "https://melpa.org/packages/")
@@ -250,6 +250,8 @@ Original function is from `https://github.com/ema2159/centaur-tabs#my-personal-c
 (leaf all-the-icons
   :ensure t
   :when (display-graphic-p)
+  :require (font-setting)
+  :defvar (my:font-size my:font-family)
   :if (or (eq window-system 'x) (eq window-system 'w32) (eq window-system 'ns))
   :config
   (let* ((size my:font-size) (family my:font-family) (h (round (* size 10))))

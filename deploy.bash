@@ -28,11 +28,13 @@ case "$(uname -s)" in
         bash install/darwin/ghq.bash v1.2.1
         bash install/darwin/fzf.bash 0.29.0
         bash install/darwin/peco.bash v0.5.10
+        bash install/darwin/ag.bash
         ;;
     MINGW64_NT-*)
         bash install/windows/ghq.bash v1.2.1
         bash install/windows/fzf.bash 0.29.0
         bash install/windows/peco.bash v0.5.10
+        bash install/windows/ag.bash
         ;;
     *)
         echo "Incompatible OS type: $(uname -s)" 1>&2

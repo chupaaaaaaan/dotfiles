@@ -90,6 +90,7 @@
     (history-delete-duplicates . t)
     (history-length . 1000)
     (message-log-max . 10000)
+    (enable-recursive-minibuffers . t)
     (auto-save-timeout . 20)
     (auto-save-interval . 60)
     (bidi-paragraph-direction . 'left-to-right)
@@ -137,6 +138,10 @@
 (leaf bookmark
   :custom
   `((bookmark-default-file . ,(concat chpn/dir-cache "bookmarks"))))
+
+(leaf mb-depth
+  :custom
+  (minibuffer-depth-indicate-mode . t))
 
 (leaf elec-pair
   :bind
@@ -742,63 +747,68 @@ Original function is from `https://github.com/ema2159/centaur-tabs#my-personal-c
   :config
   (ivy-rich-mode 1))
 
-(use-package ivy-hydra
+(leaf ivy
   :ensure t
-  :defer t
-  :after ivy hydra
+  :defvar (ivy-format-function)
+  :blackout ivy-mode
+  :bind
+  (("C-s" . swiper)
+   ("M-s M-s" . swiper-thing-at-point)
+   ("M-x" . counsel-M-x)
+   ("M-y" . counsel-yank-pop)
+   ("C-M-z" . counsel-fzf)
+   ("C-M-r" . counsel-recentf)
+   ("C-M-f" . counsel-ag)
+   ;; ("C-x b" . counsel-switch-buffer)
+   ;; ("C-x C-b" . counsel-ibuffer)
+   (ivy-minibuffer-map
+    ("C-w" . ivy-backward-kill-word)
+    ("C-k" . ivy-kill-line)
+    ("C-j" . ivy-immediate-done)
+    ("RET" . ivy-alt-done)
+    ("C-h" . ivy-backward-delete-char)
+    ("<escape>" . minibuffer-keyboard-quit)))
+  :hook
+  ((emacs-startup-hook . ivy-mode)
+   (ivy-mode-hook . counsel-mode))
   :custom
-  (ivy-read-action-function (function ivy-hydra-read-action)))
-
-(use-package counsel
-  :ensure t
-  :defer t
-  :diminish ivy-mode counsel-mode
+  ((ivy-truncate-lines . nil)
+   (ivy-use-virtual-buffers . t)
+   (ivy-use-selectable-prompt . t)
+   (ivy-on-del-error-function . nil))
   :preface
   (defun ivy-format-function-pretty (cands)
     "Transform CANDS into a string for minibuffer."
     (ivy--format-function-generic
      (lambda (str)
        (concat
-        (all-the-icons-faicon "hand-o-right" :height .85 :v-adjust .05 :face 'font-lock-constant-face)
+        (all-the-icons-faicon "hand-o-right" :height 1 :v-adjust -0.1 :face 'font-lock-constant-face)
+        " "
         (ivy--add-face str 'ivy-current-match)))
      (lambda (str)
-       (concat "  " str))
+       (concat "   " str))
      cands
      "\n"))
-  :custom
-  (ivy-truncate-lines nil)
-  (ivy-use-virtual-buffers t)
-  (ivy-use-selectable-prompt t)
-  (ivy-on-del-error-function nil)
-  (enable-recursive-minibuffers t)
-  (minibuffer-depth-indicate-mode 1)
-  (swiper-action-recenter t)
-  (counsel-yank-pop-height 15)
-  :hook
-  (emacs-startup . ivy-mode)
-  (ivy-mode . counsel-mode)
-  :bind
-  ("C-s" . swiper)
-  ("M-s M-s" . swiper-thing-at-point)
-  ("M-x" . counsel-M-x)
-  ("M-y" . counsel-yank-pop)
-  ("C-M-z" . counsel-fzf)
-  ("C-M-r" . counsel-recentf)
-  ("C-M-f" . counsel-ag)
-  ;; ("C-x b" . counsel-switch-buffer)
-  ;; ("C-x C-b" . counsel-ibuffer)
-  (:map ivy-minibuffer-map
-        ("C-w" . ivy-backward-kill-word)
-        ("C-k" . ivy-kill-line)
-        ("C-j" . ivy-immediate-done)
-        ("RET" . ivy-alt-done)
-        ("C-h" . ivy-backward-delete-char)
-        ("<escape>" . minibuffer-keyboard-quit))
   :config
-  (setq ivy-format-function 'ivy-format-function-pretty)
-  (setq counsel-yank-pop-separator
-        (propertize "\n----------------------------------------------------------------------\n"
-                    'face `(:foreground "#6272a4"))))
+  (ivy-configure 't :format-fn #'ivy-format-function-pretty)
+  ;; (leaf ivy-hydra
+  ;;   :ensure t
+  ;;   :after hydra
+  ;;   :custom
+  ;;   (ivy-read-action-function . (function ivy-hydra-read-action)))
+  (leaf swiper
+    :ensure t
+    :custom
+    (swiper-action-recenter . t))
+  (leaf counsel
+    :ensure t
+    :defvar (counsel-yank-pop-separator)
+    :blackout counsel-mode
+    :custom
+    (counsel-yank-pop-height . 15)
+    :config
+    (setq counsel-yank-pop-separator
+          (propertize "\n----------------------------------------------------------------------\n" 'face `(:foreground "#6272a4")))))
 
 (use-package counsel-tramp
   :ensure t

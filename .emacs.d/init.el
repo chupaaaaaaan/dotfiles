@@ -816,22 +816,17 @@ Original function is from `https://github.com/ema2159/centaur-tabs#my-personal-c
   :bind
   ("C-c C-f" . counsel-tramp))
 
-;; ag
 (leaf ag :ensure t)
 
-;; anzu
-(use-package anzu
+(leaf anzu
   :ensure t
-  :defer t
-  :diminish
+  :blacklist
   :bind
   ("C-r" . anzu-query-replace-regexp)
-  ;; ("C-M-r" . anzu-query-replace-at-cursor-thing)
-  :hook
-  (emacs-startup . global-anzu-mode)
   :custom
-  (anzu-deactivate-region t)
-  (anzu-search-threshold 1000))
+  ((global-anzu-mode . t)
+   (anzu-deactivate-region . t)
+   (anzu-search-threshold . 1000)))
 
 (leaf go-translate
   :ensure t

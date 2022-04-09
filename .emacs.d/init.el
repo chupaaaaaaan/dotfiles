@@ -1319,21 +1319,19 @@ Original function is from `https://github.com/ema2159/centaur-tabs#my-personal-c
   (global-company-mode . company-quickhelp-mode))
 
 ;; projectile
-(use-package projectile
+(leaf projectile
   :ensure t
   :bind
-  ("C-c p" . projectile-command-map)
-  (:map projectile-mode-map
-        ("C-c p" . projectile-command-map))
+  (projectile-mode-map
+   ("C-c p" . projectile-command-map))
   :custom
-  (projectile-known-projects-file (concat chpn/dir-cache "emacs-projectile-bookmarks.eld"))
-  (projectile-cache-file (concat chpn/dir-cache "emacs-projectile.cache"))
-  (projectile-completion-system 'ivy)
-  (projectile-enable-caching t)
-  (projectile-require-project-root t)
-  (projectile-dirconfig-comment-prefix "#")
-  :hook
-  (emacs-startup . projectile-mode))
+  `((projectile-mode . t)
+    (projectile-known-projects-file . ,(concat chpn/dir-cache "emacs-projectile-bookmarks.eld"))
+    (projectile-cache-file . ,(concat chpn/dir-cache "emacs-projectile.cache"))
+    (projectile-completion-system . 'ivy)
+    (projectile-enable-caching . t)
+    (projectile-require-project-root . t)
+    (projectile-dirconfig-comment-prefix . "#")))
 
 ;; treemacs
 (use-package treemacs

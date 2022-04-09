@@ -816,6 +816,9 @@ Original function is from `https://github.com/ema2159/centaur-tabs#my-personal-c
   :bind
   ("C-c C-f" . counsel-tramp))
 
+;; ag
+(leaf ag :ensure t)
+
 ;; anzu
 (use-package anzu
   :ensure t

@@ -1222,55 +1222,42 @@ Original function is from `https://github.com/ema2159/centaur-tabs#my-personal-c
   :config
   (leaf yasnippet-snippets :ensure t))
 
-;; company
-(use-package company
+
+(leaf company
   :ensure t
-  :defer t
-  :custom
-  (company-idle-delay 0)
-  (company-echo-delay 0)
-  (company-minimum-prefix-length 2)
-  (company-selection-wrap-around t)
-
   :hook
-  (emacs-startup . global-company-mode)
-
+  (emacs-startup-hook . global-company-mode)
+  :custom
+  ((company-idle-delay . 0)
+   (company-echo-delay . 0)
+   (company-minimum-prefix-length . 2)
+   (company-selection-wrap-around . t))
   :bind
-  (:map company-active-map
-        ("<tab>" . company-complete)
-        ("C-n"   . company-select-next)
-        ("C-p"   . company-select-previous)
-        ("C-s"   . company-filter-candidates)
-        ("C-h"   . nil)
-        ("M-n"   . nil)
-        ("M-p"   . nil))
-  (:map company-search-map
-        ("C-n"   . company-select-next)
-        ("C-p"   . company-select-previous)
-        ("C-s"   . company-search-repeat-forward)
-        ("C-r"   . company-search-repeat-backward)
-        ("C-h"   . company-search-delete-char)
-        ("M-n"   . nil)
-        ("M-p"   . nil)))
-
-(use-package company-box
-  :ensure t
-  :defer t
-  :after company
-  :diminish
-  :hook
-  (global-company-mode . company-box-mode)
-  :custom
-  (company-box-icons-alist 'company-box-icons-all-the-icons)
-  (company-box-show-single-candidate nil))
-
-(use-package company-quickhelp
-  :ensure t
-  :disabled
-  :defer t
-  :after company
-  :hook
-  (global-company-mode . company-quickhelp-mode))
+  (company-active-map
+   ("<tab>" . company-complete)
+   ("C-n" . company-select-next)
+   ("C-p" . company-select-previous)
+   ("C-s" . company-filter-candidates)
+   ("C-h" . nil)
+   ("M-n" . nil)
+   ("M-p" . nil))
+  (company-search-map
+   ("C-n" . company-select-next)
+   ("C-p" . company-select-previous)
+   ("C-s" . company-search-repeat-forward)
+   ("C-r" . company-search-repeat-backward)
+   ("C-h" . company-search-delete-char)
+   ("M-n" . nil)
+   ("M-p" . nil))
+  :config
+  (leaf company-box
+    :ensure t
+    :blackout
+    :hook
+    (global-company-mode-hook . company-box-mode)
+    :custom
+    (company-box-icons-alist . 'company-box-icons-all-the-icons)
+    (company-box-show-single-candidate . nil)))
 
 ;; projectile
 (leaf projectile

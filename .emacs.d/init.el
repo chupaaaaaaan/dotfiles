@@ -167,6 +167,7 @@
 (leaf centaur-tabs
   :ensure t
   :leaf-defer nil
+  :defun (centaur-tabs-headline-match centaur-tabs-get-group-name)
   :bind
   (("M-[" . centaur-tabs-backward)
    ("M-]" . centaur-tabs-forward)
@@ -482,6 +483,7 @@ Original function is from `https://github.com/ema2159/centaur-tabs#my-personal-c
 (leaf volatile-highlights
   :ensure t
   :blackout t
+  :defun (vhl/define-extension vhl/install-extension)
   :custom
   (volatile-highlights-mode . t)
   :config
@@ -831,6 +833,7 @@ Original function is from `https://github.com/ema2159/centaur-tabs#my-personal-c
 (leaf go-translate
   :ensure t
   :defvar (gts-default-translator gts-prompt-for-translate-keymap)
+  :defun (gts-translator gts-prompt-picker gts-google-engine gts-buffer-render gts-prompt-picker-next-path)
   :custom
   (gts-translate-list . '(("en" "ja")))
   :bind

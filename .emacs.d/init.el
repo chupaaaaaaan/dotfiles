@@ -1325,13 +1325,13 @@ Original function is from `https://github.com/ema2159/centaur-tabs#my-personal-c
   (projectile-mode-map
    ("C-c p" . projectile-command-map))
   :custom
-  `((projectile-mode . t)
-    (projectile-known-projects-file . ,(concat chpn/dir-cache "emacs-projectile-bookmarks.eld"))
+  `((projectile-known-projects-file . ,(concat chpn/dir-cache "emacs-projectile-bookmarks.eld"))
     (projectile-cache-file . ,(concat chpn/dir-cache "emacs-projectile.cache"))
     (projectile-completion-system . 'ivy)
     (projectile-enable-caching . t)
     (projectile-require-project-root . t)
-    (projectile-dirconfig-comment-prefix . "#")))
+    (projectile-dirconfig-comment-prefix . "#")
+    (projectile-mode . t)))
 
 ;; treemacs
 (use-package treemacs

@@ -1440,21 +1440,17 @@ Original function is from `https://github.com/ema2159/centaur-tabs#my-personal-c
 
 (leaf urlenc :ensure t)
 
-(use-package terraform-mode
+(leaf terraform-mode
   :ensure t
-  :defer t
   :custom
-  (terraform-indent-level 4)
+  (terraform-indent-level . 4)
   :config
-  (add-to-list 'company-backends 'company-terraform))
-
-(use-package elm-mode
-  :ensure t
-  :defer t
-  :custom
-  (elm-package-json "elm.json")
-  :hook
-  (elm-mode . elm-format-on-save-mode))
+  (leaf company-terraform
+    :ensure t
+    :after company
+    :defvar (company-backends)
+    :config
+    (add-to-list 'company-backends 'company-terraform)))
 
 (leaf yaml-mode :ensure t)
 
@@ -1462,11 +1458,9 @@ Original function is from `https://github.com/ema2159/centaur-tabs#my-personal-c
   :ensure t
   :after yaml-mode)
 
-(use-package jenkinsfile-mode
-  :ensure t
-  :defer t)
+(leaf jenkinsfile-mode :ensure t)
 
-(use-package markdown-mode :ensure t)
+(leaf markdown-mode :ensure t)
 
 (leaf js
   :custom
@@ -1501,6 +1495,13 @@ Original function is from `https://github.com/ema2159/centaur-tabs#my-personal-c
     (tree-sitter-require 'tsx)
     (add-to-list 'tree-sitter-major-mode-language-alist '(typescript-tsx-mode . tsx))))
 
+(leaf elm-mode
+  :ensure t
+  :custom
+  (elm-package-json . "elm.json")
+  :hook
+  (elm-mode-hook . elm-format-on-save-mode))
+
 (leaf lsp-pyright
   :ensure t
   :after lsp-mode
@@ -1513,7 +1514,6 @@ Original function is from `https://github.com/ema2159/centaur-tabs#my-personal-c
    (python-indent-guess-indent-offset-verbose . nil)))
 
 (leaf apache-mode :ensure t)
-
 
 (leaf nginx-mode
   :ensure t

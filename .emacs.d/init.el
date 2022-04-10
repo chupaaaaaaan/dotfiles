@@ -1188,75 +1188,32 @@ Original function is from `https://github.com/ema2159/centaur-tabs#my-personal-c
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Develop Environment
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; git
-(use-package git-timemachine
-  :ensure t
-  :defer t
-  :bind
-  ("M-g t" . git-timemachine-toggle))
 
-(use-package diffview
-  :ensure t
-  :defer t
-  :commands (diffview-region diffview-current)
-  :preface
-  (defun ladicle/diffview-dwim ()
-    (interactive)
-    (if (region-active-p)
-        (diffview-region)
-      (diffview-current)))
-  :bind
-  ("M-g v" . ladicle/diffview-dwim))
-
-(use-package magit
-  :ensure t
-  :defer t
-  :custom
-  (magit-auto-revert-mode nil)
-  (magit-completing-read-function 'ivy-completing-read)
-  :bind
-  ("M-g s" . magit-status))
-
-(use-package gitattributes-mode
-  :ensure git-modes
-  :defer t)
-
-(use-package gitconfig-mode
-  :ensure git-modes
-  :defer t)
-
-(use-package gitignore-mode
-  :ensure git-modes
-  :defer t)
-
-(use-package git-gutter
-  :ensure t
-  :defer t
-  :hook
-  (emacs-startup . global-git-gutter-mode)
-  :custom
-  (git-gutter:modified-sign "=")
-  (git-gutter:added-sign    "+")
-  (git-gutter:deleted-sign  "-")
-  :custom-face
-  ;; (git-gutter:modified ((t (:foreground "#f1fa8c"))))
-  ;; (git-gutter:added    ((t (:foreground "#50fa7b"))))
-  ;; (git-gutter:deleted  ((t (:foreground "#ff79c6"))))
-  (git-gutter:modified ((t (:foreground "#f1fa8c" :background "#f1fa8c"))))
-  (git-gutter:added    ((t (:foreground "#50fa7b" :background "#50fa7b"))))
-  (git-gutter:deleted  ((t (:foreground "#ff79c6" :background "#ff79c6")))))
-
-(use-package browse-at-remote
-  :ensure t
-  :defer t
-  :bind
-  ("M-g r" . browse-at-remote))
-
-(use-package github-pullrequest
-  :ensure t
-  :defer t
-  :disabled)
-
+(leaf *git
+  :config
+  (leaf git-modes :ensure t)
+  (leaf git-timemachine
+    :ensure t
+    :bind
+    ("M-g t" . git-timemachine-toggle))
+  (leaf magit
+    :ensure t
+    :custom
+    ((magit-auto-revert-mode . nil)
+     (magit-completing-read-function . 'ivy-completing-read))
+    :bind
+    ("M-g s" . magit-status))
+  (leaf git-gutter
+    :ensure t
+    :custom
+    ((global-git-gutter-mode . t)
+     (git-gutter:modified-sign . "=")
+     (git-gutter:added-sign . "+")
+     (git-gutter:deleted-sign . "-"))
+    :custom-face
+    ((git-gutter:modified . '((t (:foreground "#f1fa8c" :background "#f1fa8c"))))
+     (git-gutter:added . '((t (:foreground "#50fa7b" :background "#50fa7b"))))
+     (git-gutter:deleted . '((t (:foreground "#ff79c6" :background "#ff79c6")))))))
 
 ;; yasnippet
 (use-package yasnippet

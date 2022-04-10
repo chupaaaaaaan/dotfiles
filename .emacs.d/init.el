@@ -1215,15 +1215,12 @@ Original function is from `https://github.com/ema2159/centaur-tabs#my-personal-c
      (git-gutter:added . '((t (:foreground "#50fa7b" :background "#50fa7b"))))
      (git-gutter:deleted . '((t (:foreground "#ff79c6" :background "#ff79c6")))))))
 
-;; yasnippet
-(use-package yasnippet
-  ;; :disabled
+(leaf yasnippet
   :ensure t
-  :defer t
-  :hook
-  (emacs-startup . yas-global-mode)
+  :custom
+  (yas-global-mode . t)
   :config
-  (use-package yasnippet-snippets :ensure t))
+  (leaf yasnippet-snippets :ensure t))
 
 ;; company
 (use-package company

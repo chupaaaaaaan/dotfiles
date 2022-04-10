@@ -1170,16 +1170,6 @@ Original function is from `https://github.com/ema2159/centaur-tabs#my-personal-c
   (org-pomodoro-long-break-finished  . (lambda () (chpn/pomodoro-notify "Org Pomodoro" "Pomodoroを一周したよ！またよろしくね")))
   (org-pomodoro-killed               . (lambda () (chpn/pomodoro-notify "Org Pomodoro" "Pomodoroをkillしたよ！またよろしくね"))))
 
-;; (use-package org-mobile-sync
-;;   :ensure t
-;;   :defer t
-;;   :after org
-;;   :custom
-;;   (org-mobile-directory "~/Dropbox/Apps/MobileOrg/")
-;;   (org-mobile-inbox-for-pull "~/Dropbox/org/from-mobile.org")
-;;   :config
-;;   (org-mobile-sync-mode t))
-
 (use-package org-re-reveal
   :ensure t
   :defer t

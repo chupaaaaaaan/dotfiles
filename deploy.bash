@@ -29,6 +29,7 @@ case "$(uname -s)" in
         bash install/darwin/fzf.bash 0.29.0
         bash install/darwin/peco.bash v0.5.10
         bash install/darwin/ag.bash
+        bash install/darwin/delta.bash
         ;;
     MINGW64_NT-*)
         bash install/windows/ghq.bash v1.2.1

@@ -4,9 +4,23 @@
 [core]
 	autoCRLF = false
 	quotepath = false
-	pager = "LESSCHARSET=utf-8 less"
+	# pager = "LESSCHARSET=utf-8 less"
+	pager = delta
 	preloadindex = true
 	fscache = true
+
+[interactive]
+	diffFilter = delta --color-only
+
+[delta]
+	navigate = true
+	side-by-side = true
+
+[merge]
+	conflictstyle = diff3
+
+[diff]
+	colorMoved = default
 
 [user]
 	name = "Takayuki Uchida"

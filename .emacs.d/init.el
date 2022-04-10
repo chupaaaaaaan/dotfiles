@@ -1274,27 +1274,32 @@ Original function is from `https://github.com/ema2159/centaur-tabs#my-personal-c
     (projectile-dirconfig-comment-prefix . "#")
     (projectile-mode . t)))
 
-;; treemacs
-(use-package treemacs
+(leaf treemacs
   :ensure t
-  ;; :defer t
   :bind
-  ("M-1" . treemacs-select-window)
-  ("M-0" . treemacs)
-  (:map treemacs-mode-map
-        ("M-1" . other-window))
-  ;; ("C-x t 1"   . treemacs-delete-other-windows)
-  ;; ("C-x t B"   . treemacs-bookmark)
-  ;; ("C-x t C-t" . treemacs-find-file)
-  ;; ("C-x t M-t" . treemacs-find-tag)
+  (("M-1" . treemacs-select-window)
+   ("M-0" . treemacs)
+   (treemacs-mode-map
+    ("M-1" . other-window)))
   :custom
-  (treemacs-is-never-other-window t)
-  (treemacs-no-delete-other-windows t)
-  ;; (treemacs-width 20)
-  (treemacs-follow-mode t)
-  (treemacs-filewatch-mode t)
-  (treemacs-fringe-indicator-mode t)
-  (treemacs-git-mode 'simple))
+  ((treemacs-is-never-other-window . t)
+   (treemacs-no-delete-other-windows . t)
+   ;; (treemacs-width 20)
+   (treemacs-follow-mode . t)
+   (treemacs-filewatch-mode . t)
+   (treemacs-fringe-indicator-mode . t)
+   (treemacs-git-mode . 'simple))
+  :config
+  (leaf treemacs-projectile
+    :ensure t
+    :after projectile)
+  (leaf treemacs-icons-dired
+    :ensure t
+    :config
+    (treemacs-icons-dired-mode))
+  (leaf treemacs-magit
+    :ensure t
+    :after magit))
 
 (use-package counsel-projectile
   :ensure t
@@ -1304,21 +1309,6 @@ Original function is from `https://github.com/ema2159/centaur-tabs#my-personal-c
   (counsel-projectile-sort-projects t)
   :config
   (counsel-projectile-mode 1))
-
-(use-package treemacs-projectile
-  :ensure t
-  :after treemacs projectile)
-
-(use-package treemacs-magit
-  :ensure t
-  :after treemacs magit)
-
-(use-package treemacs-icons-dired
-  :ensure t
-  :defer t
-  :after treemacs dired
-  :config
-  (treemacs-icons-dired-mode))
 
 (leaf flycheck
   :ensure t

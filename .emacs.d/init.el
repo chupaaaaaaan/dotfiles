@@ -191,12 +191,10 @@
   (centaur-tabs-headline-match)
   ;; (centaur-tabs-enable-buffer-reordering)
   (defun centaur-tabs-buffer-groups ()
-    "`centaur-tabs-buffer-groups' control buffers' group rules.
-
-Group centaur-tabs with mode if buffer is derived from `eshell-mode' `emacs-lisp-mode' `dired-mode' `org-mode' `magit-mode'.
-All buffer name start with * will group to \"Emacs\".
-Other buffer group by `centaur-tabs-get-group-name' with project name.
-Original function is from `https://github.com/ema2159/centaur-tabs#my-personal-configuration'."
+    "Control buffers' group rules.
+This function overwrite default function in centaur-tabs-functions.el.
+Original function is from
+https://github.com/ema2159/centaur-tabs#my-personal-configuration"
     (list
      (cond
       ;; ((not (eq (file-remote-p (buffer-file-name)) nil))

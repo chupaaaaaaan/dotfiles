@@ -33,6 +33,7 @@
                        ("melpa-stable" . "https://stable.melpa.org/packages/")
                        ("gnu"          . "https://elpa.gnu.org/packages/")))
   (customize-set-variable 'package-user-dir chpn/dir-pkg-elpa)
+  (customize-set-variable 'package-gnupghome-dir (concat chpn/dir-pkg-elpa "gnupg/"))
   (customize-set-variable 'gnutls-algorithm-priority  "normal:-vers-tls1.3")
 
   (package-initialize)

@@ -15,7 +15,7 @@
 [delta]
 	navigate = true
 	line-numbers = true
-	map-styles = bold purple => syntax magenta, bold cyan => syntax blue
+	# map-styles = bold purple => syntax magenta, bold cyan => syntax blue
 
 [merge]
 	conflictstyle = diff3

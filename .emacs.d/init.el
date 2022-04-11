@@ -851,6 +851,7 @@ https://github.com/ema2159/centaur-tabs#my-personal-configuration"
           (define-key map "\M-p" (lambda () (interactive) (gts-prompt-picker-next-path t)))
           (define-key map "\C-l" #'delete-minibuffer-contents)
           (define-key map [C-return] (lambda () (interactive) (exit-minibuffer)))
+          (define-key map "C-r" #'anzu-query-replace-regexp)
           map)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

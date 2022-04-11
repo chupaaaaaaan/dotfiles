@@ -82,6 +82,28 @@
 ;; General setting
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+;; define prefix-key
+(defvar chpn-function-map)
+(define-prefix-command 'chpn-function-map)
+(define-key global-map (kbd "M-i") 'chpn-function-map)
+
+(defvar chpn-toggle-map)
+(define-prefix-command 'chpn-toggle-map)
+(define-key global-map (kbd "M-t") 'chpn-toggle-map)
+
+(defvar chpn-org-map)
+(define-prefix-command 'chpn-org-map)
+(define-key global-map (kbd "M-q") 'chpn-org-map)
+
+(global-unset-key (kbd "C-x C-c"))
+(defalias 'exit 'save-buffers-kill-emacs)
+
+;; Settings that do not depend on some major modes or minor modes
+(global-set-key (kbd "C-h")   'delete-backward-char)
+(global-set-key [f6] (lambda () (interactive) (counsel-M-x "^counsel ")))
+(global-set-key [f7] (lambda () (interactive) (chpn/open-file (concat user-emacs-directory "init.el"))))
+(global-set-key [f8] (lambda () (interactive) (switch-to-buffer "*scratch*")))
+
 (leaf cus-start
   :custom
   `((menu-bar-mode . nil)
@@ -132,6 +154,9 @@
 
 (leaf simple
   :require t
+  :bind
+  (chpn-toggle-map
+   ("l" . toggle-truncate-lines))
   :config
   (line-number-mode 1)
   (column-number-mode 1))
@@ -146,14 +171,16 @@
 
 (leaf elec-pair
   :bind
-  ("<f5> p" . electric-pair-local-mode)
+  (chpn-toggle-map
+   ("e" . electric-pair-local-mode))
   :custom
   (electric-pair-mode . t))
 
 (leaf hungry-delete
   :ensure t
   :bind
-  ("<f5> d" . hungry-delete-mode)
+  (chpn-toggle-map
+   ("h" . hungry-delete-mode))
   :custom
   (global-hungry-delete-mode . t)
   (hungry-delete-join-reluctantly . t))
@@ -337,33 +364,12 @@ https://github.com/ema2159/centaur-tabs#my-personal-configuration"
   :hook
   (emacs-startup . which-key-mode))
 
-;; define prefix-key
-(define-prefix-command 'ladicle-window-map)
-(define-key global-map (kbd "M-i") 'ladicle-window-map)
-
-(define-prefix-command 'ladicle-toggle-map)
-(define-key global-map (kbd "M-t") 'ladicle-toggle-map)
-
-(define-prefix-command 'chpn-org-map)
-(define-key global-map (kbd "M-q") 'chpn-org-map)
-
-
-(global-unset-key (kbd "C-x C-c"))
-(defalias 'exit 'save-buffers-kill-emacs)
-
-;; Settings that do not depend on some major modes or minor modes
-(global-set-key (kbd "C-h")   'delete-backward-char)
-(global-set-key (kbd "M-t l") 'toggle-truncate-lines)
-;; (global-set-key (kbd "C-t")   'other-window)
-(global-set-key [f6] (lambda () (interactive) (counsel-M-x "^counsel ")))
-(global-set-key [f7] (lambda () (interactive) (chpn/open-file (concat user-emacs-directory "init.el"))))
-(global-set-key [f8] (lambda () (interactive) (switch-to-buffer "*scratch*")))
-
 (leaf golden-ratio
   :ensure t
   :leaf-defer nil
   :bind
-  ("M-t g" . golden-ratio-mode)
+  (chpn-toggle-map
+   ("g" . golden-ratio-mode))
   :custom
   ((golden-ratio-mode . t)
    (golden-ratio-extra-commands . '(ace-window
@@ -446,7 +452,8 @@ https://github.com/ema2159/centaur-tabs#my-personal-configuration"
   (show-paren-when-point-inside-paren . t)
   (show-paren-when-point-in-periphery . t)
   :bind
-  ("M-t p" . toggle-show-paren)
+  (chpn-toggle-map
+   ("p" . toggle-show-paren))
   :preface
   (defun toggle-show-paren ()
     "Toggle show paren."
@@ -464,7 +471,8 @@ https://github.com/ema2159/centaur-tabs#my-personal-configuration"
   :blackout t
   :defvar highlight-indent-guides-mode
   :bind
-  ("M-t i" . toggle-highlight-indent-guides)
+  (chpn-toggle-map
+   ("i" . toggle-highlight-indent-guides))
   :hook
   ((prog-mode-hook yaml-mode-hook) . highlight-indent-guides-mode)
   :custom
@@ -545,15 +553,10 @@ https://github.com/ema2159/centaur-tabs#my-personal-configuration"
 
 ;; scroll-lock
 (leaf scroll-lock
-  :defvar scroll-lock-mode
-  :preface
-  (defun toggle-scroll-lock ()
-    "Toggle scroll lock."
-    (interactive)
-    (scroll-lock-mode (if scroll-lock-mode -1 1))
-    (message "Scroll lock %s" (if scroll-lock-mode "enabled" "disabled")))
+  :require t
   :bind
-  ("M-t m" . toggle-scroll-lock))
+  (chpn-toggle-map
+   ("m" . scroll-lock-mode)))
 
 ;; ediff
 ;; (when (executable-find "diff")
@@ -837,7 +840,8 @@ https://github.com/ema2159/centaur-tabs#my-personal-configuration"
   :custom
   (gts-translate-list . '(("en" "ja")))
   :bind
-  (("M-i t" . gts-do-translate))
+  (chpn-function-map
+   ("t" . gts-do-translate))
   :config
   (setq gts-default-translator
         (gts-translator

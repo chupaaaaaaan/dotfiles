@@ -14,7 +14,8 @@
 
 [delta]
 	navigate = true
-	side-by-side = true
+	line-numbers = true
+	map-styles = bold purple => syntax magenta, bold cyan => syntax blue
 
 [merge]
 	conflictstyle = diff3

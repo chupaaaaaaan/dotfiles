@@ -36,6 +36,7 @@ case "$(uname -s)" in
         bash install/windows/fzf.bash 0.29.0
         bash install/windows/peco.bash v0.5.10
         bash install/windows/ag.bash 2020-07-05_2.2.0-58-g5a1c8d8
+        bash install/windows/delta.bash 0.12.1
         ;;
     *)
         echo "Incompatible OS type: $(uname -s)" 1>&2

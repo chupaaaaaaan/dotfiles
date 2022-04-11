@@ -155,7 +155,8 @@
   :bind
   ("<f5> d" . hungry-delete-mode)
   :custom
-  (global-hungry-delete-mode . t))
+  (global-hungry-delete-mode . t)
+  (hungry-delete-join-reluctantly . t))
 
 (leaf shut-up :ensure t)
 

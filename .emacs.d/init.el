@@ -1283,6 +1283,7 @@ https://github.com/ema2159/centaur-tabs#my-personal-configuration"
   :config
   (leaf treemacs-projectile
     :ensure t
+    :require t
     :after projectile)
   (leaf treemacs-icons-dired
     :ensure t

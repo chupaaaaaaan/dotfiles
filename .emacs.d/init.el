@@ -835,6 +835,7 @@ https://github.com/ema2159/centaur-tabs#my-personal-configuration"
 
 (leaf go-translate
   :ensure t
+  :require t
   :defvar (gts-default-translator gts-prompt-for-translate-keymap)
   :defun (gts-translator gts-prompt-picker gts-google-engine gts-buffer-render gts-prompt-picker-next-path)
   :custom

@@ -31,7 +31,7 @@ case "$(uname -s)" in
         bash install/darwin/ag.bash
         bash install/darwin/delta.bash
         ;;
-    MINGW64_NT-*)
+    MINGW64_NT-*|CYGWIN_NT-*)
         bash install/windows/ghq.bash v1.2.1
         bash install/windows/fzf.bash 0.29.0
         bash install/windows/peco.bash v0.5.10

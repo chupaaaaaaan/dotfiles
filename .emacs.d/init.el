@@ -1540,14 +1540,12 @@ https://github.com/ema2159/centaur-tabs#my-personal-configuration"
 
 (leaf sql-indent :ensure t)
 
-;; (use-package vterm
-;;   :ensure t
-;;   :custom
-;;   (vterm-environment (list "LANG=ja_JP.UTF-8"))
-;;   :bind
-;;   (:map vterm-mode-map
-;;         ("C-h" . vterm-send-C-h)
-;;         ("C-g" . vterm-send-C-g)))
+(leaf vterm
+  :ensure t
+  :bind
+  (vterm-mode-map
+   ("C-h" . vterm-send-C-h)
+   ("C-g" . vterm-send-C-g)))
 
 (leaf web-mode
   :ensure t

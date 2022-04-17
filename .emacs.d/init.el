@@ -1458,8 +1458,6 @@ https://github.com/ema2159/centaur-tabs#my-personal-configuration"
   :ensure t
   :after yaml-mode)
 
-(leaf jenkinsfile-mode :ensure t)
-
 (leaf markdown-mode :ensure t)
 
 (leaf js

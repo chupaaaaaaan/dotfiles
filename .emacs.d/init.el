@@ -308,61 +308,56 @@ https://github.com/ema2159/centaur-tabs#my-personal-configuration"
 (setq use-default-font-for-symbols nil)
 (setq inhibit-compacting-font-caches t)
 
-;; (add-hook 'emacs-startup-hook #'chpn/font-setting)
-
-;; locale and environment
-(set-language-environment "Japanese")
-(prefer-coding-system 'utf-8)
-
 ;; Functions
 (defun chpn/open-file (fname)
   "Open FNAME and switch to the buffer non-interactively."
   (switch-to-buffer (find-file-noselect fname)))
 
-;; OS
-;; Mac
+;; locale and environment
+(leaf *language-environment
+  :custom
+  (current-language-environment . "Japanese")
+  :config
+  (prefer-coding-system 'utf-8-unix)
+  (cond ((eq system-type 'darwin)
+         (set-file-name-coding-system 'utf-8-hfs)
+         (setq locale-coding-system 'utf-8-hfs))
+        ;; ((eq system-type 'windows-nt)
+        ;;  (set-file-name-coding-system 'cp932)
+        ;;  (setq locale-coding-system 'cp932))
+        (t
+         (set-file-name-coding-system 'utf-8)
+         (setq locale-coding-system 'utf-8))))
+
+;; keybinds including back slashes
 (when (eq system-type 'darwin)
-  (require 'ucs-normalize nil t)
-  (setq file-name-coding-system 'utf-8-hfs)
-  (setq locale-coding-system 'utf-8-hfs)
-  (use-package exec-path-from-shell
-    :ensure t
-    :init
-    (exec-path-from-shell-initialize))
-  ;; バックスラッシュを含むキーバインドの設定
   (define-key local-function-key-map [?\C-¥] [?\C-\\])
   (define-key local-function-key-map [?\M-¥] [?\M-\\])
   (define-key local-function-key-map [?\C-\M-¥] [?\C-\M-\\]))
 
-;; GNU/Linux
-(when (eq system-type 'gnu/linux)
-  (use-package exec-path-from-shell
-    :ensure t
-    :init
-    (exec-path-from-shell-initialize)))
+(leaf ucs-normalize
+  :if (eq system-type 'darwin)
+  :require t)
 
-;; Windows
-(when (eq system-type 'windows-nt)
-  (setq file-name-coding-system 'cp932)
-  (setq locale-coding-system 'cp932))
-
-
-;; Keymap
-(use-package keyfreq
+(leaf exec-path-from-shell
   :ensure t
-  :demand t
+  :if (or (eq system-type 'darwin)
+          (eq system-type 'gnu/linux))
+  :init
+  (exec-path-from-shell-initialize))
+
+(leaf keyfreq
+  :ensure t
   :custom
-  (keyfreq-mode 1)
-  (keyfreq-autosave-mode 1)
-  (keyfreq-buffer "*KeyFrequency*"))
+  ((keyfreq-mode . 1)
+   (keyfreq-autosave-mode . 1)
+   (keyfreq-buffer . "*KeyFrequency*")))
 
-;; which-key
-(use-package which-key
+(leaf which-key
   :ensure t
-  :demand t
-  :diminish which-key-mode
+  :blackout which-key-mode
   :hook
-  (emacs-startup . which-key-mode))
+  ((emacs-startup-hook . which-key-mode)))
 
 (leaf golden-ratio
   :ensure t
@@ -429,12 +424,10 @@ https://github.com/ema2159/centaur-tabs#my-personal-configuration"
   (doom-modeline-buffer-file-name-style . 'auto)
   (doom-modeline-display-default-persp-name . t))
 
-(use-package hide-mode-line
+(leaf hide-mode-line
   :ensure t
-  :demand t
-  :disabled
   :hook
-  (treemacs-mode . hide-mode-line-mode))
+  (treemacs-mode-hook . hide-mode-line-mode))
 
 (leaf hl-line
   :custom

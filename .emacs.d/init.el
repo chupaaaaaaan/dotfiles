@@ -1063,7 +1063,7 @@ https://github.com/ema2159/centaur-tabs#my-personal-configuration"
         ("C-c e" . org-set-effort))
 
   :hook
-  (emacs-startup . (lambda () (interactive) (org-agenda nil "i")))
+  (emacs-startup . (lambda () (org-agenda nil "i")))
   (kill-emacs . ladicle/org-clock-out-and-save-when-exit)
   (org-clock-in . (lambda ()
                     (setq org-mode-line-string (ladicle/task-clocked-time))

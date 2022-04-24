@@ -315,9 +315,12 @@ https://github.com/ema2159/centaur-tabs#my-personal-configuration"
 
 ;; locale and environment
 (leaf *language-environment
+  :leaf-defer nil
   :custom
-  (current-language-environment . "Japanese")
+  ((default-input-method . "japanese-mozc")
+   (current-language-environment . "Japanese"))
   :config
+  ;; coding system
   (prefer-coding-system 'utf-8-unix)
   (cond ((eq system-type 'darwin)
          (set-file-name-coding-system 'utf-8-hfs)
@@ -327,7 +330,25 @@ https://github.com/ema2159/centaur-tabs#my-personal-configuration"
         ;;  (setq locale-coding-system 'cp932))
         (t
          (set-file-name-coding-system 'utf-8)
-         (setq locale-coding-system 'utf-8))))
+         (setq locale-coding-system 'utf-8)))
+  ;; input method
+  (leaf mozc
+    :ensure t
+    :leaf-defer nil
+    :if (eq system-type 'gnu/linux)
+    :bind*
+    (("<henkan>" . (lambda () (interactive) (unless current-input-method (toggle-input-method))))
+     ("<muhenkan>" . (lambda () (interactive) (when current-input-method (toggle-input-method)))))
+    :config
+    (leaf mozc-posframe
+      ;; :straight (mozc-posframe :type git :host github :repo "derui/mozc-posframe")
+      :el-get (mozc-posframe
+               :url "https://raw.githubusercontent.com/derui/mozc-posframe/master/mozc-posframe.el"
+               :features mozc-posframe)
+      :custom
+      ((mozc-candidate-style . 'posframe))
+      :config
+      (mozc-posframe-register))))
 
 ;; keybinds including back slashes
 (when (eq system-type 'darwin)

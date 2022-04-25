@@ -893,12 +893,10 @@ https://github.com/ema2159/centaur-tabs#my-personal-configuration"
   (org-agenda-window-setup 'current-window)
   (org-agenda-log-mode-items '(clock))
   (org-agenda-custom-commands
-   `(("h" "Habits: 習慣タスク"
-      tags-todo "+HABIT" ((org-agenda-overriding-header "Habit")
-                          (org-agenda-sorting-strategy '(todo-state-down effort-up category-keep))))
-
-     ("i" "Agenda: 予定表"
+   `(("i" "Agenda: 予定表"
       ((agenda "" nil)
+       (tags-todo "+HABIT" ((org-agenda-overriding-header "Habit")
+                            (org-agenda-sorting-strategy '(category-keep))))
        (tags-todo "-INBOX-HABIT/+NEXT"
                   ((org-agenda-overriding-header "Next Actions")
                    (org-tags-match-list-sublevels nil)

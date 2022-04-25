@@ -1,3 +1,4 @@
+#+CATEGORY: work
 #+FILETAGS: HABIT
 #+PROPERTY STYLE="habit"
 * TODO 習慣タスク

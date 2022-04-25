@@ -406,22 +406,22 @@ https://github.com/ema2159/centaur-tabs#my-personal-configuration"
   :custom
   (aw-dispatch-always . t))
 
-(leaf perspective
-  :ensure t
-  :leaf-defer nil
-  :custom
-  `((persp-state-default-file . ,(concat chpn/dir-cache "persp-state-file"))
-    (persp-modestring-short . t))
-  :bind
-  ;; ("C-x b"   . persp-ivy-switch-buffer)
-  ;; ("C-x b"   . persp-switch-to-buffer*)
-  ("C-x b"   . persp-counsel-switch-buffer)
-  ("C-x k"   . persp-kill-buffer*)
-  ("C-x C-b" . persp-bs-show)
-  :hook
-  (kill-emacs-hook . persp-state-save)
-  :config
-  (persp-mode))
+;; (leaf perspective
+;;   :ensure t
+;;   :leaf-defer nil
+;;   :custom
+;;   `((persp-state-default-file . ,(concat chpn/dir-cache "persp-state-file"))
+;;     (persp-modestring-short . t))
+;;   :bind
+;;   ;; ("C-x b"   . persp-ivy-switch-buffer)
+;;   ;; ("C-x b"   . persp-switch-to-buffer*)
+;;   ("C-x b"   . persp-counsel-switch-buffer)
+;;   ("C-x k"   . persp-kill-buffer*)
+;;   ("C-x C-b" . persp-bs-show)
+;;   :hook
+;;   (kill-emacs-hook . persp-state-save)
+;;   :config
+;;   (persp-mode))
 
 (leaf nyan-mode
   :ensure t
@@ -441,9 +441,9 @@ https://github.com/ema2159/centaur-tabs#my-personal-configuration"
   :after all-the-icons
   ;; :after all-the-icons shrink-path
   :custom
-  (doom-modeline-mode . t)
-  (doom-modeline-buffer-file-name-style . 'auto)
-  (doom-modeline-display-default-persp-name . t))
+  ((doom-modeline-mode . t)
+   ;; (doom-modeline-display-default-persp-name . t)
+   (doom-modeline-buffer-file-name-style . 'auto)))
 
 (leaf hide-mode-line
   :ensure t

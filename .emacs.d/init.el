@@ -1005,7 +1005,7 @@ https://github.com/ema2159/centaur-tabs#my-personal-configuration"
   ;; tags
   ;; (org-tag-alist '((:startgroup . nil) ("design" . ?s) ("develop" . ?d) ("meeting" . ?m) (:endgroup . nil)
   ;;                  (:startgroup . nil) ("work"   . ?w) ("qanda"   . ?q) ("break"   . ?b) (:endgroup . nil)))
-  (org-tag-alist '((:startgroup . nil) ("HABIT" . ?s) ("SCHEDULED" . ?d) (:endgroup . nil)))
+  (org-tag-alist '((:startgroup . nil) ("HABIT" . ?h) ("SCHEDULED" . ?s) (:endgroup . nil)))
 
   ;; property
   (org-global-properties '(("Effort_ALL" . "0:05 0:15 0:30 1:00 1:30 2:00 2:30 3:00")))

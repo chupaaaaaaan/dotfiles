@@ -892,7 +892,7 @@ https://github.com/ema2159/centaur-tabs#my-personal-configuration"
       ((agenda "" nil)
        (tags-todo "+HABIT" ((org-agenda-overriding-header "Habit")
                             (org-agenda-sorting-strategy '(category-keep))))
-       (tags-todo "-INBOX-HABIT/+NEXT"
+       (tags-todo "-INBOX-HABIT-SCHEDULED/+NEXT"
                   ((org-agenda-overriding-header "Next Actions")
                    (org-tags-match-list-sublevels nil)
                    (org-agenda-sorting-strategy '(priority-down scheduled-up effort-up)))) nil))
@@ -901,24 +901,24 @@ https://github.com/ema2159/centaur-tabs#my-personal-configuration"
       ((tags-todo "+INBOX"
                   ((org-agenda-overriding-header "Inbox")
                    (org-tags-match-list-sublevels nil)))
-       (tags-todo "-INBOX-HABIT/-REFR-SOME-DONE-CANCELED"
+       (tags-todo "-INBOX-HABIT-SCHEDULED/-REFR-SOME-DONE-CANCELED"
                   ((org-agenda-overriding-header "Tasks")
                    (org-tags-match-list-sublevels 'indented)
                    (org-agenda-sorting-strategy '(priority-down scheduled-up)))) nil))
 
      ("w" "Waiting for: 待ち状態"
-      ((tags-todo "-INBOX-HABIT/+WAIT"
+      ((tags-todo "-INBOX-HABIT-SCHEDULED/+WAIT"
                   ((org-agenda-overriding-header "Waiting for")
                    (org-tags-match-list-sublevels 'indented)
                    (org-agenda-sorting-strategy '(category-keep)))) nil))
 
      ("r" "Reference: 参考資料など"
-      ((tags-todo "-INBOX-HABIT/+REFR"
+      ((tags-todo "-INBOX-HABIT-SCHEDULED/+REFR"
                   ((org-agenda-overriding-header "Reference")
                    (org-tags-match-list-sublevels nil))) nil))
 
      ("y" "Someday: いつかやる/多分やる"
-      ((tags-todo "-INBOX-HABIT/+SOME"
+      ((tags-todo "-INBOX-HABIT-SCHEDULED/+SOME"
                   ((org-agenda-overriding-header "Someday")
                    (org-agenda-sorting-strategy '(category-keep))
                    (org-tags-match-list-sublevels nil))) nil))
@@ -998,8 +998,9 @@ https://github.com/ema2159/centaur-tabs#my-personal-configuration"
       :immediate-finish 1 :prepend nil)))
 
   ;; tags
-  (org-tag-alist '((:startgroup . nil) ("design" . ?s) ("develop" . ?d) ("meeting" . ?m) (:endgroup . nil)
-                   (:startgroup . nil) ("work"   . ?w) ("qanda"   . ?q) ("break"   . ?b) (:endgroup . nil)))
+  ;; (org-tag-alist '((:startgroup . nil) ("design" . ?s) ("develop" . ?d) ("meeting" . ?m) (:endgroup . nil)
+  ;;                  (:startgroup . nil) ("work"   . ?w) ("qanda"   . ?q) ("break"   . ?b) (:endgroup . nil)))
+  (org-tag-alist '((:startgroup . nil) ("HABIT" . ?h) ("SCHEDULED" . ?s) (:endgroup . nil)))
 
   ;; property
   (org-global-properties '(("Effort_ALL" . "0:05 0:15 0:30 1:00 1:30 2:00 2:30 3:00")))

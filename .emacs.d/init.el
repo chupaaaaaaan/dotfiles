@@ -63,11 +63,7 @@
 (leaf leaf
   :config
   (leaf leaf-convert :ensure t)
-  (leaf leaf-tree
-    :ensure t
-    :custom
-    ((imenu-list-size . 30)
-     (imenu-list-position . 'left))))
+  (leaf leaf-tree :ensure t))
 
 (leaf macrostep
   :ensure t
@@ -76,7 +72,6 @@
 (leaf transient-dwim
   :ensure t
   :bind (("M-=" . transient-dwim-dispatch)))
-
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; General setting
@@ -396,7 +391,7 @@ https://github.com/ema2159/centaur-tabs#my-personal-configuration"
                                     undo-tree-visualizer-quit
                                     magit-mode-bury-buffer))
    (golden-ratio-exclude-modes . '(treemacs-mode
-                                   lsp-ui-imenu-mode))))
+                                   imenu-list-major-mode))))
 
 (leaf ace-window
   :ensure t
@@ -1335,6 +1330,15 @@ https://github.com/ema2159/centaur-tabs#my-personal-configuration"
     :hook
     (flycheck-mode-hook . flycheck-posframe-mode)))
 
+(leaf imenu-list
+  :ensure t
+  :bind (("<f10>" . imenu-list-smart-toggle))
+  :custom
+  (;;(imenu-list-size . 30)
+   (imenu-list-auto-resize . nil)
+   (imenu-list-focus-after-activation . t)
+   (imenu-list-position . 'right)))
+
 ;; lsp
 (leaf lsp-mode
   :ensure t
@@ -1357,7 +1361,6 @@ https://github.com/ema2159/centaur-tabs#my-personal-configuration"
    (python-mode-hook     . lsp-deferred))
   :bind
   (lsp-mode-map
-   ("C-c m" . lsp-ui-imenu)
    ("C-c C-c" . lsp-ivy-workspace-symbol)
    ("C-u C-c C-c" . lsp-ivy-global-workspace-symbol))
   :config
@@ -1377,10 +1380,10 @@ https://github.com/ema2159/centaur-tabs#my-personal-configuration"
      (lsp-ui-doc-use-childframe . t)
      (lsp-ui-doc-use-webkit . nil)
      (lsp-ui-flycheck-list-position . 'right)
-     (lsp-ui-imenu-enable . t)
-     (lsp-ui-imenu-auto-refresh . t)
-     (lsp-ui-imenu-kind-position . 'top)
-     (lsp-ui-imenu-window-width . 0)
+     (lsp-ui-imenu-enable . nil)
+     ;; (lsp-ui-imenu-auto-refresh . t)
+     ;; (lsp-ui-imenu-kind-position . 'top)
+     ;; (lsp-ui-imenu-window-width . 0)
      (lsp-ui-peek-enable . nil)
      (lsp-ui-peek-peek-height . 50)
      (lsp-ui-peek-list-width . 50)

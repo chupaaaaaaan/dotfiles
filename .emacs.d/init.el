@@ -585,7 +585,7 @@ https://github.com/ema2159/centaur-tabs#my-personal-configuration"
 (leaf amx
   :ensure t
   :custom
-  `((amx-save-file . ,(concat chpn/dir-cache "emacs-amx-items"))))
+  `((amx-save-file . ,(concat chpn/dir-cache "amx-items"))))
 
 (use-package ivy-rich
   :ensure t
@@ -1273,8 +1273,8 @@ https://github.com/ema2159/centaur-tabs#my-personal-configuration"
   (projectile-mode-map
    ("C-c p" . projectile-command-map))
   :custom
-  `((projectile-known-projects-file . ,(concat chpn/dir-cache "emacs-projectile-bookmarks.eld"))
-    (projectile-cache-file . ,(concat chpn/dir-cache "emacs-projectile.cache"))
+  `((projectile-known-projects-file . ,(concat chpn/dir-cache "projectile-bookmarks.eld"))
+    (projectile-cache-file . ,(concat chpn/dir-cache "projectile.cache"))
     (projectile-completion-system . 'ivy)
     (projectile-enable-caching . t)
     (projectile-require-project-root . t)

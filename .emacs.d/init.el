@@ -1289,13 +1289,15 @@ https://github.com/ema2159/centaur-tabs#my-personal-configuration"
    (treemacs-mode-map
     ("M-1" . other-window)))
   :custom
-  ((treemacs-is-never-other-window . t)
-   (treemacs-no-delete-other-windows . t)
-   ;; (treemacs-width 20)
-   (treemacs-follow-mode . t)
-   (treemacs-filewatch-mode . t)
-   (treemacs-fringe-indicator-mode . t)
-   (treemacs-git-mode . 'simple))
+  `((treemacs-is-never-other-window . t)
+    (treemacs-no-delete-other-windows . t)
+    (treemacs-persist-file . ,(concat chpn/dir-cache "treemacs-persist"))
+    (treemacs-last-error-persist-file . ,(concat chpn/dir-cache "treemacs-persist-at-last-error"))
+    ;; (treemacs-width 20)
+    (treemacs-follow-mode . t)
+    (treemacs-filewatch-mode . t)
+    (treemacs-fringe-indicator-mode . t)
+    (treemacs-git-mode . 'simple))
   :config
   (leaf treemacs-projectile
     :ensure t

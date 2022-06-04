@@ -71,7 +71,11 @@
 
 (leaf transient-dwim
   :ensure t
-  :bind (("M-=" . transient-dwim-dispatch)))
+  :bind (("M-=" . transient-dwim-dispatch))
+  :custom
+  `((transient-history-file . ,(concat chpn/dir-cache "transient-history.el"))
+    (transient-levels-file . ,(concat chpn/dir-cache "transient-levels.el"))
+    (transient-values-file . ,(concat chpn/dir-cache "transient-values.el"))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; General setting

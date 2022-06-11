@@ -173,7 +173,7 @@
   (chpn-toggle-map
    ("e" . electric-pair-local-mode))
   :custom
-  (electric-pair-mode . t))
+  (electric-pair-mode . nil))
 
 (leaf hungry-delete
   :ensure t

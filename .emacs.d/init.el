@@ -1216,7 +1216,7 @@ https://github.com/ema2159/centaur-tabs#my-personal-configuration"
    ("C-M->" . mc/unmark-previous-like-this)
    ("C-c C-<" . mc/mark-all-like-this))
   :custom
-  `((mc-list-file . ,(concat chpn/dir-cache "projectile-bookmarks.eld"))))
+  `((mc-list-file . ,(concat chpn/dir-cache ".mc-lists.el"))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Develop Environment

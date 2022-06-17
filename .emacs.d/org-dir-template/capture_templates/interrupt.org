@@ -1,5 +1,0 @@
-* NEXT [#C] [/] %?                                                :interrupt:
-  :PROPERTIES:
-  :COOKIE_DATA: checkbox
-  :END:
-  %U

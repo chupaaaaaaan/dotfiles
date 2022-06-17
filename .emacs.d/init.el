@@ -972,34 +972,22 @@ https://github.com/ema2159/centaur-tabs#my-personal-configuration"
 
   ;; capture
   (org-capture-templates
-   `(("diary" "日記" entry
+   `(("note" "日々の記録" entry
       (file+headline ladicle/get-today-diary "Diary")
       "* %?\n"
       :empty-lines 1 :jump-to-captured 1 :unnarrowed nil)
-     ("tweet" "一言メモ" item
-      (file+headline ladicle/get-today-diary "Log")
-      "%(ladicle/org-get-time) %?\n"
-      :prepend nil)
-     ("inbox" "新規プロジェクト" entry
+     ("inbox" "新規タスク" entry
       (file ,(concat org-directory agenda-dir "inbox.org"))
       ,(concat "%[" org-directory capture-template-dir "inbox.org" "]")
       :empty-lines 1 :jump-to-captured nil)
-     ("interrupt" "突発作業" entry
+     ("schedule" "スケジュール" entry
       (file ,(concat org-directory agenda-dir "inbox.org"))
-      ,(concat "%[" org-directory capture-template-dir "interrupt.org" "]")
-      :empty-lines 1 :clock-in 1 :clock-resume 1)
-     ("schedule" "予定作業" entry
-      (file ,(concat org-directory agenda-dir "schedule.org"))
       ,(concat "%[" org-directory capture-template-dir "schedule.org" "]")
       :empty-lines 1)
-     ("memo" "メモ・記録" plain
+     ("document" "新規文書" plain
       (file chpn/today-memo-string)
       ,(concat "%[" org-directory capture-template-dir "memo.org" "]")
       :empty-lines 1 :jump-to-captured 1 :unnarrowed nil)
-     ("break" "休憩" entry
-      (file ,(concat org-directory agenda-dir "inbox.org"))
-      "* DONE 休憩（%?）  :break:\n  %U\n"
-      :empty-lines 1 :clock-in 1 :clock-resume 1)
      ("link" "リンクを追加" item
       (clock)
       "%A\n"

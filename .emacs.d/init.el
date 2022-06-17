@@ -1060,7 +1060,7 @@ https://github.com/ema2159/centaur-tabs#my-personal-configuration"
   (defun chpn/insert-today-string     () (format-time-string "%F"    (current-time)))
   (defun chpn/insert-timestamp-string () (format-time-string "%F %T" (current-time)))
   (defun ladicle/org-get-time         () (format-time-string "<%R>"  (current-time)))
-  (defun chpn/today-memo-string       () (concat org-directory "memo/" (read-string "memo title: ") ".org"))
+  (defun chpn/today-memo-string       () (concat org-directory "memo/" (format-time-string "%F_" (current-time)) (read-string "memo title: ") ".org"))
   (defun ladicle/get-today-diary      () (concat org-directory (format-time-string "diary/%F.org" (current-time))))
   (defun ladicle/get-yesterday-diary  () (concat org-directory (format-time-string "diary/%F.org" (time-add (current-time) (* -24 3600)))))
   (defun ladicle/get-diary-from-cal   () (concat org-directory (format-time-string "diary/%F.org" (apply 'encode-time (parse-time-string (concat (org-read-date) " 00:00"))))))

@@ -895,52 +895,24 @@ https://github.com/ema2159/centaur-tabs#my-personal-configuration"
   (org-agenda-dim-blocked-tasks t)
   (org-agenda-window-setup 'current-window)
   (org-agenda-log-mode-items '(clock))
+  (org-agenda-tags-todo-honor-ignore-options t)
   (org-agenda-custom-commands
    `(("i" "Agenda: 予定表"
-      ((agenda "" nil)
-       (tags-todo "+HABIT" ((org-agenda-overriding-header "Habit")
-                            (org-agenda-sorting-strategy '(category-keep))))
-       (tags-todo "-INBOX-HABIT-SCHEDULED/+NEXT"
-                  ((org-agenda-overriding-header "Next Actions")
-                   (org-tags-match-list-sublevels nil)
-                   (org-agenda-sorting-strategy '(priority-down scheduled-up effort-up)))) nil))
+      ((agenda "" ((org-agenda-span 'day)))
+       (tags-todo "-INBOX+HABIT" ((org-agenda-overriding-header "Habit")
+                                  (org-agenda-sorting-strategy '(category-keep)))) nil))
 
      ("p" "Tasks: タスク"
       ((tags-todo "+INBOX"
                   ((org-agenda-overriding-header "Inbox")
-                   (org-tags-match-list-sublevels nil)))
-       (tags-todo "-INBOX-HABIT-SCHEDULED/-REFR-SOME-DONE-CANCELED"
+                   (org-tags-match-list-sublevels nil)
+                   (org-agenda-todo-ignore-scheduled nil)))
+       (tags-todo "-INBOX-HABIT/-REFR-SOME-DONE-CANCELED"
                   ((org-agenda-overriding-header "Tasks")
                    (org-tags-match-list-sublevels 'indented)
-                   (org-agenda-sorting-strategy '(priority-down scheduled-up)))) nil))
-
-     ("w" "Waiting for: 待ち状態"
-      ((tags-todo "-INBOX-HABIT-SCHEDULED/+WAIT"
-                  ((org-agenda-overriding-header "Waiting for")
-                   (org-tags-match-list-sublevels 'indented)
-                   (org-agenda-sorting-strategy '(category-keep)))) nil))
-
-     ("r" "Reference: 参考資料など"
-      ((tags-todo "-INBOX-HABIT-SCHEDULED/+REFR"
-                  ((org-agenda-overriding-header "Reference")
-                   (org-tags-match-list-sublevels nil))) nil))
-
-     ("y" "Someday: いつかやる/多分やる"
-      ((tags-todo "-INBOX-HABIT-SCHEDULED/+SOME"
-                  ((org-agenda-overriding-header "Someday")
-                   (org-agenda-sorting-strategy '(category-keep))
-                   (org-tags-match-list-sublevels nil))) nil))
-
-     ("d" "Done: 完了"
-      ((tags "+CLOSED<\"<tomorrow>\"+CLOSED>=\"<today>\""
-             ((org-agenda-overriding-header "Today's Done")
-              (org-tags-match-list-sublevels nil)))
-       (tags "+CLOSED<\"<today>\"+CLOSED>=\"<yesterday>\""
-             ((org-agenda-overriding-header "Yesterday's Done")
-              (org-tags-match-list-sublevels nil)))
-       (tags "+CLOSED<\"<yesterday>\"+CLOSED>=\"<-1w>\""
-             ((org-agenda-overriding-header "Weekly Done")
-              (org-tags-match-list-sublevels nil))) nil))))
+                   (org-agenda-todo-ignore-scheduled 'all)
+                   (org-agenda-sorting-strategy '(priority-down scheduled-up))))
+       (agenda "" ((org-agenda-span 'week))) nil))))
 
   ;; refile
   (org-refile-use-outline-path 'file)
@@ -1153,7 +1125,9 @@ https://github.com/ema2159/centaur-tabs#my-personal-configuration"
         ("C" . org-agenda-columns)
         ("w" . org-agenda-refile)
         ("d" . org-agenda-set-property)
-        ("P" . org-pomodoro))
+        ("P" . org-pomodoro)
+        ("W" . org-agenda-week-view)
+        ("D" . org-agenda-day-view))
 
   :preface
   ;; from https://gist.github.com/ayman/bb72a25e16af9e6f30bf

@@ -937,7 +937,7 @@ https://github.com/ema2159/centaur-tabs#my-personal-configuration"
   (org-timer-default-timer 30)
 
   ;; todo
-  (org-todo-keywords '((sequence "TODO(t)" "NEXT(n)" "WAIT(w@)" "REFR(r)" "SOME(s)" "|" "DONE(d)" "CANCELED(c@)")))
+  (org-todo-keywords '((sequence "TODO(t)" "WAIT(w@)" "REFR(r)" "SOME(s)" "|" "DONE(d)" "CANCELED(c@)")))
   (org-enforce-todo-dependencies t)
   (org-enforce-todo-checkbox-dependencies t)
   (org-track-ordered-property-with-tag t)
@@ -1045,6 +1045,8 @@ https://github.com/ema2159/centaur-tabs#my-personal-configuration"
 
 
   :preface
+  (setq memo-dir "memo/")
+  (setq diary-dir "diary/")
   (setq agenda-dir "agenda/")
   (setq capture-template-dir "capture_templates/")
   (defun chpn/deploy-templates-if-not-exist (from-base to-base dirlist)
@@ -1055,15 +1057,14 @@ https://github.com/ema2159/centaur-tabs#my-personal-configuration"
   (defun diary-today     () (interactive) (chpn/open-file (ladicle/get-today-diary)))
   (defun diary-yesterday () (interactive) (chpn/open-file (ladicle/get-yesterday-diary)))
   (defun diary-from-cal  () (interactive) (chpn/open-file (ladicle/get-diary-from-cal)))
-  (defun open-memo       () (interactive) (chpn/open-file (counsel-find-file "~/org/memo/")))
+  (defun open-memo       () (interactive) (chpn/open-file (counsel-find-file (concat org-directory memo-dir))))
 
   (defun chpn/insert-today-string     () (format-time-string "%F"    (current-time)))
   (defun chpn/insert-timestamp-string () (format-time-string "%F %T" (current-time)))
-  (defun ladicle/org-get-time         () (format-time-string "<%R>"  (current-time)))
-  (defun chpn/today-memo-string       () (concat org-directory "memo/" (format-time-string "%F_" (current-time)) (read-string "memo title: ") ".org"))
-  (defun ladicle/get-today-diary      () (concat org-directory (format-time-string "diary/%F.org" (current-time))))
-  (defun ladicle/get-yesterday-diary  () (concat org-directory (format-time-string "diary/%F.org" (time-add (current-time) (* -24 3600)))))
-  (defun ladicle/get-diary-from-cal   () (concat org-directory (format-time-string "diary/%F.org" (apply 'encode-time (parse-time-string (concat (org-read-date) " 00:00"))))))
+  (defun chpn/today-memo-string       () (concat org-directory memo-dir  (format-time-string "%F_" (current-time)) (read-string "memo title: ") ".org"))
+  (defun ladicle/get-today-diary      () (concat org-directory diary-dir (format-time-string "%F.org" (current-time))))
+  (defun ladicle/get-yesterday-diary  () (concat org-directory diary-dir (format-time-string "%F.org" (time-add (current-time) (* -24 3600)))))
+  (defun ladicle/get-diary-from-cal   () (concat org-directory diary-dir (format-time-string "%F.org" (apply 'encode-time (parse-time-string (concat (org-read-date) " 00:00"))))))
   (defun ladicle/task-clocked-time ()
     "Return a string with the clocked time and effort, if any"
     (interactive)

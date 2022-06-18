@@ -109,6 +109,8 @@
     (tool-bar-mode . nil)
     (indent-tabs-mode . nil)
     (transient-mark-mode . t)
+    (scroll-conservatively . 101)
+    (scroll-margin . 10)
     (history-delete-duplicates . t)
     (history-length . 1000)
     (message-log-max . 10000)
@@ -453,9 +455,11 @@ https://github.com/ema2159/centaur-tabs#my-personal-configuration"
   :hook
   (treemacs-mode-hook . hide-mode-line-mode))
 
-(leaf hl-line
-  :custom
-  (global-hl-line-mode . t))
+;; Commented out due to bug.
+;; https://lists.gnu.org/archive/html/bug-gnu-emacs/2012-11/msg00862.html
+;; (leaf hl-line
+;;   :custom
+;;   (global-hl-line-mode . t))
 
 (leaf paren
   :leaf-defer nil
@@ -464,7 +468,7 @@ https://github.com/ema2159/centaur-tabs#my-personal-configuration"
   (show-paren-match . '((nil (:background "#44475a" :foreground "#f1fa8c"))))
   :custom
   (show-paren-mode . t)
-  (show-paren-delay . 0)
+  (show-paren-delay . 0.3)
   (show-paren-style . 'mixed)
   (show-paren-when-point-inside-paren . t)
   (show-paren-when-point-in-periphery . t)

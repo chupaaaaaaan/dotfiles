@@ -944,7 +944,7 @@ https://github.com/ema2159/centaur-tabs#my-personal-configuration"
 
   ;; capture
   (org-capture-templates
-   `(("note" "日々の記録" entry
+   `(("diary" "日々の記録" entry
       (file+headline ladicle/get-today-diary "Diary")
       "* %?\n"
       :empty-lines 1 :jump-to-captured 1 :unnarrowed nil)
@@ -956,7 +956,7 @@ https://github.com/ema2159/centaur-tabs#my-personal-configuration"
       (file ,(concat org-directory agenda-dir "inbox.org"))
       ,(concat "%[" org-directory capture-template-dir "schedule.org" "]")
       :empty-lines 1)
-     ("document" "新規文書" plain
+     ("memo" "新規文書" plain
       (file chpn/today-memo-string)
       ,(concat "%[" org-directory capture-template-dir "memo.org" "]")
       :empty-lines 1 :jump-to-captured 1 :unnarrowed nil)

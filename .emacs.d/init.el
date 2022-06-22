@@ -907,7 +907,8 @@ https://github.com/ema2159/centaur-tabs#my-personal-configuration"
                                   (org-agenda-sorting-strategy '(category-keep)))) nil))
 
      ("p" "Tasks: タスク"
-      ((tags-todo "+INBOX"
+      ((agenda "" ((org-agenda-span 'week)))
+       (tags-todo "+INBOX"
                   ((org-agenda-overriding-header "Inbox")
                    (org-tags-match-list-sublevels nil)
                    (org-agenda-todo-ignore-scheduled nil)))
@@ -915,8 +916,7 @@ https://github.com/ema2159/centaur-tabs#my-personal-configuration"
                   ((org-agenda-overriding-header "Tasks")
                    (org-tags-match-list-sublevels 'indented)
                    (org-agenda-todo-ignore-scheduled 'all)
-                   (org-agenda-sorting-strategy '(priority-down scheduled-up))))
-       (agenda "" ((org-agenda-span 'week))) nil))))
+                   (org-agenda-sorting-strategy '(priority-down scheduled-up)))) nil))))
 
   ;; refile
   (org-refile-use-outline-path 'file)

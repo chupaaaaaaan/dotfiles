@@ -954,7 +954,7 @@ https://github.com/ema2159/centaur-tabs#my-personal-configuration"
       (file+headline ladicle/get-today-diary "Diary")
       "* %?\n"
       :empty-lines 1 :jump-to-captured 1 :unnarrowed nil)
-     ("inbox" "新規タスク" entry
+     ("task" "新規タスク" entry
       (file ,(concat org-directory agenda-dir "inbox.org"))
       ,(concat "%[" org-directory capture-template-dir "inbox.org" "]")
       :empty-lines 1 :jump-to-captured nil)
@@ -966,7 +966,7 @@ https://github.com/ema2159/centaur-tabs#my-personal-configuration"
       (file chpn/today-memo-string)
       ,(concat "%[" org-directory capture-template-dir "memo.org" "]")
       :empty-lines 1 :jump-to-captured 1 :unnarrowed nil)
-     ("h" "課題形成" plain
+     ("issue" "課題形成" plain
       (file chpn/today-issue-string)
       ,(concat "%[" org-directory capture-template-dir "issue.org" "]")
       :empty-lines 1 :jump-to-captured 1 :unnarrowed nil)

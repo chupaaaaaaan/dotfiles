@@ -1331,6 +1331,8 @@ https://github.com/ema2159/centaur-tabs#my-personal-configuration"
   :config
   (leaf flycheck-posframe
     :ensure t
+    :custom
+    ((flycheck-posframe-position . 'window-top-right-corner))
     :hook
     (flycheck-mode-hook . flycheck-posframe-mode)))
 

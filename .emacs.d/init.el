@@ -502,7 +502,7 @@ https://github.com/ema2159/centaur-tabs#my-personal-configuration"
   (highlight-indent-guides-character . 124)
   (highlight-indent-guides-auto-enabled . t)
   (highlight-indent-guides-responsive . t)
-  (highlight-indent-guides-method . 'column) ;; or 'fill, 'character, 'bitmap
+  (highlight-indent-guides-method . 'fill) ;; or 'column, 'character, 'bitmap
   :preface
   (defun toggle-highlight-indent-guides ()
     "Toggle highlight indent guides."

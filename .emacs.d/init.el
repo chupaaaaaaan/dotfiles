@@ -170,6 +170,10 @@
   :custom
   (minibuffer-depth-indicate-mode . t))
 
+(leaf url-cookie
+  :custom
+  `((url-cookie-file . ,(concat chpn/dir-cache "cookie"))))
+
 (leaf elec-pair
   :bind
   (chpn-toggle-map

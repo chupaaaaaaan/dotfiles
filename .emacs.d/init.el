@@ -967,7 +967,7 @@ https://github.com/ema2159/centaur-tabs#my-personal-configuration"
       ,(concat "%[" org-directory capture-template-dir "schedule.org" "]")
       :empty-lines 1)
      ("memo" "新規文書" plain
-      (file chpn/today-memo-string)
+      (file chpn/today-memo-string-with-mkdir)
       ,(concat "%[" org-directory capture-template-dir "memo.org" "]")
       :empty-lines 1 :jump-to-captured 1 :unnarrowed nil)
      ("issue" "課題形成" plain
@@ -1076,9 +1076,12 @@ https://github.com/ema2159/centaur-tabs#my-personal-configuration"
 
   (defun chpn/insert-today-string     () (format-time-string "%F"    (current-time)))
   (defun chpn/insert-timestamp-string () (format-time-string "%F %T" (current-time)))
-  (defun chpn/today-memo-string       () (let ((dn (concat org-directory memo-dir (format-time-string "%F_" (current-time)) (read-string "memo title: "))))
-                                            (unless (file-directory-p dn) (make-directory dn))
-                                            (concat dn "/index.org")))
+  (defun chpn/today-memo-string-with-mkdir ()
+    (let* ((title (read-string "memo title: "))
+           (dn (concat org-directory memo-dir (format-time-string "%F_" (current-time)) title)))
+      (unless (file-directory-p dn)
+        (make-directory dn))
+      (concat dn "/" title ".org")))
   (defun chpn/today-issue-string      () (concat org-directory issue-dir (format-time-string "%F_" (current-time)) (read-string "issue title: ") ".org"))
   (defun ladicle/get-today-diary      () (concat org-directory diary-dir (format-time-string "%F.org" (current-time))))
   (defun ladicle/get-yesterday-diary  () (concat org-directory diary-dir (format-time-string "%F.org" (time-add (current-time) (* -24 3600)))))

@@ -1219,7 +1219,7 @@ https://github.com/ema2159/centaur-tabs#my-personal-configuration"
     ((magit-auto-revert-mode . nil)
      (magit-completing-read-function . 'ivy-completing-read))
     :bind
-    ("M-g s" . magit-status))
+    ("M-0" . magit-status))
   (leaf git-gutter
     :ensure t
     :custom
@@ -1295,7 +1295,6 @@ https://github.com/ema2159/centaur-tabs#my-personal-configuration"
   :ensure t
   :bind
   (("M-1" . treemacs-select-window)
-   ("M-0" . treemacs)
    (treemacs-mode-map
     ("M-1" . other-window)))
   :custom

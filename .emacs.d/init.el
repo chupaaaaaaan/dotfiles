@@ -1362,6 +1362,9 @@ https://github.com/ema2159/centaur-tabs#my-personal-configuration"
   ((lsp-diagnostics-provider . :auto)
    (lsp-completion-provider . :capf)
    (lsp-lens-enable . t)
+   (lsp-semantic-tokens-enable . t)
+   (lsp-semantic-tokens-honor-refresh-requests . t)
+   (lsp-enable-links . t)
    ;; (lsp-log-io t)
    ;; (lsp-document-sync-method 'lsp--sync-incremental)
    (lsp-keymap-prefix . "M-l"))
@@ -1373,6 +1376,7 @@ https://github.com/ema2159/centaur-tabs#my-personal-configuration"
    (haskell-mode-hook    . lsp-deferred)
    (js-mode-hook         . lsp-deferred)
    (typescript-mode-hook . lsp-deferred)
+   (terraform-mode-hook  . lsp-deferred)
    (python-mode-hook     . lsp-deferred))
   :bind
   (lsp-mode-map
@@ -1470,17 +1474,25 @@ https://github.com/ema2159/centaur-tabs#my-personal-configuration"
 
 (leaf urlenc :ensure t)
 
+(leaf lsp-terraform
+  :after lsp-mode
+  :custom
+  ((lsp-terraform-ls-enable-show-reference . t)
+   )
+  :bind
+  (terraform-mode-map
+   ("C-c C-i" . lsp-terraform-ls-init)
+   ("C-c C-v" . lsp-terraform-ls-validate)))
+
 (leaf terraform-mode
   :ensure t
   :custom
-  (terraform-indent-level . 4)
+  (terraform-indent-level . 2)
   :config
   (leaf company-terraform
     :ensure t
-    :after company
-    :defvar (company-backends)
     :config
-    (add-to-list 'company-backends 'company-terraform)))
+    (company-terraform-init)))
 
 (leaf yaml-mode :ensure t)
 

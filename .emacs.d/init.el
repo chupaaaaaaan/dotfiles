@@ -99,7 +99,6 @@
 
 ;; Settings that do not depend on some major modes or minor modes
 (global-set-key (kbd "C-h")   'delete-backward-char)
-(global-set-key [f6] (lambda () (interactive) (counsel-M-x "^counsel ")))
 (global-set-key [f7] (lambda () (interactive) (chpn/open-file (concat user-emacs-directory "init.el"))))
 (global-set-key [f8] (lambda () (interactive) (switch-to-buffer "*scratch*")))
 
@@ -205,7 +204,7 @@
   :bind
   (("M-[" . centaur-tabs-backward)
    ("M-]" . centaur-tabs-forward)
-   ("C-c t b" . centaur-tabs-counsel-switch-group)
+   ("C-c t b" . centaur-tabs-switch-group)
    ("C-c t p" . centaur-tabs-group-by-projectile-project)
    ("C-c t g" . centaur-tabs-group-buffer-groups))
   :hook
@@ -279,12 +278,6 @@ https://github.com/ema2159/centaur-tabs#my-personal-configuration"
 ;;   :hook
 ;;   (dired-mode . all-the-icons-dired-mode))
 
-;; (use-package all-the-icons-ivy
-;;   :ensure t
-;;   :after ivy
-;;   :config
-;;   (all-the-icons-ivy-setup))
-
 (leaf all-the-icons
   :ensure t
   :when (display-graphic-p)
@@ -342,9 +335,6 @@ https://github.com/ema2159/centaur-tabs#my-personal-configuration"
     :if (eq system-type 'gnu/linux)
     :bind
     ((minibuffer-local-map
-      ("<henkan>" . (lambda () (interactive) (unless current-input-method (toggle-input-method))))
-      ("<muhenkan>" . (lambda () (interactive) (when current-input-method (toggle-input-method)))))
-     (counsel-mode-map
       ("<henkan>" . (lambda () (interactive) (unless current-input-method (toggle-input-method))))
       ("<muhenkan>" . (lambda () (interactive) (when current-input-method (toggle-input-method))))))
     :bind*
@@ -424,9 +414,7 @@ https://github.com/ema2159/centaur-tabs#my-personal-configuration"
 ;;   `((persp-state-default-file . ,(concat chpn/dir-cache "persp-state-file"))
 ;;     (persp-modestring-short . t))
 ;;   :bind
-;;   ;; ("C-x b"   . persp-ivy-switch-buffer)
 ;;   ;; ("C-x b"   . persp-switch-to-buffer*)
-;;   ("C-x b"   . persp-counsel-switch-buffer)
 ;;   ("C-x k"   . persp-kill-buffer*)
 ;;   ("C-x C-b" . persp-bs-show)
 ;;   :hook
@@ -605,248 +593,73 @@ https://github.com/ema2159/centaur-tabs#my-personal-configuration"
   :custom
   `((amx-save-file . ,(concat chpn/dir-cache "amx-items"))))
 
-(use-package ivy-rich
+(leaf vertico
   :ensure t
-  :defer t
-  :after ivy
-  :defines (all-the-icons-dir-icon-alist bookmark-alist)
-  :functions (all-the-icons-icon-family
-              all-the-icons-match-to-alist
-              all-the-icons-auto-mode-match?
-              all-the-icons-octicon
-              all-the-icons-dir-is-submodule)
-  :preface
-  (defun ivy-rich-bookmark-name (candidate)
-    (car (assoc candidate bookmark-alist)))
-
-  (defun ivy-rich-repo-icon (candidate)
-    "Display repo icons in `ivy-rich`."
-    (all-the-icons-octicon "repo" :height .9))
-
-  (defun ivy-rich-org-capture-icon (candidate)
-    "Display repo icons in `ivy-rich`."
-    (pcase (car (last (split-string (car (split-string candidate)) "-")))
-      ("emacs" (all-the-icons-fileicon "emacs" :height .68 :v-adjust .001))
-      ("schedule" (all-the-icons-faicon "calendar" :height .68 :v-adjust .005))
-      ("tweet" (all-the-icons-faicon "commenting" :height .7 :v-adjust .01))
-      ("link" (all-the-icons-faicon "link" :height .68 :v-adjust .01))
-      ("memo" (all-the-icons-faicon "pencil" :height .7 :v-adjust .01))
-      (_       (all-the-icons-octicon "inbox" :height .68 :v-adjust .01))
-      ))
-
-  (defun ivy-rich-org-capture-title (candidate)
-    (let* ((octl (split-string candidate))
-           (title (pop octl))
-           (desc (mapconcat 'identity octl " ")))
-      (format "%-25s %s"
-              title
-              (propertize desc 'face `(:inherit font-lock-doc-face)))))
-
-  (defun ivy-rich-buffer-icon (candidate)
-    "Display buffer icons in `ivy-rich'."
-    (when (display-graphic-p)
-      (when-let* ((buffer (get-buffer candidate))
-                  (major-mode (buffer-local-value 'major-mode buffer))
-                  (icon (if (and (buffer-file-name buffer)
-                                 (all-the-icons-auto-mode-match? candidate))
-                            (all-the-icons-icon-for-file candidate)
-                          (all-the-icons-icon-for-mode major-mode))))
-        (if (symbolp icon)
-            (setq icon (all-the-icons-icon-for-mode 'fundamental-mode)))
-        (unless (symbolp icon)
-          (propertize icon 'face `(:height 1.1 :family ,(all-the-icons-icon-family icon)))))))
-
-  (defun ivy-rich-file-icon (candidate)
-    "Display file icons in `ivy-rich'."
-    (when (display-graphic-p)
-      (let ((icon (if (file-directory-p candidate)
-                      (cond
-                       ((and (fboundp 'tramp-tramp-file-p)
-                             (tramp-tramp-file-p default-directory))
-                        (all-the-icons-octicon "file-directory"))
-                       ((file-symlink-p candidate)
-                        (all-the-icons-octicon "file-symlink-directory"))
-                       ((all-the-icons-dir-is-submodule candidate)
-                        (all-the-icons-octicon "file-submodule"))
-                       ((file-exists-p (format "%s/.git" candidate))
-                        (all-the-icons-octicon "repo"))
-                       (t (let ((matcher (all-the-icons-match-to-alist candidate all-the-icons-dir-icon-alist)))
-                            (apply (car matcher) (list (cadr matcher))))))
-                    (all-the-icons-icon-for-file candidate))))
-        (unless (symbolp icon)
-          (propertize icon
-                      'face `(
-                              :height 1.1
-                              :family ,(all-the-icons-icon-family icon)
-                              ))))))
-  :hook
-  (ivy-mode . ivy-rich-mode)
-  (ivy-rich-mode . (lambda ()
-                     (setq ivy-virtual-abbreviate
-                           (or (and ivy-rich-mode 'abbreviate) 'name))))
-  :init
-  (setq ivy-rich-display-transformers-list
-        '(ivy-switch-buffer
-          (:columns
-           ((ivy-rich-buffer-icon)
-            (ivy-rich-candidate (:width 30))
-            (ivy-rich-switch-buffer-size (:width 7))
-            (ivy-rich-switch-buffer-indicators (:width 4 :face error :align right))
-            (ivy-rich-switch-buffer-major-mode (:width 12 :face warning))
-            (ivy-rich-switch-buffer-project (:width 15 :face success))
-            (ivy-rich-switch-buffer-path (:width (lambda (x) (ivy-rich-switch-buffer-shorten-path x (ivy-rich-minibuffer-width 0.3))))))
-           :predicate
-           (lambda (cand) (get-buffer cand)))
-          ivy-switch-buffer-other-window
-          (:columns
-           ((ivy-rich-buffer-icon)
-            (ivy-rich-candidate (:width 30))
-            (ivy-rich-switch-buffer-size (:width 7))
-            (ivy-rich-switch-buffer-indicators (:width 4 :face error :align right))
-            (ivy-rich-switch-buffer-major-mode (:width 12 :face warning))
-            (ivy-rich-switch-buffer-project (:width 15 :face success))
-            (ivy-rich-switch-buffer-path (:width (lambda (x) (ivy-rich-switch-buffer-shorten-path x (ivy-rich-minibuffer-width 0.3))))))
-           :predicate
-           (lambda (cand) (get-buffer cand)))
-          counsel-M-x
-          (:columns
-           ((counsel-M-x-transformer (:width 40))
-            (ivy-rich-counsel-function-docstring (:face font-lock-doc-face))))
-          counsel-describe-function
-          (:columns
-           ((counsel-describe-function-transformer (:width 45))
-            (ivy-rich-counsel-function-docstring (:face font-lock-doc-face))))
-          counsel-describe-variable
-          (:columns
-           ((counsel-describe-variable-transformer (:width 45))
-            (ivy-rich-counsel-variable-docstring (:face font-lock-doc-face))))
-          counsel-find-file
-          (:columns
-           ((ivy-rich-file-icon)
-            (ivy-rich-candidate)))
-          counsel-file-jump
-          (:columns
-           ((ivy-rich-file-icon)
-            (ivy-rich-candidate)))
-          counsel-dired-jump
-          (:columns
-           ((ivy-rich-file-icon)
-            (ivy-rich-candidate)))
-          counsel-git
-          (:columns
-           ((ivy-rich-file-icon)
-            (ivy-rich-candidate)))
-          counsel-recentf
-          (:columns
-           ((ivy-rich-file-icon)
-            (ivy-rich-candidate (:width 110))))
-          counsel-bookmark
-          (:columns
-           ((ivy-rich-bookmark-type)
-            (ivy-rich-bookmark-name (:width 30))
-            (ivy-rich-bookmark-info (:width 80))))
-          counsel-projectile-switch-project
-          (:columns
-           ((ivy-rich-file-icon)
-            (ivy-rich-candidate)))
-          counsel-fzf
-          (:columns
-           ((ivy-rich-file-icon)
-            (ivy-rich-candidate)))
-          ivy-ghq-open
-          (:columns
-           ((ivy-rich-repo-icon)
-            (ivy-rich-candidate)))
-          ivy-ghq-open-and-fzf
-          (:columns
-           ((ivy-rich-repo-icon)
-            (ivy-rich-candidate)))
-          counsel-projectile-find-file
-          (:columns
-           ((ivy-rich-file-icon)
-            (ivy-rich-candidate)))
-          counsel-org-capture
-          (:columns
-           ((ivy-rich-org-capture-icon)
-            (ivy-rich-org-capture-title)
-            ))
-          counsel-projectile-find-dir
-          (:columns
-           ((ivy-rich-file-icon)
-            (counsel-projectile-find-dir-transformer)))))
   :custom
-  (ivy-rich-parse-remote-buffer nil)
-  :config
-  (ivy-rich-mode 1))
+  ((vertico-mode . t)
+   (read-extended-command-predicate . #'command-completion-default-include-p)))
 
-(leaf ivy
+(leaf consult
   :ensure t
-  :defvar (ivy-format-function)
-  :blackout ivy-mode
   :bind
-  (("C-s" . swiper)
-   ("M-s M-s" . swiper-thing-at-point)
-   ("M-x" . counsel-M-x)
-   ("M-y" . counsel-yank-pop)
-   ("C-M-z" . counsel-fzf)
-   ("C-M-r" . counsel-recentf)
-   ("C-M-f" . counsel-ag)
-   ;; ("C-x b" . counsel-switch-buffer)
-   ;; ("C-x C-b" . counsel-ibuffer)
-   (ivy-minibuffer-map
-    ("C-w" . ivy-backward-kill-word)
-    ("C-k" . ivy-kill-line)
-    ("C-j" . ivy-immediate-done)
-    ("RET" . ivy-alt-done)
-    ("C-h" . ivy-backward-delete-char)
-    ("<escape>" . minibuffer-keyboard-quit)))
+  (("C-c h" . consult-history)
+   ("C-c m" . consult-mode-command)
+   ("C-c k" . consult-kmacro)
+   ("C-x M-:" . consult-complex-command)
+   ("C-x b" . consult-buffer)
+   ("C-x 4 b" . consult-buffer-other-window)
+   ("C-x 5 b" . consult-buffer-other-frame)
+   ("C-x r b" . consult-bookmark)
+   ("C-x p b" . consult-project-buffer)
+   ("M-#" . consult-register-load)
+   ("M-'" . consult-register-store)
+   ("C-M-#" . consult-register)
+   ("C-M-r" . consult-recent-file)
+   ("M-y" . consult-yank-pop)
+   ("M-g e" . consult-compile-error)
+   ;; ("M-g f" . consult-flymake)
+   ("M-g g" . consult-goto-line)
+   ("M-g M-g" . consult-goto-line)
+   ("M-g o" . consult-outline)
+   ("M-g m" . consult-mark)
+   ("M-g k" . consult-global-mark)
+   ("M-g i" . consult-imenu)
+   ("M-g I" . consult-imenu-multi)
+   ("M-s d" . consult-find)
+   ("M-s D" . consult-locate)
+   ("M-s g" . consult-grep)
+   ("M-s G" . consult-git-grep)
+   ("M-s r" . consult-ripgrep)
+   ("M-s l" . consult-line)
+   ("M-s L" . consult-line-multi)
+   ("M-s m" . consult-multi-occur)
+   ("M-s k" . consult-keep-lines)
+   ("M-s u" . consult-focus-lines)
+   ("M-s e" . consult-isearch-history)
+   (isearch-mode-map
+    ("M-e" . consult-isearch-history)
+    ("M-s e" . consult-isearch-history)
+    ("M-s l" . consult-line)
+    ("M-s L" . consult-line-multi))
+   (minibuffer-local-map
+    ("M-s" . consult-history)
+    ("M-r" . consult-history)))
   :hook
-  ((emacs-startup-hook . ivy-mode)
-   (ivy-mode-hook . counsel-mode))
-  :custom
-  ((ivy-truncate-lines . nil)
-   (ivy-use-virtual-buffers . t)
-   (ivy-use-selectable-prompt . t)
-   (ivy-on-del-error-function . nil))
-  :preface
-  (defun ivy-format-function-pretty (cands)
-    "Transform CANDS into a string for minibuffer."
-    (ivy--format-function-generic
-     (lambda (str)
-       (concat
-        (all-the-icons-faicon "hand-o-right" :height 1 :v-adjust -0.1 :face 'font-lock-constant-face)
-        " "
-        (ivy--add-face str 'ivy-current-match)))
-     (lambda (str)
-       (concat "   " str))
-     cands
-     "\n"))
-  :config
-  (ivy-configure 't :format-fn #'ivy-format-function-pretty)
-  ;; (leaf ivy-hydra
-  ;;   :ensure t
-  ;;   :after hydra
-  ;;   :custom
-  ;;   (ivy-read-action-function . (function ivy-hydra-read-action)))
-  (leaf swiper
-    :ensure t
-    :custom
-    (swiper-action-recenter . t))
-  (leaf counsel
-    :ensure t
-    :defvar (counsel-yank-pop-separator)
-    :blackout counsel-mode
-    :custom
-    (counsel-yank-pop-height . 15)
-    :config
-    (setq counsel-yank-pop-separator
-          (propertize "\n----------------------------------------------------------------------\n" 'face `(:foreground "#6272a4")))))
+  (completion-list-mode-hook . consult-preview-at-point-mode))
 
-(use-package counsel-tramp
+(leaf orderless
   :ensure t
-  :disabled
-  :bind
-  ("C-c C-f" . counsel-tramp))
+  :custom
+  ((completion-styles . '(orderless basic))
+   (completion-category-overrides . '((file (styles basic partial-completion))))))
+
+(leaf marginalia
+  :ensure t
+  :custom
+  ((marginalia-mode . t))
+  :bind (("M-A" . marginalia-cycle)
+         (minibuffer-local-map
+          ("M-A" . marginalia-cycle))))
 
 (leaf ag :ensure t)
 
@@ -999,7 +812,7 @@ https://github.com/ema2159/centaur-tabs#my-personal-configuration"
   (org-babel-load-languages '((plantuml . t)))
 
   :bind
-  ("C-c c" . counsel-org-capture)
+  ("C-c c" . org-capture)
   ("C-c a" . org-agenda)
   ("C-c l" . org-store-link)
   ("C-+"   . (lambda () (interactive) (insert (chpn/insert-today-string))))
@@ -1054,7 +867,7 @@ https://github.com/ema2159/centaur-tabs#my-personal-configuration"
   (defun diary-today     () (interactive) (chpn/open-file (ladicle/get-today-diary)))
   (defun diary-yesterday () (interactive) (chpn/open-file (ladicle/get-yesterday-diary)))
   (defun diary-from-cal  () (interactive) (chpn/open-file (ladicle/get-diary-from-cal)))
-  (defun open-memo       () (interactive) (chpn/open-file (counsel-find-file (concat org-directory memo-dir))))
+  (defun open-memo       () (interactive) (chpn/open-file (find-file (concat org-directory memo-dir))))
 
   (defun chpn/insert-today-string     () (format-time-string "%F"    (current-time)))
   (defun chpn/insert-timestamp-string () (format-time-string "%F %T" (current-time)))
@@ -1198,8 +1011,7 @@ https://github.com/ema2159/centaur-tabs#my-personal-configuration"
   (leaf magit
     :ensure t
     :custom
-    ((magit-auto-revert-mode . nil)
-     (magit-completing-read-function . 'ivy-completing-read))
+    ((magit-auto-revert-mode . nil))
     :bind
     ("M-0" . magit-status))
   (leaf git-gutter
@@ -1267,7 +1079,6 @@ https://github.com/ema2159/centaur-tabs#my-personal-configuration"
   :custom
   `((projectile-known-projects-file . ,(concat chpn/dir-cache "projectile-bookmarks.eld"))
     (projectile-cache-file . ,(concat chpn/dir-cache "projectile.cache"))
-    (projectile-completion-system . 'ivy)
     (projectile-enable-caching . t)
     (projectile-require-project-root . t)
     (projectile-dirconfig-comment-prefix . "#")
@@ -1301,15 +1112,6 @@ https://github.com/ema2159/centaur-tabs#my-personal-configuration"
   (leaf treemacs-magit
     :ensure t
     :after magit))
-
-(use-package counsel-projectile
-  :ensure t
-  :after counsel projectile
-  :custom
-  (counsel-projectile-sort-files t)
-  (counsel-projectile-sort-projects t)
-  :config
-  (counsel-projectile-mode 1))
 
 (leaf flycheck
   :ensure t
@@ -1359,10 +1161,6 @@ https://github.com/ema2159/centaur-tabs#my-personal-configuration"
    (typescript-mode-hook . lsp-deferred)
    (terraform-mode-hook  . lsp-deferred)
    (python-mode-hook     . lsp-deferred))
-  :bind
-  (lsp-mode-map
-   ("C-c C-c" . lsp-ivy-workspace-symbol)
-   ("C-u C-c C-c" . lsp-ivy-global-workspace-symbol))
   :config
   (leaf lsp-ui
     :ensure t
@@ -1394,7 +1192,6 @@ https://github.com/ema2159/centaur-tabs#my-personal-configuration"
      (lsp-ui-sideline-show-hover . t)
      (lsp-ui-sideline-show-diagnostics . nil)
      (lsp-ui-sideline-show-code-actions . t)))
-  (leaf lsp-ivy :ensure t :after ivy)
   (leaf lsp-treemacs
     :ensure t
     :after treemacs

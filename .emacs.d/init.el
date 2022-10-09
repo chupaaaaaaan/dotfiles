@@ -954,30 +954,12 @@ https://github.com/ema2159/centaur-tabs#my-personal-configuration"
 
   ;; capture
   (org-capture-templates
-   `(("diary" "日々の記録" entry
-      (file+headline ladicle/get-today-diary "Diary")
-      "* %?\n"
-      :empty-lines 1 :jump-to-captured 1 :unnarrowed nil)
-     ("task" "新規タスク" entry
-      (file ,(concat org-directory agenda-dir "inbox.org"))
-      ,(concat "%[" org-directory capture-template-dir "inbox.org" "]")
-      :empty-lines 1 :jump-to-captured nil)
-     ("schedule" "スケジュール" entry
-      (file ,(concat org-directory agenda-dir "inbox.org"))
-      ,(concat "%[" org-directory capture-template-dir "schedule.org" "]")
-      :empty-lines 1)
-     ("memo" "新規文書" plain
-      (file chpn/today-memo-string-with-mkdir)
-      ,(concat "%[" org-directory capture-template-dir "memo.org" "]")
-      :empty-lines 1 :jump-to-captured 1 :unnarrowed nil)
-     ("issue" "課題形成" plain
-      (file chpn/today-issue-string)
-      ,(concat "%[" org-directory capture-template-dir "issue.org" "]")
-      :empty-lines 1 :jump-to-captured 1 :unnarrowed nil)
-     ("link" "リンクを追加" item
-      (clock)
-      "%A\n"
-      :immediate-finish 1 :prepend nil)))
+   `(("d" "diary:    日々の記録"   entry (file+headline ladicle/get-today-diary "Diary")       "* %?\n"                                                             :empty-lines 1 :jump-to-captured 1 :unnarrowed nil)
+     ("t" "task:     新規タスク"   entry (file ,(concat org-directory agenda-dir "inbox.org")) ,(concat "%[" org-directory capture-template-dir "inbox.org" "]")    :empty-lines 1 :jump-to-captured nil)
+     ("s" "schedule: スケジュール" entry (file ,(concat org-directory agenda-dir "inbox.org")) ,(concat "%[" org-directory capture-template-dir "schedule.org" "]") :empty-lines 1)
+     ("m" "memo:     新規文書"     plain (file chpn/today-memo-string-with-mkdir)              ,(concat "%[" org-directory capture-template-dir "memo.org" "]")     :empty-lines 1 :jump-to-captured 1 :unnarrowed nil)
+     ("i" "issue:    課題形成"     plain (file chpn/today-issue-string)                        ,(concat "%[" org-directory capture-template-dir "issue.org" "]")    :empty-lines 1 :jump-to-captured 1 :unnarrowed nil)
+     ("l" "link:     リンクを追加" item  (clock)                                               "%A\n"                                                               :immediate-finish 1 :prepend nil)))
 
   ;; tags
   ;; (org-tag-alist '((:startgroup . nil) ("design" . ?s) ("develop" . ?d) ("meeting" . ?m) (:endgroup . nil)

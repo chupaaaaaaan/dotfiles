@@ -346,6 +346,7 @@ https://github.com/ema2159/centaur-tabs#my-personal-configuration"
       :el-get (mozc-posframe
                :url "https://raw.githubusercontent.com/derui/mozc-posframe/master/mozc-posframe.el"
                :features mozc-posframe)
+      :defun (mozc-posframe-register)
       :custom
       ((mozc-candidate-style . 'posframe))
       :config

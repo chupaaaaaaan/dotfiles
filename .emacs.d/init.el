@@ -868,7 +868,7 @@ https://github.com/ema2159/centaur-tabs#my-personal-configuration"
   (defun diary-today     () (interactive) (chpn/open-file (ladicle/get-today-diary)))
   (defun diary-yesterday () (interactive) (chpn/open-file (ladicle/get-yesterday-diary)))
   (defun diary-from-cal  () (interactive) (chpn/open-file (ladicle/get-diary-from-cal)))
-  (defun open-memo       () (interactive) (chpn/open-file (find-file (concat org-directory memo-dir))))
+  (defun open-memo       () (interactive) (chpn/open-file (consult-find (concat org-directory memo-dir) "..#")))
 
   (defun chpn/insert-today-string     () (format-time-string "%F"    (current-time)))
   (defun chpn/insert-timestamp-string () (format-time-string "%F %T" (current-time)))

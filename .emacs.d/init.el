@@ -268,7 +268,7 @@ https://github.com/ema2159/centaur-tabs#my-personal-configuration"
 
 ;;TODO: 雑多な設定を整理する
 ;; maximize frame
-(toggle-frame-maximized)
+(toggle-frame-fullscreen)
 
 ;; https://emacs-lsp.github.io/lsp-mode/page/performance/
 ;; Increase the amount of data which Emacs reads from the process.

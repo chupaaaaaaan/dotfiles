@@ -17,6 +17,10 @@
   (unless (file-directory-p chpn/dir-cache)
     (make-directory chpn/dir-cache t))
 
+  (defconst chpn/dir-jars "~/.cache/jars/")
+  (unless (file-directory-p chpn/dir-jars)
+    (make-directory chpn/dir-jars t))
+
   (defconst chpn/dir-pkg-elpa "~/.elisp/elpa/")
   (defconst chpn/dir-pkg-elget "~/.elisp/el-get/")
   (defconst chpn/dir-pkg-local "~/.elisp/local/")
@@ -809,7 +813,7 @@ https://github.com/ema2159/centaur-tabs#my-personal-configuration"
                         ("sqlite" . sql)))
 
   ;; plantuml
-  (org-plantuml-jar-path (concat user-emacs-directory "plantuml.jar"))
+  (org-plantuml-jar-path (expand-file-name "plantuml.jar" chpn/dir-jars))
   (org-babel-load-languages '((plantuml . t)))
 
   :bind
@@ -1212,8 +1216,8 @@ https://github.com/ema2159/centaur-tabs#my-personal-configuration"
                        "-XX:GCTimeRatio=4"
                        "-XX:AdaptiveSizePolicyWeight=90"
                        "-Dsun.zip.disableMemoryMapping=true"
-                       ,(concat "-javaagent:" (expand-file-name "lombok.jar" user-emacs-directory))
-                       ,(concat "-Xbootclasspath/a:" (expand-file-name "lombok.jar" user-emacs-directory))
+                       ,(concat "-javaagent:" (expand-file-name "lombok.jar" chpn/dir-jars))
+                       ,(concat "-Xbootclasspath/a:" (expand-file-name "lombok.jar" chpn/dir-jars))
                        ;; "-noverify"
                        ;; "-XX:+UseG1GC"
                        ;; "-XX:+UseStringDeduplication"
@@ -1349,7 +1353,7 @@ https://github.com/ema2159/centaur-tabs#my-personal-configuration"
   :mode ("\\.puml\\'")
   :custom
   `((plantuml-default-exec-mode . 'jar)
-    (plantuml-jar-path . ,(concat user-emacs-directory "plantuml.jar"))
+    (plantuml-jar-path . ,(expand-file-name "plantuml.jar" chpn/dir-jars))
     (plantuml-output-type . "png")))
 
 (leaf nxml-mode

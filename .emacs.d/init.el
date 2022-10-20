@@ -784,10 +784,9 @@ https://github.com/ema2159/centaur-tabs#my-personal-configuration"
      ("s" "schedule: スケジュール" entry (file ,(concat org-directory agenda-dir "inbox.org"))
       "* TODO %?\nSCHEDULED: <%(org-read-date t)>\n%U"
       :empty-lines 1)
-     ,(let* ((title (read-string "memo1 title: ")))
-        `("m" "memo: 新規文書" plain (file chpn/today-memo-string-with-mkdir)
-          "#+DATE: %(chpn/insert-today-string)\n#+OPTIONS: ^:{}\n#+OPTIONS: \\n:t\n#+OPTIONS: toc:nil\n%?"
-          :empty-lines 1 :jump-to-captured 1 :unnarrowed nil))
+     ("m" "memo: 新規文書" plain (file chpn/today-memo-string-with-mkdir)
+      "#+TITLE: %?\n#+DATE: %(chpn/insert-today-string)\n#+OPTIONS: ^:{}\n#+OPTIONS: \\n:t\n#+OPTIONS: toc:nil\n#+OPTIONS: title:t\n#+OPTIONS: H:3\n"
+      :empty-lines 1 :jump-to-captured 1 :unnarrowed nil)
      ("l" "link: リンクを追加" item (clock)
       "%A\n"
       :immediate-finish 1 :prepend nil)))
@@ -876,7 +875,6 @@ https://github.com/ema2159/centaur-tabs#my-personal-configuration"
   (setq issue-dir "issue/")
   (setq diary-dir "diary/")
   (setq agenda-dir "agenda/")
-  (setq capture-template-dir "capture_templates/")
   (defun chpn/deploy-templates-if-not-exist (from-base to-base dirlist)
     (mapc (lambda (dir) (unless (file-directory-p (concat to-base dir))
                           (copy-directory (concat from-base dir) to-base nil t))) dirlist))
@@ -921,7 +919,7 @@ https://github.com/ema2159/centaur-tabs#my-personal-configuration"
     (save-some-buffers t))
 
   :init
-  (chpn/deploy-templates-if-not-exist (concat user-emacs-directory "org-dir-template/") "~/org/" `(,agenda-dir ,capture-template-dir)))
+  (chpn/deploy-templates-if-not-exist (concat user-emacs-directory "org-dir-template/") "~/org/" `(,agenda-dir)))
 
 (use-package org-bullets
   :ensure t

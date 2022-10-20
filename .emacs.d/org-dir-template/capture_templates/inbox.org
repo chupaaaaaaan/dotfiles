@@ -1,5 +1,0 @@
-* TODO [#C] [/] %?
-  :PROPERTIES:
-  :COOKIE_DATA: checkbox
-  :END:
-  %U

@@ -1029,7 +1029,7 @@ https://github.com/ema2159/centaur-tabs#my-personal-configuration"
     :custom
     ((magit-auto-revert-mode . nil))
     :bind
-    ("M-0" . magit-status))
+    ("M-g s" . magit-status))
   (leaf git-gutter
     :ensure t
     :custom

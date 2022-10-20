@@ -717,6 +717,9 @@ https://github.com/ema2159/centaur-tabs#my-personal-configuration"
   (org-default-notes-file (concat org-directory "notes.org"))
   (org-agenda-files `(,(concat org-directory agenda-dir) ,org-default-notes-file))
 
+  ;; view style
+  (org-startup-indented t)
+
   ;; agenda
   (org-agenda-span 'day)
   (org-agenda-include-diary nil)
@@ -772,12 +775,22 @@ https://github.com/ema2159/centaur-tabs#my-personal-configuration"
 
   ;; capture
   (org-capture-templates
-   `(("d" "diary:    日々の記録"   entry (file+headline ladicle/get-today-diary "Diary")       "* %?\n"                                                             :empty-lines 1 :jump-to-captured 1 :unnarrowed nil)
-     ("t" "task:     新規タスク"   entry (file ,(concat org-directory agenda-dir "inbox.org")) ,(concat "%[" org-directory capture-template-dir "inbox.org" "]")    :empty-lines 1 :jump-to-captured nil)
-     ("s" "schedule: スケジュール" entry (file ,(concat org-directory agenda-dir "inbox.org")) ,(concat "%[" org-directory capture-template-dir "schedule.org" "]") :empty-lines 1)
-     ("m" "memo:     新規文書"     plain (file chpn/today-memo-string-with-mkdir)              ,(concat "%[" org-directory capture-template-dir "memo.org" "]")     :empty-lines 1 :jump-to-captured 1 :unnarrowed nil)
-     ("i" "issue:    課題形成"     plain (file chpn/today-issue-string)                        ,(concat "%[" org-directory capture-template-dir "issue.org" "]")    :empty-lines 1 :jump-to-captured 1 :unnarrowed nil)
-     ("l" "link:     リンクを追加" item  (clock)                                               "%A\n"                                                               :immediate-finish 1 :prepend nil)))
+   `(("d" "diary: 日々の記録" entry (file+headline ladicle/get-today-diary "Diary")
+      "* %?\n"
+      :empty-lines 1 :jump-to-captured 1 :unnarrowed nil)
+     ("i" "inbox: 新規タスク" entry (file ,(concat org-directory agenda-dir "inbox.org"))
+      "* TODO [#C] [/] %?\n:PROPERTIES:\n:COOKIE_DATA: checkbox\n:END:\n%U"
+      :empty-lines 1 :jump-to-captured nil)
+     ("s" "schedule: スケジュール" entry (file ,(concat org-directory agenda-dir "inbox.org"))
+      "* TODO %?\nSCHEDULED: <%(org-read-date t)>\n%U"
+      :empty-lines 1)
+     ,(let* ((title (read-string "memo1 title: ")))
+        `("m" "memo: 新規文書" plain (file chpn/today-memo-string-with-mkdir)
+          "#+DATE: %(chpn/insert-today-string)\n#+OPTIONS: ^:{}\n#+OPTIONS: \\n:t\n#+OPTIONS: toc:nil\n%?"
+          :empty-lines 1 :jump-to-captured 1 :unnarrowed nil))
+     ("l" "link: リンクを追加" item (clock)
+      "%A\n"
+      :immediate-finish 1 :prepend nil)))
 
   ;; tags
   ;; (org-tag-alist '((:startgroup . nil) ("design" . ?s) ("develop" . ?d) ("meeting" . ?m) (:endgroup . nil)

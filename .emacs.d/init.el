@@ -408,7 +408,7 @@ https://github.com/ema2159/centaur-tabs#my-personal-configuration"
   :ensure t
   :leaf-defer nil
   :bind
-  ("M-o" . ace-window)
+  ("M-0" . ace-window)
   :custom
   (aw-dispatch-always . t))
 

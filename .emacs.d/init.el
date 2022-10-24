@@ -788,7 +788,7 @@ https://github.com/ema2159/centaur-tabs#my-personal-configuration"
       "* TODO %?\nSCHEDULED: <%(org-read-date t)>\n%U"
       :empty-lines 1)
      ("m" "memo: 新規文書" plain (file chpn/today-memo-string-with-mkdir)
-      "#+TITLE: %?\n#+DATE: %(chpn/insert-today-string)\n#+OPTIONS: ^:{}\n#+OPTIONS: \\n:t\n#+OPTIONS: toc:nil\n#+OPTIONS: H:3\n"
+      "#+TITLE: %?\n#+DATE: %(chpn/insert-today-string)\n#+OPTIONS: ^:{}\n#+OPTIONS: \\n:t\n#+OPTIONS: toc:nil\n#+OPTIONS: H:3\n\n"
       :empty-lines 1 :jump-to-captured 1 :unnarrowed nil)
      ("l" "link: リンクを追加" item (clock)
       "%A\n"

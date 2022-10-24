@@ -719,6 +719,9 @@ https://github.com/ema2159/centaur-tabs#my-personal-configuration"
 
   ;; view style
   (org-startup-indented t)
+  (org-indent-indentation-per-level 4)
+  (org-startup-with-inline-images t)
+  (org-startup-folded 'content)
 
   ;; agenda
   (org-agenda-span 'day)

@@ -1101,7 +1101,9 @@ https://github.com/ema2159/centaur-tabs#my-personal-configuration"
     (projectile-enable-caching . t)
     (projectile-require-project-root . t)
     (projectile-dirconfig-comment-prefix . "#")
-    (projectile-mode . t)))
+    (projectile-mode . t))
+  :config
+  (leaf consult-projectile :ensure t))
 
 (leaf treemacs
   :ensure t

@@ -1181,6 +1181,7 @@ https://github.com/ema2159/centaur-tabs#my-personal-configuration"
    (js-mode-hook         . lsp-deferred)
    (typescript-mode-hook . lsp-deferred)
    (terraform-mode-hook  . lsp-deferred)
+   (sh-mode-hook         . lsp-deferred)
    (python-mode-hook     . lsp-deferred))
   :config
   (leaf lsp-ui

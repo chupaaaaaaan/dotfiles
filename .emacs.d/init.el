@@ -998,6 +998,98 @@ https://github.com/ema2159/centaur-tabs#my-personal-configuration"
   :defer t
   :after org)
 
+  ;; latex
+(leaf ox-latex
+  :after org
+  :custom
+  (org-latex-default-class . "bxjsarticle")
+  (org-latex-pdf-process . '("latexmk -e '$latex=q/uplatex %S/' -e '$bibtex=q/upbibtex %B/' -e '$biber=q/biber --bblencoding=utf8 -u -U --output_safechars %B/' -e '$makeindex=q/upmendex -o %D %S/' -e '$dvipdf=q/dvipdfmx -o %D %S/' -norc -gg -pdfdvi %f"))
+  ;; (org-latex-pdf-process . '("latexmk -e '$lualatex=q/lualatex %S/' -e '$bibtex=q/upbibtex %B/' -e '$biber=q/biber --bblencoding=utf8 -u -U --output_safechars %B/' -e '$makeindex=q/upmendex -o %D %S/' -norc -gg -pdflua %f"))
+  ;; (org-export-in-background . t)
+  (org-file-apps . '(("pdf" . "evince %s")))
+  (org-latex-classes . '(("article" "\\documentclass[11pt]{article}"
+                          ("\\section{%s}" . "\\section*{%s}")
+                          ("\\subsection{%s}" . "\\subsection*{%s}")
+                          ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+                          ("\\paragraph{%s}" . "\\paragraph*{%s}")
+                          ("\\subparagraph{%s}" . "\\subparagraph*{%s}"))
+                         ("report" "\\documentclass[11pt]{report}"
+                          ("\\part{%s}" . "\\part*{%s}")
+                          ("\\chapter{%s}" . "\\chapter*{%s}")
+                          ("\\section{%s}" . "\\section*{%s}")
+                          ("\\subsection{%s}" . "\\subsection*{%s}")
+                          ("\\subsubsection{%s}" . "\\subsubsection*{%s}"))
+                         ("book" "\\documentclass[11pt]{book}"
+                          ("\\part{%s}" . "\\part*{%s}")
+                          ("\\chapter{%s}" . "\\chapter*{%s}")
+                          ("\\section{%s}" . "\\section*{%s}")
+                          ("\\subsection{%s}" . "\\subsection*{%s}")
+                          ("\\subsubsection{%s}" . "\\subsubsection*{%s}"))
+                         ("bxjsarticle" "\\documentclass[autodetect-engine,dvi=dvipdfmx,11pt,a4paper,ja=standard]{bxjsarticle}
+[NO-DEFAULT-PACKAGES]
+\\usepackage{amsmath}
+\\usepackage{newtxtext,newtxmath}
+\\usepackage{graphicx}
+\\usepackage{hyperref}
+\\ifdefined\\kanjiskip
+  \\usepackage{pxjahyper}
+  \\hypersetup{colorlinks=true}
+\\else
+  \\ifdefined\\XeTeXversion
+      \\hypersetup{colorlinks=true}
+  \\else
+    \\ifdefined\\directlua
+      \\hypersetup{pdfencoding=auto,colorlinks=true}
+    \\else
+      \\hypersetup{unicode,colorlinks=true}
+    \\fi
+  \\fi
+\\fi"
+                          ("\\section{%s}" . "\\section*{%s}")
+                          ("\\subsection{%s}" . "\\subsection*{%s}")
+                          ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+                          ("\\paragraph{%s}" . "\\paragraph*{%s}")
+                          ("\\subparagraph{%s}" . "\\subparagraph*{%s}"))
+
+                         ("jlreq" "\\documentclass[11pt,paper=a4]{jlreq}
+[NO-DEFAULT-PACKAGES]
+\\usepackage{amsmath}
+\\usepackage{newtxtext,newtxmath}
+\\ifdefined\\kanjiskip
+  \\usepackage[dvipdfmx]{graphicx}
+  \\usepackage[dvipdfmx]{hyperref}
+  \\usepackage{pxjahyper}
+  \\hypersetup{colorlinks=true}
+\\else
+  \\usepackage{graphicx}
+  \\usepackage{hyperref}
+  \\hypersetup{pdfencoding=auto,colorlinks=true}
+\\fi"
+                          ("\\section{%s}" . "\\section*{%s}")
+                          ("\\subsection{%s}" . "\\subsection*{%s}")
+                          ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+                          ("\\paragraph{%s}" . "\\paragraph*{%s}")
+                          ("\\subparagraph{%s}" . "\\subparagraph*{%s}"))
+
+                         ("jlreq-tate" "\\documentclass[tate,11pt,paper=a4]{jlreq}
+[NO-DEFAULT-PACKAGES]
+\\usepackage{amsmath}
+\\usepackage{newtxtext,newtxmath}
+\\ifdefined\\kanjiskip
+  \\usepackage[dvipdfmx]{graphicx}
+  \\usepackage[dvipdfmx]{hyperref}
+  \\usepackage{pxjahyper}
+  \\hypersetup{colorlinks=true}
+\\else
+  \\usepackage{graphicx}
+  \\usepackage{hyperref}
+  \\hypersetup{pdfencoding=auto,colorlinks=true}
+\\fi"
+                          ("\\section{%s}" . "\\section*{%s}")
+                          ("\\subsection{%s}" . "\\subsection*{%s}")
+                          ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+                          ("\\paragraph{%s}" . "\\paragraph*{%s}")
+                          ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))))
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Editing
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

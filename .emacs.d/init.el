@@ -186,6 +186,7 @@
 
 (leaf hungry-delete
   :ensure t
+  :blackout t
   :bind
   (chpn-toggle-map
    ("h" . hungry-delete-mode))
@@ -389,6 +390,7 @@ https://github.com/ema2159/centaur-tabs#my-personal-configuration"
 (leaf golden-ratio
   :ensure t
   :leaf-defer nil
+  :blackout t
   :bind
   (chpn-toggle-map
    ("g" . golden-ratio-mode))
@@ -670,7 +672,7 @@ https://github.com/ema2159/centaur-tabs#my-personal-configuration"
 
 (leaf anzu
   :ensure t
-  :blacklist
+  :blackout t
   :bind
   ("C-r" . anzu-query-replace-regexp)
   :custom
@@ -1127,6 +1129,7 @@ https://github.com/ema2159/centaur-tabs#my-personal-configuration"
     ("M-g s" . magit-status))
   (leaf git-gutter
     :ensure t
+    :blackout t
     :custom
     ((global-git-gutter-mode . t)
      (git-gutter:modified-sign . "=")
@@ -1139,6 +1142,7 @@ https://github.com/ema2159/centaur-tabs#my-personal-configuration"
 
 (leaf yasnippet
   :ensure t
+  :blackout t
   :custom
   (yas-global-mode . t)
   :config
@@ -1147,6 +1151,7 @@ https://github.com/ema2159/centaur-tabs#my-personal-configuration"
 
 (leaf company
   :ensure t
+  :blackout t
   :hook
   (emacs-startup-hook . global-company-mode)
   :custom
@@ -1174,7 +1179,7 @@ https://github.com/ema2159/centaur-tabs#my-personal-configuration"
   :config
   (leaf company-box
     :ensure t
-    :blackout
+    :blackout t
     :hook
     (global-company-mode-hook . company-box-mode)
     :custom
@@ -1184,6 +1189,7 @@ https://github.com/ema2159/centaur-tabs#my-personal-configuration"
 ;; projectile
 (leaf projectile
   :ensure t
+  :blackout t
   :bind
   (projectile-mode-map
    ("C-c p" . projectile-command-map))
@@ -1228,6 +1234,7 @@ https://github.com/ema2159/centaur-tabs#my-personal-configuration"
 
 (leaf flycheck
   :ensure t
+  :blackout t
   :bind (("M-n" . flycheck-next-error)
          ("M-p" . flycheck-previous-error))
   :custom

@@ -442,14 +442,13 @@ https://github.com/ema2159/centaur-tabs#my-personal-configuration"
   (display-time-format . " %F %R ")
   (display-time-mode . t))
 
-(leaf doom-modeline
+(leaf moody
   :ensure t
-  :after all-the-icons
-  ;; :after all-the-icons shrink-path
-  :custom
-  ((doom-modeline-mode . t)
-   ;; (doom-modeline-display-default-persp-name . t)
-   (doom-modeline-buffer-file-name-style . 'auto)))
+  :config
+  (setq x-underline-at-descent-line t)
+  (moody-replace-mode-line-buffer-identification)
+  (moody-replace-vc-mode)
+  (moody-replace-eldoc-minibuffer-message-function))
 
 (leaf hide-mode-line
   :ensure t
@@ -521,21 +520,18 @@ https://github.com/ema2159/centaur-tabs#my-personal-configuration"
   (vhl/install-extension 'undo-tree))
 
 
-(leaf doom-themes
+(leaf modus-themes
   :ensure t
+  :leaf-defer nil
   :custom
-  (doom-themes-enable-bold . t)
-  (doom-themes-enable-italic . t)
+  ((modus-themes-italic-constructs . t)
+   (modus-themes-bold-constructs . nil)
+   (modus-themes-hl-line . '(underline accented))
+   (modus-themes-region . '(bg-only no-extend)))
+  :bind
+  ("<f5>" . modus-themes-toggle)
   :config
-  (load-theme 'doom-one t)
-  (doom-themes-neotree-config)
-  (doom-themes-org-config)
-  (leaf frame
-    :require t
-    :config
-    (set-cursor-color "cyan")))
-
-
+  (load-theme 'modus-vivendi-tinted t))
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

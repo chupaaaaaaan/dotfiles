@@ -640,7 +640,8 @@ https://github.com/ema2159/centaur-tabs#my-personal-configuration"
    ("M-s u" . consult-focus-lines)
    ("M-s e" . consult-isearch-history)
    (isearch-mode-map
-    ("M-e" . consult-isearch-history)
+    ("C-h"   . isearch-delete-char)
+    ("M-e"   . consult-isearch-history)
     ("M-s e" . consult-isearch-history)
     ("M-s l" . consult-line)
     ("M-s L" . consult-line-multi))

@@ -1139,7 +1139,7 @@ https://github.com/ema2159/centaur-tabs#my-personal-configuration"
 
 (leaf yasnippet
   :ensure t
-  :blackout t
+  :blackout yas-minor-mode
   :custom
   (yas-global-mode . t)
   :config

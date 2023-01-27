@@ -742,8 +742,8 @@ https://github.com/ema2159/centaur-tabs#my-personal-configuration"
       ((agenda "" ((org-agenda-span 'week)))
        (tags-todo "+INBOX"
                   ((org-agenda-overriding-header "Inbox")
-                   (org-tags-match-list-sublevels nil)
-                   (org-agenda-todo-ignore-scheduled nil)))
+                   ;; (org-agenda-todo-ignore-scheduled nil)
+                   (org-tags-match-list-sublevels nil)))
        (tags-todo "-INBOX-HABIT/-REFR-SOME-DONE-CANCELED"
                   ((org-agenda-overriding-header "Tasks")
                    (org-tags-match-list-sublevels 'indented)

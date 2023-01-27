@@ -639,17 +639,20 @@ https://github.com/ema2159/centaur-tabs#my-personal-configuration"
    ("M-s k" . consult-keep-lines)
    ("M-s u" . consult-focus-lines)
    ("M-s e" . consult-isearch-history)
-   (isearch-mode-map
-    ("C-h"   . isearch-delete-char)
-    ("M-e"   . consult-isearch-history)
-    ("M-s e" . consult-isearch-history)
-    ("M-s l" . consult-line)
-    ("M-s L" . consult-line-multi))
    (minibuffer-local-map
     ("M-s" . consult-history)
     ("M-r" . consult-history)))
   :hook
   (completion-list-mode-hook . consult-preview-at-point-mode))
+
+(leaf isearch
+  :bind
+  (isearch-mode-map
+   ("M-e"   . consult-isearch-history)
+   ("M-s e" . consult-isearch-history)
+   ("M-s l" . consult-line)
+   ("M-s L" . consult-line-multi)
+   ("C-h"   . isearch-delete-char)))
 
 (leaf orderless
   :ensure t

@@ -34,10 +34,10 @@
 	default = simple
 
 [alias]
-	l     = log --graph --date-order --date=format:'%Y/%m/%d %H:%M:%S' --pretty=format:'%Cred%h%Creset - %Cgreen[%cd]%Creset %C(bold blue)<%an>%Creset %C(yellow)%d%Creset %s' --first-parent
-	lg    = log --graph --date-order --date=format:'%Y/%m/%d %H:%M:%S' --pretty=format:'%Cred%h%Creset - %Cgreen[%cd]%Creset %C(bold blue)<%an>%Creset %C(yellow)%d%Creset %s'
-	lga   = log --graph --date-order --date=format:'%Y/%m/%d %H:%M:%S' --pretty=format:'%Cred%h%Creset - %Cgreen[%cd]%Creset %C(bold blue)<%an>%Creset %C(yellow)%d%Creset %s' --all --first-parent
-	lgall = log --graph --date-order --date=format:'%Y/%m/%d %H:%M:%S' --pretty=format:'%Cred%h%Creset - %Cgreen[%cd]%Creset %C(bold blue)<%an>%Creset %C(yellow)%d%Creset %s' --all
+	lf  = log --graph --date-order --date=format:'%Y/%m/%d %H:%M:%S' --pretty=format:'%Cred%h%Creset - %Cgreen[%cd]%Creset %C(bold blue)<%an>%Creset %C(yellow)%d%Creset %s' --first-parent
+	l   = log --graph --date-order --date=format:'%Y/%m/%d %H:%M:%S' --pretty=format:'%Cred%h%Creset - %Cgreen[%cd]%Creset %C(bold blue)<%an>%Creset %C(yellow)%d%Creset %s'
+	lfa = log --graph --date-order --date=format:'%Y/%m/%d %H:%M:%S' --pretty=format:'%Cred%h%Creset - %Cgreen[%cd]%Creset %C(bold blue)<%an>%Creset %C(yellow)%d%Creset %s' --all --first-parent
+	la  = log --graph --date-order --date=format:'%Y/%m/%d %H:%M:%S' --pretty=format:'%Cred%h%Creset - %Cgreen[%cd]%Creset %C(bold blue)<%an>%Creset %C(yellow)%d%Creset %s' --all
 
 [credential]
 	helper = store

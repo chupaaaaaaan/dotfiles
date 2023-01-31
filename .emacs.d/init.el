@@ -202,8 +202,14 @@
   ((uniquify-buffer-name-style . 'post-forward)
    (uniquify-separator . "|")))
 
+(leaf window
+  :bind
+  (("M-[" . previous-buffer)
+   ("M-]" . next-buffer)))
+
 (leaf centaur-tabs
   :ensure t
+  :disabled t
   :leaf-defer nil
   :defun (centaur-tabs-headline-match centaur-tabs-get-group-name)
   :bind

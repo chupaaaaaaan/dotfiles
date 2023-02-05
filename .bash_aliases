@@ -20,9 +20,9 @@ alias d='docker'
 alias dc='docker-compose'
 alias dstop='dpsa|xargs -r -I@ docker stop @'
 alias drmc='dpsa|xargs -r -I@ docker rm @'
-alias drmi='dimg|xargs -r -I@ docker rmi @'
+alias drmi='dimg_name|xargs -r -I@ docker rmi @'
 alias drmi_none='d images -q -f "dangling=true"|xargs -r -I@ docker rmi @'
-alias dexe='docker exec -it $(dpsa) /bin/bash'
+aalias dexe='docker exec -it $(dpsa) /bin/bash'
 
 # kubernetes
 alias k='kubectl'

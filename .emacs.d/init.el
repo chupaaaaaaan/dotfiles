@@ -1401,6 +1401,8 @@ https://github.com/ema2159/centaur-tabs#my-personal-configuration"
 
 (leaf yaml-mode :ensure t)
 
+(leaf dockerfile-mode :ensure t)
+
 (leaf docker-compose-mode
   :ensure t
   :after yaml-mode)

@@ -738,6 +738,7 @@ https://github.com/ema2159/centaur-tabs#my-personal-configuration"
   (org-agenda-window-setup 'current-window)
   (org-agenda-log-mode-items '(clock))
   (org-agenda-tags-todo-honor-ignore-options t)
+  (org-agenda-clockreport-parameter-plist '(:maxlevel 5 :fileskip0 t :link t))
   (org-agenda-custom-commands
    `(("i" "Agenda: 予定表"
       ((agenda "" ((org-agenda-span 'day)))

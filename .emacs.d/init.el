@@ -935,7 +935,17 @@ https://github.com/ema2159/centaur-tabs#my-personal-configuration"
     (save-some-buffers t))
 
   :init
-  (chpn/deploy-templates-if-not-exist (concat user-emacs-directory "org-dir-template/") "~/org/" `(,agenda-dir)))
+  (chpn/deploy-templates-if-not-exist (concat user-emacs-directory "org-dir-template/") "~/org/" `(,agenda-dir))
+  :config
+  (defun org-ascii--box-string (s info)
+    "Return string S with a partial box to its left.
+INFO is a plist used as a communication channel."
+    (let ((utf8p (eq (plist-get info :ascii-charset) 'utf-8)))
+      (format (if utf8p "─────\n%s\n─────" "-----\n%s\n-----")
+	      (replace-regexp-in-string
+	       "^" (if utf8p " " " ")
+	       ;; Remove last newline character.
+	       (replace-regexp-in-string "\n[ \t]*\\'" "" s))))))
 
 (use-package org-bullets
   :ensure t

@@ -846,6 +846,10 @@ https://github.com/ema2159/centaur-tabs#my-personal-configuration"
   ("C-c l" . org-store-link)
   ("C-+"   . (lambda () (interactive) (insert (chpn/insert-today-string))))
   ("C-*"   . (lambda () (interactive) (insert (chpn/insert-timestamp-string))))
+  ("C-c t c" . org-table-create)
+  ("C-c t -" . org-table-insert-row)
+  ("C-c t |" . org-table-insert-column)
+  ("C-c t =" . org-table-insert-hline)
   (:map chpn-org-map
         ("i" . agenda-inbox)
         ("p" . agenda-task)

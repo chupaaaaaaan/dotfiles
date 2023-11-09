@@ -296,7 +296,9 @@ https://github.com/ema2159/centaur-tabs#my-personal-configuration"
   :defvar (my:font-size my:font-family)
   :if (or (eq window-system 'x) (eq window-system 'w32) (eq window-system 'ns))
   :config
-  (let* ((size my:font-size) (family my:font-family) (h (round (* size 10))))
+  (let* ((size my:font-size)
+         (family my:font-family)
+         (h (round (* size 10))))
     (set-face-attribute 'default nil :family family :height h)
     (set-fontset-font nil 'unicode           (font-spec :family family) nil 'append)
     (set-fontset-font nil 'japanese-jisx0208 (font-spec :family family) nil 'append)
@@ -689,7 +691,7 @@ https://github.com/ema2159/centaur-tabs#my-personal-configuration"
 (leaf go-translate
   :ensure t
   :require t
-  :defvar (gts-default-translator gts-prompt-for-translate-keymap)
+  :defvar (gts-default-translator gts-prompt-picker-keymap)
   :defun (gts-translator gts-prompt-picker gts-google-engine gts-buffer-render gts-prompt-picker-next-path)
   :custom
   (gts-translate-list . '(("en" "ja")))
@@ -702,15 +704,15 @@ https://github.com/ema2159/centaur-tabs#my-personal-configuration"
          :picker (gts-prompt-picker)
          :engines (gts-google-engine)
          :render (gts-buffer-render)))
-  (setq gts-prompt-for-translate-keymap
+  (setq gts-prompt-picker-keymap
         (let ((map (make-sparse-keymap)))
           (set-keymap-parent map minibuffer-local-map)
           (define-key map "\C-g" #'top-level)
+          (define-key map "\C-n" #'next-line-or-history-element)
+          (define-key map "\C-p" #'previous-line-or-history-element)
           (define-key map "\M-n" #'gts-prompt-picker-next-path)
           (define-key map "\M-p" (lambda () (interactive) (gts-prompt-picker-next-path t)))
           (define-key map "\C-l" #'delete-minibuffer-contents)
-          (define-key map [C-return] (lambda () (interactive) (exit-minibuffer)))
-          (define-key map "C-r" #'anzu-query-replace-regexp)
           map)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -739,6 +741,7 @@ https://github.com/ema2159/centaur-tabs#my-personal-configuration"
   (org-agenda-log-mode-items '(clock))
   (org-agenda-tags-todo-honor-ignore-options t)
   (org-agenda-clockreport-parameter-plist '(:maxlevel 5 :fileskip0 t :link t))
+  (org-agenda-start-on-weekday 2)
   (org-agenda-custom-commands
    `(("i" "Agenda: 予定表"
       ((agenda "" ((org-agenda-span 'day)))
@@ -775,7 +778,7 @@ https://github.com/ema2159/centaur-tabs#my-personal-configuration"
   
   ;; clock/timer
   (org-clock-out-remove-zero-time-clocks t)
-  (org-clock-clocktable-default-properties '(:maxlevel 2 :scope agenda :fileskip0 t :link t :block today :match ""))
+  (org-clock-clocktable-default-properties '(:maxlevel 2 :scope agenda :wstart 2 :fileskip0 t :link nil :tags t :block today))
   (org-clock-clocked-in-display 'mode-line) ;; 'frame-title
   (org-timer-default-timer 30)
 
@@ -804,9 +807,8 @@ https://github.com/ema2159/centaur-tabs#my-personal-configuration"
       :immediate-finish 1 :prepend nil)))
 
   ;; tags
-  ;; (org-tag-alist '((:startgroup . nil) ("design" . ?s) ("develop" . ?d) ("meeting" . ?m) (:endgroup . nil)
-  ;;                  (:startgroup . nil) ("work"   . ?w) ("qanda"   . ?q) ("break"   . ?b) (:endgroup . nil)))
-  (org-tag-alist '((:startgroup . nil) ("HABIT" . ?h) ("SCHEDULED" . ?s) (:endgroup . nil)))
+  (org-tag-alist '((:startgroup . nil) ("requirement" . ?r) ("design" . ?d) ("implement" . ?i) ("test" . ?t) (:endgroup . nil)
+                   (:startgroup . nil) ("comment" . ?c) (:endgroup . nil)))
 
   ;; property
   (org-global-properties '(("Effort_ALL" . "0:05 0:15 0:30 1:00 1:30 2:00 3:00 4:00")))

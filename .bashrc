@@ -113,8 +113,13 @@ GIT_PS1_SHOWSTASHSTATE=1
 __GIT_PS1_CMD="\$(___git_ps1_toggled)"
 __GIT_PS1_TOGGLE=1
 
-gitoff
+giton
 
+## ghq setting
+cs () {
+    local srcdir=$(ghq list|peco)
+    [ -n "$srcdir" ] && cd $(ghq root)/$srcdir
+}
 
 ## PSn setting
 if [ `id -u` -eq 0 ]; then

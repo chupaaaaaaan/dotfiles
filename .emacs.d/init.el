@@ -1127,8 +1127,8 @@ INFO is a plist used as a communication channel."
    ("C-<" . mc/mark-previous-like-this)
    ("C-S-l" . mc/skip-to-next-like-this)
    ("C-S-k" . mc/skip-to-previous-like-this)
-   ("C-M-<" . mc/unmark-next-like-this)
-   ("C-M->" . mc/unmark-previous-like-this)
+   ("C-M->" . mc/unmark-next-like-this)
+   ("C-M-<" . mc/unmark-previous-like-this)
    ("C-c C-<" . mc/mark-all-like-this))
   :custom
   `((mc/list-file . ,(concat chpn/dir-cache ".mc-lists.el"))))
@@ -1169,8 +1169,11 @@ INFO is a plist used as a communication channel."
   :custom
   (yas-global-mode . t)
   :config
-  (leaf yasnippet-snippets :ensure t))
-
+  (leaf yasnippet-snippets :ensure t)
+  (leaf haskell-snippets :ensure t)
+  (leaf yasnippet-capf :ensure t)
+  (leaf awk-yasnippets :ensure t)
+  (leaf elm-yasnippets :ensure t))
 
 (leaf company
   :ensure t
@@ -1183,6 +1186,7 @@ INFO is a plist used as a communication channel."
    (company-minimum-prefix-length . 2)
    (company-selection-wrap-around . t))
   :bind
+  ("C-c y" . company-yasnippet)
   (company-active-map
    ("<tab>" . company-complete)
    ("C-n" . company-select-next)
@@ -1314,7 +1318,7 @@ INFO is a plist used as a communication channel."
     ((lsp-ui-doc-enable . nil)
      (lsp-ui-doc-header . t)
      (lsp-ui-doc-include-signature . t)
-     (lsp-ui-doc-position . 'bottom)
+     (lsp-ui-doc-position . 'top)
      (lsp-ui-doc-max-width . 150)
      (lsp-ui-doc-max-height . 30)
      (lsp-ui-doc-show-with-mouse . t)

@@ -22,7 +22,8 @@ alias dstop='dpsa|xargs -r -I@ docker stop @'
 alias drmc='dpsa|xargs -r -I@ docker rm @'
 alias drmi='dimg_name|xargs -r -I@ docker rmi @'
 alias drmi_none='d images -q -f "dangling=true"|xargs -r -I@ docker rmi @'
-alias dexe='docker exec -it $(dpsa) /bin/bash'
+alias dbash='docker exec -it $(dpsa) /bin/bash'
+alias dsh='docker exec -it $(dpsa) /bin/sh'
 
 # kubernetes
 alias k='kubectl'

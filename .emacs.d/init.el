@@ -789,7 +789,7 @@ https://github.com/ema2159/centaur-tabs#my-personal-configuration"
   (org-track-ordered-property-with-tag t)
   (org-priority-highest 1)
   (org-priority-lowest 10)
-  (org-priority-default 5)
+  (org-priority-default 10)
 
   ;; capture
   (org-capture-templates

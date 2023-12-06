@@ -797,7 +797,7 @@ https://github.com/ema2159/centaur-tabs#my-personal-configuration"
       "* %?\n"
       :empty-lines 1 :jump-to-captured 1 :unnarrowed nil)
      ("i" "inbox: 新規タスク" entry (file ,(concat org-directory agenda-dir "inbox.org"))
-      "* TODO [#C] [/] %?\n:PROPERTIES:\n:COOKIE_DATA: checkbox\n:END:\n%U"
+      "* TODO [/] %?\n:PROPERTIES:\n:COOKIE_DATA: checkbox\n:END:\n%U"
       :empty-lines 1 :jump-to-captured nil)
      ("s" "schedule: スケジュール" entry (file ,(concat org-directory agenda-dir "inbox.org"))
       "* TODO %?\nSCHEDULED: <%(org-read-date t)>\n%U"

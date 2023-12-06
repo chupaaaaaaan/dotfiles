@@ -787,6 +787,9 @@ https://github.com/ema2159/centaur-tabs#my-personal-configuration"
   (org-enforce-todo-dependencies t)
   (org-enforce-todo-checkbox-dependencies t)
   (org-track-ordered-property-with-tag t)
+  (org-priority-highest 1)
+  (org-priority-lowest 10)
+  (org-priority-default 5)
 
   ;; capture
   (org-capture-templates

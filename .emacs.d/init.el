@@ -1023,6 +1023,8 @@ INFO is a plist used as a communication channel."
   :defer t
   :after org)
 
+(leaf company-org-block :ensure t :after company org)
+
   ;; latex
 (leaf ox-latex
   :after org
@@ -1377,7 +1379,7 @@ INFO is a plist used as a communication channel."
   :ensure t
   :after lsp-mode
   :custom
-  (lsp-haskell-server-path . "haskell-language-server-wrapper")
+  (lsp-haskell-server-args . '("-d"))
   (lsp-haskell-formatting-provider . "fourmolu"))
 
 (leaf haskell-mode
@@ -1508,7 +1510,14 @@ INFO is a plist used as a communication channel."
    (nxml-attribute-indent . 2)
    (nxml-slash-auto-complete-flag . t)))
 
-(leaf sql-indent :ensure t)
+(leaf sqlformat
+  :ensure t
+  :custom
+  (sqlformat-command . 'pgformatter)
+  (sqlformat-args . '("-s2" "-L"))
+  :bind
+  (sql-mode-map
+   ("<tab>" . sqlformat-buffer)))
 
 (leaf vterm
   :ensure t

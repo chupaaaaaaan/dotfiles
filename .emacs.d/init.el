@@ -13,10 +13,6 @@
 
 (eval-and-compile
   ;; directory
-  (defconst chpn/dir-cache "~/.cache/emacs/")
-  (unless (file-directory-p chpn/dir-cache)
-    (make-directory chpn/dir-cache t))
-
   (defconst chpn/dir-jars "~/.cache/jars/")
   (unless (file-directory-p chpn/dir-jars)
     (make-directory chpn/dir-jars t))
@@ -71,16 +67,13 @@
 
 (leaf macrostep
   :ensure t
-  :bind (("C-c e" . macrostep-expand)))
+  :bind
+  ("C-c e" . macrostep-expand))
 
 (leaf transient-dwim
   :ensure t
-  :bind (("M-=" . transient-dwim-dispatch))
-  :custom
-  `((transient-history-file . ,(concat chpn/dir-cache "transient-history.el"))
-    (transient-levels-file . ,(concat chpn/dir-cache "transient-levels.el"))
-    (transient-values-file . ,(concat chpn/dir-cache "transient-values.el"))))
-
+  :bind
+  ("M-=" . transient-dwim-dispatch))
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; General setting
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -123,14 +116,11 @@
     (bidi-paragraph-direction . 'left-to-right)
     (gc-cons-threshold . ,(* 10 gc-cons-threshold))))
 
-(leaf cus-edit
-  :custom
-  `((custom-file . ,(concat chpn/dir-cache "customize.el"))))
+(leaf cus-edit)
 
 (leaf startup
   :custom
-  `((auto-save-list-file-prefix . ,(concat chpn/dir-cache "auto-saves-"))
-    (inhibit-startup-screen . t)))
+  (inhibit-startup-screen . t))
 
 (leaf scroll-bar
   :custom
@@ -138,8 +128,7 @@
 
 (leaf savehist
   :custom
-  `((savehist-mode . t)
-    (savehist-file . ,(concat chpn/dir-cache "history"))))
+  (savehist-mode . t))
 
 (leaf mouse
   :custom
@@ -147,7 +136,6 @@
 
 (leaf files
   :custom
-  (backup-directory-alist . `((".*" . ,chpn/dir-cache)))
   (make-backup-files . t)
   (auto-save-default . t))
 
@@ -165,17 +153,13 @@
   (line-number-mode 1)
   (column-number-mode 1))
 
-(leaf bookmark
-  :custom
-  `((bookmark-default-file . ,(concat chpn/dir-cache "bookmarks"))))
+(leaf bookmark)
 
 (leaf mb-depth
   :custom
   (minibuffer-depth-indicate-mode . t))
 
-(leaf url-cookie
-  :custom
-  `((url-cookie-file . ,(concat chpn/dir-cache "cookie"))))
+(leaf url-cookie)
 
 (leaf elec-pair
   :bind
@@ -199,13 +183,13 @@
 (leaf uniquify
   :require t
   :custom
-  ((uniquify-buffer-name-style . 'post-forward)
-   (uniquify-separator . "|")))
+  (uniquify-buffer-name-style . 'post-forward)
+  (uniquify-separator . "|"))
 
 (leaf window
   :bind
-  (("M-[" . previous-buffer)
-   ("M-]" . next-buffer)))
+  ("M-[" . previous-buffer)
+  ("M-]" . next-buffer))
 
 (leaf centaur-tabs
   :ensure t
@@ -213,23 +197,23 @@
   :leaf-defer nil
   :defun (centaur-tabs-headline-match centaur-tabs-get-group-name)
   :bind
-  (("M-[" . centaur-tabs-backward)
-   ("M-]" . centaur-tabs-forward)
-   ("C-c t b" . centaur-tabs-switch-group)
-   ("C-c t p" . centaur-tabs-group-by-projectile-project)
-   ("C-c t g" . centaur-tabs-group-buffer-groups))
+  ("M-[" . centaur-tabs-backward)
+  ("M-]" . centaur-tabs-forward)
+  ("C-c t b" . centaur-tabs-switch-group)
+  ("C-c t p" . centaur-tabs-group-by-projectile-project)
+  ("C-c t g" . centaur-tabs-group-buffer-groups)
   :hook
-  ((term-mode-hook . centaur-tabs-local-mode)
-   (calendar-mode-hook . centaur-tabs-local-mode)
-   (helpful-mode-hook . centaur-tabs-local-mode))
+  (term-mode-hook . centaur-tabs-local-mode)
+  (calendar-mode-hook . centaur-tabs-local-mode)
+  (helpful-mode-hook . centaur-tabs-local-mode)
   :custom
-  ((centaur-tabs-style . "bar")
-   (centaur-tabs-height . 20)
-   (centaur-tabs-set-icons . t)
-   (centaur-tabs-set-bar . 'over)
-   (centaur-tabs-cycle-scope . 'tabs)
-   ;; (centaur-tabs-set-modified-marker . t)
-   (centaur-tabs-set-close-button . nil))
+  (centaur-tabs-style . "bar")
+  (centaur-tabs-height . 20)
+  (centaur-tabs-set-icons . t)
+  (centaur-tabs-set-bar . 'over)
+  (centaur-tabs-cycle-scope . 'tabs)
+  ;; (centaur-tabs-set-modified-marker . t)
+  (centaur-tabs-set-close-button . nil)
   :config
   (centaur-tabs-mode t)
   (centaur-tabs-headline-match)
@@ -328,8 +312,8 @@ https://github.com/ema2159/centaur-tabs#my-personal-configuration"
 (leaf *language-environment
   :leaf-defer nil
   :custom
-  ((default-input-method . "japanese-mozc")
-   (current-language-environment . "Japanese"))
+  (default-input-method . "japanese-mozc")
+  (current-language-environment . "Japanese")
   :config
   ;; coding system
   (prefer-coding-system 'utf-8-unix)
@@ -347,12 +331,12 @@ https://github.com/ema2159/centaur-tabs#my-personal-configuration"
     :ensure t
     :if (eq system-type 'gnu/linux)
     :bind
-    ((minibuffer-local-map
-      ("<henkan>" . (lambda () (interactive) (unless current-input-method (toggle-input-method))))
-      ("<muhenkan>" . (lambda () (interactive) (when current-input-method (toggle-input-method))))))
-    :bind*
-    (("<henkan>" . (lambda () (interactive) (unless current-input-method (toggle-input-method))))
+    (minibuffer-local-map
+     ("<henkan>" . (lambda () (interactive) (unless current-input-method (toggle-input-method))))
      ("<muhenkan>" . (lambda () (interactive) (when current-input-method (toggle-input-method)))))
+    :bind*
+    ("<henkan>" . (lambda () (interactive) (unless current-input-method (toggle-input-method))))
+    ("<muhenkan>" . (lambda () (interactive) (when current-input-method (toggle-input-method))))
     :config
     (leaf mozc-posframe
       ;; :straight (mozc-posframe :type git :host github :repo "derui/mozc-posframe")
@@ -361,7 +345,7 @@ https://github.com/ema2159/centaur-tabs#my-personal-configuration"
                :features mozc-posframe)
       :defun (mozc-posframe-register)
       :custom
-      ((mozc-candidate-style . 'posframe))
+      (mozc-candidate-style . 'posframe)
       :config
       (mozc-posframe-register))))
 
@@ -385,15 +369,15 @@ https://github.com/ema2159/centaur-tabs#my-personal-configuration"
 (leaf keyfreq
   :ensure t
   :custom
-  ((keyfreq-mode . 1)
-   (keyfreq-autosave-mode . 1)
-   (keyfreq-buffer . "*KeyFrequency*")))
+  (keyfreq-mode . 1)
+  (keyfreq-autosave-mode . 1)
+  (keyfreq-buffer . "*KeyFrequency*"))
 
 (leaf which-key
   :ensure t
   :blackout which-key-mode
   :hook
-  ((emacs-startup-hook . which-key-mode)))
+  (emacs-startup-hook . which-key-mode))
 
 (leaf golden-ratio
   :ensure t
@@ -403,16 +387,16 @@ https://github.com/ema2159/centaur-tabs#my-personal-configuration"
   (chpn-toggle-map
    ("g" . golden-ratio-mode))
   :custom
-  ((golden-ratio-mode . t)
-   (golden-ratio-extra-commands . '(ace-window
-                                    projectile-vc
-                                    persp-list-buffers
-                                    quit-window
-                                    xref-goto-xref
-                                    undo-tree-visualizer-quit
-                                    magit-mode-bury-buffer))
-   (golden-ratio-exclude-modes . '(treemacs-mode
-                                   imenu-list-major-mode))))
+  (golden-ratio-mode . t)
+  (golden-ratio-extra-commands . '(ace-window
+                                   projectile-vc
+                                   persp-list-buffers
+                                   quit-window
+                                   xref-goto-xref
+                                   undo-tree-visualizer-quit
+                                   magit-mode-bury-buffer))
+  (golden-ratio-exclude-modes . '(treemacs-mode
+                                  imenu-list-major-mode)))
 
 (leaf ace-window
   :ensure t
@@ -532,10 +516,10 @@ https://github.com/ema2159/centaur-tabs#my-personal-configuration"
   :ensure t
   :leaf-defer nil
   :custom
-  ((modus-themes-italic-constructs . t)
-   (modus-themes-bold-constructs . nil)
-   (modus-themes-hl-line . '(underline accented))
-   (modus-themes-region . '(bg-only no-extend)))
+  (modus-themes-italic-constructs . t)
+  (modus-themes-bold-constructs . nil)
+  (modus-themes-hl-line . '(underline accented))
+  (modus-themes-region . '(bg-only no-extend))
   :bind
   ("<f5>" . modus-themes-toggle)
   :config
@@ -548,16 +532,14 @@ https://github.com/ema2159/centaur-tabs#my-personal-configuration"
 
 (leaf saveplace
   :custom
-  `((save-place-mode . t)
-    (save-place-file . ,(concat chpn/dir-cache "places"))))
+  (save-place-mode . t))
 
 ;; Recent files
 (leaf recentf
   :custom
-  `((recentf-mode . t)
-    (recentf-save-file . ,(concat chpn/dir-cache "recentf"))
-    (recentf-max-saved-items . 20000000)
-    (recentf-auto-cleanup . 'never))
+  (recentf-mode . t)
+  (recentf-max-saved-items . 20000000)
+  (recentf-auto-cleanup . 'never)
   ;; :hook
   ;; (focus-out-hook . (ladicle/recentf-save-list-silence ladicle/recentf-cleanup-silence))
   ;; :preface
@@ -596,60 +578,56 @@ https://github.com/ema2159/centaur-tabs#my-personal-configuration"
   :ensure t
   :blackout t
   :custom
-  (global-undo-tree-mode . t)
-  (undo-tree-history-directory-alist . `((".*" . ,chpn/dir-cache))))
+  (global-undo-tree-mode . t))
 
-(leaf amx
-  :ensure t
-  :custom
-  `((amx-save-file . ,(concat chpn/dir-cache "amx-items"))))
+(leaf amx :ensure t)
 
 (leaf vertico
   :ensure t
   :custom
-  ((vertico-mode . t)
-   (read-extended-command-predicate . #'command-completion-default-include-p)))
+  (vertico-mode . t)
+  (read-extended-command-predicate . #'command-completion-default-include-p))
 
 (leaf consult
   :ensure t
   :bind
-  (("C-c h" . consult-history)
-   ("C-c m" . consult-mode-command)
-   ("C-c k" . consult-kmacro)
-   ("C-x M-:" . consult-complex-command)
-   ("C-x b" . consult-buffer)
-   ("C-x 4 b" . consult-buffer-other-window)
-   ("C-x 5 b" . consult-buffer-other-frame)
-   ("C-x r b" . consult-bookmark)
-   ("C-x p b" . consult-project-buffer)
-   ("M-#" . consult-register-load)
-   ("M-'" . consult-register-store)
-   ("C-M-#" . consult-register)
-   ("C-M-r" . consult-recent-file)
-   ("M-y" . consult-yank-pop)
-   ("M-g e" . consult-compile-error)
-   ;; ("M-g f" . consult-flymake)
-   ("M-g g" . consult-goto-line)
-   ("M-g M-g" . consult-goto-line)
-   ("M-g o" . consult-outline)
-   ("M-g m" . consult-mark)
-   ("M-g k" . consult-global-mark)
-   ("M-g i" . consult-imenu)
-   ("M-g I" . consult-imenu-multi)
-   ("M-s d" . consult-find)
-   ("M-s D" . consult-locate)
-   ("M-s g" . consult-grep)
-   ("M-s G" . consult-git-grep)
-   ("M-s r" . consult-ripgrep)
-   ("M-s l" . consult-line)
-   ("M-s L" . consult-line-multi)
-   ("M-s m" . consult-multi-occur)
-   ("M-s k" . consult-keep-lines)
-   ("M-s u" . consult-focus-lines)
-   ("M-s e" . consult-isearch-history)
-   (minibuffer-local-map
-    ("M-s" . consult-history)
-    ("M-r" . consult-history)))
+  ("C-c h" . consult-history)
+  ("C-c m" . consult-mode-command)
+  ("C-c k" . consult-kmacro)
+  ("C-x M-:" . consult-complex-command)
+  ("C-x b" . consult-buffer)
+  ("C-x 4 b" . consult-buffer-other-window)
+  ("C-x 5 b" . consult-buffer-other-frame)
+  ("C-x r b" . consult-bookmark)
+  ("C-x p b" . consult-project-buffer)
+  ("M-#" . consult-register-load)
+  ("M-'" . consult-register-store)
+  ("C-M-#" . consult-register)
+  ("C-M-r" . consult-recent-file)
+  ("M-y" . consult-yank-pop)
+  ("M-g e" . consult-compile-error)
+  ;; ("M-g f" . consult-flymake)
+  ("M-g g" . consult-goto-line)
+  ("M-g M-g" . consult-goto-line)
+  ("M-g o" . consult-outline)
+  ("M-g m" . consult-mark)
+  ("M-g k" . consult-global-mark)
+  ("M-g i" . consult-imenu)
+  ("M-g I" . consult-imenu-multi)
+  ("M-s d" . consult-find)
+  ("M-s D" . consult-locate)
+  ("M-s g" . consult-grep)
+  ("M-s G" . consult-git-grep)
+  ("M-s r" . consult-ripgrep)
+  ("M-s l" . consult-line)
+  ("M-s L" . consult-line-multi)
+  ("M-s m" . consult-multi-occur)
+  ("M-s k" . consult-keep-lines)
+  ("M-s u" . consult-focus-lines)
+  ("M-s e" . consult-isearch-history)
+  (minibuffer-local-map
+   ("M-s" . consult-history)
+   ("M-r" . consult-history))
   :hook
   (completion-list-mode-hook . consult-preview-at-point-mode))
 
@@ -665,16 +643,17 @@ https://github.com/ema2159/centaur-tabs#my-personal-configuration"
 (leaf orderless
   :ensure t
   :custom
-  ((completion-styles . '(orderless basic))
-   (completion-category-overrides . '((file (styles basic partial-completion))))))
+  (completion-styles . '(orderless basic))
+  (completion-category-overrides . '((file (styles basic partial-completion)))))
 
 (leaf marginalia
   :ensure t
   :custom
-  ((marginalia-mode . t))
-  :bind (("M-A" . marginalia-cycle)
-         (minibuffer-local-map
-          ("M-A" . marginalia-cycle))))
+  (marginalia-mode . t)
+  :bind
+  ("M-A" . marginalia-cycle)
+  (minibuffer-local-map
+   ("M-A" . marginalia-cycle)))
 
 (leaf ag :ensure t)
 
@@ -1134,9 +1113,7 @@ INFO is a plist used as a communication channel."
    ("C-S-k" . mc/skip-to-previous-like-this)
    ("C-M->" . mc/unmark-next-like-this)
    ("C-M-<" . mc/unmark-previous-like-this)
-   ("C-c C-<" . mc/mark-all-like-this))
-  :custom
-  `((mc/list-file . ,(concat chpn/dir-cache ".mc-lists.el"))))
+   ("C-c C-<" . mc/mark-all-like-this)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Develop Environment
@@ -1152,21 +1129,21 @@ INFO is a plist used as a communication channel."
   (leaf magit
     :ensure t
     :custom
-    ((magit-auto-revert-mode . nil))
+    (magit-auto-revert-mode . nil)
     :bind
     ("M-g s" . magit-status))
   (leaf git-gutter
     :ensure t
     :blackout t
     :custom
-    ((global-git-gutter-mode . t)
-     (git-gutter:modified-sign . "=")
-     (git-gutter:added-sign . "+")
-     (git-gutter:deleted-sign . "-"))
+    (global-git-gutter-mode . t)
+    (git-gutter:modified-sign . "=")
+    (git-gutter:added-sign . "+")
+    (git-gutter:deleted-sign . "-")
     :custom-face
-    ((git-gutter:modified . '((t (:foreground "#f1fa8c" :background "#f1fa8c"))))
-     (git-gutter:added . '((t (:foreground "#50fa7b" :background "#50fa7b"))))
-     (git-gutter:deleted . '((t (:foreground "#ff79c6" :background "#ff79c6")))))))
+    (git-gutter:modified . '((t (:foreground "#f1fa8c" :background "#f1fa8c"))))
+    (git-gutter:added . '((t (:foreground "#50fa7b" :background "#50fa7b"))))
+    (git-gutter:deleted . '((t (:foreground "#ff79c6" :background "#ff79c6"))))))
 
 (leaf yasnippet
   :ensure t
@@ -1186,10 +1163,10 @@ INFO is a plist used as a communication channel."
   :hook
   (emacs-startup-hook . global-company-mode)
   :custom
-  ((company-idle-delay . 0)
-   (company-echo-delay . 0)
-   (company-minimum-prefix-length . 2)
-   (company-selection-wrap-around . t))
+  (company-idle-delay . 0)
+  (company-echo-delay . 0)
+  (company-minimum-prefix-length . 2)
+  (company-selection-wrap-around . t)
   :bind
   ("C-c y" . company-yasnippet)
   (company-active-map
@@ -1226,31 +1203,27 @@ INFO is a plist used as a communication channel."
   (projectile-mode-map
    ("C-c p" . projectile-command-map))
   :custom
-  `((projectile-known-projects-file . ,(concat chpn/dir-cache "projectile-bookmarks.eld"))
-    (projectile-cache-file . ,(concat chpn/dir-cache "projectile.cache"))
-    (projectile-enable-caching . t)
-    (projectile-require-project-root . t)
-    (projectile-dirconfig-comment-prefix . "#")
-    (projectile-mode . t))
+  (projectile-enable-caching . t)
+  (projectile-require-project-root . t)
+  (projectile-dirconfig-comment-prefix . "#")
+  (projectile-mode . t)
   :config
   (leaf consult-projectile :ensure t))
 
 (leaf treemacs
   :ensure t
   :bind
-  (("M-1" . treemacs-select-window)
-   (treemacs-mode-map
-    ("M-1" . other-window)))
+  ("M-1" . treemacs-select-window)
+  (treemacs-mode-map
+   ("M-1" . other-window))
   :custom
-  `((treemacs-is-never-other-window . t)
-    (treemacs-no-delete-other-windows . t)
-    (treemacs-persist-file . ,(concat chpn/dir-cache "treemacs-persist"))
-    (treemacs-last-error-persist-file . ,(concat chpn/dir-cache "treemacs-persist-at-last-error"))
-    ;; (treemacs-width 20)
-    (treemacs-follow-mode . t)
-    (treemacs-filewatch-mode . t)
-    (treemacs-fringe-indicator-mode . t)
-    (treemacs-git-mode . 'simple))
+  (treemacs-is-never-other-window . t)
+  (treemacs-no-delete-other-windows . t)
+  ;; (treemacs-width 20)
+  (treemacs-follow-mode . t)
+  (treemacs-filewatch-mode . t)
+  (treemacs-fringe-indicator-mode . t)
+  (treemacs-git-mode . 'simple)
   :config
   (leaf treemacs-projectile
     :ensure t
@@ -1267,84 +1240,85 @@ INFO is a plist used as a communication channel."
 (leaf flycheck
   :ensure t
   :blackout t
-  :bind (("M-n" . flycheck-next-error)
-         ("M-p" . flycheck-previous-error))
+  :bind
+  ("M-n" . flycheck-next-error)
+  ("M-p" . flycheck-previous-error)
   :custom
-  `((flycheck-temp-prefix . ,(concat chpn/dir-cache "flycheck"))
-    (global-flycheck-mode . t))
+  (global-flycheck-mode . t)
   :config
   (leaf flycheck-posframe
     :ensure t
     :custom
-    ((flycheck-posframe-position . 'window-bottom-right-corner))
+    (flycheck-posframe-position . 'window-bottom-right-corner)
     :hook
     (flycheck-mode-hook . flycheck-posframe-mode)))
 
 (leaf imenu-list
   :ensure t
-  :bind (("<f10>" . imenu-list-smart-toggle))
+  :bind
+  ("<f10>" . imenu-list-smart-toggle)
   :custom
-  (;;(imenu-list-size . 30)
-   (imenu-list-auto-resize . nil)
-   (imenu-list-focus-after-activation . t)
-   (imenu-list-position . 'right)))
+  ;;(imenu-list-size . 30)
+  (imenu-list-auto-resize . nil)
+  (imenu-list-focus-after-activation . t)
+  (imenu-list-position . 'right))
 
 ;; lsp
 (leaf lsp-mode
   :ensure t
   :commands (lsp lsp-deferred)
   :custom
-  ((lsp-diagnostics-provider . :auto)
-   (lsp-completion-provider . :capf)
-   (lsp-lens-enable . t)
-   (lsp-semantic-tokens-enable . t)
-   (lsp-semantic-tokens-honor-refresh-requests . t)
-   (lsp-enable-links . t)
-   ;; (lsp-log-io t)
-   ;; (lsp-document-sync-method 'lsp--sync-incremental)
-   (lsp-keymap-prefix . "M-l"))
+  (lsp-diagnostics-provider . :auto)
+  (lsp-completion-provider . :capf)
+  (lsp-lens-enable . t)
+  (lsp-semantic-tokens-enable . t)
+  (lsp-semantic-tokens-honor-refresh-requests . t)
+  (lsp-enable-links . t)
+  ;; (lsp-log-io t)
+  ;; (lsp-document-sync-method 'lsp--sync-incremental)
+  (lsp-keymap-prefix . "M-l")
   :hook
-  ((lsp-mode-hook . lsp-enable-which-key-integration)
-   (lsp-mode-hook . lsp-ui-mode)
-   ;; (elm-mode-hook  . lsp)
-   (java-mode-hook       . lsp-deferred)
-   (haskell-mode-hook    . lsp-deferred)
-   (js-mode-hook         . lsp-deferred)
-   (typescript-mode-hook . lsp-deferred)
-   (terraform-mode-hook  . lsp-deferred)
-   (sh-mode-hook         . lsp-deferred)
-   (python-mode-hook     . lsp-deferred))
+  (lsp-mode-hook . lsp-enable-which-key-integration)
+  (lsp-mode-hook . lsp-ui-mode)
+  ;; (elm-mode-hook  . lsp)
+  (java-mode-hook       . lsp-deferred)
+  (haskell-mode-hook    . lsp-deferred)
+  (js-mode-hook         . lsp-deferred)
+  (typescript-mode-hook . lsp-deferred)
+  (terraform-mode-hook  . lsp-deferred)
+  (sh-mode-hook         . lsp-deferred)
+  (python-mode-hook     . lsp-deferred)
   :config
   (leaf lsp-ui
     :ensure t
     ;; :custom-face
     ;; (lsp-ui-doc-background ((nil (:background "black"))))
     :custom
-    ((lsp-ui-doc-enable . nil)
-     (lsp-ui-doc-header . t)
-     (lsp-ui-doc-include-signature . t)
-     (lsp-ui-doc-position . 'top)
-     (lsp-ui-doc-max-width . 150)
-     (lsp-ui-doc-max-height . 30)
-     (lsp-ui-doc-show-with-mouse . t)
-     (lsp-ui-doc-show-with-cursor . t)
-     (lsp-ui-doc-use-childframe . t)
-     (lsp-ui-doc-use-webkit . nil)
-     (lsp-ui-flycheck-list-position . 'right)
-     (lsp-ui-imenu-enable . nil)
-     ;; (lsp-ui-imenu-auto-refresh . t)
-     ;; (lsp-ui-imenu-kind-position . 'top)
-     ;; (lsp-ui-imenu-window-width . 0)
-     (lsp-ui-peek-enable . nil)
-     (lsp-ui-peek-peek-height . 50)
-     (lsp-ui-peek-list-width . 50)
-     (lsp-ui-peek-fontify . 'on-demand)
-     (lsp-ui-peek-show-directory . t)
-     (lsp-ui-sideline-enable . nil)
-     (lsp-ui-sideline-show-symbol . t)
-     (lsp-ui-sideline-show-hover . t)
-     (lsp-ui-sideline-show-diagnostics . nil)
-     (lsp-ui-sideline-show-code-actions . t)))
+    (lsp-ui-doc-enable . nil)
+    (lsp-ui-doc-header . t)
+    (lsp-ui-doc-include-signature . t)
+    (lsp-ui-doc-position . 'top)
+    (lsp-ui-doc-max-width . 150)
+    (lsp-ui-doc-max-height . 30)
+    (lsp-ui-doc-show-with-mouse . t)
+    (lsp-ui-doc-show-with-cursor . t)
+    (lsp-ui-doc-use-childframe . t)
+    (lsp-ui-doc-use-webkit . nil)
+    (lsp-ui-flycheck-list-position . 'right)
+    (lsp-ui-imenu-enable . nil)
+    ;; (lsp-ui-imenu-auto-refresh . t)
+    ;; (lsp-ui-imenu-kind-position . 'top)
+    ;; (lsp-ui-imenu-window-width . 0)
+    (lsp-ui-peek-enable . nil)
+    (lsp-ui-peek-peek-height . 50)
+    (lsp-ui-peek-list-width . 50)
+    (lsp-ui-peek-fontify . 'on-demand)
+    (lsp-ui-peek-show-directory . t)
+    (lsp-ui-sideline-enable . nil)
+    (lsp-ui-sideline-show-symbol . t)
+    (lsp-ui-sideline-show-hover . t)
+    (lsp-ui-sideline-show-diagnostics . nil)
+    (lsp-ui-sideline-show-code-actions . t))
   (leaf lsp-treemacs
     :ensure t
     :after treemacs
@@ -1408,8 +1382,7 @@ INFO is a plist used as a communication channel."
 (leaf lsp-terraform
   :after lsp-mode
   :custom
-  ((lsp-terraform-ls-enable-show-reference . t)
-   )
+  (lsp-terraform-ls-enable-show-reference . t)
   :bind
   (terraform-mode-map
    ("C-c C-i" . lsp-terraform-ls-init)
@@ -1437,8 +1410,8 @@ INFO is a plist used as a communication channel."
 
 (leaf js
   :custom
-  ((js-indent-level . 2)
-   (js-jsx-indent-level . 2)))
+  (js-indent-level . 2)
+  (js-jsx-indent-level . 2))
 
 ;; from https://github.com/emacs-typescript/typescript.el/issues/4#issuecomment-873485004
 (leaf typescript-mode
@@ -1483,8 +1456,8 @@ INFO is a plist used as a communication channel."
 
 (leaf python
   :custom
-  ((python-shell-interpreter . "python3")
-   (python-indent-guess-indent-offset-verbose . nil)))
+  (python-shell-interpreter . "python3")
+  (python-indent-guess-indent-offset-verbose . nil))
 
 (leaf apache-mode :ensure t)
 
@@ -1509,9 +1482,9 @@ INFO is a plist used as a communication channel."
 (leaf nxml-mode
   :mode ("\.xml$" "\.xsl$" "\.xhtml$" "\.page$")
   :custom
-  ((nxml-child-indent . 2)
-   (nxml-attribute-indent . 2)
-   (nxml-slash-auto-complete-flag . t)))
+  (nxml-child-indent . 2)
+  (nxml-attribute-indent . 2)
+  (nxml-slash-auto-complete-flag . t))
 
 (leaf sqlformat
   :ensure t

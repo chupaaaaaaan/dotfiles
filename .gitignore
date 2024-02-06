@@ -8,6 +8,14 @@
 .emacs.d/kkcrc
 .emacs.d/.lsp-session*
 .emacs.d/projects
+.emacs.d/amx-items
+.emacs.d/customize.el
+.emacs.d/history
+.emacs.d/places
+.emacs.d/projectile-bookmarks.eld
+.emacs.d/recentf
+.emacs.d/tramp
+.emacs.d/transient/
 
 # ghc
 .ghc/ghci_history

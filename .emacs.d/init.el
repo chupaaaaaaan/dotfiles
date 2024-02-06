@@ -116,7 +116,9 @@
     (bidi-paragraph-direction . 'left-to-right)
     (gc-cons-threshold . ,(* 10 gc-cons-threshold))))
 
-(leaf cus-edit)
+(leaf cus-edit
+  :custom
+  `(custom-file . ,(concat user-emacs-directory "customize.el")))
 
 (leaf startup
   :custom
@@ -136,6 +138,7 @@
 
 (leaf files
   :custom
+  (backup-directory-alist . `((".*" . ,(concat user-emacs-directory ".cache/"))))
   (make-backup-files . t)
   (auto-save-default . t))
 

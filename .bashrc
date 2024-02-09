@@ -121,6 +121,10 @@ cs () {
     [ -n "$srcdir" ] && cd $(ghq root)/$srcdir
 }
 
+cg () {
+    ghq get "$@"
+}
+
 ## PSn setting
 if [ `id -u` -eq 0 ]; then
     PS1="${BOLD}${GREEN}\D{%F} ${YELLOW}\t${RESET}|${BOLD}${RED}\u${WHITE}@${SSH_COLOR}\h${RESET}${__KUBE_PS1_CMD}${__GIT_PS1_CMD}${RESET}| ${CYAN}\w${RESET}"$'\n# '

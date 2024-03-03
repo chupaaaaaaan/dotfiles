@@ -16,6 +16,8 @@
 .emacs.d/recentf
 .emacs.d/tramp
 .emacs.d/transient/
+.emacs.d/bookmarks
+.emacs.d/projectile.cache
 
 # ghc
 .ghc/ghci_history

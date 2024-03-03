@@ -150,6 +150,8 @@
 (leaf simple
   :require t
   :bind
+  ("C-," . previous-error)
+  ("C-." . next-error)
   (chpn-toggle-map
    ("l" . toggle-truncate-lines))
   :config
@@ -169,7 +171,7 @@
   (chpn-toggle-map
    ("e" . electric-pair-local-mode))
   :custom
-  (electric-pair-mode . nil))
+  (electric-pair-mode . t))
 
 (leaf hungry-delete
   :ensure t
@@ -594,55 +596,79 @@ https://github.com/ema2159/centaur-tabs#my-personal-configuration"
 
 (leaf consult
   :ensure t
+  :defvar (consult-xref)
+  :custom
+  (xref-show-xrefs-function . #'consult-xref)
+  (xref-show-definitions-function . #'consult-xref)
   :bind
-  ("C-c h" . consult-history)
-  ("C-c m" . consult-mode-command)
-  ("C-c k" . consult-kmacro)
-  ("C-x M-:" . consult-complex-command)
+  ;;; Virtual Buffers
   ("C-x b" . consult-buffer)
-  ("C-x 4 b" . consult-buffer-other-window)
-  ("C-x 5 b" . consult-buffer-other-frame)
+  ;; ("C-x 4 b" . consult-buffer-other-window)
+  ;; ("C-x 5 b" . consult-buffer-other-frame)
   ("C-x r b" . consult-bookmark)
-  ("C-x p b" . consult-project-buffer)
-  ("M-#" . consult-register-load)
-  ("M-'" . consult-register-store)
+
+  ;;; Editting
+  ;; ("C-y" . consult-yank-from-kill-ring)
+  ("M-y"   . consult-yank-pop)
+  ("C-c k" . consult-kmacro)
+
+  ;;; Register
+  ("M-'"   . consult-register-store)
+  ("M-#"   . consult-register-load)
   ("C-M-#" . consult-register)
-  ("C-M-r" . consult-recent-file)
-  ("M-y" . consult-yank-pop)
-  ("M-g e" . consult-compile-error)
-  ;; ("M-g f" . consult-flymake)
+
+  ;;; Navigation
   ("M-g g" . consult-goto-line)
-  ("M-g M-g" . consult-goto-line)
-  ("M-g o" . consult-outline)
   ("M-g m" . consult-mark)
   ("M-g k" . consult-global-mark)
+  ("M-g o" . consult-outline)
   ("M-g i" . consult-imenu)
   ("M-g I" . consult-imenu-multi)
-  ("M-s d" . consult-find)
-  ("M-s D" . consult-locate)
-  ("M-s g" . consult-grep)
-  ("M-s G" . consult-git-grep)
-  ("M-s r" . consult-ripgrep)
+
+  ;;; Search
   ("M-s l" . consult-line)
   ("M-s L" . consult-line-multi)
-  ("M-s m" . consult-multi-occur)
-  ("M-s k" . consult-keep-lines)
-  ("M-s u" . consult-focus-lines)
+
+  ;;; Grep and Find
+  ("M-s g" . consult-grep)
+  ("M-s G" . consult-git-grep)
+  ("M-s d" . consult-find)
+
+  ;;; Compilation
+  ("M-g e" . consult-compile-error)
+
+  ;;; Histories
+  ("C-x M-:" . consult-complex-command)
+  ("C-c h" . consult-history)
   ("M-s e" . consult-isearch-history)
+
+  ;;; Modes
+  ("C-c m" . consult-mode-command)
+
   (minibuffer-local-map
    ("M-s" . consult-history)
    ("M-r" . consult-history))
-  :hook
-  (completion-list-mode-hook . consult-preview-at-point-mode))
-
-(leaf isearch
-  :bind
   (isearch-mode-map
    ("M-e"   . consult-isearch-history)
    ("M-s e" . consult-isearch-history)
    ("M-s l" . consult-line)
    ("M-s L" . consult-line-multi)
-   ("C-h"   . isearch-delete-char)))
+   ("C-h"   . isearch-delete-char))
+  :hook
+  (completion-list-mode-hook . consult-preview-at-point-mode)
+  :config
+  (leaf consult-ghq
+    :ensure t
+    :bind
+    ("M-s c" . consult-ghq-find))
+  (leaf consult-projectile
+    :ensure t
+    :after projectile
+    :bind
+    ("C-x p b" . consult-projectile)
+    ("C-x p p" . consult-projectile-switch-project)
+    ("C-x p f" . consult-projectile-find-file)
+    ("C-x p d" . consult-projectile-find-dir)))
 
 (leaf orderless
   :ensure t
@@ -674,19 +700,32 @@ https://github.com/ema2159/centaur-tabs#my-personal-configuration"
 (leaf go-translate
   :ensure t
   :require t
-  :defvar (gts-default-translator gts-prompt-picker-keymap)
-  :defun (gts-translator gts-prompt-picker gts-google-engine gts-buffer-render gts-prompt-picker-next-path)
+  :require (deepl-secret)
+  :defvar (gts-default-translator
+           gts-prompt-picker-keymap
+           gts-posframe-pop-render-timeout
+           my:deepl-secret)
+  :defun (gts-translator
+          gts-prompt-picker
+          gts-google-engine
+          gts-deepl-engine
+          gts-buffer-render
+          gts-posframe-pop-render
+          gts-prompt-picker-next-path)
   :custom
   (gts-translate-list . '(("en" "ja")))
   :bind
   (chpn-function-map
    ("t" . gts-do-translate))
   :config
+  (setq gts-posframe-pop-render-timeout nil)
   (setq gts-default-translator
         (gts-translator
          :picker (gts-prompt-picker)
+         ;; :engines `(,(gts-google-engine)
+         ;;            ,(gts-deepl-engine :auth-key my:deepl-secret :pro nil))
          :engines (gts-google-engine)
-         :render (gts-buffer-render)))
+         :render (gts-posframe-pop-render :backcolor "#333333" :forecolor "#ffffff")))
   (setq gts-prompt-picker-keymap
         (let ((map (make-sparse-keymap)))
           (set-keymap-parent map minibuffer-local-map)
@@ -1129,13 +1168,15 @@ INFO is a plist used as a communication channel."
   (leaf git-timemachine
     :ensure t
     :bind
-    ("M-g t" . git-timemachine-toggle))
+    (chpn-function-map
+     ("t" . git-timemachine-toggle)))
   (leaf magit
     :ensure t
     :custom
     (magit-auto-revert-mode . nil)
     :bind
-    ("M-g s" . magit-status))
+    (chpn-function-map
+     ("s" . magit-status)))
   (leaf git-gutter
     :ensure t
     :blackout t
@@ -1210,9 +1251,7 @@ INFO is a plist used as a communication channel."
   (projectile-enable-caching . t)
   (projectile-require-project-root . t)
   (projectile-dirconfig-comment-prefix . "#")
-  (projectile-mode . t)
-  :config
-  (leaf consult-projectile :ensure t))
+  (projectile-mode . t))
 
 (leaf treemacs
   :ensure t

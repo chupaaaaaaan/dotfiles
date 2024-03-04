@@ -681,7 +681,6 @@ https://github.com/ema2159/centaur-tabs#my-personal-configuration"
   :custom
   (marginalia-mode . t)
   :bind
-  ("M-A" . marginalia-cycle)
   (minibuffer-local-map
    ("M-A" . marginalia-cycle)))
 
@@ -699,8 +698,8 @@ https://github.com/ema2159/centaur-tabs#my-personal-configuration"
 
 (leaf go-translate
   :ensure t
-  :require t
-  :require (deepl-secret)
+  ;; :if (file-exists-p (concat chpn/dir-pkg-local "deepl-secret.el"))
+  ;; :require (deepl-secret)
   :defvar (gts-default-translator
            gts-prompt-picker-keymap
            gts-posframe-pop-render-timeout
@@ -718,24 +717,22 @@ https://github.com/ema2159/centaur-tabs#my-personal-configuration"
   (chpn-function-map
    ("t" . gts-do-translate))
   :config
-  (setq gts-posframe-pop-render-timeout nil)
-  (setq gts-default-translator
-        (gts-translator
-         :picker (gts-prompt-picker)
-         ;; :engines `(,(gts-google-engine)
-         ;;            ,(gts-deepl-engine :auth-key my:deepl-secret :pro nil))
-         :engines (gts-google-engine)
-         :render (gts-posframe-pop-render :backcolor "#333333" :forecolor "#ffffff")))
-  (setq gts-prompt-picker-keymap
-        (let ((map (make-sparse-keymap)))
-          (set-keymap-parent map minibuffer-local-map)
-          (define-key map "\C-g" #'top-level)
-          (define-key map "\C-n" #'next-line-or-history-element)
-          (define-key map "\C-p" #'previous-line-or-history-element)
-          (define-key map "\M-n" #'gts-prompt-picker-next-path)
-          (define-key map "\M-p" (lambda () (interactive) (gts-prompt-picker-next-path t)))
-          (define-key map "\C-l" #'delete-minibuffer-contents)
-          map)))
+  (setq gts-posframe-pop-render-timeout nil
+        gts-default-translator          (gts-translator
+                                         :picker (gts-prompt-picker)
+                                         ;; :engines `(,(gts-google-engine)
+                                         ;;            ,(gts-deepl-engine :auth-key my:deepl-secret :pro nil))
+                                         :engines (gts-google-engine)
+                                         :render (gts-posframe-pop-render :backcolor "#333333" :forecolor "#ffffff"))
+        gts-prompt-picker-keymap        (let ((map (make-sparse-keymap)))
+                                          (set-keymap-parent map minibuffer-local-map)
+                                          (define-key map "\C-g" #'top-level)
+                                          (define-key map "\C-n" #'next-line-or-history-element)
+                                          (define-key map "\C-p" #'previous-line-or-history-element)
+                                          (define-key map "\M-n" #'gts-prompt-picker-next-path)
+                                          (define-key map "\M-p" (lambda () (interactive) (gts-prompt-picker-next-path t)))
+                                          (define-key map "\C-l" #'delete-minibuffer-contents)
+                                          map)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Org mode
@@ -810,8 +807,9 @@ https://github.com/ema2159/centaur-tabs#my-personal-configuration"
   (org-enforce-todo-checkbox-dependencies t)
   (org-track-ordered-property-with-tag t)
   (org-priority-highest 1)
-  (org-priority-lowest 10)
-  (org-priority-default 10)
+  (org-priority-lowest 9)
+  (org-priority-default 5)
+  (org-priority-start-cycle-with-default nil)
 
   ;; capture
   (org-capture-templates
@@ -840,7 +838,7 @@ https://github.com/ema2159/centaur-tabs#my-personal-configuration"
 
   ;; columns
   ;; (org-columns-default-format "%40ITEM %TAGS %TODO %BLOCKED %PRIORITY %SCHEDULED %DEADLINE %EFFORT{:} %CLOCKSUM %CLOCKSUM_T")
-  (org-columns-default-format "%40ITEM %TODO %PRIORITY %SCHEDULED %DEADLINE %EFFORT %CLOCKSUM %CLOCKSUM_T")
+  (org-columns-default-format "%40ITEM %TODO %SCHEDULED %DEADLINE %EFFORT %CLOCKSUM %CLOCKSUM_T")
 
   ;; archive
   (org-archive-location (concat org-directory "agenda/archive/archive_%s::"))
@@ -914,10 +912,10 @@ https://github.com/ema2159/centaur-tabs#my-personal-configuration"
 
 
   :preface
-  (setq memo-dir "memo/")
-  (setq issue-dir "issue/")
-  (setq diary-dir "diary/")
-  (setq agenda-dir "agenda/")
+  (setq memo-dir   "memo/"
+        issue-dir  "issue/"
+        diary-dir  "diary/"
+        agenda-dir "agenda/")
   (defun chpn/deploy-templates-if-not-exist (from-base to-base dirlist)
     (mapc (lambda (dir) (unless (file-directory-p (concat to-base dir))
                           (copy-directory (concat from-base dir) to-base nil t))) dirlist))

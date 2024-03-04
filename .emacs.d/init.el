@@ -13,7 +13,7 @@
 
 (eval-and-compile
   ;; directory
-  (defconst chpn/dir-jars "~/.cache/jars/")
+  (defconst chpn/dir-jars "~/.jar/")
   (unless (file-directory-p chpn/dir-jars)
     (make-directory chpn/dir-jars t))
 
@@ -54,7 +54,7 @@
     (leaf el-get
       :ensure t
       :custom
-      `((el-get-dir . ,chpn/dir-pkg-elget)))
+      `(el-get-dir . ,chpn/dir-pkg-elget))
     (leaf blackout :ensure t)
     :config
     ;; initialize leaf-keywords.el
@@ -101,20 +101,20 @@
 
 (leaf cus-start
   :custom
-  `((menu-bar-mode . nil)
-    (tool-bar-mode . nil)
-    (indent-tabs-mode . nil)
-    (transient-mark-mode . t)
-    (scroll-conservatively . 101)
-    (scroll-margin . 10)
-    (history-delete-duplicates . t)
-    (history-length . 1000)
-    (message-log-max . 10000)
-    (enable-recursive-minibuffers . t)
-    (auto-save-timeout . 20)
-    (auto-save-interval . 60)
-    (bidi-paragraph-direction . 'left-to-right)
-    (gc-cons-threshold . ,(* 10 gc-cons-threshold))))
+  (menu-bar-mode . nil)
+  (tool-bar-mode . nil)
+  (indent-tabs-mode . nil)
+  (transient-mark-mode . t)
+  (scroll-conservatively . 101)
+  (scroll-margin . 10)
+  (history-delete-duplicates . t)
+  (history-length . 1000)
+  (message-log-max . 10000)
+  (enable-recursive-minibuffers . t)
+  (auto-save-timeout . 20)
+  (auto-save-interval . 60)
+  (bidi-paragraph-direction . 'left-to-right)
+  `(gc-cons-threshold . ,(* 10 gc-cons-threshold)))
 
 (leaf cus-edit
   :custom
@@ -693,9 +693,9 @@ https://github.com/ema2159/centaur-tabs#my-personal-configuration"
   :bind
   ("C-r" . anzu-query-replace-regexp)
   :custom
-  ((global-anzu-mode . t)
-   (anzu-deactivate-region . t)
-   (anzu-search-threshold . 1000)))
+  (global-anzu-mode . t)
+  (anzu-deactivate-region . t)
+  (anzu-search-threshold . 1000))
 
 (leaf go-translate
   :ensure t
@@ -1518,9 +1518,9 @@ INFO is a plist used as a communication channel."
   :ensure t
   :mode ("\\.puml\\'")
   :custom
-  `((plantuml-default-exec-mode . 'jar)
-    (plantuml-jar-path . ,(expand-file-name "plantuml.jar" chpn/dir-jars))
-    (plantuml-output-type . "png")))
+  `(plantuml-jar-path . ,(expand-file-name "plantuml.jar" chpn/dir-jars))
+  (plantuml-default-exec-mode . 'jar)
+  (plantuml-output-type . "png"))
 
 (leaf nxml-mode
   :mode ("\.xml$" "\.xsl$" "\.xhtml$" "\.page$")

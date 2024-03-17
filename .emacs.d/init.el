@@ -79,15 +79,12 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;; define prefix-key
-(defvar chpn-function-map)
 (define-prefix-command 'chpn-function-map)
 (define-key global-map (kbd "M-i") 'chpn-function-map)
 
-(defvar chpn-toggle-map)
 (define-prefix-command 'chpn-toggle-map)
 (define-key global-map (kbd "M-t") 'chpn-toggle-map)
 
-(defvar chpn-org-map)
 (define-prefix-command 'chpn-org-map)
 (define-key global-map (kbd "M-q") 'chpn-org-map)
 
@@ -153,6 +150,7 @@
   ("C-," . previous-error)
   ("C-." . next-error)
   (chpn-toggle-map
+   :package init
    ("l" . toggle-truncate-lines))
   :config
   (line-number-mode 1)
@@ -169,6 +167,7 @@
 (leaf elec-pair
   :bind
   (chpn-toggle-map
+   :package init
    ("e" . electric-pair-local-mode))
   :custom
   (electric-pair-mode . t))
@@ -178,6 +177,7 @@
   :blackout t
   :bind
   (chpn-toggle-map
+   :package init
    ("h" . hungry-delete-mode))
   :custom
   (global-hungry-delete-mode . t)
@@ -390,6 +390,7 @@ https://github.com/ema2159/centaur-tabs#my-personal-configuration"
   :blackout t
   :bind
   (chpn-toggle-map
+   :package init
    ("g" . golden-ratio-mode))
   :custom
   (golden-ratio-mode . t)
@@ -471,6 +472,7 @@ https://github.com/ema2159/centaur-tabs#my-personal-configuration"
   (show-paren-when-point-in-periphery . t)
   :bind
   (chpn-toggle-map
+   :package init
    ("p" . toggle-show-paren))
   :preface
   (defun toggle-show-paren ()
@@ -490,6 +492,7 @@ https://github.com/ema2159/centaur-tabs#my-personal-configuration"
   :defvar highlight-indent-guides-mode
   :bind
   (chpn-toggle-map
+   :package init
    ("i" . toggle-highlight-indent-guides))
   :hook
   ((prog-mode-hook yaml-mode-hook) . highlight-indent-guides-mode)
@@ -569,6 +572,7 @@ https://github.com/ema2159/centaur-tabs#my-personal-configuration"
   :require t
   :bind
   (chpn-toggle-map
+   :package init
    ("m" . scroll-lock-mode)))
 
 ;; ediff
@@ -653,22 +657,27 @@ https://github.com/ema2159/centaur-tabs#my-personal-configuration"
    ("M-s e" . consult-isearch-history)
    ("M-s l" . consult-line)
    ("M-s L" . consult-line-multi)
-   ("C-h"   . isearch-delete-char))
+   ("C-h"   . isearch-delete-char)
+   ("C-a"   . isearch-beginning-of-buffer)
+   ("C-e"   . isearch-end-of-buffer))
   :hook
-  (completion-list-mode-hook . consult-preview-at-point-mode)
-  :config
-  (leaf consult-ghq
-    :ensure t
-    :bind
-    ("M-s c" . consult-ghq-find))
-  (leaf consult-projectile
-    :ensure t
-    :after projectile
-    :bind
-    ("C-x p b" . consult-projectile)
-    ("C-x p p" . consult-projectile-switch-project)
-    ("C-x p f" . consult-projectile-find-file)
-    ("C-x p d" . consult-projectile-find-dir)))
+  (completion-list-mode-hook . consult-preview-at-point-mode))
+
+(leaf consult-ghq :ensure t
+  :bind
+  ;; ("M-s c s" . consult-ghq-switch-project)
+  ("M-s c f" . consult-ghq-find)
+  ("M-s c g" . consult-ghq-grep))
+
+(leaf consult-projectile :ensure t
+  :bind
+  (projectile-command-map
+   :package projectile
+   ("b" . consult-projectile)
+   ("p" . consult-projectile-switch-project)
+   ("f" . consult-projectile-find-file)
+   ("d" . consult-projectile-find-dir)
+   ("e" . consult-projectile-recentf)))
 
 (leaf orderless
   :ensure t
@@ -715,6 +724,7 @@ https://github.com/ema2159/centaur-tabs#my-personal-configuration"
   (gts-translate-list . '(("en" "ja")))
   :bind
   (chpn-function-map
+   :package init
    ("t" . gts-do-translate))
   :config
   (setq gts-posframe-pop-render-timeout nil
@@ -871,10 +881,6 @@ https://github.com/ema2159/centaur-tabs#my-personal-configuration"
   ("C-c l" . org-store-link)
   ("C-+"   . (lambda () (interactive) (insert (chpn/insert-today-string))))
   ("C-*"   . (lambda () (interactive) (insert (chpn/insert-timestamp-string))))
-  ("C-c t c" . org-table-create)
-  ("C-c t -" . org-table-insert-row)
-  ("C-c t |" . org-table-insert-column)
-  ("C-c t =" . org-table-insert-hline)
   (:map chpn-org-map
         ("i" . agenda-inbox)
         ("p" . agenda-task)
@@ -886,6 +892,10 @@ https://github.com/ema2159/centaur-tabs#my-personal-configuration"
         ;; ("C-c i" . org-clock-in)
         ;; ("C-c o" . org-clock-out)
         ;; ("C-c u" . org-dblock-update)
+        ("C-c t c" . org-table-create)
+        ("C-c t -" . org-table-insert-row)
+        ("C-c t |" . org-table-insert-column)
+        ("C-c t =" . org-table-insert-hline)
         ("C-c n" . org-narrow-to-subtree)
         ("C-c b" . org-narrow-to-block)
         ("C-c w" . widen)
@@ -1167,14 +1177,12 @@ INFO is a plist used as a communication channel."
     :ensure t
     :bind
     (chpn-function-map
-     ("t" . git-timemachine-toggle)))
+     :package init
+     ("q" . git-timemachine-toggle)))
   (leaf magit
     :ensure t
     :custom
-    (magit-auto-revert-mode . nil)
-    :bind
-    (chpn-function-map
-     ("s" . magit-status)))
+    (magit-auto-revert-mode . nil))
   (leaf git-gutter
     :ensure t
     :blackout t

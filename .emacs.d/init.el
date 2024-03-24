@@ -619,7 +619,7 @@ https://github.com/ema2159/centaur-tabs#my-personal-configuration"
   ;;; Histories
   ("C-x M-:" . consult-complex-command)
   ("C-c h" . consult-history)
-  ("M-s e" . consult-isearch-history)
+  ("M-e"   . consult-isearch-history)
 
   ;;; Modes
   ("C-c m" . consult-mode-command)
@@ -629,7 +629,6 @@ https://github.com/ema2159/centaur-tabs#my-personal-configuration"
    ("M-r" . consult-history))
   (isearch-mode-map
    ("M-e"   . consult-isearch-history)
-   ("M-s e" . consult-isearch-history)
    ("M-s l" . consult-line)
    ("M-s L" . consult-line-multi)
    ("C-h"   . isearch-delete-char))
@@ -651,6 +650,15 @@ https://github.com/ema2159/centaur-tabs#my-personal-configuration"
    ("f" . consult-projectile-find-file)
    ("d" . consult-projectile-find-dir)
    ("e" . consult-projectile-recentf)))
+
+(leaf consult-flycheck :package t
+  :bind
+  ("M-s e" . consult-flycheck))
+
+(leaf consult-lsp :package t
+  :bind
+  ("M-s E" . consult-lsp-diagnostics)
+)
 
 (leaf orderless :package t
   :custom

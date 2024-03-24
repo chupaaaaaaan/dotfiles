@@ -1279,7 +1279,7 @@ INFO is a plist used as a communication channel."
   :hook
   (lsp-mode-hook . lsp-enable-which-key-integration)
   (lsp-mode-hook . lsp-ui-mode)
-  ;; (elm-mode-hook  . lsp)
+  (elm-mode-hook        . lsp-deferred)
   (java-mode-hook       . lsp-deferred)
   (haskell-mode-hook    . lsp-deferred)
   (js-mode-hook         . lsp-deferred)

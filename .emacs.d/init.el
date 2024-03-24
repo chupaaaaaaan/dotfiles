@@ -1347,7 +1347,7 @@ INFO is a plist used as a communication channel."
 
 (leaf lsp-haskell :package t
   :custom
-  (lsp-haskell-server-args . '("-d"))
+  ;; (lsp-haskell-server-args . '("-d"))
   (lsp-haskell-formatting-provider . "fourmolu"))
 
 (leaf haskell-mode :package t

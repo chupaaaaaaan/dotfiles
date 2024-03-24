@@ -1241,18 +1241,16 @@ INFO is a plist used as a communication channel."
   (treemacs-filewatch-mode . t)
   (treemacs-fringe-indicator-mode . t)
   (treemacs-git-mode . 'simple)
+  (treemacs-project-follow-cleanup . t)
   :config
   (leaf treemacs-projectile :package t)
   (leaf treemacs-icons-dired :package t
     :config
     (treemacs-icons-dired-mode))
-  (leaf treemacs-magit :package t))
+  (leaf treemacs-magit :package t :require t))
 
 (leaf flycheck :package t
   :blackout t
-  :bind
-  ("M-n" . flycheck-next-error)
-  ("M-p" . flycheck-previous-error)
   :custom
   (global-flycheck-mode . t)
   :config

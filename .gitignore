@@ -18,6 +18,8 @@
 .emacs.d/transient/
 .emacs.d/bookmarks
 .emacs.d/projectile.cache
+.emacs.d/eclipse.jdt.ls/
+.emacs.d/workspace/
 
 # ghc
 .ghc/ghci_history

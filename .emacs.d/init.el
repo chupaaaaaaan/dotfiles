@@ -1260,15 +1260,6 @@ INFO is a plist used as a communication channel."
     :hook
     (flycheck-mode-hook . flycheck-posframe-mode)))
 
-(leaf imenu-list :package t
-  :bind
-  ("<f10>" . imenu-list-smart-toggle)
-  :custom
-  ;;(imenu-list-size . 30)
-  (imenu-list-auto-resize . nil)
-  (imenu-list-focus-after-activation . t)
-  (imenu-list-position . 'right))
-
 ;; lsp
 (leaf lsp-mode :package t
   :commands (lsp lsp-deferred)

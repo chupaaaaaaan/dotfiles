@@ -658,7 +658,8 @@ https://github.com/ema2159/centaur-tabs#my-personal-configuration"
 (leaf consult-lsp :package t
   :bind
   ("M-s E" . consult-lsp-diagnostics)
-)
+  ("M-s s" . consult-lsp-symbols)
+  ("M-s S" . consult-lsp-file-symbols))
 
 (leaf orderless :package t
   :custom
@@ -1243,7 +1244,11 @@ INFO is a plist used as a communication channel."
   (treemacs-git-mode . 'simple)
   (treemacs-project-follow-cleanup . t)
   :config
-  (leaf treemacs-projectile :package t)
+  (leaf treemacs-projectile :package t
+    :bind
+    (treemacs-project-map
+     :package treemacs
+     ("p" . treemacs-projectile)))
   (leaf treemacs-icons-dired :package t
     :config
     (treemacs-icons-dired-mode))
@@ -1315,6 +1320,8 @@ INFO is a plist used as a communication channel."
     (lsp-ui-sideline-show-diagnostics . nil)
     (lsp-ui-sideline-show-code-actions . t))
   (leaf lsp-treemacs :package t
+    :bind
+    ("M-2" . lsp-treemacs-symbols)
     :custom
     (lsp-treemacs-sync-mode . t))
   (leaf dap-mode :package t

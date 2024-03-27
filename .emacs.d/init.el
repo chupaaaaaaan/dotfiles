@@ -825,8 +825,8 @@ https://github.com/ema2159/centaur-tabs#my-personal-configuration"
   (org-global-properties '(("Effort_ALL" . "0:05 0:15 0:30 1:00 1:30 2:00 3:00 4:00")))
 
   ;; columns
-  ;; (org-columns-default-format "%40ITEM %TAGS %TODO %BLOCKED %PRIORITY %SCHEDULED %DEADLINE %EFFORT{:} %CLOCKSUM %CLOCKSUM_T")
-  (org-columns-default-format "%40ITEM %TODO %SCHEDULED %DEADLINE %EFFORT %CLOCKSUM %CLOCKSUM_T")
+  ;; (org-columns-default-format "%40ITEM %TAGS %TODO %BLOCKED %PRIORITY %SCHEDULED %DEADLINE %EFFORT{:} %CLOCKSUM_T %CLOCKSUM")
+  (org-columns-default-format "%40ITEM %TODO %SCHEDULED %DEADLINE %EFFORT{:} %CLOCKSUM_T %CLOCKSUM")
 
   ;; archive
   (org-archive-location (concat org-directory "agenda/archive/archive_%s::"))

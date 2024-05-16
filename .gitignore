@@ -20,6 +20,8 @@
 .emacs.d/projectile.cache
 .emacs.d/eclipse.jdt.ls/
 .emacs.d/workspace/
+.emacs.d/eln-cache/
+.emacs.d/tree-sitter/
 
 # ghc
 .ghc/ghci_history

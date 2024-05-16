@@ -1402,29 +1402,18 @@ INFO is a plist used as a communication channel."
   (js-indent-level . 2)
   (js-jsx-indent-level . 2))
 
-;; from https://github.com/emacs-typescript/typescript.el/issues/4#issuecomment-873485004
-(leaf typescript-mode :package t
-  :hook
-  (typescript-mode-hook . subword-mode)
-  :mode
-  (".*\\.tsx\\'" . typescript-tsx-mode)
-  :init
-  (define-derived-mode typescript-tsx-mode typescript-mode "TypeScript[TSX]")
+(leaf treesit
   :custom
-  (typescript-indent-level . 2)
+  (treesit-font-lock-level . 4)
   :config
-  (leaf ob-typescript :package t
-    :after org))
-
-(leaf tree-sitter :package t
-  :hook
-  ((typescript-mode typescript-tsx-mode) . tree-sitter-hl-mode)
-  :config
-  (leaf tree-sitter-langs :package t
-    :defvar (tree-sitter-major-mode-language-alist)
+  (leaf treesit-auto
+    :defun (global-treesit-auto-mode)
+    :require t
+    :custom
+    (treesit-auto-install . 'prompt)
+    (treesit-auto-langs . '(tsx typescript json))
     :config
-    (tree-sitter-require 'tsx)
-    (add-to-list 'tree-sitter-major-mode-language-alist '(typescript-tsx-mode . tsx))))
+    (global-treesit-auto-mode)))
 
 (leaf elm-mode :package t
   :custom

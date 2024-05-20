@@ -1294,14 +1294,15 @@ INFO is a plist used as a communication channel."
   :hook
   (lsp-mode-hook . lsp-enable-which-key-integration)
   (lsp-mode-hook . lsp-ui-mode)
-  (elm-mode-hook        . lsp-deferred)
-  (java-mode-hook       . lsp-deferred)
-  (haskell-mode-hook    . lsp-deferred)
-  (js-mode-hook         . lsp-deferred)
-  (typescript-mode-hook . lsp-deferred)
-  (terraform-mode-hook  . lsp-deferred)
-  (sh-mode-hook         . lsp-deferred)
-  (python-mode-hook     . lsp-deferred)
+  (elm-mode-hook           . lsp-deferred)
+  (java-mode-hook          . lsp-deferred)
+  (haskell-mode-hook       . lsp-deferred)
+  (js-mode-hook            . lsp-deferred)
+  (typescript-ts-mode-hook . lsp-deferred)
+  (tsx-ts-mode-hook        . lsp-deferred)
+  (terraform-mode-hook     . lsp-deferred)
+  (sh-mode-hook            . lsp-deferred)
+  (python-mode-hook        . lsp-deferred)
   :config
   (leaf lsp-ui :package t
     ;; :custom-face

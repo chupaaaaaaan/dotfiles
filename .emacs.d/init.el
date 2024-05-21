@@ -1420,7 +1420,7 @@ INFO is a plist used as a communication channel."
   :custom
   (treesit-font-lock-level . 4)
   :config
-  (leaf treesit-auto
+  (leaf treesit-auto :package t
     :defun (global-treesit-auto-mode)
     :require t
     :custom

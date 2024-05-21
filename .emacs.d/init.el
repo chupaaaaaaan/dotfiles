@@ -46,28 +46,28 @@
     (package-refresh-contents)
     (package-install 'leaf))
 
-  (leaf leaf-keywords :package t
+  (leaf leaf-keywords :ensure t
     :init
     ;; optional packages if you want to use :hydra, :el-get, :blackout,,,
-    (leaf hydra :package t)
-    (leaf el-get :package t
+    (leaf hydra :ensure t)
+    (leaf el-get :ensure t
       :custom
       `(el-get-dir . ,chpn/dir-pkg-elget))
-    (leaf blackout :package t)
+    (leaf blackout :ensure t)
     :config
     ;; initialize leaf-keywords.el
     (leaf-keywords-init)))
 
 (leaf leaf
   :config
-  (leaf leaf-convert :package t)
-  (leaf leaf-tree :package t))
+  (leaf leaf-convert :ensure t)
+  (leaf leaf-tree :ensure t))
 
-(leaf macrostep :package t
+(leaf macrostep :ensure t
   :bind
   ("C-c e" . macrostep-expand))
 
-(leaf transient-dwim :package t
+(leaf transient-dwim :ensure t
   :bind
   ("M-=" . transient-dwim-dispatch))
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -167,7 +167,7 @@
   :custom
   (electric-pair-mode . t))
 
-(leaf hungry-delete :package t
+(leaf hungry-delete :ensure t
   :blackout t
   :bind
   (chpn-toggle-map
@@ -177,7 +177,7 @@
   (global-hungry-delete-mode . t)
   (hungry-delete-join-reluctantly . t))
 
-(leaf shut-up :package t)
+(leaf shut-up :ensure t)
 
 (leaf uniquify
   ;; :require t
@@ -190,7 +190,7 @@
   ("M-[" . previous-buffer)
   ("M-]" . next-buffer))
 
-(leaf centaur-tabs :package t
+(leaf centaur-tabs :ensure t
   :disabled t
   :defun (centaur-tabs-headline-match centaur-tabs-get-group-name)
   :bind
@@ -270,7 +270,7 @@ https://github.com/ema2159/centaur-tabs#my-personal-configuration"
 ;;   :hook
 ;;   (dired-mode . all-the-icons-dired-mode))
 
-(leaf font-setting :package all-the-icons
+(leaf font-setting :ensure all-the-icons
   :when (display-graphic-p)
   :require t
   :defvar (my:font-size my:font-family)
@@ -336,7 +336,7 @@ https://github.com/ema2159/centaur-tabs#my-personal-configuration"
          (set-file-name-coding-system 'utf-8)
          (setq locale-coding-system 'utf-8)))
   ;; input method
-  (leaf mozc :package t
+  (leaf mozc :ensure t
     :if (eq system-type 'gnu/linux)
     :bind
     (minibuffer-local-map
@@ -367,24 +367,24 @@ https://github.com/ema2159/centaur-tabs#my-personal-configuration"
   :if (eq system-type 'darwin)
   :require t)
 
-(leaf exec-path-from-shell :package t
+(leaf exec-path-from-shell :ensure t
   :if (or (eq system-type 'darwin)
           (eq system-type 'gnu/linux))
   :init
   (exec-path-from-shell-initialize))
 
-(leaf keyfreq :package t
+(leaf keyfreq :ensure t
   :custom
   (keyfreq-mode . 1)
   (keyfreq-autosave-mode . 1)
   (keyfreq-buffer . "*KeyFrequency*"))
 
-(leaf which-key :package t
+(leaf which-key :ensure t
   :blackout which-key-mode
   :hook
   (emacs-startup-hook . which-key-mode))
 
-(leaf golden-ratio :package t
+(leaf golden-ratio :ensure t
   :leaf-defer nil
   :blackout t
   :bind
@@ -403,7 +403,7 @@ https://github.com/ema2159/centaur-tabs#my-personal-configuration"
   (golden-ratio-exclude-modes . '(treemacs-mode
                                   imenu-list-major-mode)))
 
-(leaf ace-window :package t
+(leaf ace-window :ensure t
   :leaf-defer nil
   :bind
   ("M-o" . ace-window)
@@ -425,7 +425,7 @@ https://github.com/ema2159/centaur-tabs#my-personal-configuration"
 ;;   :config
 ;;   (persp-mode))
 
-(leaf nyan-mode :package t
+(leaf nyan-mode :ensure t
   :custom
   (nyan-cat-face-number . 4)
   (nyan-animate-nyancat . t)
@@ -437,14 +437,14 @@ https://github.com/ema2159/centaur-tabs#my-personal-configuration"
   (display-time-format . " %F %R ")
   (display-time-mode . t))
 
-(leaf moody :package t
+(leaf moody :ensure t
   :config
   (setq x-underline-at-descent-line t)
   (moody-replace-mode-line-buffer-identification)
   (moody-replace-vc-mode)
   (moody-replace-eldoc-minibuffer-message-function))
 
-(leaf hide-mode-line :package t
+(leaf hide-mode-line :ensure t
   :hook
   (treemacs-mode-hook . hide-mode-line-mode))
 
@@ -476,11 +476,11 @@ https://github.com/ema2159/centaur-tabs#my-personal-configuration"
     (show-paren-mode (if show-paren-mode -1 1))
     (message "Show paren %s" (if show-paren-mode "enabled" "disabled"))))
 
-(leaf rainbow-delimiters :package t
+(leaf rainbow-delimiters :ensure t
   :hook
   (prog-mode-hook . rainbow-delimiters-mode))
 
-(leaf highlight-indent-guides :package t
+(leaf highlight-indent-guides :ensure t
   :blackout t
   :defvar highlight-indent-guides-mode
   :bind
@@ -502,7 +502,7 @@ https://github.com/ema2159/centaur-tabs#my-personal-configuration"
     (message "Highlight indent guides %s" (if highlight-indent-guides-mode "enabled" "disabled"))))
 
 ;; volatile-highlights
-(leaf volatile-highlights :package t
+(leaf volatile-highlights :ensure t
   :blackout t
   :defun (vhl/define-extension vhl/install-extension)
   :custom
@@ -512,7 +512,7 @@ https://github.com/ema2159/centaur-tabs#my-personal-configuration"
   (vhl/install-extension 'undo-tree))
 
 
-(leaf modus-themes :package t
+(leaf modus-themes :ensure t
   :leaf-defer nil
   :custom
   (modus-themes-italic-constructs . t)
@@ -574,20 +574,20 @@ https://github.com/ema2159/centaur-tabs#my-personal-configuration"
 ;;   (global-set-key (kbd "C-c d") 'ediff-files)
 ;;   )
 
-(leaf undo-tree :package t
+(leaf undo-tree :ensure t
   :blackout t
   :custom
   (global-undo-tree-mode . t)
   (undo-tree-history-directory-alist . `((".*" . ,(concat user-emacs-directory ".cache/")))))
 
-(leaf amx :package t)
+(leaf amx :ensure t)
 
-(leaf vertico :package t
+(leaf vertico :ensure t
   :custom
   (vertico-mode . t)
   (read-extended-command-predicate . #'command-completion-default-include-p))
 
-(leaf consult :package t
+(leaf consult :ensure t
   :defvar (consult-xref)
   :custom
   (xref-show-xrefs-function . #'consult-xref)
@@ -648,13 +648,13 @@ https://github.com/ema2159/centaur-tabs#my-personal-configuration"
   :hook
   (completion-list-mode-hook . consult-preview-at-point-mode))
 
-(leaf consult-ghq :package t
+(leaf consult-ghq :ensure t
   :bind
   ;; ("M-s c s" . consult-ghq-switch-project)
   ("M-s c f" . consult-ghq-find)
   ("M-s c g" . consult-ghq-grep))
 
-(leaf consult-projectile :package t
+(leaf consult-projectile :ensure t
   :bind
   (projectile-command-map
    :package projectile
@@ -664,31 +664,31 @@ https://github.com/ema2159/centaur-tabs#my-personal-configuration"
    ("d" . consult-projectile-find-dir)
    ("e" . consult-projectile-recentf)))
 
-(leaf consult-flycheck :package t
+(leaf consult-flycheck :ensure t
   :bind
   ("M-s e" . consult-flycheck))
 
-(leaf consult-lsp :package t
+(leaf consult-lsp :ensure t
   :bind
   ("M-s E" . consult-lsp-diagnostics)
   ("M-s s" . consult-lsp-symbols)
   ("M-s S" . consult-lsp-file-symbols))
 
-(leaf orderless :package t
+(leaf orderless :ensure t
   :custom
   (completion-styles . '(orderless basic))
   (completion-category-overrides . '((file (styles basic partial-completion)))))
 
-(leaf marginalia :package t
+(leaf marginalia :ensure t
   :custom
   (marginalia-mode . t)
   :bind
   (minibuffer-local-map
    ("M-A" . marginalia-cycle)))
 
-(leaf ag :package t)
+(leaf ag :ensure t)
 
-(leaf anzu :package t
+(leaf anzu :ensure t
   :blackout t
   :bind
   ("C-r" . anzu-query-replace-regexp)
@@ -697,7 +697,7 @@ https://github.com/ema2159/centaur-tabs#my-personal-configuration"
   (anzu-deactivate-region . t)
   (anzu-search-threshold . 1000))
 
-(leaf go-translate :package t
+(leaf go-translate :ensure t
   ;; :if (file-exists-p (concat chpn/dir-pkg-local "deepl-secret.el"))
   ;; :require (deepl-secret)
   :defvar (gts-default-translator
@@ -1047,7 +1047,7 @@ INFO is a plist used as a communication channel."
   :defer t
   :after org)
 
-(leaf company-org-block :package t)
+(leaf company-org-block :ensure t)
 
   ;; latex
 (leaf ox-latex
@@ -1145,7 +1145,7 @@ INFO is a plist used as a communication channel."
 ;; Editing
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(leaf multiple-cursors :package t
+(leaf multiple-cursors :ensure t
   :bind
   (("C-S-c C-S-c" . mc/edit-lines)
    ("C->" . mc/mark-next-like-this)
@@ -1162,16 +1162,16 @@ INFO is a plist used as a communication channel."
 
 (leaf *git
   :config
-  (leaf git-modes :package t)
-  (leaf git-timemachine :package t
+  (leaf git-modes :ensure t)
+  (leaf git-timemachine :ensure t
     :bind
     (chpn-function-map
      :package init
      ("q" . git-timemachine-toggle)))
-  (leaf magit :package t
+  (leaf magit :ensure t
     :custom
     (magit-auto-revert-mode . nil))
-  (leaf git-gutter :package t
+  (leaf git-gutter :ensure t
     :blackout t
     :custom
     (global-git-gutter-mode . t)
@@ -1183,18 +1183,18 @@ INFO is a plist used as a communication channel."
     (git-gutter:added . '((t (:foreground "#50fa7b" :background "#50fa7b"))))
     (git-gutter:deleted . '((t (:foreground "#ff79c6" :background "#ff79c6"))))))
 
-(leaf yasnippet :package t
+(leaf yasnippet :ensure t
   :blackout yas-minor-mode
   :custom
   (yas-global-mode . t)
   :config
-  (leaf yasnippet-snippets :package t)
-  (leaf haskell-snippets :package t)
-  (leaf yasnippet-capf :package t)
-  (leaf awk-yasnippets :package t)
-  (leaf elm-yasnippets :package t))
+  (leaf yasnippet-snippets :ensure t)
+  (leaf haskell-snippets :ensure t)
+  (leaf yasnippet-capf :ensure t)
+  (leaf awk-yasnippets :ensure t)
+  (leaf elm-yasnippets :ensure t))
 
-(leaf company :package t
+(leaf company :ensure t
   :blackout t
   :hook
   (emacs-startup-hook . global-company-mode)
@@ -1222,7 +1222,7 @@ INFO is a plist used as a communication channel."
    ("M-n" . nil)
    ("M-p" . nil))
   :config
-  (leaf company-box :package t
+  (leaf company-box :ensure t
     :blackout t
     :hook
     (global-company-mode-hook . company-box-mode)
@@ -1231,7 +1231,7 @@ INFO is a plist used as a communication channel."
     (company-box-show-single-candidate . nil)))
 
 ;; projectile
-(leaf projectile :package t
+(leaf projectile :ensure t
   :blackout t
   :bind
   (projectile-mode-map
@@ -1242,7 +1242,7 @@ INFO is a plist used as a communication channel."
   (projectile-dirconfig-comment-prefix . "#")
   (projectile-mode . t))
 
-(leaf treemacs :package t
+(leaf treemacs :ensure t
   :bind
   ("M-1" . treemacs-select-window)
   (treemacs-mode-map
@@ -1257,29 +1257,29 @@ INFO is a plist used as a communication channel."
   (treemacs-git-mode . 'simple)
   (treemacs-project-follow-cleanup . t)
   :config
-  (leaf treemacs-projectile :package t
+  (leaf treemacs-projectile :ensure t
     :bind
     (treemacs-project-map
      :package treemacs
      ("p" . treemacs-projectile)))
-  (leaf treemacs-icons-dired :package t
+  (leaf treemacs-icons-dired :ensure t
     :config
     (treemacs-icons-dired-mode))
-  (leaf treemacs-magit :package t :require t))
+  (leaf treemacs-magit :ensure t :require t))
 
-(leaf flycheck :package t
+(leaf flycheck :ensure t
   :blackout t
   :custom
   (global-flycheck-mode . t)
   :config
-  (leaf flycheck-posframe :package t
+  (leaf flycheck-posframe :ensure t
     :custom
     (flycheck-posframe-position . 'window-bottom-right-corner)
     :hook
     (flycheck-mode-hook . flycheck-posframe-mode)))
 
 ;; lsp
-(leaf lsp-mode :package t
+(leaf lsp-mode :ensure t
   :commands (lsp lsp-deferred)
   :custom
   (lsp-diagnostics-provider . :auto)
@@ -1304,7 +1304,7 @@ INFO is a plist used as a communication channel."
   (sh-mode-hook            . lsp-deferred)
   (python-mode-hook        . lsp-deferred)
   :config
-  (leaf lsp-ui :package t
+  (leaf lsp-ui :ensure t
     ;; :custom-face
     ;; (lsp-ui-doc-background ((nil (:background "black"))))
     :custom
@@ -1333,17 +1333,17 @@ INFO is a plist used as a communication channel."
     (lsp-ui-sideline-show-hover . t)
     (lsp-ui-sideline-show-diagnostics . nil)
     (lsp-ui-sideline-show-code-actions . t))
-  (leaf lsp-treemacs :package t
+  (leaf lsp-treemacs :ensure t
     :bind
     ("M-2" . lsp-treemacs-symbols)
     :custom
     (lsp-treemacs-sync-mode . t))
-  (leaf dap-mode :package t
+  (leaf dap-mode :ensure t
     :config
     (dap-auto-configure-mode)
     (leaf dap-chrome :require t)))
 
-(leaf lsp-java :package t
+(leaf lsp-java :ensure t
   :custom
   (lsp-java-vmargs . `("-XX:+UseParallelGC"
                        "-XX:GCTimeRatio=4"
@@ -1363,12 +1363,12 @@ INFO is a plist used as a communication channel."
   :config
   (leaf dap-java :require t))
 
-(leaf lsp-haskell :package t
+(leaf lsp-haskell :ensure t
   :custom
   ;; (lsp-haskell-server-args . '("-d"))
   (lsp-haskell-formatting-provider . "fourmolu"))
 
-(leaf haskell-mode :package t
+(leaf haskell-mode :ensure t
   :custom
   (haskell-indentation-layout-offset . 4)
   (haskell-indentation-left-offset . 4)
@@ -1380,11 +1380,11 @@ INFO is a plist used as a communication channel."
    ("C-c C-h" . haskell-compile)
    ("C-c ?" . hoogle)))
 
-(leaf restclient :package t
+(leaf restclient :ensure t
   :config
-  (leaf ob-restclient :package t))
+  (leaf ob-restclient :ensure t))
 
-(leaf urlenc :package t)
+(leaf urlenc :ensure t)
 
 (leaf lsp-terraform
   :custom
@@ -1394,22 +1394,22 @@ INFO is a plist used as a communication channel."
    ("C-c C-i" . lsp-terraform-ls-init)
    ("C-c C-v" . lsp-terraform-ls-validate)))
 
-(leaf terraform-mode :package t
+(leaf terraform-mode :ensure t
   :custom
   (terraform-indent-level . 2)
   :config
-  (leaf company-terraform :package t
+  (leaf company-terraform :ensure t
     :config
     (company-terraform-init)))
 
-(leaf yaml-mode :package t)
+(leaf yaml-mode :ensure t)
 
-(leaf dockerfile-mode :package t)
+(leaf dockerfile-mode :ensure t)
 
-(leaf docker-compose-mode :package t
+(leaf docker-compose-mode :ensure t
   :require yaml-mode)
 
-(leaf markdown-mode :package t)
+(leaf markdown-mode :ensure t)
 
 (leaf js
   :custom
@@ -1420,7 +1420,7 @@ INFO is a plist used as a communication channel."
   :custom
   (treesit-font-lock-level . 4)
   :config
-  (leaf treesit-auto :package t
+  (leaf treesit-auto :ensure t
     :defun (global-treesit-auto-mode)
     :require t
     :custom
@@ -1429,13 +1429,13 @@ INFO is a plist used as a communication channel."
     :config
     (global-treesit-auto-mode)))
 
-(leaf elm-mode :package t
+(leaf elm-mode :ensure t
   :custom
   (elm-package-json . "elm.json")
   :hook
   (elm-mode-hook . elm-format-on-save-mode))
 
-(leaf lsp-pyright :package t
+(leaf lsp-pyright :ensure t
   :custom
   (lsp-pyright-python-executable-cmd . "python3"))
 
@@ -1444,16 +1444,16 @@ INFO is a plist used as a communication channel."
   (python-shell-interpreter . "python3")
   (python-indent-guess-indent-offset-verbose . nil))
 
-(leaf apache-mode :package t)
+(leaf apache-mode :ensure t)
 
-(leaf nginx-mode :package t
+(leaf nginx-mode :ensure t
   :mode ("/nginx/sites-\\(?:available\\|enabled\\)/")
   :config
-  (leaf company-nginx :package t
+  (leaf company-nginx :ensure t
     :hook
     (nginx-mode-hook . company-nginx-keywords)))
 
-(leaf plantuml-mode :package t
+(leaf plantuml-mode :ensure t
   :mode ("\\.puml\\'")
   :custom
   `(plantuml-jar-path . ,(expand-file-name "plantuml.jar" chpn/dir-jars))
@@ -1467,7 +1467,7 @@ INFO is a plist used as a communication channel."
   (nxml-attribute-indent . 2)
   (nxml-slash-auto-complete-flag . t))
 
-(leaf sqlformat :package t
+(leaf sqlformat :ensure t
   :custom
   (sqlformat-command . 'pgformatter)
   (sqlformat-args . '("-s2" "-L"))
@@ -1475,13 +1475,13 @@ INFO is a plist used as a communication channel."
   (sql-mode-map
    ("<tab>" . sqlformat-buffer)))
 
-(leaf vterm :package t
+(leaf vterm :ensure t
   :bind
   (vterm-mode-map
    ("C-h" . vterm-send-C-h)
    ("C-g" . vterm-send-C-g)))
 
-(leaf web-mode :package t
+(leaf web-mode :ensure t
   :mode ("\.html$")
   :custom
   (web-mode-markup-indent-offset . 4)

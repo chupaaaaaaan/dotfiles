@@ -1424,6 +1424,10 @@ INFO is a plist used as a communication channel."
     :custom
     (treesit-auto-install . 'prompt)
     (treesit-auto-langs . '(tsx typescript json))
+    :mode
+    ("\\.ts\\'" . typescript-ts-mode)
+    ("\\.tsx\\'" . tsx-ts-mode)
+    ("\\.json\\'" . json-ts-mode)
     :config
     (global-treesit-auto-mode)))
 

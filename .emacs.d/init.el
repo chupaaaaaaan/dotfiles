@@ -700,40 +700,38 @@ https://github.com/ema2159/centaur-tabs#my-personal-configuration"
 (leaf go-translate :ensure t
   ;; :if (file-exists-p (concat chpn/dir-pkg-local "deepl-secret.el"))
   ;; :require (deepl-secret)
-  :defvar (gts-default-translator
-           gts-prompt-picker-keymap
-           gts-posframe-pop-render-timeout
+  :defvar (gt-default-translator
+           gt-prompt-map
+           gt-posframe-pop-render-timeout
            my:deepl-secret)
-  :defun (gts-translator
-          gts-prompt-picker
-          gts-google-engine
-          gts-deepl-engine
-          gts-buffer-render
-          gts-posframe-pop-render
-          gts-prompt-picker-next-path)
+  :defun (gt-translator
+          gt-taker
+          gt-google-engine
+          gt-posframe-pop-render
+          gt-prompt-next-target)
   :custom
-  (gts-translate-list . '(("en" "ja")))
+  (gt-langs . '(en ja))
   :bind
   (chpn-function-map
    :package init
-   ("t" . gts-do-translate))
+   ("t" . gt-do-translate))
   :config
-  (setq gts-posframe-pop-render-timeout nil
-        gts-default-translator          (gts-translator
-                                         :picker (gts-prompt-picker)
-                                         ;; :engines `(,(gts-google-engine)
-                                         ;;            ,(gts-deepl-engine :auth-key my:deepl-secret :pro nil))
-                                         :engines (gts-google-engine)
-                                         :render (gts-posframe-pop-render :backcolor "#333333" :forecolor "#ffffff"))
-        gts-prompt-picker-keymap        (let ((map (make-sparse-keymap)))
-                                          (set-keymap-parent map minibuffer-local-map)
-                                          (define-key map "\C-g" #'top-level)
-                                          (define-key map "\C-n" #'next-line-or-history-element)
-                                          (define-key map "\C-p" #'previous-line-or-history-element)
-                                          (define-key map "\M-n" #'gts-prompt-picker-next-path)
-                                          (define-key map "\M-p" (lambda () (interactive) (gts-prompt-picker-next-path t)))
-                                          (define-key map "\C-l" #'delete-minibuffer-contents)
-                                          map)))
+  (setq gt-posframe-pop-render-timeout nil
+        gt-default-translator          (gt-translator
+                                        :taker (gt-taker :prompt t)
+                                        :engines (gt-google-engine)
+                                        :render (gt-posframe-pop-render :backcolor "#333333" :forecolor "#ffffff"))
+        gt-prompt-map                  (let ((map (make-sparse-keymap)))
+                                         (set-keymap-parent map minibuffer-local-map)
+                                         (define-key map "\C-g" #'top-level)
+                                         (define-key map "\C-n" #'next-line-or-history-element)
+                                         (define-key map "\C-p" #'previous-line-or-history-element)
+                                         (define-key map "\M-n" #'gt-prompt-next-target)
+                                         (define-key map "\M-p" (lambda () (interactive) (gt-prompt-next-target t)))
+                                         (define-key map "\C-l" #'delete-minibuffer-contents)
+                                         map)))
+
+(leaf plz :ensure t)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Org mode

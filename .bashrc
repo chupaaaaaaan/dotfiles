@@ -117,7 +117,11 @@ giton
 
 ## ghq setting
 sd () {
-    local srcdir="$(ghq list|peco)"
+    if [ -n "$*" ]; then
+        local srcdir=$(ghq list|peco --query "$*")
+    else
+        local srcdir=$(ghq list|peco)
+    fi
     [ -n "$srcdir" ] && echo "$(ghq root)/$srcdir"
 }
 

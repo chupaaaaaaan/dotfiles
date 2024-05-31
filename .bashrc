@@ -116,9 +116,13 @@ __GIT_PS1_TOGGLE=1
 giton
 
 ## ghq setting
+sd () {
+    local srcdir="$(ghq list|peco)"
+    [ -n "$srcdir" ] && echo "$(ghq root)/$srcdir"
+}
+
 cs () {
-    local srcdir=$(ghq list|peco)
-    [ -n "$srcdir" ] && cd $(ghq root)/$srcdir
+    cd $(sd)
 }
 
 cg () {

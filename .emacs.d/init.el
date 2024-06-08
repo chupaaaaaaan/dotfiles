@@ -833,7 +833,7 @@ https://github.com/ema2159/centaur-tabs#my-personal-configuration"
                    (:startgroup . nil) ("comment" . ?c) (:endgroup . nil)))
 
   ;; property
-  (org-global-properties '(("Effort_ALL" . "0:05 0:15 0:30 1:00 1:30 2:00 3:00 4:00")))
+  (org-global-properties '(("Effort_ALL" . "0:05 0:15 0:30 1:00 1:30 2:00 2:30 3:00 4:00")))
 
   ;; columns
   ;; (org-columns-default-format "%40ITEM %TAGS %TODO %BLOCKED %PRIORITY %SCHEDULED %DEADLINE %EFFORT{:} %CLOCKSUM_T %CLOCKSUM")

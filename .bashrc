@@ -118,19 +118,20 @@ giton
 ## ghq setting
 sd () {
     if [ -n "$*" ]; then
-        local srcdir=$(ghq list|peco --query "$*")
+        local srcdir=$(ghq list|peco --select-1 --query "$*")
     else
-        local srcdir=$(ghq list|peco)
+        local srcdir=$(ghq list|peco --select-1)
     fi
-    [ -n "$srcdir" ] && echo "$(ghq root)/$srcdir"
+    [ -n "$srcdir" ] && echo "$(ghq list --full-path --exact $srcdir)"
 }
 
 cs () {
     cd $(sd "$*")
 }
 
-cg () {
-    ghq get "$@"
+ccl () {
+    local target="${1}"
+    ghq create "localproject/${target}"
 }
 
 ## PSn setting

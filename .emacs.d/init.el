@@ -796,7 +796,7 @@ https://github.com/ema2159/centaur-tabs#my-personal-configuration"
   
   ;; clock/timer
   (org-clock-out-remove-zero-time-clocks t)
-  (org-clock-clocktable-default-properties '(:maxlevel 2 :scope agenda :wstart 2 :fileskip0 t :link nil :tags t :block today))
+  (org-clock-clocktable-default-properties '(:maxlevel 2 :scope agenda :wstart 2 :fileskip0 t :link nil :tags nil :block thismonth))
   (org-clock-clocked-in-display 'mode-line) ;; 'frame-title
   (org-timer-default-timer 30)
 

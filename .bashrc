@@ -32,15 +32,15 @@ fi
 
 # docker
 dpsa() {
-    docker ps -a --format "table {{.ID}}\t{{.Names}}\t{{.Image}}\t{{.Ports}}\t{{.Status}}"|peco|tr -s ' '|cut -d' ' -f1
+    docker ps -a --format "table {{.ID}}\t{{.Names}}\t{{.Image}}\t{{.Networks}}\t{{.Ports}}\t{{.Status}}"|peco|tr -s ' '|cut -d' ' -f1
 }
 
 dimg() {
-    docker images --format "table {{.ID}}\t{{.Repository}}:{{.Tag}}\t{{.Size}}"|peco|tr -s ' '|cut -d' ' -f1
+    docker images --format "table {{.ID}}\t{{.Repository}}\t{{.Tag}}\t{{.Size}}"|peco|tr -s ' '|cut -d' ' -f1
 }
 
 dimg_name() {
-    docker images --format "table {{.ID}}\t{{.Repository}}:{{.Tag}}\t{{.Size}}"|peco|tr -s ' '|cut -d' ' -f2
+    docker images --format "table {{.ID}}\t{{.Repository}}\t{{.Tag}}\t{{.Size}}"|peco|tr -s ' '|cut -d' ' -f2,3|tr ' ' ':'
 }
 
 drun() {

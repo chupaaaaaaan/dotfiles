@@ -17,11 +17,11 @@ alias ll='ls -alF'
 
 # docker
 alias d='docker'
-alias dc='docker-compose'
+alias dc='docker compose'
 alias dstop='dpsa|xargs -r -I@ docker stop @'
 alias drmc='dpsa|xargs -r -I@ docker rm @'
 alias drmi='dimg_name|xargs -r -I@ docker rmi @'
-alias drmi_none='d images -q -f "dangling=true"|xargs -r -I@ docker rmi @'
+alias drmi_none='docker images -q -f "dangling=true"|xargs -r -I@ docker rmi @'
 alias dbash='docker exec -it $(dpsa) /bin/bash'
 alias dsh='docker exec -it $(dpsa) /bin/sh'
 

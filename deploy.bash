@@ -52,6 +52,8 @@ bash install/share/local-elisp.bash
 
 
 ### deploy dotfiles ###
+git clone git@github.com:chupaaaaaaan/emacs.d.git ~/.emacs.d
+
 for file in .??*
 do
     [ "${file}" = ".gitignore" ] && continue

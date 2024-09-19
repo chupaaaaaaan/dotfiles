@@ -8,6 +8,7 @@ mkdir -p ~/.bashrc.d
 mkdir -p ~/.local/bin
 mkdir -p ~/.local/share/tools
 mkdir -p ~/.local/share/applications
+mkdir -p ~/.local/share/bash-completion/completions
 mkdir -p ~/bin
 mkdir -p ~/.elisp/local
 

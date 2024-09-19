@@ -81,7 +81,6 @@ kubeoff
 
 
 ## git
-. ~/.local/share/tools/git-completion.bash
 . ~/.local/share/tools/git-prompt.sh
 
 ___git_ps1_toggled () {

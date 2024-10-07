@@ -11,51 +11,13 @@ mkdir -p ~/.local/share/applications
 mkdir -p ~/.local/share/bash-completion/completions
 mkdir -p ~/.local/share/fonts
 mkdir -p ~/bin
-mkdir -p ~/.elisp/local
-
-
-### check architecture ###
-if [ "$(uname -m)" != "x86_64" ]; then
-    echo "Incompatible machine type: $(uname -m)" 1>&2
-    exit 1
-fi
-
-
-### install tools ###
-case "$(uname -s)" in
-    Linux)
-        ;;
-    Darwin)
-        bash install/darwin/gnutools.bash
-        bash install/darwin/ghq.bash v1.2.1
-        bash install/darwin/fzf.bash 0.29.0
-        bash install/darwin/peco.bash v0.5.10
-        bash install/darwin/ag.bash
-        bash install/darwin/delta.bash
-        ;;
-    MINGW64_NT-*|CYGWIN_NT-*)
-        bash install/windows/ghq.bash v1.2.1
-        bash install/windows/fzf.bash 0.29.0
-        bash install/windows/peco.bash v0.5.10
-        bash install/windows/ag.bash 2020-07-05_2.2.0-58-g5a1c8d8
-        bash install/windows/delta.bash 0.12.1
-        ;;
-    *)
-        echo "Incompatible OS type: $(uname -s)" 1>&2
-        exit 1
-        ;;
-esac
 
 
 bash install/share/kube-ps1.sh.bash
 bash install/share/git.bash
-bash install/share/local-elisp.bash
-
 
 
 ### deploy dotfiles ###
-git clone git@github.com:chupaaaaaaan/emacs.d.git ~/.emacs.d
-
 for file in .??*
 do
     [ "${file}" = ".gitignore" ] && continue

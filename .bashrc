@@ -68,18 +68,6 @@ SSH_COLOR="${BLUE}"
 
 [ -n "${SSH_CONNECTION}" ] && SSH_COLOR="${RED}"
 
-
-## kubernetes
-. ~/.local/share/tools/kube-ps1.sh
-. <((which kubectl > /dev/null 2>&1) && kubectl completion bash || :)
-
-KUBE_PS1_SYMBOL_ENABLE=false
-KUBE_PS1_PREFIX=' ('
-__KUBE_PS1_CMD=$((which kubectl > /dev/null 2>&1) && echo "\$(kube_ps1)")
-
-kubeoff
-
-
 ## git
 . ~/.local/share/tools/git-prompt.sh
 

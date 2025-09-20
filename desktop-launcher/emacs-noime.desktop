@@ -1,0 +1,13 @@
+[Desktop Entry]
+Type=Application
+Version=1.0
+Name=Emacs (GUI, No IME)
+GenericName=Text Editor
+Comment=GNU Emacs without fcitx/ibus env for stability under WSLg
+Exec=/usr/local/bin/emacs-noime.wrapper %F
+TryExec=/usr/local/bin/emacs-noime.wrapper
+Icon=emacs
+Terminal=false
+Categories=Utility;Development;TextEditor;
+StartupNotify=true
+Keywords=Text;Editor;

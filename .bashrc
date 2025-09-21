@@ -36,12 +36,16 @@ export NVM_DIR=$HOME/.nvm
 [[ -s "$NVM_DIR/bash_completion" ]] && . $NVM_DIR/bash_completion
 [[ "none" = $(nvm current) ]]       && nvm install node
 
+# Haskell ##########################################################
+command -v stack > /dev/null 2>&1 && eval "$(stack --bash-completion-script stack)"
+
+
 # Sdkman ##########################################################
 export SDKMAN_DIR="${HOME}/.sdkman"
 [[ -s "${SDKMAN_DIR}/bin/sdkman-init.sh" ]] && . "${SDKMAN_DIR}/bin/sdkman-init.sh"
 
 # Dropbox ##########################################################
-which dropbox.py > /dev/null && dropbox.py status | grep -q "Dropbox isn't running\!" && dropbox.py start > /dev/null 2>&1
+command -v dropbox.py > /dev/null 2>&1 && dropbox.py status | grep -q "Dropbox isn't running\!" && dropbox.py start > /dev/null 2>&1
 
 # Docker ##########################################################
 dpsa() {

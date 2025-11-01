@@ -27,8 +27,55 @@ if ! shopt -oq posix; then
   fi
 fi
 
+# Prompt ##########################################################
+## ANSI escape sequence (character theme)
+RESET="\e[m"
+BOLD="\e[1m"
+RED="\e[31m"
+GREEN="\e[32m"
+YELLOW="\e[33m"
+BLUE="\e[34m"
+MAGENTA="\e[35m"
+CYAN="\e[36m"
+WHITE="\e[37m"
+
+SSH_COLOR="${BLUE}"
+[[ -n "${SSH_CONNECTION}" ]] && SSH_COLOR="${RED}"
+
+USER_COLOR="${BLUE}"
+TERM_CHAR="$"
+[[ $(id -u) == 0 ]] && {
+    USER_COLOR="${RED}"
+    TERM_CHAR="#"
+}
+
+## PS1/PS2
+PS1="${BOLD}${GREEN}\D{%F} ${YELLOW}\t${RESET}|${BOLD}${USER_COLOR}\u${WHITE}@${SSH_COLOR}\h${RESET}${__KUBE_PS1_CMD}${__GIT_PS1_CMD}${RESET}| ${CYAN}\w${RESET}"$'\n${TERM_CHAR} '
+PS2='| '
+
+# Aliases ##########################################################
+## colorful alias
+test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
+alias ls='ls --color=auto'
+alias grep='grep --color=auto'
+alias fgrep='fgrep --color=auto'
+alias egrep='egrep --color=auto'
+
+## VERY VERY DENGEROUS COMMANDS!!!!!!!!!!!!!!
+alias cp='cp -i'
+alias mv='mv -i'
+alias rm='rm -i'
+
+## some more ls
+alias l='ls -CF'
+alias la='ls -A'
+alias ll='ls -alF'
+
 # Emacs ##########################################################
-[ -s ~/.local/share/tools/emacs-vterm-bash.sh ] && . ~/.local/share/tools/emacs-vterm-bash.sh
+[[ "$INSIDE_EMACS" == "vterm" ]] \
+    && [[ -n "${EMACS_VTERM_PATH}" ]] \
+    && [ -f "${EMACS_VTERM_PATH}/etc/emacs-vterm-bash.sh" ] \
+    && . "${EMACS_VTERM_PATH}/etc/emacs-vterm-bash.sh"
 
 # Node ##########################################################
 export NVM_DIR=$HOME/.nvm
@@ -39,13 +86,9 @@ export NVM_DIR=$HOME/.nvm
 # Haskell ##########################################################
 command -v stack > /dev/null 2>&1 && eval "$(stack --bash-completion-script stack)"
 
-
 # Sdkman ##########################################################
 export SDKMAN_DIR="${HOME}/.sdkman"
 [[ -s "${SDKMAN_DIR}/bin/sdkman-init.sh" ]] && . "${SDKMAN_DIR}/bin/sdkman-init.sh"
-
-# Dropbox ##########################################################
-command -v dropbox.py > /dev/null 2>&1 && dropbox.py status | grep -q "Dropbox isn't running\!" && dropbox.py start > /dev/null 2>&1
 
 # Docker ##########################################################
 dpsa() {
@@ -131,54 +174,7 @@ ccl () {
     ghq create "localproject/${target}"
 }
 
-# Prompt ##########################################################
-## ANSI escape sequence (character theme)
-RESET="\e[m"
-BOLD="\e[1m"
-RED="\e[31m"
-GREEN="\e[32m"
-YELLOW="\e[33m"
-BLUE="\e[34m"
-MAGENTA="\e[35m"
-CYAN="\e[36m"
-WHITE="\e[37m"
-
-SSH_COLOR="${BLUE}"
-[[ -n "${SSH_CONNECTION}" ]] && SSH_COLOR="${RED}"
-
-USER_COLOR="${BLUE}"
-TERM_CHAR="$"
-[[ $(id -u) == 0 ]] && {
-    USER_COLOR="${RED}"
-    TERM_CHAR="#"
-}
-
-## PS1/PS2
-PS1="${BOLD}${GREEN}\D{%F} ${YELLOW}\t${RESET}|${BOLD}${USER_COLOR}\u${WHITE}@${SSH_COLOR}\h${RESET}${__KUBE_PS1_CMD}${__GIT_PS1_CMD}${RESET}| ${CYAN}\w${RESET}"$'\n${TERM_CHAR} '
-PS2='| '
-
 # Local settings ##########################################################
 for f in ~/.bashrc.d/*; do
     [ -f "$f" ] && . "$f"
 done
-
-# Some aliases ##########################################################
-## colorful alias
-test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
-alias ls='ls --color=auto'
-alias grep='grep --color=auto'
-alias fgrep='fgrep --color=auto'
-alias egrep='egrep --color=auto'
-
-## VERY VERY DENGEROUS COMMANDS!!!!!!!!!!!!!!
-alias cp='cp -i'
-alias mv='mv -i'
-alias rm='rm -i'
-
-## some more ls
-alias l='ls -CF'
-alias la='ls -A'
-alias ll='ls -alF'
-
-# Source profile ##########################################################
-. ~/.env.sh

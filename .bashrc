@@ -27,32 +27,6 @@ if ! shopt -oq posix; then
   fi
 fi
 
-# Prompt ##########################################################
-## ANSI escape sequence (character theme)
-RESET="\e[m"
-BOLD="\e[1m"
-RED="\e[31m"
-GREEN="\e[32m"
-YELLOW="\e[33m"
-BLUE="\e[34m"
-MAGENTA="\e[35m"
-CYAN="\e[36m"
-WHITE="\e[37m"
-
-SSH_COLOR="${BLUE}"
-[[ -n "${SSH_CONNECTION}" ]] && SSH_COLOR="${RED}"
-
-USER_COLOR="${BLUE}"
-TERM_CHAR="$"
-[[ $(id -u) == 0 ]] && {
-    USER_COLOR="${RED}"
-    TERM_CHAR="#"
-}
-
-## PS1/PS2
-PS1="${BOLD}${GREEN}\D{%F} ${YELLOW}\t${RESET}|${BOLD}${USER_COLOR}\u${WHITE}@${SSH_COLOR}\h${RESET}${__KUBE_PS1_CMD}${__GIT_PS1_CMD}${RESET}| ${CYAN}\w${RESET}"$'\n${TERM_CHAR} '
-PS2='| '
-
 # Aliases ##########################################################
 ## colorful alias
 test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
@@ -70,12 +44,6 @@ alias rm='rm -i'
 alias l='ls -CF'
 alias la='ls -A'
 alias ll='ls -alF'
-
-# Emacs ##########################################################
-[[ "$INSIDE_EMACS" == "vterm" ]] \
-    && [[ -n "${EMACS_VTERM_PATH}" ]] \
-    && [ -f "${EMACS_VTERM_PATH}/etc/emacs-vterm-bash.sh" ] \
-    && . "${EMACS_VTERM_PATH}/etc/emacs-vterm-bash.sh"
 
 # Node ##########################################################
 export NVM_DIR=$HOME/.nvm
@@ -173,6 +141,38 @@ ccl () {
     local target="${1}"
     ghq create "localproject/${target}"
 }
+
+# Prompt ##########################################################
+## ANSI escape sequence (character theme)
+RESET="\e[m"
+BOLD="\e[1m"
+RED="\e[31m"
+GREEN="\e[32m"
+YELLOW="\e[33m"
+BLUE="\e[34m"
+MAGENTA="\e[35m"
+CYAN="\e[36m"
+WHITE="\e[37m"
+
+SSH_COLOR="${BLUE}"
+[[ -n "${SSH_CONNECTION}" ]] && SSH_COLOR="${RED}"
+
+USER_COLOR="${BLUE}"
+TERM_CHAR="$"
+[[ $(id -u) == 0 ]] && {
+    USER_COLOR="${RED}"
+    TERM_CHAR="#"
+}
+
+## PS1/PS2
+PS1="${BOLD}${GREEN}\D{%F} ${YELLOW}\t${RESET}|${BOLD}${USER_COLOR}\u${WHITE}@${SSH_COLOR}\h${RESET}${__KUBE_PS1_CMD}${__GIT_PS1_CMD}${RESET}| ${CYAN}\w${RESET}"$'\n${TERM_CHAR} '
+PS2='| '
+
+# Emacs (vterm) ##########################################################
+[[ "$INSIDE_EMACS" == "vterm" ]] \
+    && [[ -n "${EMACS_VTERM_PATH}" ]] \
+    && [ -f "${EMACS_VTERM_PATH}/etc/emacs-vterm-bash.sh" ] \
+    && . "${EMACS_VTERM_PATH}/etc/emacs-vterm-bash.sh"
 
 # Local settings ##########################################################
 for f in ~/.bashrc.d/*; do

@@ -1,3 +1,12 @@
+[column]
+	ui = auto
+
+[branch]
+	sort = -committerdate
+
+[tag]
+	sort = version:refname
+
 [init]
 	defaultBranch = "main"
 
@@ -13,16 +22,14 @@
 [interactive]
 	diffFilter = delta --color-only
 
-[delta]
-	navigate = true
-	line-numbers = true
-	# map-styles = bold purple => syntax magenta, bold cyan => syntax blue
+[diff]
+	algorithm = histogram
+	colorMoved = plain
+	renames = true
+	mnemonicPrefix = true
 
 [merge]
-	conflictstyle = diff3
-
-[diff]
-	colorMoved = default
+	conflictstyle = zdiff3
 
 [user]
 	name = "Takayuki Uchida"
@@ -33,6 +40,12 @@
 
 [push]
 	default = simple
+	followTags = true
+
+[fetch]
+	prune = true
+	pruneTags = true
+	all = true
 
 [alias]
 	lf  = log --graph --date-order --date=format:'%Y/%m/%d %H:%M:%S' --pretty=format:'%Cred%h%Creset - %Cgreen[%cd]%Creset %C(bold blue)<%an>%Creset %C(yellow)%d%Creset %s' --first-parent
@@ -42,5 +55,11 @@
 
 [credential]
 	helper = store
+
+[delta]
+	navigate = true
+	line-numbers = true
+	# map-styles = bold purple => syntax magenta, bold cyan => syntax blue
+
 [ghq]
 	root = ~/projects

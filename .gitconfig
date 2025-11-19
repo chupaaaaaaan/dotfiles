@@ -29,7 +29,7 @@
 	mnemonicPrefix = true
 
 [merge]
-	conflictstyle = zdiff3
+	conflictstyle = diff3
 
 [user]
 	name = "Takayuki Uchida"

@@ -1,7 +1,0 @@
-#!/bin/bash
-
-export GTK_IM_MODULE=gtk-im-context-simple
-export XMODIFIERS='@im=none'
-unset QT_IM_MODULE
-
-exec /usr/bin/emacs

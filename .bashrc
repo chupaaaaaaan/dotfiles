@@ -46,7 +46,11 @@ alias la='ls -A'
 alias ll='ls -alF'
 
 # Node ##########################################################
-export NVM_DIR=$HOME/.nvm
+if [ -z "${XDG_CONFIG_HOME-}" ]; then
+    export NVM_DIR=$HOME/.nvm
+else
+    export NVM_DIR=$XDG_CONFIG_HOME/nvm
+fi
 [[ -s "$NVM_DIR/nvm.sh" ]]          && . $NVM_DIR/nvm.sh
 [[ -s "$NVM_DIR/bash_completion" ]] && . $NVM_DIR/bash_completion
 [[ "none" = $(nvm current) ]]       && nvm install node

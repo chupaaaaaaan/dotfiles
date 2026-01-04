@@ -6,6 +6,8 @@ case $- in
     *) return;;
 esac
 
+[ -f ~/.profile ] && .~/.profile
+
 # Command history ##########################################################
 HISTCONTROL=ignoreboth
 shopt -s histappend

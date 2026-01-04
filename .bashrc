@@ -6,7 +6,7 @@ case $- in
     *) return;;
 esac
 
-[ -f ~/.profile ] && ~/.profile
+[ -f ~/.profile ] && . ~/.profile
 
 # Command history ##########################################################
 HISTCONTROL=ignoreboth

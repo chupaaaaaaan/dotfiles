@@ -1,12 +1,13 @@
 # ~/.bashrc: executed by bash(1) for non-login shells.
 
 # If not running interactively, don't do anything
+
+[ -f ~/.profile ] && . ~/.profile
+
 case $- in
     *i*) ;;
     *) return;;
 esac
-
-[ -f ~/.profile ] && . ~/.profile
 
 # Command history ##########################################################
 HISTCONTROL=ignoreboth

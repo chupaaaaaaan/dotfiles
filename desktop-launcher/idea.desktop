@@ -1,0 +1,13 @@
+[Desktop Entry]
+Type=Application
+Version=1.0
+Name=IntelliJ IDEA
+GenericName=IDE
+Comment=IntelliJ IDEA Integrated Development Environment
+Exec=/usr/local/idea/bin/idea.sh %f
+TryExec=/usr/local/idea/bin/idea.sh
+Icon=/usr/local/idea/bin/idea.png
+Terminal=false
+Categories=Development;IDE;
+StartupNotify=true
+Keywords=IDE;Java;Kotlin;Development;

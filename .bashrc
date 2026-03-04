@@ -152,6 +152,35 @@ ccl () {
     ghq create "localproject/${target}"
 }
 
+# Tmux ##########################################################
+# ---- auto tmux (only when interactive + real tty) ----
+if command -v tmux >/dev/null 2>&1; then
+  case "$-" in
+    *i*)
+      # 既に tmux 内でない / SSH でない / かつ標準入出力が端末(TTY)のときだけ
+      if [ -z "$TMUX" ] && [ -z "$SSH_TTY" ] && [ -t 0 ] && [ -t 1 ]; then
+        exec tmux new-session -A -s main
+      fi
+      ;;
+  esac
+fi
+
+tmux-project() {
+    local dir
+    dir=$(sd)
+
+    [ -z "$dir" ] && return
+
+    local name
+    name=$(basename "$dir")
+
+    if tmux list-windows | grep -q "$name"; then
+        tmux select-window -t "$name"
+    else
+        tmux new-window -n "$name" -c "$dir"
+    fi
+}
+
 # Prompt ##########################################################
 ## ANSI escape sequence (character theme)
 RESET="\e[m"

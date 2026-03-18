@@ -165,7 +165,7 @@ if command -v tmux >/dev/null 2>&1; then
   esac
 fi
 
-tmux-project() {
+tp() {
     local dir
     dir=$(sd)
 

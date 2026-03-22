@@ -157,9 +157,12 @@ ccl () {
 if command -v tmux >/dev/null 2>&1; then
   case "$-" in
     *i*)
-      # 既に tmux 内でない / SSH でない / かつ標準入出力が端末(TTY)のときだけ
+      if [ -z "$TMUX" ]; then
+        tmux has-session -t main 2>/dev/null || tmux new-session -d -s main
+      fi
+
       if [ -z "$TMUX" ] && [ -z "$SSH_TTY" ] && [ -t 0 ] && [ -t 1 ]; then
-        exec tmux new-session -A -s main
+        exec tmux attach-session -t main
       fi
       ;;
   esac

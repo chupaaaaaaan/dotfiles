@@ -161,9 +161,9 @@ if command -v tmux >/dev/null 2>&1; then
         tmux has-session -t main 2>/dev/null || tmux new-session -d -s main
       fi
 
-      if [ -z "$TMUX" ] && [ -z "$SSH_TTY" ] && [ -t 0 ] && [ -t 1 ]; then
-        exec tmux attach-session -t main
-      fi
+      # if [ -z "$TMUX" ] && [ -z "$SSH_TTY" ] && [ -t 0 ] && [ -t 1 ]; then
+      #   exec tmux attach-session -t main
+      # fi
       ;;
   esac
 fi

@@ -1,6 +1,3 @@
-[column]
-	ui = auto
-
 [branch]
 	sort = -committerdate
 
@@ -13,7 +10,6 @@
 [core]
 	autoCRLF = false
 	quotepath = false
-	# pager = "LESSCHARSET=utf-8 less"
 	pager = delta
 	preloadindex = true
 	fscache = true
@@ -29,7 +25,7 @@
 	mnemonicPrefix = true
 
 [merge]
-	conflictstyle = diff3
+	conflictstyle = zdiff3
 
 [user]
 	name = "Takayuki Uchida"
@@ -57,9 +53,25 @@
 	helper = store
 
 [delta]
-	navigate = true
-	line-numbers = true
-	# map-styles = bold purple => syntax magenta, bold cyan => syntax blue
+    side-by-side = true
+    features = unobtrusive-line-numbers decorations
+    whitespace-error-style = 22 reverse
+
+[delta "unobtrusive-line-numbers"]
+    line-numbers = true
+    line-numbers-minus-style = "#444444"
+    line-numbers-zero-style = "#444444"
+    line-numbers-plus-style = "#444444"
+    line-numbers-left-format = "{nm:>4}┊"
+    line-numbers-right-format = "{np:>4}│"
+    line-numbers-left-style = blue
+    line-numbers-right-style = blue
+
+[delta "decorations"]
+    commit-decoration-style = bold yellow box ul
+    file-style = bold yellow ul
+    file-decoration-style = none
+    hunk-header-decoration-style = yellow box
 
 [ghq]
 	root = ~/projects

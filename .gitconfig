@@ -48,10 +48,10 @@
 	all = true
 
 [alias]
-	lf  = log --graph --date-order --date=format:'%Y/%m/%d %H:%M:%S' --pretty=format:'%Cred%h%Creset - %Cgreen[%cd]%Creset %C(bold blue)<%an>%Creset %C(yellow)%d%Creset %s' --first-parent
 	l   = log --graph --date-order --date=format:'%Y/%m/%d %H:%M:%S' --pretty=format:'%Cred%h%Creset - %Cgreen[%cd]%Creset %C(bold blue)<%an>%Creset %C(yellow)%d%Creset %s'
-	lfa = log --graph --date-order --date=format:'%Y/%m/%d %H:%M:%S' --pretty=format:'%Cred%h%Creset - %Cgreen[%cd]%Creset %C(bold blue)<%an>%Creset %C(yellow)%d%Creset %s' --all --first-parent
-	la  = log --graph --date-order --date=format:'%Y/%m/%d %H:%M:%S' --pretty=format:'%Cred%h%Creset - %Cgreen[%cd]%Creset %C(bold blue)<%an>%Creset %C(yellow)%d%Creset %s' --all
+	la  = l --all
+	lf  = l       --first-parent
+	lfa = l --all --first-parent
 
 [credential]
 	helper = store

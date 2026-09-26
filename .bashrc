@@ -49,6 +49,7 @@ alias la='ls -A'
 alias ll='ls -alF'
 
 # Browser ##########################################################
+command -v google-chrome > /dev/null 2>&1 && export BROWSER=google-chrome
 command -v wslview > /dev/null 2>&1 && export BROWSER=wslview
 
 # Node ##########################################################

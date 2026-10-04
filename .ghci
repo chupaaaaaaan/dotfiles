@@ -1,10 +1,9 @@
-:set -package pretty-simple
-import Text.Pretty.Simple (pPrint)
-:set -interactive-print pPrint
 :set prompt "λ %l> "
+:set prompt-cont "  | "
 
 :seti -XOverloadedStrings
 :seti -XScopedTypeVariables
+:seti -XTypeApplications
+
 :set -Wall
-:set +s
 :set +t

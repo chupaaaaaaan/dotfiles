@@ -21,10 +21,6 @@ export GOBIN=~/.local/bin
 # Python3
 [[ -d /usr/local/python/bin ]] && path_prepend /usr/local/python/bin
 
-# Vagrant
-export VAGRANT_WSL_ENABLE_WINDOWS_ACCESS="1"
-[[ -d "/mnt/c/Program Files/Oracle/VirtualBox" ]] && path_prepend "/mnt/c/Program Files/Oracle/VirtualBox"
-
 # Graphviz
 export GRAPHVIZ_DOT=$(which dot)
 
